@@ -26,6 +26,7 @@
 
 # Visual Studio cache directory
 .vs/
+.vsconfig
 
 # Visual Studio Code
 .vscode
@@ -69,6 +70,9 @@ crashlytics-build.properties
 
 Assets/Plugins/Pixel Crushers/Common/Scripts/CommonAssemblyDefinitions.unitypackage.meta
 Assets/Plugins/Pixel Crushers/Dialogue System/Scripts/DialogueSystemAssemblyDefinitions.unitypackage.meta
+
+# Odin Inspector
+/**/Odin Inspector/Config/Editor
 
 # Build folders of sphinx documentation
 /**/docs/en

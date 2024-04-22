@@ -2,7 +2,7 @@
     "name": "LDtkVania.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:b38b25d335d323d4dad286aed712f4cf"
+        "GUID:03708890ebbf2d044957e9f57c4957e5"
     ],
     "includePlatforms": [
         "Editor"
