@@ -1,5 +1,5 @@
-# Handy FSM
+# LDtk Vania (Work in progress)
 
-A finite state machine solution for Unity.
+A solution for running metroidvania levels in Unity with LDtk.
 
-This is a work in progress
+Please refer to https://indiegabo.github.io/ldtk-vania for documentation and showcasing.
