@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/HandyFSM/Editor/Resources/Styles/handy-fsm-inspector-styles.uss?fileID=7433441132597879392&amp;guid=c8210e453a717ae4483df14a5730d992&amp;type=3#handy-fsm-inspector-styles" />
+    <ui:VisualElement name="container" style="flex-grow: 1;">
+        <uie:PropertyField name="key" binding-path="_key" />
+        <uie:PropertyField name="trigger" binding-path="_trigger" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/HandyFSM/Editor/Resources/Styles/handy-fsm-inspector-styles.uss?fileID=7433441132597879392&amp;guid=c8210e453a717ae4483df14a5730d992&amp;type=3#handy-fsm-inspector-styles" />
+    <ui:VisualElement name="container" style="flex-grow: 1;">
+        <ui:VisualElement name="runtime-info-container" class="row" style="flex-grow: 1; display: flex;">
+            <ui:Label tabindex="-1" text="Runtime Info" parse-escape-sequences="true" display-tooltip-when-elided="true" name="runtime-info-label" class="info-label" style="margin-top: 5px; margin-bottom: 5px; display: none;" />
+            <ui:VisualElement name="runtime-info" style="align-items: center; height: 100%; background-color: rgb(46, 46, 46); border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;">
+                <ui:VisualElement name="status-row" class="field-row runtime-info-row" style="flex-direction: row; align-items: center;">
+                    <ui:Label tabindex="-1" text="Status: " parse-escape-sequences="true" display-tooltip-when-elided="true" name="status-label" class="runtime-label" style="-unity-font-style: bold; -unity-text-align: middle-left;" />
+                    <ui:Label tabindex="-1" text="Off" parse-escape-sequences="true" display-tooltip-when-elided="true" name="status-text" class="off" />
+                </ui:VisualElement>
+                <ui:VisualElement name="current-state-row" class="field-row runtime-info-row" style="flex-direction: row; width: 100%; font-size: 16px; -unity-font-style: bold; align-items: center;">
+                    <ui:Label tabindex="-1" text="Current State:" parse-escape-sequences="true" display-tooltip-when-elided="true" name="current-state-label" class="runtime-label" style="font-size: 14px;" />
+                    <ui:Label tabindex="-1" text="None" parse-escape-sequences="true" display-tooltip-when-elided="true" name="current-state-text" binding-path="_currentStateName" class="state-name" style="-unity-font-style: normal; font-size: 14px; -unity-text-align: middle-left;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="hidden-fields" style="flex-grow: 1; display: none;">
+            <ui:EnumField label="Status" type="HandyFSM.MachineStatus, HandyFSM.Runtime" name="status-field" binding-path="_status" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

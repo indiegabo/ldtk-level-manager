@@ -1,0 +1,28 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/HandyFSM/Editor/Resources/Styles/handy-fsm-inspector-styles.uss?fileID=7433441132597879392&amp;guid=c8210e453a717ae4483df14a5730d992&amp;type=3#handy-fsm-inspector-styles" />
+    <ui:VisualElement name="container" style="flex-grow: 1;">
+        <ui:Foldout text="Machine Configuration" name="machine-config-foldout">
+            <ui:VisualElement name="ownage-container" style="flex-grow: 1;">
+                <uie:PropertyField name="owner-field" binding-path="_owner" label="Owner" tooltip="If left blank, the owner will be considered the transform of this GameObject" class="field" />
+            </ui:VisualElement>
+            <ui:VisualElement name="initialization-container" style="flex-grow: 1;">
+                <uie:PropertyField name="initalization-mode-field" binding-path="_initalizationMode" label="Initialization" tooltip="How should the machine be initialized?" class="field" />
+            </ui:VisualElement>
+            <ui:VisualElement name="states-container" style="flex-grow: 1;">
+                <ui:Label tabindex="-1" text="States" parse-escape-sequences="true" display-tooltip-when-elided="true" name="states-label" class="info-label" style="margin-top: 5px; margin-bottom: 5px;" />
+                <uie:PropertyField name="default-scriptable-state-field" binding-path="_defaultScriptableState" label="Default" tooltip="The default Scriptable State. Leave blank if you need to manually load the default state" class="field" />
+                <uie:PropertyField name="scriptable-states-field" binding-path="_scriptableStates" label="List" tooltip="The scriptable states to be loaded into the machine" />
+            </ui:VisualElement>
+            <ui:VisualElement name="triggers-container" style="flex-grow: 1;">
+                <ui:Label tabindex="-1" text="Triggers" parse-escape-sequences="true" display-tooltip-when-elided="true" name="triggers-label" class="info-label" style="margin-top: 5px; margin-bottom: 5px;" />
+                <uie:PropertyField name="trigger-items-field" binding-path="_triggerItems" label="List" tooltip="The scriptable states to be loaded into the machine" />
+            </ui:VisualElement>
+            <ui:VisualElement name="events-container" style="flex-grow: 1;">
+                <ui:Label tabindex="-1" text="Events" parse-escape-sequences="true" display-tooltip-when-elided="true" name="events-label" class="info-label" style="margin-top: 5px; margin-bottom: 5px;" />
+                <uie:PropertyField name="status-changed-field" binding-path="_statusChanged" label="Status Changed" tooltip="Fired when the machine state changes" style="margin-top: 5px; margin-right: 5px; margin-bottom: 5px; margin-left: 5px;" />
+                <uie:PropertyField name="state-changed-field" binding-path="_stateChanged" label="State Changed" tooltip="Fired every time the current state changes" style="margin-top: 5px; margin-right: 5px; margin-bottom: 5px; margin-left: 5px;" />
+            </ui:VisualElement>
+        </ui:Foldout>
+        <ui:VisualElement name="separator" style="flex-grow: 1; width: 100%; border-bottom-width: 1px; border-left-color: rgba(255, 255, 255, 0.27); border-right-color: rgba(255, 255, 255, 0.27); border-top-color: rgba(255, 255, 255, 0.27); border-bottom-color: rgba(255, 255, 255, 0.27); height: 2px; margin-top: 5px; margin-bottom: 5px;" />
+    </ui:VisualElement>
+</ui:UXML>

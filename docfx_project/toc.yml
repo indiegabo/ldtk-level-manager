@@ -1,0 +1,9 @@
+- name: Docs
+  href: documentation/
+
+- name: Api
+  href: api/
+  homepage: api/LDtkVania.yml
+
+- name: Github
+  href: https://github.com/indiegabot/LDtkVania
