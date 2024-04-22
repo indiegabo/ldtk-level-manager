@@ -1,6 +1,6 @@
-# Sprite Animations
+# LDtk Vania
 
-A smooth and intuitive way to work with spritesheets in Unity.
+A solution for running metroidvania levels in Unity with LDtk.
 
 Please refer to https://indiegabo.github.io/ldtk-vania for documentation and showcasing.
 
