@@ -1,0 +1,5614 @@
+fileFormatVersion: 2
+guid: 729858cad2a1c4a4e9554e97ff736c5d
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: f3268c876daf4890b6af6cd462063137, type: 3}
+  _reimportOnDependencyChange: 1
+  _pixelsPerUnit: 16
+  _sprites:
+  - name: Monochrome_0
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 304
+      width: 16
+      height: 16
+    spriteID: d77d4bf7d5c13044182d6cdc2700d3d4
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 304
+      width: 16
+      height: 16
+    spriteID: 1d489b7bd62812845a95c1113c03cb27
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 304
+      width: 16
+      height: 16
+    spriteID: fb07bd6b2c3d6564ab6d2907fdd5bd0d
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_3
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 304
+      width: 16
+      height: 16
+    spriteID: 56a3fb208bd7059469cff4e155221d07
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_4
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 304
+      width: 16
+      height: 16
+    spriteID: a9306dbe44ec6d04baea1758e6e4fcbc
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_5
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 304
+      width: 16
+      height: 16
+    spriteID: 3d8d802f68b85d54daca049523a8301b
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_6
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 304
+      width: 16
+      height: 16
+    spriteID: e9b54a4d0d375b84ea07bed0f67e23e5
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_7
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 304
+      width: 16
+      height: 16
+    spriteID: 86b627dde46f0ce4090590e7a4af8fdc
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_8
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 304
+      width: 16
+      height: 16
+    spriteID: e2de69e65154aaa46b80f7a267e19e54
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_9
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 304
+      width: 16
+      height: 16
+    spriteID: 6ec6112adc8f3ce429ee92f4817c2dae
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_10
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 304
+      width: 16
+      height: 16
+    spriteID: 80115af88ca5cab4cb8d4d793d61f476
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_11
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 304
+      width: 16
+      height: 16
+    spriteID: f3fe9de4f59515d4eaf50cad34461911
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_12
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 304
+      width: 16
+      height: 16
+    spriteID: d61b3472666f9ed4ebda995ce10c12ef
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_13
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 304
+      width: 16
+      height: 16
+    spriteID: 00df090322591624bbd00c62f5abaa64
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_14
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 304
+      width: 16
+      height: 16
+    spriteID: 5a770b94094a0ee44bd2ed437dbf0ef9
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_15
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 304
+      width: 16
+      height: 16
+    spriteID: b41d709a9dee68f458b8c449b5a8d03d
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_16
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 304
+      width: 16
+      height: 16
+    spriteID: 78c53564b244a6e49965fe582a279e77
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_17
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 304
+      width: 16
+      height: 16
+    spriteID: d7bb24920ffe1414985563bd40fff126
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_18
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 304
+      width: 16
+      height: 16
+    spriteID: 21f15bee9fd542841bbe651433e2ad9d
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_19
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 304
+      width: 16
+      height: 16
+    spriteID: 42c58c176cca8ab44acd2791d7eeb652
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_20
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 288
+      width: 16
+      height: 16
+    spriteID: 4056e491a5dfa374ea502e5a691498c8
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_21
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 288
+      width: 16
+      height: 16
+    spriteID: 08bc5d1170449644287325f3ac5565b8
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_22
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 288
+      width: 16
+      height: 16
+    spriteID: 5171348a70fd79248b6c844f0e5fd8e1
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_23
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 288
+      width: 16
+      height: 16
+    spriteID: 6a4089b801646c94e81ab7b4abc71761
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_24
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 288
+      width: 16
+      height: 16
+    spriteID: 717925119062a71449539ffb647f4047
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_25
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 288
+      width: 16
+      height: 16
+    spriteID: bd2b963e7ef20c4448b290ee361e2712
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_26
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 288
+      width: 16
+      height: 16
+    spriteID: c8283f9e9518eed4f8ad869db916c5fe
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_27
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 288
+      width: 16
+      height: 16
+    spriteID: ecc3a87c40a21e04aa979ace2d74ce96
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_28
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 288
+      width: 16
+      height: 16
+    spriteID: b46a1f74f9ebbc74ba57ae933c7291bb
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_29
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 288
+      width: 16
+      height: 16
+    spriteID: 05a6cff2de51760498fb9418efdd92a9
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_30
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 288
+      width: 16
+      height: 16
+    spriteID: 2271d7333bb55c441a54cf3ce809b8f4
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_31
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 288
+      width: 16
+      height: 16
+    spriteID: ca70efc0ec7d89748b5642dac69c8fa6
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_32
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 288
+      width: 16
+      height: 16
+    spriteID: e93943f0e037560488338bee9465fea7
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_33
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 288
+      width: 16
+      height: 16
+    spriteID: 000ccf25befdc3c43bbe61278736f077
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_34
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 288
+      width: 16
+      height: 16
+    spriteID: aaaca1c0209510f4398bea3d8f9f3d98
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_35
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 288
+      width: 16
+      height: 16
+    spriteID: 5f7fe8accbf49d44785c06ffc78afe4c
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_36
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 288
+      width: 16
+      height: 16
+    spriteID: 8f7fd0c9888586b409d61084d320ebf2
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_37
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 288
+      width: 16
+      height: 16
+    spriteID: 3a30f6b581ac29e41a2315cc4e39519c
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_38
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 288
+      width: 16
+      height: 16
+    spriteID: cdc164a46b4b86c4ab2140ac1e8bf3b1
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_39
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 288
+      width: 16
+      height: 16
+    spriteID: 48e94367b82f25f4b80810cd7a40bd05
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_40
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 272
+      width: 16
+      height: 16
+    spriteID: 6ebbcafe195a10a41850e05485ddec35
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_41
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 272
+      width: 16
+      height: 16
+    spriteID: 5ecd1fe2770790441aa103d09c8b2af1
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_42
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 272
+      width: 16
+      height: 16
+    spriteID: c9c2f4651e8666549bb21493030d8d94
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_43
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 272
+      width: 16
+      height: 16
+    spriteID: 97eb368ef10841b468577b151e96ce78
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_44
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 272
+      width: 16
+      height: 16
+    spriteID: 23c404d749517b74eba306060efc4777
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_45
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 272
+      width: 16
+      height: 16
+    spriteID: 0f8069afdfaa3d9458cbd2d970b39a51
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_46
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 272
+      width: 16
+      height: 16
+    spriteID: e9117bdce88abba46821ca03ef64141f
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_47
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 272
+      width: 16
+      height: 16
+    spriteID: 4fda543780cff45418517479bc25f05b
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_48
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 272
+      width: 16
+      height: 16
+    spriteID: 525a56b65ff4670409f9d31ddea2066b
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_49
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 272
+      width: 16
+      height: 16
+    spriteID: f8b63cd1944a29d46b85456b70b4e1ce
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_50
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 272
+      width: 16
+      height: 16
+    spriteID: 7fbdd88beb90ce844b6611fb77ab4e63
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_51
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 272
+      width: 16
+      height: 16
+    spriteID: 303c221cf033dfe489b64c4cb370ddda
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_52
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 272
+      width: 16
+      height: 16
+    spriteID: ef4f0fdb0136c1a4aae66825c01e43dc
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_53
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 272
+      width: 16
+      height: 16
+    spriteID: e0e5e29e29806a44c9b3bc6fe9a96717
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_54
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 272
+      width: 16
+      height: 16
+    spriteID: 2b8f426c797dc5e46ad6ca99d28e5ec1
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_55
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 272
+      width: 16
+      height: 16
+    spriteID: 2e4c0fc1e6a59dc4fb8329ea85304e55
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_56
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 272
+      width: 16
+      height: 16
+    spriteID: dca37144473a80e4187014939901ad1c
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_57
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 272
+      width: 16
+      height: 16
+    spriteID: 3fb58f3634f46ec46aacd81935938a36
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_58
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 272
+      width: 16
+      height: 16
+    spriteID: 77598f64fbc346e47b92b3bed65a6b37
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_59
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 272
+      width: 16
+      height: 16
+    spriteID: 43c89a2a61aa58e48950339b4879b95f
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_60
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 256
+      width: 16
+      height: 16
+    spriteID: aed2421acfb50de488bccbe0f06f0ca4
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_61
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 256
+      width: 16
+      height: 16
+    spriteID: fc5077b0e2f0cf64090b60d7de693349
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_62
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 256
+      width: 16
+      height: 16
+    spriteID: 085c13514f9aa3b41bd5a17d3986c15a
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_63
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 256
+      width: 16
+      height: 16
+    spriteID: ad27119fddf365141b2f792935718f82
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_64
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 256
+      width: 16
+      height: 16
+    spriteID: 10e9d88ed3845684eb323a50d747b782
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_65
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 256
+      width: 16
+      height: 16
+    spriteID: 871b6e8b985fbb2458697b43ba363d75
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_66
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 256
+      width: 16
+      height: 16
+    spriteID: 01d8ab6292ab32d409e8c544b35fddd8
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_67
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 256
+      width: 16
+      height: 16
+    spriteID: 4ce6f9bb53f7cc444a136d16814d02a7
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_68
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 256
+      width: 16
+      height: 16
+    spriteID: 1740e3ea5800db048aa31856511b1f53
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_69
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 256
+      width: 16
+      height: 16
+    spriteID: ca1318ead9ecccf4aa7467508ac8f2e5
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_70
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 256
+      width: 16
+      height: 16
+    spriteID: 59b75d87a021116409fbd2d06a2dae40
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_71
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 256
+      width: 16
+      height: 16
+    spriteID: 1f1dbce0fe9a4be419f16c8c1861bfbe
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_72
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 256
+      width: 16
+      height: 16
+    spriteID: 442148b60b755fc42a2c143e440a9129
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_73
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 256
+      width: 16
+      height: 16
+    spriteID: f437b747212a43d49b507f5e690a50de
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_74
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 256
+      width: 16
+      height: 16
+    spriteID: f0fc6221235ec0c428666682be93ccb4
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_75
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 256
+      width: 16
+      height: 16
+    spriteID: 72cedfed75c6fc5458ea764122d69581
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_76
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 256
+      width: 16
+      height: 16
+    spriteID: 52f242e396d599d4d9803f695adb6189
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_77
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 256
+      width: 16
+      height: 16
+    spriteID: 1ac89e64dc269374eb8d0865dda79421
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_78
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 256
+      width: 16
+      height: 16
+    spriteID: 3098d6e168e09ae49a83dccc77c02ec8
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_79
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 256
+      width: 16
+      height: 16
+    spriteID: a81a9f3e0055ca140827d86cca0afce0
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_80
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 240
+      width: 16
+      height: 16
+    spriteID: 82ddc1504f9c6294c8fe6f1f45407c10
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_81
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 240
+      width: 16
+      height: 16
+    spriteID: 34053ac71fbd91b44a170b93faff73b2
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_82
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 240
+      width: 16
+      height: 16
+    spriteID: 52978c6f6ef142145afdb64da0d9fd00
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_83
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 240
+      width: 16
+      height: 16
+    spriteID: 022feecb3c69c9541bba719e81e291be
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_84
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 240
+      width: 16
+      height: 16
+    spriteID: 0b086710921a5564e8a5e6df9efe341d
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_85
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 240
+      width: 16
+      height: 16
+    spriteID: d150daf390203194fa5aeb7e8e1210f2
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_86
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 240
+      width: 16
+      height: 16
+    spriteID: 4bac4a73bc2f7a24c8d4542db06b5e21
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_87
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 240
+      width: 16
+      height: 16
+    spriteID: 2c167866908e7ee42ba7c56b86b1d077
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_88
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 240
+      width: 16
+      height: 16
+    spriteID: 4399fec23f0890a4598d43da88f8f819
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_89
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 240
+      width: 16
+      height: 16
+    spriteID: 314545d6f4269894fa9ae7e254cf5585
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_90
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 240
+      width: 16
+      height: 16
+    spriteID: d5019e1aedfc75d4a880ac6bc2fb64a9
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_91
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 240
+      width: 16
+      height: 16
+    spriteID: 5cc0fbdd62382234c8a3fe68f97cabbb
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_92
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 240
+      width: 16
+      height: 16
+    spriteID: ddec7a0479e8d904c88d4160ea8b1ffd
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_93
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 240
+      width: 16
+      height: 16
+    spriteID: 052bc6fc58dd9da4ab74ce214dcc7331
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_94
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 240
+      width: 16
+      height: 16
+    spriteID: 76485713cba91eb488ce249d096681fe
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_95
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 240
+      width: 16
+      height: 16
+    spriteID: 60c2b0e7a2267134d9d170b3c14d976c
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_96
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 240
+      width: 16
+      height: 16
+    spriteID: a5c666c660fbe7347911880c68929a3e
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_97
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 240
+      width: 16
+      height: 16
+    spriteID: 42daceb4a0f766944ba997f775e2a24a
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_98
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 240
+      width: 16
+      height: 16
+    spriteID: 37199bdcedb99aa44b89c232c697e587
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_99
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 240
+      width: 16
+      height: 16
+    spriteID: 9b1ca6829492d39489e026f6f7030bfc
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_100
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 224
+      width: 16
+      height: 16
+    spriteID: a12f69d7fafe77d4c9cec5143ad5b24d
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_101
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 224
+      width: 16
+      height: 16
+    spriteID: 703163c0c6ad4cd498a8479731f48d10
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_102
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 224
+      width: 16
+      height: 16
+    spriteID: accfff6f145c3314eb088b15ddc47908
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_103
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 224
+      width: 16
+      height: 16
+    spriteID: 40c2ca7e4036c054a9c61f2e75d50bf6
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_104
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 224
+      width: 16
+      height: 16
+    spriteID: e4a3b34c8d6fda048b09f2f1a69f6d27
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_105
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 224
+      width: 16
+      height: 16
+    spriteID: d6599a0976a37cd418223d28005734b1
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_106
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 224
+      width: 16
+      height: 16
+    spriteID: 4d932325697926746a4232960b708ce0
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_107
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 224
+      width: 16
+      height: 16
+    spriteID: 52b06cf391c37054992871cc31172d84
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_108
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 224
+      width: 16
+      height: 16
+    spriteID: b4997ab3b08061148aab28a1b785fa8e
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_109
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 224
+      width: 16
+      height: 16
+    spriteID: 4fbe3e9305dd3bf42b0ea9ea3a520701
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_110
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 224
+      width: 16
+      height: 16
+    spriteID: 259d723f5f628984eb4fc68b34341184
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_111
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 224
+      width: 16
+      height: 16
+    spriteID: c67f95404edb6b54db057f5adaae5dcd
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_112
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 224
+      width: 16
+      height: 16
+    spriteID: f7579df09ba39234fb92953ef4a09385
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_113
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 224
+      width: 16
+      height: 16
+    spriteID: 90c5e7780d34b4b4fac9eb6f897f900d
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_114
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 224
+      width: 16
+      height: 16
+    spriteID: 90af1dada5dfbe24285ecff2a1f4526d
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_115
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 224
+      width: 16
+      height: 16
+    spriteID: a30b0f3a71d933b44a9f6f52d01dbc93
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_116
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 224
+      width: 16
+      height: 16
+    spriteID: ae8452020b4130f4b828c49ea0aa9a30
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_117
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 224
+      width: 16
+      height: 16
+    spriteID: b016b9bb806147841af1fb354de38975
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_118
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 224
+      width: 16
+      height: 16
+    spriteID: 8d4fe7e288981d644acb3bb2546b3fbb
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_119
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 224
+      width: 16
+      height: 16
+    spriteID: f71ce363a930afe4aa4cc56f2750bb63
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_120
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 208
+      width: 16
+      height: 16
+    spriteID: c69da8c47a8a3b04d852b416011b3da3
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_121
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 208
+      width: 16
+      height: 16
+    spriteID: 40c7fd9f1ba2ab6469ba9db13ac1ad15
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_122
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 208
+      width: 16
+      height: 16
+    spriteID: 6bab361d4c3a7d64e96b61695ba29084
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_123
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 208
+      width: 16
+      height: 16
+    spriteID: 1c8371f4efb114348abfd68288d8219f
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_124
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 208
+      width: 16
+      height: 16
+    spriteID: 562af8c357701a6439c50292f1af29ec
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_125
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 208
+      width: 16
+      height: 16
+    spriteID: 928bbfaafe08d7e46a26f5f2ea6ebb3d
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_126
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 208
+      width: 16
+      height: 16
+    spriteID: 8dce0ef34f98a884a8f718345f13c84f
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_127
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 208
+      width: 16
+      height: 16
+    spriteID: b391016cceb0d0143ad8e1099099839f
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_128
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 208
+      width: 16
+      height: 16
+    spriteID: 7f371cc4d0f21c64089bb3c46429e9f2
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_129
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 208
+      width: 16
+      height: 16
+    spriteID: 68638d40c645e784285901d3e073621c
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_130
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 208
+      width: 16
+      height: 16
+    spriteID: c0a3f5dcf1b7f364a80edef4f6bf26c4
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_131
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 208
+      width: 16
+      height: 16
+    spriteID: c21f8ca23b431724592cbc53d247946e
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_132
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 208
+      width: 16
+      height: 16
+    spriteID: 128aa1d645513d047b1c69576d44fb2c
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_133
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 208
+      width: 16
+      height: 16
+    spriteID: 7f661b5fc21227c4297f63e1d0b76642
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_134
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 208
+      width: 16
+      height: 16
+    spriteID: 565e3c73f09126b479bf42d49e7b3b00
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_135
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 208
+      width: 16
+      height: 16
+    spriteID: a5ef1ef450b9bc748ada588beccd43f3
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_136
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 208
+      width: 16
+      height: 16
+    spriteID: 16f27d946db5cce4d861795efbbfec1a
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_137
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 208
+      width: 16
+      height: 16
+    spriteID: 83b1478d32327884ca75f6af77290e75
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_138
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 208
+      width: 16
+      height: 16
+    spriteID: 6ccceed0e3f07ca458b93c5c43a1c0e3
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_139
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 208
+      width: 16
+      height: 16
+    spriteID: c0f32ff0e76194049928ddef048e7810
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_140
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 192
+      width: 16
+      height: 16
+    spriteID: db19cb7b92a1884419b970861dd3d62c
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_141
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 192
+      width: 16
+      height: 16
+    spriteID: 534d2b928f2b0414195811bff848923f
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_142
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 192
+      width: 16
+      height: 16
+    spriteID: 464313cc4369b1d47811f7755ade65ea
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_143
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 192
+      width: 16
+      height: 16
+    spriteID: b533bbc333cda104fbcac0972143132e
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_144
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 192
+      width: 16
+      height: 16
+    spriteID: 6da95688ea1962345a586393ddd9be1b
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_145
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 192
+      width: 16
+      height: 16
+    spriteID: 8b7b388aa8e0b774aaa5992d5a4fb790
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_146
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 192
+      width: 16
+      height: 16
+    spriteID: 61957c2f64d7e5447b6a8918f5b95751
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_147
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 192
+      width: 16
+      height: 16
+    spriteID: 63847c448a097e04d92ffec93ef2c760
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_148
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 192
+      width: 16
+      height: 16
+    spriteID: 677e80640b1c30e47a547a7544f7697b
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_149
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 192
+      width: 16
+      height: 16
+    spriteID: 011bbe10ab8ac6b4dad2c9afb5282092
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_150
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 192
+      width: 16
+      height: 16
+    spriteID: 7729765d87f09cb41bb3ba09bff73fe5
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_151
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 192
+      width: 16
+      height: 16
+    spriteID: 4973af07e42a9d74bac28839cf9a66a1
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_152
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 192
+      width: 16
+      height: 16
+    spriteID: a56b58f86dfb7234da5431c114865a37
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_153
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 192
+      width: 16
+      height: 16
+    spriteID: bdcb0dca797f81d4090fb3d30aa0e5d2
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_154
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 192
+      width: 16
+      height: 16
+    spriteID: 6e4f42b0b73dde34e90163c5d8ee9abf
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_155
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 192
+      width: 16
+      height: 16
+    spriteID: 1b8e04c4205ca69438c192d8a361ea5f
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_156
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 192
+      width: 16
+      height: 16
+    spriteID: 282115c2baf2bf147ae84a9723669306
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_157
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 192
+      width: 16
+      height: 16
+    spriteID: 8a57c80dee9308c4780cade4ab54b8f3
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_158
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 192
+      width: 16
+      height: 16
+    spriteID: 97216f843d2d3424497b0f036a9f18c2
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_159
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 192
+      width: 16
+      height: 16
+    spriteID: d16cbdfc08ecedf439d1a1fc08c80b42
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_160
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 176
+      width: 16
+      height: 16
+    spriteID: 1ca2a4f4797eead42be3b19315a5d1ab
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_161
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 176
+      width: 16
+      height: 16
+    spriteID: 8aeb1fb6de653c64083637bfaea690fc
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_162
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 176
+      width: 16
+      height: 16
+    spriteID: 08da99b173a87bb42949402f00c455ce
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_163
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 176
+      width: 16
+      height: 16
+    spriteID: ad91c3d162310d54e9074c8ccb500e32
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_164
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 176
+      width: 16
+      height: 16
+    spriteID: 832762f05c936d04bbee76c69bd812ab
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_165
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 176
+      width: 16
+      height: 16
+    spriteID: d77cc47c48184af4cb5f6141f8772bae
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_166
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 176
+      width: 16
+      height: 16
+    spriteID: aa9167aea3ec3a249a57959f65561115
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_167
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 176
+      width: 16
+      height: 16
+    spriteID: b6ce174ca9569424c87102f5c5894660
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_168
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 176
+      width: 16
+      height: 16
+    spriteID: f3e52e8dcf5a0494dabd0006512e838e
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_169
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 176
+      width: 16
+      height: 16
+    spriteID: e7737c58110e1ab4abb52f2321d0594f
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_170
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 176
+      width: 16
+      height: 16
+    spriteID: b5f27b9329e2eb948baa13a29ecaa780
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_171
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 176
+      width: 16
+      height: 16
+    spriteID: ea4a5c0e8a4395d468547cf6cb1b6d83
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_172
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 176
+      width: 16
+      height: 16
+    spriteID: f76ce2e7605257447bbab667c434fafb
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_173
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 176
+      width: 16
+      height: 16
+    spriteID: 6f4eaa5a93081534698e215ca3a5a15b
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_174
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 176
+      width: 16
+      height: 16
+    spriteID: fee1d57b52d33834da54806add84f4bb
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_175
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 176
+      width: 16
+      height: 16
+    spriteID: 2b14ff14af6688b439e75b990fefe965
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_176
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 176
+      width: 16
+      height: 16
+    spriteID: c335b910e9a32624d8574c1ab739a81f
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_177
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 176
+      width: 16
+      height: 16
+    spriteID: f9c2f7732229fc745aea31645a5ecc06
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_178
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 176
+      width: 16
+      height: 16
+    spriteID: 42f5cc0b83f66514fa0941bd2596f5cc
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_179
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 176
+      width: 16
+      height: 16
+    spriteID: 85f3aedd851d21f46b4e89b1398b4e08
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_180
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 160
+      width: 16
+      height: 16
+    spriteID: 629bb871047351b43986bfa65ea8d17c
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_181
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 160
+      width: 16
+      height: 16
+    spriteID: e7b376c36d47a414ca68d02b49a77e1b
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_182
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 160
+      width: 16
+      height: 16
+    spriteID: 2af0159534cf3d04a9d7987b4bebe5d8
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_183
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 160
+      width: 16
+      height: 16
+    spriteID: 82781e010c1b7ff418f772bcb388c678
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_184
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 160
+      width: 16
+      height: 16
+    spriteID: baebcc853005f454894f8aee515f9ce2
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_185
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 160
+      width: 16
+      height: 16
+    spriteID: dbcde902943317d49a8d502b3209c154
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_186
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 160
+      width: 16
+      height: 16
+    spriteID: b4c42d2e27d27c84caf2a919eded5cbb
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_187
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 160
+      width: 16
+      height: 16
+    spriteID: b9372168c17e17e4e8abb2161b9cb35b
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_188
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 160
+      width: 16
+      height: 16
+    spriteID: 2b9254e12c3fc21489c1a134d290e3f5
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_189
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 160
+      width: 16
+      height: 16
+    spriteID: 5d8ff9564111e8141ae8fb0e152b27ed
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_190
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 160
+      width: 16
+      height: 16
+    spriteID: 6a84d5265f6f4d1469cbd129af200e19
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_191
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 160
+      width: 16
+      height: 16
+    spriteID: e600f4d9d94519742abbb21706a67938
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_192
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 160
+      width: 16
+      height: 16
+    spriteID: 1128e9bc546b6664382060f16af03c91
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_193
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 160
+      width: 16
+      height: 16
+    spriteID: eec5c13317645dd4aafcd9a3409633ad
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_194
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 160
+      width: 16
+      height: 16
+    spriteID: bff36a43bf1246c47ac1612cad97c8dd
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_195
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 160
+      width: 16
+      height: 16
+    spriteID: 2fce420b2e0334c42bf76dc9bfaee4ba
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_196
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 160
+      width: 16
+      height: 16
+    spriteID: ae16598e59be56b4e87a18a5b12b034d
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_197
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 160
+      width: 16
+      height: 16
+    spriteID: 8ff9d31c14aef884b978cc1c12a32caf
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_198
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 160
+      width: 16
+      height: 16
+    spriteID: fdd15afa673e41b4ba103f4fd6aa375c
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_199
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 160
+      width: 16
+      height: 16
+    spriteID: 51c708fd4af2ac84eb22706482e31a9f
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_200
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 54c129063271b9e429c7d62a3d378744
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_201
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 31685da96cb7f5745953a71bdb46be56
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_202
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 144
+      width: 16
+      height: 16
+    spriteID: aa1b853b68aa4114db3ffc20ab22b86a
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_203
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 9d539cb612dbd0d4c9a73aa2c89df0e6
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_204
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 144
+      width: 16
+      height: 16
+    spriteID: ae31f1d4d9239e447b53540919f7daea
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_205
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 42f3b8c6c593018489793506f9a96232
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_206
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 4d4fa0e454743654a9d257ac1b6f14a4
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_207
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 9f1331ea2844aba40b8c5441334763da
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_208
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 7391f52caa732aa40ae130a957dee791
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_209
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 144
+      width: 16
+      height: 16
+    spriteID: c4d5d7ecdd1fa2a42b3a861ab51b855e
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_210
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 455be1a2e3e2f3542b482961388eccf8
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_211
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 5a725872737202c438ee0191e5e52b83
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_212
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 53fe552d9ad48434a82afdcb8731e276
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_213
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 41d4b4403a222214e9aa6cfb0d3e84e9
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_214
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 819a0e680abb86c42a25357786d70ade
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_215
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 06b19f6d3eee46c48930000a42a5002e
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_216
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 144
+      width: 16
+      height: 16
+    spriteID: cb97a5e9f768edf40ba91dbc536fa143
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_217
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 0b2e96dc45991b14995a1ed00ff762a2
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_218
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 53aaff149b8ea1041b776debcbeb63e6
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_219
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 144
+      width: 16
+      height: 16
+    spriteID: 3dd7da8f840925249921cc92b8c6a6d0
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_220
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 5a9285391b266574aa62f920208011d0
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_221
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 41bde00268942db468e97fda211d9fe0
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_222
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 6907d46c150bb304b975d57fb4a23991
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_223
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 9e9a377fa2a4f12458e177f8229b2d74
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_224
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 128
+      width: 16
+      height: 16
+    spriteID: d02a20c1931352d46841a572a50c6204
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_225
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 128
+      width: 16
+      height: 16
+    spriteID: a2f34517c9e7d0940a2375a9be3f4457
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_226
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 5a0d35736c80cd04c808e0dc31f6ec15
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_227
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 128
+      width: 16
+      height: 16
+    spriteID: c5ceb018fafd39e46ac9779344fae43c
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_228
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 332fa67d03253fa47b78530d27def172
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_229
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 6485c0726faeb274582a31453a12524a
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_230
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 007ac5adc6fbb004ba5a5116fc8727b6
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_231
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 2c86eca8ba2f7ee49ac5723013b8d175
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_232
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 32a7e0c03cdc0214c8140ef9fa30bd0a
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_233
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 52ddf3356805ed04189798333c2cf7c3
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_234
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 128
+      width: 16
+      height: 16
+    spriteID: c5e30316637142b44ab9f702e367aa74
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_235
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 4226238e26f67294bbc362881220cefe
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_236
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 53c5c39445f3dc843b3555c7db0a7146
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_237
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 68d83aa46431c1240aa98dff23fab7d1
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_238
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 128
+      width: 16
+      height: 16
+    spriteID: 0627373dbb95e8a4ab57bad34c92aa35
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_239
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 128
+      width: 16
+      height: 16
+    spriteID: e0d7d5dd0d210fd49a7a0f790bef19af
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_240
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 112
+      width: 16
+      height: 16
+    spriteID: 63caf5e9a4af8c8499ee2db9d38293ce
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_241
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 112
+      width: 16
+      height: 16
+    spriteID: 509f1b0a4e34e7c4b9c5cd0cdf0f885d
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_242
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 112
+      width: 16
+      height: 16
+    spriteID: 33b17dd28550aa349a3f3189d3b86c3f
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_243
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 112
+      width: 16
+      height: 16
+    spriteID: da994cae0080e204eb6a1079d9418df3
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_244
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 112
+      width: 16
+      height: 16
+    spriteID: 683c02fc6f6cf684bad5d9b153ed22fa
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_245
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 112
+      width: 16
+      height: 16
+    spriteID: 5e3beebc6ed7ac64994b3f17e6f0c43e
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_246
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 112
+      width: 16
+      height: 16
+    spriteID: 8122e11b4c1186f4596c451bede7d3ac
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_247
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 112
+      width: 16
+      height: 16
+    spriteID: 0b54b2d1b3101bb4bbfa7ee28c24ffa1
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_248
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 112
+      width: 16
+      height: 16
+    spriteID: e7960489409dbb84a89107a1444d64b8
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_249
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 112
+      width: 16
+      height: 16
+    spriteID: 2bb5d5a9dc827f14081d950632e2f6dc
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_250
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 112
+      width: 16
+      height: 16
+    spriteID: d38574734960433409f3aa92b39b9770
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_251
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 112
+      width: 16
+      height: 16
+    spriteID: 5dc0354fba4508f4aa3e3039e48e827d
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_252
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 112
+      width: 16
+      height: 16
+    spriteID: 5c1e867753b7a6e4ab86e2363bf5ba4a
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_253
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 112
+      width: 16
+      height: 16
+    spriteID: 8ffcb0ee4921107458232da10dee8886
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_254
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 112
+      width: 16
+      height: 16
+    spriteID: 25e675aa7d72ace478cc3a1a1b5e5fd1
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_255
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 112
+      width: 16
+      height: 16
+    spriteID: 422a1053bf5d44340b3515586701ecf3
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_256
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 112
+      width: 16
+      height: 16
+    spriteID: fd48187e465855945a2cebba04fecadd
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_257
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 112
+      width: 16
+      height: 16
+    spriteID: 99581fd66b7e7c442b09ce19faa636e7
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_258
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 112
+      width: 16
+      height: 16
+    spriteID: e58add2c7c6e78a4db1270c8842a89cb
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_259
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 112
+      width: 16
+      height: 16
+    spriteID: 7b76ada68f3a4024f99fd1754a44e340
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_260
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 96
+      width: 16
+      height: 16
+    spriteID: 68cc01cc4a26f2c4dafbbc9e9654b639
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_261
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 96
+      width: 16
+      height: 16
+    spriteID: 7c5d5460f6c359f4d8929435eabd9aa3
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_262
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 96
+      width: 16
+      height: 16
+    spriteID: b83dd315473d0c34a9b1ec4cbfa1c3de
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_263
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 96
+      width: 16
+      height: 16
+    spriteID: ef933253d549a26489d2cbb8972d54d7
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_264
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 96
+      width: 16
+      height: 16
+    spriteID: 6e0e4616f2ef4744ea7bdca68e9d7a21
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_265
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 96
+      width: 16
+      height: 16
+    spriteID: 6ad8d47869ebd8a4b8db525b52b50b42
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_266
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 96
+      width: 16
+      height: 16
+    spriteID: 51877c9f398a8f049a598b6c48bd4eec
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_267
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 96
+      width: 16
+      height: 16
+    spriteID: 2bb9091b82757e14cac69371e536b78d
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_268
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 96
+      width: 16
+      height: 16
+    spriteID: 9ffd6f44e7c37384f925a23b3346c7ae
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_269
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 96
+      width: 16
+      height: 16
+    spriteID: af842c22f7c8ae84fb5ffd6f1e99dc94
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_270
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 96
+      width: 16
+      height: 16
+    spriteID: eb24c5d44be83c64289549fb868600cb
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_271
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 96
+      width: 16
+      height: 16
+    spriteID: ad3a9d55739ed9640b478f646790b86e
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_272
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 96
+      width: 16
+      height: 16
+    spriteID: 08e904cf683b4504c90aa2b8e7800cbb
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_273
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 96
+      width: 16
+      height: 16
+    spriteID: 79e6a557ded0abc409f3ea042c5f15d5
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_274
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 96
+      width: 16
+      height: 16
+    spriteID: c24d37eed4cf12343ba349ee8464a8cf
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_275
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 96
+      width: 16
+      height: 16
+    spriteID: e3bf32ca09f9ec744a382242ddbbb844
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_276
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 96
+      width: 16
+      height: 16
+    spriteID: 7851bfeaa04bb7c428fef2e303c17dff
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_277
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 96
+      width: 16
+      height: 16
+    spriteID: 8ebf794095727ed48a1d55acb3381640
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_278
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 96
+      width: 16
+      height: 16
+    spriteID: 46f0ba5963902ef44bb9cb9a2271e38f
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_279
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 96
+      width: 16
+      height: 16
+    spriteID: 0ac7585a5a8ba3146849a432ccbca764
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_280
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 80
+      width: 16
+      height: 16
+    spriteID: 3d61e4236d2321146b30e89fce3321fc
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_281
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 80
+      width: 16
+      height: 16
+    spriteID: ff054d34eab93cf4ca58ae6b226b23b8
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_282
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 80
+      width: 16
+      height: 16
+    spriteID: c93e324c8481cc645a47b28a57ef8288
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_283
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 80
+      width: 16
+      height: 16
+    spriteID: 59eac8a66e69022439dd6f0e30cff050
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_284
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 80
+      width: 16
+      height: 16
+    spriteID: 026f6001ce49a1e41b3b32c4ce427fb2
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_285
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 80
+      width: 16
+      height: 16
+    spriteID: b64b8bc39c7e6b346a212c815ada6311
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_286
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 80
+      width: 16
+      height: 16
+    spriteID: a7c078d144bcc8d4e9c793e67936dfdf
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_287
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 80
+      width: 16
+      height: 16
+    spriteID: d93b89e8975a76e4aa991b56b6c8daec
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_288
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 80
+      width: 16
+      height: 16
+    spriteID: 11228ba1156bd3443a4a89c0200ea5b7
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_289
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 80
+      width: 16
+      height: 16
+    spriteID: 52a9d75f875752d43b5295dd7b74a053
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_290
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 80
+      width: 16
+      height: 16
+    spriteID: 6d8e196615b3a9d4bba5be419baa5750
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_291
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 80
+      width: 16
+      height: 16
+    spriteID: 744282ea0a7d7b24791c25b4548661e3
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_292
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 80
+      width: 16
+      height: 16
+    spriteID: da05fc3fe7041c148bdd750e42dcba00
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_293
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 80
+      width: 16
+      height: 16
+    spriteID: 601377bbb96966646b57989ac1e18662
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_294
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 80
+      width: 16
+      height: 16
+    spriteID: 640a50c5cd3096a498d404ccbd35e579
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_295
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 80
+      width: 16
+      height: 16
+    spriteID: 9acd27aae59fd1846861699f878b9959
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_296
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 80
+      width: 16
+      height: 16
+    spriteID: 5200afbab833cc64fbf04c0cfa0b3dd8
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_297
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 80
+      width: 16
+      height: 16
+    spriteID: 970fb80e2d781d448b54d5ba3b6464d6
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_298
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 80
+      width: 16
+      height: 16
+    spriteID: fe7a8fd1ae16ad845b5ce98dbdf8b32e
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_299
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 80
+      width: 16
+      height: 16
+    spriteID: 9dc9c521945fc5447bd1fc5583bf5441
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_300
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 64
+      width: 16
+      height: 16
+    spriteID: 48712f35b10e1194f958155c6f57bbb3
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_301
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 64
+      width: 16
+      height: 16
+    spriteID: c7bd7d45fc9cd1147b7da3ffbd4ba7e5
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_302
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 64
+      width: 16
+      height: 16
+    spriteID: 4592b6e956b1e5a4c961236353bc0cfe
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_303
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 64
+      width: 16
+      height: 16
+    spriteID: 439af1bbbc75be04ba2c37ac3e5e72cf
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_304
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 64
+      width: 16
+      height: 16
+    spriteID: 38eefea32f4a4a64095b98daebd9c18c
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_305
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 64
+      width: 16
+      height: 16
+    spriteID: 122f132542f369347851bd15ac8b5c63
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_306
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 64
+      width: 16
+      height: 16
+    spriteID: a2e2caaf9333f8e43b2a42ec80a56b7f
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_307
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 64
+      width: 16
+      height: 16
+    spriteID: 95d8989c2ed57a848a45d1b235faf209
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_308
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 64
+      width: 16
+      height: 16
+    spriteID: 33a960b517bce7c4094282be11666228
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_309
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 64
+      width: 16
+      height: 16
+    spriteID: 86aef426323e586428e07efdf0044ecb
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_310
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 64
+      width: 16
+      height: 16
+    spriteID: 73c461867f842b94abaa68d38aa05f08
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_311
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 64
+      width: 16
+      height: 16
+    spriteID: 6c2fab7b235bda44ca243925864da5b8
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_312
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 64
+      width: 16
+      height: 16
+    spriteID: 4e09fce280485ea4eba35d9d01ed52b4
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_313
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 64
+      width: 16
+      height: 16
+    spriteID: e18259fb67eb06d4899c7e921a4e827a
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_314
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 64
+      width: 16
+      height: 16
+    spriteID: 49a408d4300264f47885178199b5253e
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_315
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 64
+      width: 16
+      height: 16
+    spriteID: e008ca98058c368448803a0eed7732e5
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_316
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 64
+      width: 16
+      height: 16
+    spriteID: b45c8c477c3d8594bac8777faec03cc3
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_317
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 64
+      width: 16
+      height: 16
+    spriteID: 7e9e38b9c4d928042a1a3f6d6cda7fbc
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_318
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 64
+      width: 16
+      height: 16
+    spriteID: 4b9c40461c1c7c4498d2061683d2ce40
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_319
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 64
+      width: 16
+      height: 16
+    spriteID: a6565f554c8565d41b3262f4a72b416e
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_320
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 48
+      width: 16
+      height: 16
+    spriteID: fe9a0d0a8d98a984496609146f170a6c
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_321
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 48
+      width: 16
+      height: 16
+    spriteID: 4decabf602007564bb6f90664bffdbd9
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_322
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 48
+      width: 16
+      height: 16
+    spriteID: e8aa184682ce46342b49370bbba18fd2
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_323
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 48
+      width: 16
+      height: 16
+    spriteID: 174b20fbb5788614bb44d4e87fb2316e
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_324
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 48
+      width: 16
+      height: 16
+    spriteID: 2a173bd389cb28649b6732fb0b59bdcc
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_325
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 48
+      width: 16
+      height: 16
+    spriteID: d4bdbc1aa684f0041827d1933d8ad591
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_326
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 48
+      width: 16
+      height: 16
+    spriteID: f8ebf002c24405246b8293e7869d6a66
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_327
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 48
+      width: 16
+      height: 16
+    spriteID: abc75ed23d109144ea433c59c8aa779b
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_328
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 48
+      width: 16
+      height: 16
+    spriteID: 631c0ca702215ea43906928bececfe7c
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_329
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 48
+      width: 16
+      height: 16
+    spriteID: c8d3956f928b67e438454a2d47e4c901
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_330
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 48
+      width: 16
+      height: 16
+    spriteID: 35f63fefc26a7be4c8e2a425e54aba96
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_331
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 48
+      width: 16
+      height: 16
+    spriteID: 5babd86ef15595241a3f0f053da8afbe
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_332
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 48
+      width: 16
+      height: 16
+    spriteID: aca70914a6603dd43b0be584b18494dd
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_333
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 48
+      width: 16
+      height: 16
+    spriteID: 4b7fbb85cc86f0940b432de40cb47ba7
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_334
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 48
+      width: 16
+      height: 16
+    spriteID: 23bda229221196444a123e309358cef8
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_335
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 48
+      width: 16
+      height: 16
+    spriteID: ac100c6f772828d4f909251458edac6c
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_336
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 48
+      width: 16
+      height: 16
+    spriteID: dcb7c932e6d7ede41a5ace51403242e1
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_337
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 48
+      width: 16
+      height: 16
+    spriteID: 0df19487a909ea64e8f69a30d1f71362
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_338
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 48
+      width: 16
+      height: 16
+    spriteID: d445c7af51a399940b443b764ce3b2a9
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_339
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 48
+      width: 16
+      height: 16
+    spriteID: 8efce14fc4d33aa47a65801ba23aea51
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_340
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 32
+      width: 16
+      height: 16
+    spriteID: 7e478bd68059f8749afb4bd60c61e4c7
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_341
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 32
+      width: 16
+      height: 16
+    spriteID: 07504b0b5c7187449981c5028c645eb0
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_342
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 32
+      width: 16
+      height: 16
+    spriteID: ae11be43ea750194f8132e543ab3154c
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_343
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 32
+      width: 16
+      height: 16
+    spriteID: 26073a2734d925345a3f539694c2a44b
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_344
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 32
+      width: 16
+      height: 16
+    spriteID: ee4c0538f06c8ca44ad3b12f6d379d5a
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_345
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 32
+      width: 16
+      height: 16
+    spriteID: 89b013e5f436caa4a8d4ffbc9409ce43
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_346
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 32
+      width: 16
+      height: 16
+    spriteID: b079bdbd2df72254e8246e5b981a5c11
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_347
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 32
+      width: 16
+      height: 16
+    spriteID: b8ff822ae40086042b1bc32d12e3079f
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_348
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 32
+      width: 16
+      height: 16
+    spriteID: bbd61c4d904ed62469072c37a812bb93
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_349
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 32
+      width: 16
+      height: 16
+    spriteID: 62d5826845fdc944281e2e8fa0d7cf4d
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_350
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 32
+      width: 16
+      height: 16
+    spriteID: 7c5318699ed45c24bbb64d6a1ceb7d23
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_351
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 32
+      width: 16
+      height: 16
+    spriteID: 7b7aa82824571f8408e7428a102097f8
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_352
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 32
+      width: 16
+      height: 16
+    spriteID: 28041be05b35039418cf63db37f42de5
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_353
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 32
+      width: 16
+      height: 16
+    spriteID: 998189389c5abbc40a1163b91d4b28c8
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_354
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 32
+      width: 16
+      height: 16
+    spriteID: ce9d7db332d5ab74c8ca3583b9efa41a
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_355
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 32
+      width: 16
+      height: 16
+    spriteID: 7d02a576ef4f84349a28101aa29c2055
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_356
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 32
+      width: 16
+      height: 16
+    spriteID: af28ff286319e3e4ba493fed625b2c6d
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_357
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 32
+      width: 16
+      height: 16
+    spriteID: 5dbc01d52bab88348bd74924d81e4375
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_358
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 32
+      width: 16
+      height: 16
+    spriteID: 3acfe789d832073498dc6b3213b57223
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_359
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 32
+      width: 16
+      height: 16
+    spriteID: 31b490ae956fc8c4a9fc2a46d5d9ac64
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_360
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 41072be4f158a954a98ca1d50d72ba70
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_361
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 16
+      width: 16
+      height: 16
+    spriteID: a7415aaf8875d964d91842d63059410e
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_362
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 478470b3011f2724d84debed475c54f9
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_363
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 211d358f4d603a844bd3ebba64c4f7f2
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_364
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 8ab8a0680be76f84295f4232fe01c9d2
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_365
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 056f6f229c3885647ac00a6ba7716621
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_366
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 964e509c834db2840bc5c6c026482630
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_367
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 16
+      width: 16
+      height: 16
+    spriteID: a0efc5e1c7064a84e821c6cd43ef5507
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_368
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 16
+      width: 16
+      height: 16
+    spriteID: ca12aecd4f1184741af395b924083750
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_369
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 6507a4ede6a2c8d40acf9280f111f72a
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_370
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 2c507a0dff826244caf97f9f85f65c9d
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_371
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 32a10f6b7086bce4e8927deb697fa963
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_372
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 16
+      width: 16
+      height: 16
+    spriteID: c1778f70ae1a8184db3343a7b9c70a3b
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_373
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 77540ba53d1e24a478a4932f8a149d51
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_374
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 16
+      width: 16
+      height: 16
+    spriteID: f1c486913f214544aa918fd5d1c889bd
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_375
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 3cbd20919981e7f4182e11c08e809b7a
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_376
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 3f2ea37cc018a594683ac3eb9fd205cd
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_377
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 9cce2334359ea334a8a790df7976613d
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_378
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 73ab7837923b896439dd04fb52d5bfb7
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_379
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 87e09455b36d88f4f860a32ef655fcd2
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_380
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 16
+      height: 16
+    spriteID: 45ad79639d1cfaa4bbb4bef88eb38d63
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_381
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 0
+      width: 16
+      height: 16
+    spriteID: bb3ca72adeddb744989d1da9e9945772
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_382
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 0
+      width: 16
+      height: 16
+    spriteID: f586e57bac564794cad82429738196ef
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_383
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 0
+      width: 16
+      height: 16
+    spriteID: e584e486d493d1742b5313efcc9e7eff
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_384
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 0
+      width: 16
+      height: 16
+    spriteID: 6231f0eab326bc54db73816c9371e2c0
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_385
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 80
+      y: 0
+      width: 16
+      height: 16
+    spriteID: 9b827764c37feff4d8e95324890ce17e
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_386
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 96
+      y: 0
+      width: 16
+      height: 16
+    spriteID: d349ebc49a5dc804a845088d429d9e4e
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_387
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 112
+      y: 0
+      width: 16
+      height: 16
+    spriteID: 83fd9f164ef971e43be02f5e93567a82
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_388
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 128
+      y: 0
+      width: 16
+      height: 16
+    spriteID: f4f8af57f1720fe4c808bc009b03e455
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_389
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 144
+      y: 0
+      width: 16
+      height: 16
+    spriteID: d33541f7fa8f60943b2ef8b46212c2c4
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_390
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 160
+      y: 0
+      width: 16
+      height: 16
+    spriteID: e84cb5dd0e3a0f145a4681dda01d60b7
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_391
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 176
+      y: 0
+      width: 16
+      height: 16
+    spriteID: d1b191e54cc421040bc84f20716e6eb2
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_392
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 192
+      y: 0
+      width: 16
+      height: 16
+    spriteID: 60b8c737619462d45abd94cddab12624
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_393
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 208
+      y: 0
+      width: 16
+      height: 16
+    spriteID: 2bf49aa3110ac5a458c8663491275f56
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_394
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 224
+      y: 0
+      width: 16
+      height: 16
+    spriteID: d6ad272441fbd5949b1f58e248001bbc
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_395
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 240
+      y: 0
+      width: 16
+      height: 16
+    spriteID: 41b225312dd0ff747ae2022781203692
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_396
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 256
+      y: 0
+      width: 16
+      height: 16
+    spriteID: c68da3b7b6856564abf7903490ae21e6
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_397
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 272
+      y: 0
+      width: 16
+      height: 16
+    spriteID: 27d242a9988a9c34b8184bc83da50d98
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_398
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 288
+      y: 0
+      width: 16
+      height: 16
+    spriteID: 7d0be6a34365b6747b2122e0996c56e6
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Monochrome_399
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 304
+      y: 0
+      width: 16
+      height: 16
+    spriteID: 01dd0aff4b59a054592ce514b3341ab2
+    spriteOutline: []
+    tessellationDetail: 0
+  _secondaryTextures: []

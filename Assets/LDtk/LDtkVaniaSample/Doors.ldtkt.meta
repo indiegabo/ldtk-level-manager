@@ -1,0 +1,154 @@
+fileFormatVersion: 2
+guid: 6530adfd6525f9948aefa1b2fdd5143f
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: f3268c876daf4890b6af6cd462063137, type: 3}
+  _reimportOnDependencyChange: 1
+  _pixelsPerUnit: 16
+  _sprites:
+  - name: Doors_0
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 16
+      width: 16
+      height: 16
+    spriteID: e9bcca51d0e2bb443a46344abe62d41d
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Doors_1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 0d94df68cdef35a4e9fd501ebfd9d8ae
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Doors_2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 16
+      width: 16
+      height: 16
+    spriteID: c790c61587879c4428488d8bdf3d291b
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Doors_3
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 56a34169c2bbe284c91a86833c163b8a
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Doors_4
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 422bcd512fdcf7d46be49d0907d23455
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Doors_5
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 16
+      height: 16
+    spriteID: dfb11547c35926b41814cd141d54b219
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Doors_6
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 0
+      width: 16
+      height: 16
+    spriteID: f3def9288f1096a4cac76e1deee5357d
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Doors_7
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 0
+      width: 16
+      height: 16
+    spriteID: c6cb002b745b26043b6f6cb8122059db
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Doors_8
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 0
+      width: 16
+      height: 16
+    spriteID: 89ce0f74984ec744eb2a9abc9cf933bb
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Doors_9
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 64
+      y: 0
+      width: 16
+      height: 16
+    spriteID: b27680831c32b8947911227e0778eb5f
+    spriteOutline: []
+    tessellationDetail: 0
+  _secondaryTextures: []

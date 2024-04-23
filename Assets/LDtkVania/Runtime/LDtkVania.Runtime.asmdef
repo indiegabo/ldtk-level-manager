@@ -1,7 +1,13 @@
 {
     "name": "LDtkVania.Runtime",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "LDtkUnity.Runtime",
+        "Cinemachine",
+        "Unity.Addressables",
+        "Unity.Addressables.Editor",
+        "Unity.ResourceManager"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

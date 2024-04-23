@@ -1,0 +1,238 @@
+fileFormatVersion: 2
+guid: e7fb515a8cce77048838dc4739c4a964
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: f3268c876daf4890b6af6cd462063137, type: 3}
+  _reimportOnDependencyChange: 1
+  _pixelsPerUnit: 16
+  _sprites:
+  - name: Pipes_0
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 48
+      width: 16
+      height: 16
+    spriteID: 42c29119078d1d440b3074004f50f54c
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Pipes_1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 48
+      width: 16
+      height: 16
+    spriteID: d94efbe1306c31e4fbcdb46c6292a38c
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Pipes_2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 48
+      width: 16
+      height: 16
+    spriteID: 32af0126918e9814ba72af7faaeeec91
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Pipes_3
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 48
+      width: 16
+      height: 16
+    spriteID: c8db5f780d07ead4b84b26b876c1d824
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Pipes_4
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 32
+      width: 16
+      height: 16
+    spriteID: 01d33e78d583d2c49bcd502948778154
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Pipes_5
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 32
+      width: 16
+      height: 16
+    spriteID: f11e321eb6cfc13438c6294080c1d6bc
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Pipes_6
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 32
+      width: 16
+      height: 16
+    spriteID: ec2aec77eb3b58e4fbc5fee2754cffec
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Pipes_7
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 32
+      width: 16
+      height: 16
+    spriteID: 0cdabd4c92d818646bc3dcb1e89efca4
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Pipes_8
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 5a277a6f776cf434c932ed482cd808de
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Pipes_9
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 6ca7283dea635314886f818e37e1fec7
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Pipes_10
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 2eb97317e9ef70847bcbafc36a2e46eb
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Pipes_11
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 16
+      width: 16
+      height: 16
+    spriteID: 969d8a1202f5d694ba2c3c26a8b78a0e
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Pipes_12
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 16
+      height: 16
+    spriteID: 0e5da8fdc0ecf72428b8d87ca3516964
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Pipes_13
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 16
+      y: 0
+      width: 16
+      height: 16
+    spriteID: 3dc9be3fe50007144baa21fb1e59f867
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Pipes_14
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 32
+      y: 0
+      width: 16
+      height: 16
+    spriteID: 796fee14f1166fb41a38fe65a776365c
+    spriteOutline: []
+    tessellationDetail: 0
+  - name: Pipes_15
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 48
+      y: 0
+      width: 16
+      height: 16
+    spriteID: 1894f23f8387d7842ad076454f7d08e7
+    spriteOutline: []
+    tessellationDetail: 0
+  _secondaryTextures: []

@@ -1,0 +1,45 @@
+fileFormatVersion: 2
+guid: df7f3fbd68adee24db1bda124d3e43be
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: aaa16bfc62c086f4fb45da87b6acf9b1, type: 3}
+  _reimportOnDependencyChange: 1
+  _jsonFile: {fileID: -164016180542632921, guid: df7f3fbd68adee24db1bda124d3e43be, type: 3}
+  _pixelsPerUnit: 16
+  _atlas: {fileID: 4343727234628468602, guid: f9c30ae0e310d6e469d5bda8e2c51481, type: 2}
+  _customLevelPrefab: {fileID: 9019483895045756219, guid: c7bd5be3c32ee6f429b318a35c87c063, type: 3}
+  _deparentInRuntime: 0
+  _intGridValueColorsVisible: 0
+  _useCompositeCollider: 1
+  _createBackgroundColor: 0
+  _createLevelBoundsTrigger: 0
+  _intGridValues:
+  - _key: Hazardous_1
+    _asset: {fileID: 11400000, guid: bb51330e92096124895556dcd60f5799, type: 2}
+  - _key: Hazardous_2
+    _asset: {fileID: 11400000, guid: cb243f2ce6844c145ac156b17e160b51, type: 2}
+  - _key: Hazardous_3
+    _asset: {fileID: 11400000, guid: e219ac39b2475be4bb5bc6908bc6cce4, type: 2}
+  - _key: Ground_1
+    _asset: {fileID: 11400000, guid: 08217e8fd8e15c64cb8ba4e3a344bd1c, type: 2}
+  - _key: Ground_2
+    _asset: {fileID: 11400000, guid: ce703f8edec38724196de5d464487419, type: 2}
+  _entities:
+  - _key: Connection
+    _asset: {fileID: 5296659299014923979, guid: 1132d4f1e76284945b57d4e581ce23c4, type: 3}
+  - _key: DefaultSpawnPoint
+    _asset: {fileID: 5971505829840771875, guid: 86c69ff4c6d89a343b9a18f445b3bb6e, type: 3}
+  - _key: Enemies
+    _asset: {fileID: 1084648958945649673, guid: c561df5a7c315554a8e1500dce788204, type: 3}
+  - _key: DataSyncStation
+    _asset: {fileID: 7812230735249478749, guid: c6d57e1878debb84b8b88d882549c42d, type: 3}
+  - _key: Grabbable_Dispenser
+    _asset: {fileID: 5676502465883309792, guid: 8dfe4624c95fcea43b79048492e53de3, type: 3}
+  _enumGenerate: 1
+  _enumPath: LDtkEnums.cs
+  _enumNamespace: Poputara.LDtk
