@@ -1,8 +1,9 @@
 {
-    "name": "LDtkVania.Editor",
+    "name": "LDtkVaniaEditor",
     "rootNamespace": "",
     "references": [
         "GUID:03708890ebbf2d044957e9f57c4957e5",
+        "GUID:831b458ef8919c24ea12fb444fc41310",
         "GUID:66db064f84c5fb748acfe1e1aebe5538",
         "GUID:ba8c092d026123a418fb4bfb797a7bd8",
         "GUID:69448af7b92c7f342b298e06a37122aa"

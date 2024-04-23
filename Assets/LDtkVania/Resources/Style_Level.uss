@@ -1,0 +1,10 @@
+.level-field > Label {
+    min-width: 120px;
+    width: 120px;
+    max-width: 120px;
+}
+
+.level-field {
+    flex-shrink: 1;
+    flex-grow: 1;
+}

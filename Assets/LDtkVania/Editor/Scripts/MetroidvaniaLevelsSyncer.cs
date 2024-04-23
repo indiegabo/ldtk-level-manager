@@ -1,7 +1,8 @@
+using LDtkVania;
 using UnityEditor;
 using UnityEngine;
 
-namespace LDtkVania.Editor
+namespace LDtkVaniaEditor
 {
     class MetroidvaniaLevelsSyncer : AssetPostprocessor
     {

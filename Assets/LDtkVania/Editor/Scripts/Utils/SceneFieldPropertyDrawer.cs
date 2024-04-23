@@ -1,8 +1,9 @@
 using System;
 using UnityEngine;
 using UnityEditor;
+using LDtkVania;
 
-namespace LDtkVania.Editor
+namespace LDtkVaniaEditor
 {
     [CustomPropertyDrawer(typeof(SceneField))]
     public class SceneFieldPropertyDrawer : PropertyDrawer

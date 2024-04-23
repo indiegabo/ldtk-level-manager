@@ -1,77 +1,80 @@
 using System.Collections.Generic;
-using System.Linq;
 using LDtkVania;
-using SpriteAnimations.Editor;
 using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[CustomEditor(typeof(MV_Project))]
-public class MV_ProjectInspector : Editor
+namespace LDtkVaniaEditor
 {
-    public VisualTreeAsset _inspectorTree;
-    public VisualTreeAsset _levelInspectorTree;
-
-    private List<MV_Level> _levels = new();
-    private List<MV_Level> _searchableLevels = new();
-
-    private ListView _levelsListView;
-    private TextField _nameFilterText;
-    private Button _filterButton;
-
-    public override VisualElement CreateInspectorGUI()
+    [CustomEditor(typeof(MV_Project))]
+    public class MV_ProjectInspector : Editor
     {
-        // Create a new VisualElement to be the root of our Inspector UI.
-        VisualElement myInspector = new();
-        TemplateContainer template = _inspectorTree.Instantiate();
+        public VisualTreeAsset _inspectorTree;
+        public VisualTreeAsset _levelInspectorTree;
 
-        _nameFilterText = template.Q<TextField>("field-filter-name");
-        _filterButton = template.Q<Button>("button-filter");
+        private List<MV_Level> _levels = new();
+        private List<MV_Level> _searchableLevels = new();
 
-        _filterButton.clicked += OnFilterButtonClicked;
+        private ListView _listLevels;
+        private TextField _fieldFilterName;
+        private Button _buttonFilter;
 
-        _levels = MV_Project.Instance.GetLevels();
-        foreach (MV_Level level in _levels)
+        public override VisualElement CreateInspectorGUI()
         {
-            _searchableLevels.Add(level);
+            _levels = MV_Project.Instance.GetLevels();
+
+            // Create a new VisualElement to be the root of our Inspector UI.
+            VisualElement myInspector = new();
+            TemplateContainer template = _inspectorTree.Instantiate();
+
+            // Fetching 
+            _fieldFilterName = template.Q<TextField>("field-filter-name");
+
+            _buttonFilter = template.Q<Button>("button-filter");
+            _buttonFilter.clicked += OnFilterButtonClicked;
+
+            _listLevels = template.Q<ListView>("list-levels");
+            _listLevels.makeItem = () => new MV_LevelsListElement(_levelInspectorTree);
+            _listLevels.bindItem = (e, i) =>
+            {
+                MV_LevelsListElement item = e as MV_LevelsListElement;
+                item.Level = _searchableLevels[i];
+            };
+
+            PopulateSearchablesWithAll();
+
+            myInspector.Add(template);
+            // Return the finished Inspector UI.
+            return myInspector;
         }
 
-        _levelsListView = template.Q<ListView>("levels-list");
-
-        _levelsListView.itemsSource = _searchableLevels;
-        _levelsListView.makeItem = () => new MV_LevelsListElement(_levelInspectorTree);
-        _levelsListView.bindItem = (e, i) =>
+        private void OnFilterButtonClicked()
         {
-            MV_LevelsListElement item = e as MV_LevelsListElement;
-            item.Level = _searchableLevels[i];
-        };
+            string term = _fieldFilterName.text.ToLower();
 
-        myInspector.Add(template);
-        // Return the finished Inspector UI.
-        return myInspector;
-    }
+            if (string.IsNullOrEmpty(term))
+            {
+                PopulateSearchablesWithAll();
+                return;
+            }
 
-    private void OnFilterButtonClicked()
-    {
-        string term = _nameFilterText.text.ToLower();
+            _searchableLevels = _levels.FindAll(x => x.Name.ToLower().Contains(term));
+            _listLevels.itemsSource = _searchableLevels;
 
-        if (string.IsNullOrEmpty(term))
+            _listLevels.RefreshItems();
+        }
+
+        private void PopulateSearchablesWithAll()
         {
             _searchableLevels.Clear();
+            _searchableLevels.Capacity = _levels.Count; // pre-allocate capacity to avoid resizing
             foreach (MV_Level level in _levels)
             {
                 _searchableLevels.Add(level);
             }
 
-            _levelsListView.itemsSource = _searchableLevels;
-            _levelsListView.RefreshItems();
-            return;
+            _listLevels.itemsSource = _searchableLevels;
+            _listLevels.RefreshItems();
         }
-
-        _searchableLevels = _levels.FindAll(x => x.Name.ToLower().Contains(term));
-        _levelsListView.itemsSource = _searchableLevels;
-
-        _levelsListView.RefreshItems();
     }
 }

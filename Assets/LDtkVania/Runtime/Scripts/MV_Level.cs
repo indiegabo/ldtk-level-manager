@@ -11,6 +11,9 @@ namespace LDtkVania
         #region Inspector
 
         [SerializeField]
+        private string _name;
+
+        [SerializeField]
         private string _iid;
 
         [SerializeField]
@@ -18,9 +21,6 @@ namespace LDtkVania
 
         [SerializeField]
         private LDtkLevelFile _levelFile;
-
-        [SerializeField]
-        private string _name;
 
         [SerializeField]
         private List<SceneField> _scenes;
@@ -42,6 +42,7 @@ namespace LDtkVania
         #region Getters
 
         public string Iid => _iid;
+        public Object Asset => _asset;
 
         public List<SceneField> Scenes => _scenes;
         public string AssetPath => _assetPath;
@@ -96,16 +97,12 @@ namespace LDtkVania
             if (asset != null)
             {
                 _asset = asset;
+                _name = asset.name;
             }
 
             if (ldtkFile != null)
             {
                 _levelFile = ldtkFile;
-            }
-
-            if (string.IsNullOrEmpty(_name))
-            {
-                _name = asset.name;
             }
         }
 

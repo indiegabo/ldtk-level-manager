@@ -3,23 +3,26 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-[CustomEditor(typeof(MV_Level))]
-public class MV_LevelInspector : Editor
+namespace LDtkVaniaEditor
 {
-    public VisualTreeAsset m_InspectorXML;
-
-    public override VisualElement CreateInspectorGUI()
+    [CustomEditor(typeof(MV_Level))]
+    public class MV_LevelInspector : Editor
     {
-        // Create a new VisualElement to be the root of our Inspector UI.
-        VisualElement myInspector = new();
+        public VisualTreeAsset m_InspectorXML;
 
-        // Add a simple label.
-        myInspector.Add(new Label("This is a custom Inspector"));
+        public override VisualElement CreateInspectorGUI()
+        {
+            // Create a new VisualElement to be the root of our Inspector UI.
+            VisualElement myInspector = new();
 
-        // Load from default reference.
-        m_InspectorXML.CloneTree(myInspector);
+            // Add a simple label.
+            myInspector.Add(new Label("This is a custom Inspector"));
 
-        // Return the finished Inspector UI.
-        return myInspector;
+            // Load from default reference.
+            m_InspectorXML.CloneTree(myInspector);
+
+            // Return the finished Inspector UI.
+            return myInspector;
+        }
     }
 }
