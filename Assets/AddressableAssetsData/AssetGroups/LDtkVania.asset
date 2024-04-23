@@ -15,8 +15,19 @@ MonoBehaviour:
   m_GroupName: LDtkVania
   m_Data:
     m_SerializedData: []
-  m_GUID: 1553ac15ae44ed34e91a86b7fbeccbb0
-  m_SerializeEntries: []
+  m_GUID: 834dd6bf25a11b540a234bf409695780
+  m_SerializeEntries:
+  - m_GUID: a26d07e3821e26442b643f5b0cb8e8e7
+    m_Address: LDtkVaniaProject
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c9d0831eb1bbdc6408d7a97f4c83a9e3
+    m_Address: Assets/LDtk/LDtkVaniaSample
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - LDtkLevels
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 1ba21a4611ac85b4f95e8eab66dc3553, type: 2}
   m_SchemaSet:

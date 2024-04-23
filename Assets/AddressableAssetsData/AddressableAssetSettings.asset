@@ -89,6 +89,7 @@ MonoBehaviour:
     m_LabelNames:
     - default
     - LDtk Levels
+    - LDtkLevels
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: c86b2b71c0fb49a4099b56a1ee2a0d14, type: 2}

@@ -7,8 +7,9 @@ namespace LDtkVania.Editor
     {
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths, bool didDomainReload)
         {
-            // if (!MV_Project.Instance.SyncLevelsAtCompile) return;
-            // MV_Project.Instance.SyncLevels();
+            Debug.Log($"OnPostprocessAllAssets {MV_Project.Instance.SyncLevelsAtCompile}");
+            if (!MV_Project.Instance.SyncLevelsAtCompile) return;
+            MV_Project.Instance.SyncLevels();
         }
     }
 }

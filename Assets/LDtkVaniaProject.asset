@@ -18,5 +18,141 @@ MonoBehaviour:
   _checkpointsContainerName: 
   _levelsLabels: []
   _levels:
-    _keys: []
-    _values: []
+    _keys:
+    - 601a6d50-c640-11ed-8852-c79dd4f3aa7c
+    - 44d1b760-c640-11ed-8852-abb8aafd2434
+    - 708e2ae0-7820-11ed-9426-3bc681e9ee3d
+    - 3e9a4410-7820-11ed-b3a0-432f751e5411
+    - 363b42a0-7820-11ed-a571-2bca691f63e1
+    - 5a000e40-7820-11ed-9426-6583193f320d
+    - 31c7b400-d7b0-11ee-92bb-93161501067d
+    - 82c04f70-d7b0-11ee-92bb-796e8c8714f1
+    - 900edaa0-7820-11ed-9426-2f4f0c07c729
+    - 58046980-d7b0-11ee-a89c-23e3fbb19ad9
+    - 6a4d3f40-7820-11ed-b3a0-cbbab3cbdf5f
+    - 7da79f90-7820-11ed-b3a0-a3f2cf1f4c24
+    - fe3b67b0-7820-11ed-b3a0-c7a7b4f802cd
+    - 145bc5d0-7820-11ed-b3a0-f5ea33fd8a65
+    - fce2b020-c640-11ed-8852-5d77cfb88076
+    - b8abf8a0-ed50-11ed-a82b-5f61164d4b1d
+    - e4e69a60-ed50-11ed-a82b-27cab0fad380
+    _values:
+    - _iid: 601a6d50-c640-11ed-8852-c79dd4f3aa7c
+      _asset: {fileID: -1512926545102477460, guid: 06f65a889db371949af7b7151b1e66f4, type: 3}
+      _levelFile: {fileID: -8655009601392300639, guid: 06f65a889db371949af7b7151b1e66f4, type: 3}
+      _name: DT_I_Dunno
+      _scenes: []
+      _assetPath: Assets/LDtk/LDtkVaniaSample/DT_I_Dunno.ldtkl
+      _assetKey: Assets/LDtk/LDtkVaniaSample/DT_I_Dunno.ldtkl
+    - _iid: 44d1b760-c640-11ed-8852-abb8aafd2434
+      _asset: {fileID: -1846213612326926914, guid: e507eb0c3834580408aff2e7ccb1da95, type: 3}
+      _levelFile: {fileID: -8655009601392300639, guid: e507eb0c3834580408aff2e7ccb1da95, type: 3}
+      _name: DT_Store
+      _scenes: []
+      _assetPath: Assets/LDtk/LDtkVaniaSample/DT_Store.ldtkl
+      _assetKey: Assets/LDtk/LDtkVaniaSample/DT_Store.ldtkl
+    - _iid: 708e2ae0-7820-11ed-9426-3bc681e9ee3d
+      _asset: {fileID: -6259268652474446445, guid: 7f7aecebed708c642bb6ada5a1ea182e, type: 3}
+      _levelFile: {fileID: -8655009601392300639, guid: 7f7aecebed708c642bb6ada5a1ea182e, type: 3}
+      _name: Factory_Corridor_3
+      _scenes: []
+      _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_Corridor_3.ldtkl
+      _assetKey: Assets/LDtk/LDtkVaniaSample/Factory_Corridor_3.ldtkl
+    - _iid: 3e9a4410-7820-11ed-b3a0-432f751e5411
+      _asset: {fileID: 8376644105887124324, guid: fe5356dabdbe4a144a057c37e3ffab7b, type: 3}
+      _levelFile: {fileID: -8655009601392300639, guid: fe5356dabdbe4a144a057c37e3ffab7b, type: 3}
+      _name: Factory_Corridor_4
+      _scenes: []
+      _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_Corridor_4.ldtkl
+      _assetKey: Assets/LDtk/LDtkVaniaSample/Factory_Corridor_4.ldtkl
+    - _iid: 363b42a0-7820-11ed-a571-2bca691f63e1
+      _asset: {fileID: -4356546576652372779, guid: d08e27c4e43c86a4cac673a2079d5d67, type: 3}
+      _levelFile: {fileID: -8655009601392300639, guid: d08e27c4e43c86a4cac673a2079d5d67, type: 3}
+      _name: Factory_Left_0
+      _scenes: []
+      _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_Left_0.ldtkl
+      _assetKey: Assets/LDtk/LDtkVaniaSample/Factory_Left_0.ldtkl
+    - _iid: 5a000e40-7820-11ed-9426-6583193f320d
+      _asset: {fileID: -2037190023179942435, guid: e21c32e1f0407f543a84033ba8e2d374, type: 3}
+      _levelFile: {fileID: -8655009601392300639, guid: e21c32e1f0407f543a84033ba8e2d374, type: 3}
+      _name: Factory_Left_1
+      _scenes: []
+      _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_Left_1.ldtkl
+      _assetKey: Assets/LDtk/LDtkVaniaSample/Factory_Left_1.ldtkl
+    - _iid: 31c7b400-d7b0-11ee-92bb-93161501067d
+      _asset: {fileID: 2272703296555454389, guid: fc4ba91d17993f94f863c0f3f0fc5865, type: 3}
+      _levelFile: {fileID: -8655009601392300639, guid: fc4ba91d17993f94f863c0f3f0fc5865, type: 3}
+      _name: Factory_Left_10
+      _scenes: []
+      _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_Left_10.ldtkl
+      _assetKey: Assets/LDtk/LDtkVaniaSample/Factory_Left_10.ldtkl
+    - _iid: 82c04f70-d7b0-11ee-92bb-796e8c8714f1
+      _asset: {fileID: -77588159539469361, guid: 2806149dfe35ec4469fac9a7e27e2175, type: 3}
+      _levelFile: {fileID: -8655009601392300639, guid: 2806149dfe35ec4469fac9a7e27e2175, type: 3}
+      _name: Factory_Left_11
+      _scenes: []
+      _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_Left_11.ldtkl
+      _assetKey: Assets/LDtk/LDtkVaniaSample/Factory_Left_11.ldtkl
+    - _iid: 900edaa0-7820-11ed-9426-2f4f0c07c729
+      _asset: {fileID: 3460061433868271742, guid: 136b5feab5818fb42971b4ff8744e2c5, type: 3}
+      _levelFile: {fileID: -8655009601392300639, guid: 136b5feab5818fb42971b4ff8744e2c5, type: 3}
+      _name: Factory_Left_2
+      _scenes: []
+      _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_Left_2.ldtkl
+      _assetKey: Assets/LDtk/LDtkVaniaSample/Factory_Left_2.ldtkl
+    - _iid: 58046980-d7b0-11ee-a89c-23e3fbb19ad9
+      _asset: {fileID: -4536206868592995783, guid: 4a7126507f92f2846be71d8665f0578d, type: 3}
+      _levelFile: {fileID: -8655009601392300639, guid: 4a7126507f92f2846be71d8665f0578d, type: 3}
+      _name: Factory_Level_9
+      _scenes: []
+      _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_Level_9.ldtkl
+      _assetKey: Assets/LDtk/LDtkVaniaSample/Factory_Level_9.ldtkl
+    - _iid: 6a4d3f40-7820-11ed-b3a0-cbbab3cbdf5f
+      _asset: {fileID: 5703434137317203926, guid: 5281e4124e9f3d64e9e1ca89625ddfbf, type: 3}
+      _levelFile: {fileID: -8655009601392300639, guid: 5281e4124e9f3d64e9e1ca89625ddfbf, type: 3}
+      _name: Factory_Right_5
+      _scenes: []
+      _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_Right_5.ldtkl
+      _assetKey: Assets/LDtk/LDtkVaniaSample/Factory_Right_5.ldtkl
+    - _iid: 7da79f90-7820-11ed-b3a0-a3f2cf1f4c24
+      _asset: {fileID: 5765614786382445351, guid: 969a3280c95ccd2428cf5979f55b9bb9, type: 3}
+      _levelFile: {fileID: -8655009601392300639, guid: 969a3280c95ccd2428cf5979f55b9bb9, type: 3}
+      _name: Factory_Right_6
+      _scenes: []
+      _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_Right_6.ldtkl
+      _assetKey: Assets/LDtk/LDtkVaniaSample/Factory_Right_6.ldtkl
+    - _iid: fe3b67b0-7820-11ed-b3a0-c7a7b4f802cd
+      _asset: {fileID: 7018819580923764433, guid: 0cb800a56a50b7d49a512140913f1874, type: 3}
+      _levelFile: {fileID: -8655009601392300639, guid: 0cb800a56a50b7d49a512140913f1874, type: 3}
+      _name: Factory_Right_7
+      _scenes: []
+      _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_Right_7.ldtkl
+      _assetKey: Assets/LDtk/LDtkVaniaSample/Factory_Right_7.ldtkl
+    - _iid: 145bc5d0-7820-11ed-b3a0-f5ea33fd8a65
+      _asset: {fileID: -2219083270428994003, guid: 3865bfad13776ed488106c1a903c37bf, type: 3}
+      _levelFile: {fileID: -8655009601392300639, guid: 3865bfad13776ed488106c1a903c37bf, type: 3}
+      _name: Factory_Right_8
+      _scenes: []
+      _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_Right_8.ldtkl
+      _assetKey: Assets/LDtk/LDtkVaniaSample/Factory_Right_8.ldtkl
+    - _iid: fce2b020-c640-11ed-8852-5d77cfb88076
+      _asset: {fileID: -9136270700084939448, guid: bfebf7a8930b1ac4c9ee82c8beb86fd4, type: 3}
+      _levelFile: {fileID: -8655009601392300639, guid: bfebf7a8930b1ac4c9ee82c8beb86fd4, type: 3}
+      _name: NS_Test
+      _scenes: []
+      _assetPath: Assets/LDtk/LDtkVaniaSample/NS_Test.ldtkl
+      _assetKey: Assets/LDtk/LDtkVaniaSample/NS_Test.ldtkl
+    - _iid: b8abf8a0-ed50-11ed-a82b-5f61164d4b1d
+      _asset: {fileID: -4431292731194727884, guid: 08e957a8ad6f6b74dbe4144b7ef052de, type: 3}
+      _levelFile: {fileID: -8655009601392300639, guid: 08e957a8ad6f6b74dbe4144b7ef052de, type: 3}
+      _name: World2_Area21_0
+      _scenes: []
+      _assetPath: Assets/LDtk/LDtkVaniaSample/World2_Area21_0.ldtkl
+      _assetKey: Assets/LDtk/LDtkVaniaSample/World2_Area21_0.ldtkl
+    - _iid: e4e69a60-ed50-11ed-a82b-27cab0fad380
+      _asset: {fileID: -4397231438475380068, guid: 4bd683881bd98e24d8d832a7cd12ca0f, type: 3}
+      _levelFile: {fileID: -8655009601392300639, guid: 4bd683881bd98e24d8d832a7cd12ca0f, type: 3}
+      _name: World2_Area22_1
+      _scenes: []
+      _assetPath: Assets/LDtk/LDtkVaniaSample/World2_Area22_1.ldtkl
+      _assetKey: Assets/LDtk/LDtkVaniaSample/World2_Area22_1.ldtkl
