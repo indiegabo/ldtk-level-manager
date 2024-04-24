@@ -297,7 +297,6 @@ namespace LDtkVania
             }
 
             AssetDatabase.RemoveObjectFromAsset(level);
-            // AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(level));
         }
 
         public void Remove(string iid)
