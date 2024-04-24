@@ -262,7 +262,6 @@ namespace LDtkVania
             Level ldtkLevel = file.FromJson;
             if (TryGetLevel(ldtkLevel.Iid, out MV_Level mvLevel))
             {
-                Debug.Log($"Updating {mvLevel.Name}");
                 mvLevel.UpdateInfo(componentLevel, location, asset, file);
                 return mvLevel.Iid;
             }
@@ -290,13 +289,15 @@ namespace LDtkVania
 
         public void Remove(MV_Level level)
         {
+            if (level == null) return;
+
             if (_levels.ContainsKey(level.Iid))
             {
                 _levels.Remove(level.Iid);
             }
 
-            AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(level));
             AssetDatabase.RemoveObjectFromAsset(level);
+            // AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(level));
         }
 
         public void Remove(string iid)

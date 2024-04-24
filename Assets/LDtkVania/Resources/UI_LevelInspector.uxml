@@ -5,7 +5,7 @@
         <ui:Button text="Copy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-iid-copy" style="width: 40px;" />
     </ui:VisualElement>
     <uie:PropertyField binding-path="_scenes" label="Aggregate Scenes" name="field-scenes" />
-    <ui:Foldout text="Info" name="foldout-info" value="false">
+    <ui:Foldout text="Info" name="foldout-info" value="false" style="margin-left: 12px;">
         <uie:PropertyField name="field-asset" binding-path="_asset" label="Asset" class="level-info" />
         <uie:PropertyField name="field-ldtk-asset" binding-path="_levelFile" label="LDtk File" class="level-info" />
         <ui:VisualElement name="container-asset-path" style="flex-grow: 1; flex-direction: row; flex-shrink: 0;">
