@@ -10,11 +10,11 @@ namespace LDtkVania
 
         [HideInInspector]
         [SerializeField]
-        private List<TKey> _keys = new List<TKey>();
+        private List<TKey> _keys = new();
 
         [HideInInspector]
         [SerializeField]
-        private List<TValue> _values = new List<TValue>();
+        private List<TValue> _values = new();
 
         #endregion
 

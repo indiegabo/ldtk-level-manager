@@ -32,12 +32,12 @@ namespace LDtkVaniaEditor
             {
                 _level = value;
 
-                _foldoutMain.text = _level.Name;
-                _fieldIid.value = _level.Iid;
-                _fieldAsset.value = _level.Asset;
-                _fieldLDtkAsset.value = _level.LevelFile;
-                _fieldAssetPath.value = _level.AssetPath;
-                _fieldAddressableKey.value = _level.AddressableKey;
+                // _foldoutMain.text = _level.Name;
+                // _fieldIid.value = _level.Iid;
+                // _fieldAsset.value = _level.Asset;
+                // _fieldLDtkAsset.value = _level.LevelFile;
+                // _fieldAssetPath.value = _level.AssetPath;
+                // _fieldAddressableKey.value = _level.AddressableKey;
             }
         }
 
@@ -48,52 +48,52 @@ namespace LDtkVaniaEditor
         public MV_LevelsListElement(VisualTreeAsset tree)
         {
             TemplateContainer template = tree.Instantiate();
-            _foldoutMain = template.Q<Foldout>("foldout-main");
-            Toggle toggle = _foldoutMain.Q<Toggle>();
-            toggle.style.marginLeft = 0;
+            // _foldoutMain = template.Q<Foldout>("foldout-main");
+            // Toggle toggle = _foldoutMain.Q<Toggle>();
+            // toggle.style.marginLeft = 0;
 
-            _fieldIid = template.Q<TextField>("field-iid");
-            _fieldIid.SetEnabled(false);
-            _fieldIid.style.marginRight = 0;
-            _fieldIid.SetEnabled(false);
+            // _fieldIid = template.Q<TextField>("field-iid");
+            // _fieldIid.SetEnabled(false);
+            // _fieldIid.style.marginRight = 0;
+            // _fieldIid.SetEnabled(false);
 
-            _buttonIidCopy = template.Q<Button>("button-iid-copy");
-            _buttonIidCopy.clicked += () =>
-            {
-                if (string.IsNullOrEmpty(_level.Iid)) return;
-                _level.Iid.CopyToClipboard();
-            };
+            // _buttonIidCopy = template.Q<Button>("button-iid-copy");
+            // _buttonIidCopy.clicked += () =>
+            // {
+            //     if (string.IsNullOrEmpty(_level.Iid)) return;
+            //     _level.Iid.CopyToClipboard();
+            // };
 
-            _fieldAsset = template.Q<ObjectField>("field-asset");
-            _fieldAsset.SetEnabled(false);
-            _fieldAsset.objectType = typeof(Object);
+            // _fieldAsset = template.Q<ObjectField>("field-asset");
+            // _fieldAsset.SetEnabled(false);
+            // _fieldAsset.objectType = typeof(Object);
 
-            _fieldLDtkAsset = template.Q<ObjectField>("field-ldtk-asset");
-            _fieldLDtkAsset.SetEnabled(false);
+            // _fieldLDtkAsset = template.Q<ObjectField>("field-ldtk-asset");
+            // _fieldLDtkAsset.SetEnabled(false);
 
-            _fieldAssetPath = template.Q<TextField>("field-asset-path");
-            _fieldAssetPath.SetEnabled(false);
+            // _fieldAssetPath = template.Q<TextField>("field-asset-path");
+            // _fieldAssetPath.SetEnabled(false);
 
-            Button buttonAssetPathCopy = template.Q<Button>("button-asset-path-copy");
-            buttonAssetPathCopy.clicked += () =>
-            {
-                if (string.IsNullOrEmpty(_level.AssetPath)) return;
-                _level.AssetPath.CopyToClipboard();
-            };
+            // Button buttonAssetPathCopy = template.Q<Button>("button-asset-path-copy");
+            // buttonAssetPathCopy.clicked += () =>
+            // {
+            //     if (string.IsNullOrEmpty(_level.AssetPath)) return;
+            //     _level.AssetPath.CopyToClipboard();
+            // };
 
-            _fieldAddressableKey = template.Q<TextField>("field-addressable-key");
-            _fieldAddressableKey.SetEnabled(false);
+            // _fieldAddressableKey = template.Q<TextField>("field-addressable-key");
+            // _fieldAddressableKey.SetEnabled(false);
 
-            Button buttonAdreesableKeyCopy = template.Q<Button>("button-addressable-key-copy");
-            buttonAdreesableKeyCopy.clicked += () =>
-            {
-                if (string.IsNullOrEmpty(_level.AddressableKey)) return;
-                _level.AddressableKey.CopyToClipboard();
-            };
+            // Button buttonAdreesableKeyCopy = template.Q<Button>("button-addressable-key-copy");
+            // buttonAdreesableKeyCopy.clicked += () =>
+            // {
+            //     if (string.IsNullOrEmpty(_level.AddressableKey)) return;
+            //     _level.AddressableKey.CopyToClipboard();
+            // };
 
-            _fieldScenes = template.Q<ListView>("field-scenes");
+            // _fieldScenes = template.Q<ListView>("field-scenes");
 
-            _foldoutMain.SetValueWithoutNotify(false);
+            // _foldoutMain.SetValueWithoutNotify(false);
             Add(template);
         }
 

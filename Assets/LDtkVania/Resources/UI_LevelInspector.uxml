@@ -1,22 +1,20 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Assets/LDtkVania/Resources/Style_Level.uss?fileID=7433441132597879392&amp;guid=29cac97f9a0a8214e911f21f7fa01b2d&amp;type=3#Style_Level" />
-    <ui:Foldout text="Foldout" name="foldout-main" value="true" class="mv-foldout" style="cursor: initial;">
-        <ui:VisualElement name="container-iid" style="flex-grow: 1; flex-direction: row; flex-shrink: 0;">
-            <ui:TextField picking-mode="Ignore" label="Iid" name="field-iid" readonly="true" class="level-field" style="width: auto;" />
-            <ui:Button text="Copy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-iid-copy" style="width: 40px;" />
+    <ui:VisualElement name="container-iid" style="flex-grow: 0; flex-direction: row; flex-shrink: 1;">
+        <ui:TextField picking-mode="Ignore" label="Iid" binding-path="_iid" name="field-iid" readonly="true" class="level-field" />
+        <ui:Button text="Copy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-iid-copy" style="width: 40px;" />
+    </ui:VisualElement>
+    <uie:PropertyField binding-path="_scenes" label="Aggregate Scenes" name="field-scenes" />
+    <ui:Foldout text="Info" name="foldout-info" value="false">
+        <uie:PropertyField name="field-asset" binding-path="_asset" label="Asset" class="level-info" />
+        <uie:PropertyField name="field-ldtk-asset" binding-path="_levelFile" label="LDtk File" class="level-info" />
+        <ui:VisualElement name="container-asset-path" style="flex-grow: 1; flex-direction: row; flex-shrink: 0;">
+            <ui:TextField picking-mode="Ignore" label="Asset Path" name="field-asset-path" binding-path="_assetPath" class="level-field" />
+            <ui:Button text="Copy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-asset-path-copy" style="width: 40px;" />
         </ui:VisualElement>
-        <ui:ListView name="field-scenes" virtualization-method="DynamicHeight" show-foldout-header="true" header-title="Scenes" show-add-remove-footer="true" />
-        <ui:Foldout text="Info" name="foldout-info" value="false">
-            <uie:ObjectField label="Asset" allow-scene-objects="false" name="field-asset" class="level-field" />
-            <uie:ObjectField label="LDtk Asset" allow-scene-objects="false" name="field-ldtk-asset" type="LDtkUnity.LDtkLevelFile, LDtkUnity.Runtime" class="level-field" />
-            <ui:VisualElement name="container-asset-path" style="flex-grow: 1; flex-direction: row; flex-shrink: 0;">
-                <ui:TextField picking-mode="Ignore" label="Asset Path" name="field-asset-path" readonly="true" class="level-field" style="width: auto;" />
-                <ui:Button text="Copy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-asset-path-copy" style="width: 40px;" />
-            </ui:VisualElement>
-            <ui:VisualElement name="container-addressable-key" style="flex-grow: 1; flex-direction: row; flex-shrink: 0;">
-                <ui:TextField picking-mode="Ignore" label="Addressable Key" name="field-addressable-key" readonly="true" class="level-field" style="width: auto;" />
-                <ui:Button text="Copy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-addressable-key-copy" style="width: 40px;" />
-            </ui:VisualElement>
-        </ui:Foldout>
+        <ui:VisualElement name="container-addressable-key" style="flex-grow: 1; flex-direction: row; flex-shrink: 0;">
+            <ui:TextField picking-mode="Ignore" label="Addressable Key" name="field-addressable-key" binding-path="_assetKey" class="level-field" />
+            <ui:Button text="Copy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-addressable-key-copy" style="width: 40px;" />
+        </ui:VisualElement>
     </ui:Foldout>
 </ui:UXML>

@@ -16,7 +16,7 @@ using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 
 namespace LDtkVania
 {
-    public class MV_Project : ScriptableObject
+    public partial class MV_Project : ScriptableObject
     {
         #region Static
 
@@ -54,6 +54,19 @@ namespace LDtkVania
             }
         }
 
+        public static bool SilentInstanceCheck
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    return FindExistingProjectAsset(out _instance);
+                }
+
+                return true;
+            }
+        }
+
         private static bool FindExistingProjectAsset(out MV_Project project)
         {
             var addressOp = Addressables.LoadResourceLocationsAsync(AddressablesProjectAddress);
@@ -64,7 +77,7 @@ namespace LDtkVania
                 IResourceLocation loc = locations[0];
                 var op = Addressables.LoadAssetAsync<MV_Project>(loc);
                 project = op.WaitForCompletion(); //Forces synchronous load so that we can return immediately
-                return true;
+                return project != null;
             }
 
             project = null;
@@ -72,6 +85,7 @@ namespace LDtkVania
         }
 
 #if UNITY_EDITOR
+
         private static MV_Project CreateProject()
         {
             if (Application.isPlaying)
@@ -101,9 +115,11 @@ namespace LDtkVania
             assetReference.SetEditorAsset(project);
             AddressableAssetEntry entry = settings.CreateOrMoveEntry(guid, group);
 
+            // This will fail if asset is being created on AssetPostprocessor
             if (entry != null)
             {
-                entry.address = AddressablesProjectAddress;
+                entry.SetAddress(AddressablesProjectAddress);
+                settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, entry, true);
             }
             else
             {
@@ -141,7 +157,7 @@ namespace LDtkVania
         private List<AssetLabelReference> _levelsLabels = new();
 
         [SerializeField]
-        private LevelsDictionary _levels = new();
+        private MV_LevelsDictionary _levels = new();
 
         #endregion
 
@@ -157,39 +173,7 @@ namespace LDtkVania
 
         #endregion
 
-        #region Handling
-
-        public void Add(MV_Level level)
-        {
-            if (!_levels.ContainsKey(level.Iid))
-            {
-                _levels.Add(level.Iid, level);
-            }
-            else
-            {
-                _levels[level.Iid] = level;
-            }
-        }
-
-        public void Remove(MV_Level level)
-        {
-            if (_levels.ContainsKey(level.Iid))
-            {
-                _levels.Remove(level.Iid);
-            }
-        }
-
-        public void Remove(string iid)
-        {
-            if (!_levels.ContainsKey(iid)) return;
-            MV_Level level = _levels[iid];
-            Remove(level);
-        }
-
-        public void Clear()
-        {
-            _levels.Clear();
-        }
+        #region Providing Levels
 
         public MV_Level GetLevel(string iid)
         {
@@ -218,7 +202,7 @@ namespace LDtkVania
         #region Classes
 
         [System.Serializable]
-        public class LevelsDictionary : SerializedDictionary<string, MV_Level> { }
+        public class MV_LevelsDictionary : SerializedDictionary<string, MV_Level> { }
 
         #endregion
 
@@ -228,8 +212,6 @@ namespace LDtkVania
         public void SyncLevels()
         {
             HashSet<string> presentLevels = new();
-
-            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
 
             AsyncOperationHandle handle = Addressables.LoadResourceLocationsAsync(AddressablesLevelsLabel);
             handle.WaitForCompletion();
@@ -261,6 +243,9 @@ namespace LDtkVania
             {
                 Remove(iid);
             }
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
 
         private string HandleLevelLocation(IResourceLocation location)
@@ -277,14 +262,57 @@ namespace LDtkVania
             Level ldtkLevel = file.FromJson;
             if (TryGetLevel(ldtkLevel.Iid, out MV_Level mvLevel))
             {
+                Debug.Log($"Updating {mvLevel.Name}");
                 mvLevel.UpdateInfo(componentLevel, location, asset, file);
                 return mvLevel.Iid;
             }
 
-            mvLevel = new(componentLevel, location, asset, file);
+            mvLevel = CreateInstance<MV_Level>();
+            mvLevel.name = asset.name;
+            mvLevel.Initialize(componentLevel, location, asset, file);
             Add(mvLevel);
 
             return mvLevel.Iid;
+        }
+        public void Add(MV_Level level)
+        {
+            if (!_levels.ContainsKey(level.Iid))
+            {
+                _levels.Add(level.Iid, level);
+                AssetDatabase.AddObjectToAsset(level, this);
+            }
+            else
+            {
+                _levels[level.Iid] = level;
+            }
+
+        }
+
+        public void Remove(MV_Level level)
+        {
+            if (_levels.ContainsKey(level.Iid))
+            {
+                _levels.Remove(level.Iid);
+            }
+
+            AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(level));
+            AssetDatabase.RemoveObjectFromAsset(level);
+        }
+
+        public void Remove(string iid)
+        {
+            if (!_levels.ContainsKey(iid)) return;
+            MV_Level level = _levels[iid];
+            Remove(level);
+        }
+
+        public void Clear()
+        {
+            GetLevels().ForEach(level =>
+            {
+                AssetDatabase.RemoveObjectFromAsset(level);
+            });
+            _levels.Clear();
         }
 
         #endregion

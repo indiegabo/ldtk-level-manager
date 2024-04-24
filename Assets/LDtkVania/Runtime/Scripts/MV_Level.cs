@@ -6,7 +6,7 @@ using UnityEngine.ResourceManagement.ResourceLocations;
 namespace LDtkVania
 {
     [System.Serializable]
-    public class MV_Level
+    public class MV_Level : ScriptableObject
     {
         #region Inspector
 
@@ -65,7 +65,7 @@ namespace LDtkVania
 
         #region Constructors
 
-        public MV_Level(LDtkComponentLevel ldtkComponentLevel, IResourceLocation location, Object asset, LDtkLevelFile ldtkFile)
+        public void Initialize(LDtkComponentLevel ldtkComponentLevel, IResourceLocation location, Object asset, LDtkLevelFile ldtkFile)
         {
             LDtkIid lDtkIid = ldtkComponentLevel.GetComponent<LDtkIid>();
             _iid = lDtkIid.Iid;
