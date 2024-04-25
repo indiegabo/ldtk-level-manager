@@ -6,16 +6,13 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using System.Linq;
 
-
 #if UNITY_EDITOR
 using UnityEditor;
-using UnityEditor.AddressableAssets;
-using UnityEditor.AddressableAssets.Settings;
-using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 #endif
 
 namespace LDtkVania
 {
+    [CreateAssetMenu(fileName = "LDtkVaniaProject", menuName = "LDtkVania/Project", order = 0)]
     public partial class MV_Project : ScriptableObject
     {
         #region Static
@@ -23,119 +20,6 @@ namespace LDtkVania
         public static string AddressablesProjectAddress = "LDtkVaniaProject";
         public static string AddressablesGroupName = "LDtkVania";
         public static string AddressablesLevelsLabel = "LDtkLevels";
-
-        private static MV_Project _instance;
-        public static MV_Project Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-#if UNITY_EDITOR
-                    if (!FindExistingProjectAsset(out _instance))
-                    {
-                        _instance = CreateProject();
-                    }
-
-                    if (_instance == null)
-                    {
-                        MV_Logger.Error($"No instance of the LDtkVaniaProject was found.");
-                    }
-#else
-                    if (!FindExistingProjectAsset(out _instance))
-                    {
-                        MV_Logger.Error($"No instance of the LDtkVaniaProject was found.");
-                    }
-#endif
-
-                }
-
-                return _instance;
-            }
-        }
-
-        public static bool SilentInstanceCheck
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    return FindExistingProjectAsset(out _instance);
-                }
-
-                return true;
-            }
-        }
-
-        private static bool FindExistingProjectAsset(out MV_Project project)
-        {
-            var addressOp = Addressables.LoadResourceLocationsAsync(AddressablesProjectAddress);
-            var locations = addressOp.WaitForCompletion();
-
-            if (locations != null && locations.Count > 0)
-            {
-                IResourceLocation loc = locations[0];
-                var op = Addressables.LoadAssetAsync<MV_Project>(loc);
-                project = op.WaitForCompletion(); //Forces synchronous load so that we can return immediately
-                return project != null;
-            }
-
-            project = null;
-            return false;
-        }
-
-#if UNITY_EDITOR
-
-        private static MV_Project CreateProject()
-        {
-            if (Application.isPlaying)
-            {
-                MV_Logger.Error("Trying to create a LDtkVaniaProject in play mode.");
-                return null;
-            }
-
-            MV_Project project = CreateInstance<MV_Project>();
-
-            string assetName = AddressablesProjectAddress;
-            AssetDatabase.CreateAsset(project, $"Assets/{assetName}.asset");
-            EditorUtility.SetDirty(project);
-            AssetDatabase.SaveAssetIfDirty(project);
-
-            string guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(project));
-            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
-
-            string groupName = AddressablesGroupName;
-            var group = settings.FindGroup(groupName);
-            if (!group)
-                group = settings.CreateGroup(groupName, false, false, true, null, typeof(ContentUpdateGroupSchema), typeof(BundledAssetGroupSchema));
-
-            settings.AddLabel(AddressablesLevelsLabel);
-
-            AssetReference assetReference = settings.CreateAssetReference(guid);
-            assetReference.SetEditorAsset(project);
-            AddressableAssetEntry entry = settings.CreateOrMoveEntry(guid, group);
-
-            // This will fail if asset is being created on AssetPostprocessor
-            if (entry != null)
-            {
-                entry.SetAddress(AddressablesProjectAddress);
-                settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, entry, true);
-            }
-            else
-            {
-                MV_Logger.Error($"Could not create AddressableAssetEntry for {assetName}");
-                return null;
-            }
-
-            EditorUtility.SetDirty(project);
-            AssetDatabase.SaveAssetIfDirty(project);
-            AssetDatabase.Refresh();
-
-            MV_Logger.Message($"Created new LDtkVaniaProject at {AssetDatabase.GetAssetPath(project)}.");
-
-            return project;
-        }
-#endif
 
         #endregion
 

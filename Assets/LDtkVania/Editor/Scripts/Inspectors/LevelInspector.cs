@@ -12,7 +12,7 @@ namespace LDtkVaniaEditor
 
         public override VisualElement CreateInspectorGUI()
         {
-            LevelElement levelsElement = new();
+            LevelElement levelsElement = new(target as MV_Level);
             return levelsElement;
         }
     }

@@ -17,9 +17,6 @@ namespace LDtkVania
         private string _ldtkLevelIid;
 
         [SerializeField]
-        private MV_LevelTracker _LevelTracker;
-
-        [SerializeField]
         private MV_LevelManager _levelHandler;
 
         [SerializeField]
@@ -73,7 +70,7 @@ namespace LDtkVania
 
         private void Awake()
         {
-            if (!MV_Project.Instance.TryGetLevel(_ldtkLevelIid, out _mvLevel))
+            if (!MV_LevelManager.Instance.TryGetLevel(_ldtkLevelIid, out _mvLevel))
             {
                 MV_Logger.Error($"{name} could not be activated because {_ldtkLevelIid} is not present on dictionary", this);
                 return;
@@ -86,6 +83,13 @@ namespace LDtkVania
 
             EvaluateConnections();
             EvaluateCheckpoints();
+
+            MV_LevelManager.Instance.RegisterAsBehaviour(_ldtkLevelIid, this);
+        }
+
+        private void OnDestroy()
+        {
+            MV_LevelManager.Instance.UnregisterAsBehaviour(_ldtkLevelIid);
         }
 
         #endregion
@@ -137,7 +141,6 @@ namespace LDtkVania
 
         private async Task PerformPreparation(MV_LevelDefaultSpawnPoint spawnPoint)
         {
-            _LevelTracker.DefineCurrentLevel(_ldtkLevelIid);
             _preparationStartedEvent.Invoke(this, null, null);
             SpawnCharacter(spawnPoint.transform.position, spawnPoint.DirectionSign);
             await WaitOnCameraBlend();
@@ -146,7 +149,6 @@ namespace LDtkVania
 
         private async Task PerformPreparation(MV_LevelConnection connection)
         {
-            _LevelTracker.DefineCurrentLevel(_ldtkLevelIid);
             _preparationStartedEvent.Invoke(this, connection, null);
             SpawnCharacter(connection.Trail.SpawnPosition, connection.DirectionSign);
             await WaitOnCameraBlend();
@@ -155,7 +157,6 @@ namespace LDtkVania
 
         private async Task PerformPreparation(MV_ICheckpoint checkpoint)
         {
-            _LevelTracker.DefineCurrentLevel(_ldtkLevelIid);
             _preparationStartedEvent.Invoke(this, null, checkpoint);
             SpawnCharacter(checkpoint.SpawnPosition, checkpoint.DirectionSign);
             await WaitOnCameraBlend();
@@ -190,8 +191,6 @@ namespace LDtkVania
         public void Exit()
         {
             DisableConnections();
-
-            _LevelTracker.RemoveAsCurrentLevel(_ldtkLevelIid);
             _exitedEvent.Invoke(this);
         }
 
@@ -203,7 +202,7 @@ namespace LDtkVania
         {
             _connectionsDictionary = new Dictionary<string, MV_LevelConnection>();
 
-            Transform connectionsContainer = transform.Find(MV_Project.Instance.ConnectionsContainerName);
+            Transform connectionsContainer = transform.Find(MV_LevelManager.Instance.ConnectionsContainerName);
 
             if (connectionsContainer == null) return;
 
@@ -246,7 +245,7 @@ namespace LDtkVania
         {
             _checkpointsDictionary = new Dictionary<string, MV_ICheckpoint>();
 
-            Transform checkpointsContainer = transform.Find(MV_Project.Instance.CheckpointsContainerName);
+            Transform checkpointsContainer = transform.Find(MV_LevelManager.Instance.CheckpointsContainerName);
 
             if (checkpointsContainer == null) return;
 

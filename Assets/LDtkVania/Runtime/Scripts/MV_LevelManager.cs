@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using System.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
 
 namespace LDtkVania
 {
@@ -12,22 +13,8 @@ namespace LDtkVania
     {
         #region Static
 
-        public static MV_LevelManager Instance { get; protected set; }
-
-        public static bool InstanceUnavailable
-        {
-            get
-            {
-                bool unavailable = Instance == null;
-
-                if (unavailable)
-                {
-                    MV_Logger.Warning($"{nameof(MV_LevelManager)} just failed a Singleton instance validation");
-                }
-
-                return unavailable;
-            }
-        }
+        private static MV_LevelManager _instance;
+        public static MV_LevelManager Instance => _instance;
 
         #endregion
 
@@ -39,6 +26,9 @@ namespace LDtkVania
 
         [SerializeField]
         private bool _alertAboutOtherInstances;
+
+        [SerializeField]
+        private MV_Project _project;
 
         [SerializeField]
         [Min(1)]
@@ -60,14 +50,18 @@ namespace LDtkVania
         private MV_Level _currentLevel;
         private MV_LevelBehaviour _currentBehaviour;
 
-        private Dictionary<MV_Level, MV_LevelBehaviour> _loadedLevels;
-        private Dictionary<MV_Level, List<SceneField>> _loadedScenes;
-        private List<MV_Level> _shouldBeLoaded;
-        private List<MV_Level> _shouldBeUnloaded;
+        private Dictionary<MV_Level, MV_LevelBehaviour> _registeredBehaviours = new();
+        private Dictionary<MV_Level, GameObject> _loadedObjects = new();
+        private Dictionary<MV_Level, SceneInstance> _loadedScenes = new();
+        private List<MV_Level> _shouldBeLoaded = new();
+        private List<MV_Level> _shouldBeUnloaded = new();
 
         #endregion
 
         #region Getters
+
+        public string ConnectionsContainerName => _project.ConnectionsContainerName;
+        public string CheckpointsContainerName => _project.CheckpointsContainerName;
 
         public UnityEvent<MV_Level> LevelPreparedEvent => _levelPreparedEvent;
         public UnityEvent<MV_Level, MV_LevelTrail> LevelEnteredEvent => _levelEnteredEvent;
@@ -77,7 +71,7 @@ namespace LDtkVania
 
         #region Behaviour
 
-        public void Initialize()
+        public void Awake()
         {
             MV_LevelManager currentInstance = Instance;
 
@@ -93,15 +87,10 @@ namespace LDtkVania
                 return;
             }
 
-            Instance = this;
+            _instance = this;
 
             if (_persistent)
                 DontDestroyOnLoad(gameObject);
-
-            _loadedLevels = new Dictionary<MV_Level, MV_LevelBehaviour>();
-            _loadedScenes = new Dictionary<MV_Level, List<SceneField>>();
-            _shouldBeLoaded = new List<MV_Level>();
-            _shouldBeUnloaded = new List<MV_Level>();
         }
 
         #endregion
@@ -124,7 +113,8 @@ namespace LDtkVania
 
             await UnloadAllAsync();
 
-            _loadedLevels.Clear();
+            _registeredBehaviours.Clear();
+            _loadedObjects.Clear();
             _loadedScenes.Clear();
 
             await LoadLevelAndNeighboursAsync(level);
@@ -149,14 +139,14 @@ namespace LDtkVania
                 return;
             }
 
-            if (!_loadedLevels.ContainsKey(level))
+            if (!_registeredBehaviours.ContainsKey(level))
             {
                 MV_Logger.Error($"Trying to prepare a non registered level.", this);
                 return;
             }
 
             _currentLevel = level;
-            _currentBehaviour = _loadedLevels[_currentLevel];
+            _currentBehaviour = _registeredBehaviours[_currentLevel];
 
             if (loadNeighbours)
                 await LoadLevelAndNeighboursAsync(_currentLevel);
@@ -172,14 +162,14 @@ namespace LDtkVania
         /// <returns></returns>
         public async Task PrepareLevel(MV_Level level, MV_LevelTrail trail, bool loadNeighbours = true)
         {
-            if (!_loadedLevels.ContainsKey(level))
+            if (!_registeredBehaviours.ContainsKey(level))
             {
                 MV_Logger.Error($"Trying to prepare a non registered level.", this);
                 return;
             }
 
             _currentLevel = level;
-            _currentBehaviour = _loadedLevels[_currentLevel];
+            _currentBehaviour = _registeredBehaviours[_currentLevel];
 
             if (loadNeighbours)
                 await LoadLevelAndNeighboursAsync(_currentLevel);
@@ -195,14 +185,14 @@ namespace LDtkVania
         /// <returns></returns>
         public async Task PrepareLevel(MV_Level level, MV_ICheckpoint checkpointData, bool loadNeighbours = true)
         {
-            if (!_loadedLevels.ContainsKey(level))
+            if (!_registeredBehaviours.ContainsKey(level))
             {
                 MV_Logger.Error($"Trying to prepare a non registered level.", this);
                 return;
             }
 
             _currentLevel = level;
-            _currentBehaviour = _loadedLevels[_currentLevel];
+            _currentBehaviour = _registeredBehaviours[_currentLevel];
 
             if (loadNeighbours)
                 await LoadLevelAndNeighboursAsync(_currentLevel);
@@ -263,7 +253,15 @@ namespace LDtkVania
                 }
             }
 
-            foreach (var pair in _loadedLevels)
+            foreach (var pair in _loadedObjects)
+            {
+                if (!_shouldBeLoaded.Contains(pair.Key))
+                {
+                    _shouldBeUnloaded.Add(pair.Key);
+                }
+            }
+
+            foreach (var pair in _loadedScenes)
             {
                 if (!_shouldBeLoaded.Contains(pair.Key))
                 {
@@ -279,7 +277,7 @@ namespace LDtkVania
         {
             foreach (LDtkUnity.Level neighbour in metroidvaniaLevel.LDtkLevel.Neighbours)
             {
-                if (!MV_Project.Instance.TryGetLevel(neighbour.Iid, out MV_Level mvLevel))
+                if (!TryGetLevel(neighbour.Iid, out MV_Level mvLevel))
                 {
                     MV_Logger.Error($"{name} could not find neighbour {neighbour.Iid}", this);
                     continue;
@@ -300,7 +298,6 @@ namespace LDtkVania
 
             foreach (MV_Level toLoad in levelsToLoad)
             {
-                if (_loadedLevels.ContainsKey(toLoad)) continue;
                 levelLoadTasks.Add(LoadAsync(toLoad));
             }
 
@@ -309,66 +306,59 @@ namespace LDtkVania
 
         private async Task LoadAsync(MV_Level level)
         {
-            if (_loadedLevels.ContainsKey(level)) return;
-
-            AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(level.AddressableKey);
-            await handle.Task;
-
-            if (handle.Status != AsyncOperationStatus.Succeeded)
+            if (level.Scene == null)
             {
-                MV_Logger.Error($"Async operation for level level ({level.Iid}) failed.", this);
-                return;
-            }
+                if (_loadedObjects.ContainsKey(level)) return;
 
-            GameObject obj = Instantiate(handle.Result);
+                AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(level.AddressableKey);
+                await handle.Task;
 
-            if (!obj.TryGetComponent(out MV_LevelBehaviour behaviour))
-            {
-                MV_Logger.Error($"Loaded asset {obj.name} for level ({level.Iid}) has no {nameof(MV_LevelBehaviour)} component.", this);
-                Destroy(obj);
-                return;
-            }
-
-            if (level.Scenes != null && level.Scenes.Count > 0)
-            {
-                List<Task> tasks = new();
-
-                for (int i = 0; i < level.Scenes.Count; i++)
+                if (handle.Status != AsyncOperationStatus.Succeeded)
                 {
-                    string scene = level.Scenes[i];
-                    AsyncOperation operation = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
-
-                    tasks.Add(operation.AwaitAsync());
+                    MV_Logger.Error($"Async operation for level {level.Name} as an object failed.", this);
+                    return;
                 }
 
-                _loadedScenes.Add(level, level.Scenes);
+                GameObject loadedObject = Instantiate(handle.Result);
+                _loadedObjects.Add(level, loadedObject);
             }
+            else
+            {
+                if (_loadedScenes.ContainsKey(level)) return;
+                AsyncOperationHandle<SceneInstance> handle = Addressables.LoadSceneAsync(level.SceneAddressableKey, LoadSceneMode.Additive);
+                await handle.Task;
 
-            _loadedLevels.Add(level, behaviour);
+                if (handle.Status != AsyncOperationStatus.Succeeded)
+                {
+                    MV_Logger.Error($"Async operation for loading level {level.Name} as a scene failed.", this);
+                    return;
+                }
+
+                _loadedScenes.Add(level, handle.Result);
+            }
         }
 
         private async Task UnloadAsync(MV_Level level)
         {
-            if (!_loadedLevels.TryGetValue(level, out MV_LevelBehaviour behaviour)) return;
-
-            List<Task> tasks = new();
-
-            if (_loadedScenes.TryGetValue(level, out List<SceneField> scenes))
+            if (_loadedObjects.TryGetValue(level, out GameObject loadedObject))
             {
-                for (int i = 0; i < scenes.Count; i++)
-                {
-                    string scene = scenes[i];
-                    AsyncOperation operation = SceneManager.UnloadSceneAsync(scene);
-                    tasks.Add(operation.AwaitAsync());
-                }
+                _loadedObjects.Remove(level);
+                Destroy(loadedObject);
             }
 
-            await Task.WhenAll(tasks);
+            if (_loadedScenes.TryGetValue(level, out SceneInstance sceneInstance))
+            {
+                AsyncOperationHandle handle = Addressables.UnloadSceneAsync(sceneInstance);
+                await handle.Task;
 
-            _loadedLevels.Remove(level);
-            _loadedScenes.Remove(level);
+                if (handle.Status != AsyncOperationStatus.Succeeded)
+                {
+                    MV_Logger.Error($"Async operation for unloading level {level.Name} as a scene failed.", this);
+                    return;
+                }
 
-            Destroy(behaviour.gameObject);
+                _loadedScenes.Remove(level);
+            }
         }
 
         private async Task UnloadMultipleAsync(List<MV_Level> levelsToUnload)
@@ -377,7 +367,6 @@ namespace LDtkVania
 
             foreach (MV_Level toUnload in levelsToUnload)
             {
-                if (!_loadedLevels.ContainsKey(toUnload)) continue;
                 unloadTasks.Add(UnloadAsync(toUnload));
             }
 
@@ -387,12 +376,64 @@ namespace LDtkVania
         private async Task UnloadAllAsync()
         {
             List<Task> tasks = new();
-            foreach (var pair in _loadedLevels)
+
+            foreach (var pair in _loadedObjects)
+            {
+                tasks.Add(UnloadAsync(pair.Key));
+            }
+
+            foreach (var pair in _loadedScenes)
             {
                 tasks.Add(UnloadAsync(pair.Key));
             }
 
             await Task.WhenAll(tasks);
+        }
+
+        #endregion
+
+        #region Registering Behaviours
+
+        public void RegisterAsBehaviour(string iid, MV_LevelBehaviour behaviour)
+        {
+            if (!TryGetLevel(iid, out MV_Level level))
+            {
+                MV_Logger.Error($"Level under LDtk Iid {iid} not found for registering as behaviour", this);
+                return;
+            }
+
+            if (_registeredBehaviours.ContainsKey(level))
+            {
+                MV_Logger.Warning($"Level {level.Name}({level.Iid}) already registered as behaviour but is trying to be registered again", this);
+                return;
+            }
+
+            _registeredBehaviours.Add(level, behaviour);
+        }
+
+        public void UnregisterAsBehaviour(string iid)
+        {
+            if (!TryGetLevel(iid, out MV_Level level))
+            {
+                MV_Logger.Error($"Level under LDtk Iid {iid} not found for unregistering as behaviour", this);
+                return;
+            }
+
+            _registeredBehaviours.Remove(level);
+        }
+
+        #endregion
+
+        #region Providing Levels
+
+        public bool TryGetLevel(string iid, out MV_Level level)
+        {
+            return _project.TryGetLevel(iid, out level);
+        }
+
+        public MV_Level GetLevel(string iid)
+        {
+            return _project.GetLevel(iid);
         }
 
         #endregion

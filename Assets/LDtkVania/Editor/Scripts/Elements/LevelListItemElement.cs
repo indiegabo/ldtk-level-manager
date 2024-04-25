@@ -27,9 +27,7 @@ namespace LDtkVaniaEditor
             set
             {
                 _level = value;
-                _foldoutMain.text = _level.Name;
-                _serialized = new(_level);
-                _levelElement.Bind(_serialized);
+                SetLevel(_level);
             }
         }
 
@@ -43,20 +41,36 @@ namespace LDtkVaniaEditor
         /// <param name="tree">The visual tree asset to be used for creating the levels element.</param>
         public LevelListItemElement()
         {
-            // Create a new instance of MV_LevelsElement using the provided visual tree asset.
-            _levelElement = new LevelElement();
-
             // Create a new foldout with its value set to false.
             _foldoutMain = new Foldout()
             {
                 value = false
             };
 
-            // Add the levels element to the foldout.
-            _foldoutMain.Add(_levelElement);
-
             // Add the foldout to the current instance of MV_LevelsListElement.
             Add(_foldoutMain);
+        }
+
+        #endregion
+
+        #region Define level
+
+        private void SetLevel(MV_Level level)
+        {
+            if (_levelElement != null)
+            {
+                _foldoutMain.Remove(_levelElement);
+            }
+
+            // Create a new instance of MV_LevelsElement using the provided visual tree asset.
+            _levelElement = new LevelElement(level);
+
+            _foldoutMain.text = _level.Name;
+            _serialized = new(_level);
+            _levelElement.Bind(_serialized);
+
+            // Add the levels element to the foldout.
+            _foldoutMain.Add(_levelElement);
         }
 
         #endregion

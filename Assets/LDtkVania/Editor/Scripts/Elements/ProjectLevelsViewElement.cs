@@ -12,7 +12,7 @@ namespace LDtkVaniaEditor
     {
         #region Fields
 
-        private const string TemplateName = "ProjectInspector_Levels";
+        private const string TemplateName = "ProjectInspector_LevelsView";
 
         private List<MV_Level> _levels;
         private List<MV_Level> _searchableLevels = new();
@@ -54,7 +54,6 @@ namespace LDtkVaniaEditor
         }
 
         #endregion
-
 
         private void OnFilterButtonClicked()
         {

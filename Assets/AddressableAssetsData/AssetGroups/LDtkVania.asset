@@ -23,11 +23,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - LDtkLevels
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a26d07e3821e26442b643f5b0cb8e8e7
-    m_Address: LDtkVaniaProject
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 1ba21a4611ac85b4f95e8eab66dc3553, type: 2}
   m_SchemaSet:

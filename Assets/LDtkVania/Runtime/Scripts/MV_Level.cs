@@ -23,7 +23,13 @@ namespace LDtkVania
         private LDtkLevelFile _levelFile;
 
         [SerializeField]
-        private List<SceneField> _scenes;
+        private SceneField _scene;
+
+        [SerializeField]
+        private string _sceneAssetGuid;
+
+        [SerializeField]
+        private string _sceneAddressableKey;
 
         [SerializeField]
         private string _assetPath;
@@ -44,9 +50,12 @@ namespace LDtkVania
         public string Iid => _iid;
         public Object Asset => _asset;
 
-        public List<SceneField> Scenes => _scenes;
+        public SceneField Scene { get => _scene; set => _scene = value; }
+        public string SceneAssetGuid { get => _sceneAssetGuid; set => _sceneAssetGuid = value; }
+
         public string AssetPath => _assetPath;
         public string AddressableKey => _assetKey;
+        public string SceneAddressableKey => _sceneAddressableKey;
 
         public string Name => _name;
 

@@ -11,11 +11,10 @@ ScriptedImporter:
   _reimportOnDependencyChange: 1
   _jsonFile: {fileID: -164016180542632921, guid: df7f3fbd68adee24db1bda124d3e43be, type: 3}
   _pixelsPerUnit: 16
-  _atlas: {fileID: 4343727234628468602, guid: f9c30ae0e310d6e469d5bda8e2c51481, type: 2}
-  _customLevelPrefab: {fileID: 9019483895045756219, guid: c7bd5be3c32ee6f429b318a35c87c063, type: 3}
-  _deparentInRuntime: 0
+  _customLevelPrefab: {fileID: 4400579314322995303, guid: 29da767cee5b88840a7979bba5836271, type: 3}
   _intGridValueColorsVisible: 0
   _useCompositeCollider: 1
+  _geometryType: 0
   _createBackgroundColor: 0
   _createLevelBoundsTrigger: 0
   _intGridValues:

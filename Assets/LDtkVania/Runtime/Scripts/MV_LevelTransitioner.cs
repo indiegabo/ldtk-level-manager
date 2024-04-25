@@ -6,7 +6,7 @@ using LDtkVania.Transitioning;
 
 namespace LDtkVania
 {
-    [CreateAssetMenu(fileName = "Level Transitioner", menuName = "Handy Tools/Metroidvania/Gameplay/Levels/Level Transitioner")]
+    [CreateAssetMenu(fileName = "Level Transitioner", menuName = "LDtkVania/Level Transitioner")]
     public class MV_LevelTransitioner : ScriptableObject
     {
         #region Inspector
@@ -66,7 +66,7 @@ namespace LDtkVania
             List<ITransition> openTransitions = null
         )
         {
-            if (!MV_Project.Instance.TryGetLevel(levelIid, out MV_Level metroidvaniaLevel))
+            if (!MV_LevelManager.Instance.TryGetLevel(levelIid, out MV_Level metroidvaniaLevel))
             {
 
                 MV_Logger.Error($"Level {levelIid} not found in level dictionary");

@@ -1,10 +1,12 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Assets/LDtkVania/Resources/Style_Level.uss?fileID=7433441132597879392&amp;guid=29cac97f9a0a8214e911f21f7fa01b2d&amp;type=3#Style_Level" />
+    <Style src="project://database/Assets/LDtkVania/Resources/Styles/Level_style.uss?fileID=7433441132597879392&amp;guid=29cac97f9a0a8214e911f21f7fa01b2d&amp;type=3#Level_style" />
     <ui:VisualElement name="container-iid" style="flex-grow: 0; flex-direction: row; flex-shrink: 1;">
         <ui:TextField picking-mode="Ignore" label="Iid" binding-path="_iid" name="field-iid" readonly="true" class="level-field" />
         <ui:Button text="Copy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-iid-copy" style="width: 40px;" />
     </ui:VisualElement>
-    <uie:PropertyField binding-path="_scenes" label="Aggregate Scenes" name="field-scenes" />
+    <ui:Button text="Add Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-add-scene" />
+    <ui:Button text="Remove Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-remove-scene" />
+    <uie:PropertyField binding-path="_scene" label="Aggregate Scenes" name="field-scenes" />
     <ui:Foldout text="Info" name="foldout-info" value="false" style="margin-left: 12px;">
         <uie:PropertyField name="field-asset" binding-path="_asset" label="Asset" class="level-info" />
         <uie:PropertyField name="field-ldtk-asset" binding-path="_levelFile" label="LDtk File" class="level-info" />
