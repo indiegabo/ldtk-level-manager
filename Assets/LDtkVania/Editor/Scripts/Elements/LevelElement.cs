@@ -7,8 +7,10 @@ using UnityEditor;
 
 namespace LDtkVaniaEditor
 {
-    public class MV_LevelsElement : VisualElement
+    public class LevelElement : VisualElement
     {
+        private const string TemplateName = "LevelInspector";
+
         private TextField _fieldIid;
         private Button _buttonIidCopy;
         private PropertyField _fieldAsset;
@@ -17,9 +19,9 @@ namespace LDtkVaniaEditor
         private TextField _fieldAddressableKey;
         private PropertyField _fieldScenes;
 
-        public MV_LevelsElement(VisualTreeAsset template)
+        public LevelElement()
         {
-            TemplateContainer container = template.Instantiate();
+            TemplateContainer container = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
 
             _fieldIid = container.Q<TextField>("field-iid");
             _fieldIid.SetEnabled(false);

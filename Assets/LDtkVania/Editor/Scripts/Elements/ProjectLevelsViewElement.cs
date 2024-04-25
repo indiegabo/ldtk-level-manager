@@ -1,52 +1,60 @@
-using System.Collections.Generic;
-using LDtkVania;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using LDtkVania;
+using UnityEditor.UIElements;
+using LDtkUnity;
+using UnityEditor;
+using System.Collections.Generic;
 
 namespace LDtkVaniaEditor
 {
-    [CustomEditor(typeof(MV_Project))]
-    public class MV_ProjectInspector : Editor
+    public class ProjectLevelsViewElement : VisualElement
     {
-        public VisualTreeAsset _inspectorTree;
-        public VisualTreeAsset _levelInspectorTree;
+        #region Fields
 
-        private List<MV_Level> _levels = new();
+        private const string TemplateName = "ProjectInspector_Levels";
+
+        private List<MV_Level> _levels;
         private List<MV_Level> _searchableLevels = new();
 
+        private TemplateContainer _containerMain;
         private ListView _listLevels;
         private TextField _fieldFilterName;
         private Button _buttonFilter;
 
-        public override VisualElement CreateInspectorGUI()
+        #endregion
+
+        #region Properties
+
+        #endregion
+
+        #region Constructors
+
+        public ProjectLevelsViewElement(List<MV_Level> levels)
         {
-            _levels = MV_Project.Instance.GetLevels();
+            _levels = levels;
 
-            // Create a new VisualElement to be the root of our Inspector UI.
-            VisualElement myInspector = new();
-            TemplateContainer template = _inspectorTree.Instantiate();
+            _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
 
-            // Fetching 
-            _fieldFilterName = template.Q<TextField>("field-filter-name");
+            _fieldFilterName = _containerMain.Q<TextField>("field-filter-name");
 
-            _buttonFilter = template.Q<Button>("button-filter");
+            _buttonFilter = _containerMain.Q<Button>("button-filter");
             _buttonFilter.clicked += OnFilterButtonClicked;
 
-            _listLevels = template.Q<ListView>("list-levels");
-            _listLevels.makeItem = () => new MV_LevelsListElement(_levelInspectorTree);
+            _listLevels = _containerMain.Q<ListView>("list-levels");
+            _listLevels.makeItem = () => new LevelListItemElement();
             _listLevels.bindItem = (e, i) =>
             {
-                MV_LevelsListElement item = e as MV_LevelsListElement;
+                LevelListItemElement item = e as LevelListItemElement;
                 item.Level = _searchableLevels[i];
             };
 
             PopulateSearchablesWithAll();
-
-            myInspector.Add(template);
-            // Return the finished Inspector UI.
-            return myInspector;
+            Add(_containerMain);
         }
+
+        #endregion
+
 
         private void OnFilterButtonClicked()
         {

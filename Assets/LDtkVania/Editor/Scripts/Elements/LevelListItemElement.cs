@@ -7,13 +7,13 @@ using UnityEditor;
 
 namespace LDtkVaniaEditor
 {
-    public class MV_LevelsListElement : VisualElement
+    public class LevelListItemElement : VisualElement
     {
         #region Fields
 
         private MV_Level _level;
 
-        MV_LevelsElement _levelsElement;
+        LevelElement _levelElement;
         SerializedObject _serialized;
         private Foldout _foldoutMain;
 
@@ -29,7 +29,7 @@ namespace LDtkVaniaEditor
                 _level = value;
                 _foldoutMain.text = _level.Name;
                 _serialized = new(_level);
-                _levelsElement.Bind(_serialized);
+                _levelElement.Bind(_serialized);
             }
         }
 
@@ -38,13 +38,13 @@ namespace LDtkVaniaEditor
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MV_LevelsListElement"/> class.
+        /// Initializes a new instance of the <see cref="LevelListItemElement"/> class.
         /// </summary>
         /// <param name="tree">The visual tree asset to be used for creating the levels element.</param>
-        public MV_LevelsListElement(VisualTreeAsset tree)
+        public LevelListItemElement()
         {
             // Create a new instance of MV_LevelsElement using the provided visual tree asset.
-            _levelsElement = new MV_LevelsElement(tree);
+            _levelElement = new LevelElement();
 
             // Create a new foldout with its value set to false.
             _foldoutMain = new Foldout()
@@ -53,7 +53,7 @@ namespace LDtkVaniaEditor
             };
 
             // Add the levels element to the foldout.
-            _foldoutMain.Add(_levelsElement);
+            _foldoutMain.Add(_levelElement);
 
             // Add the foldout to the current instance of MV_LevelsListElement.
             Add(_foldoutMain);

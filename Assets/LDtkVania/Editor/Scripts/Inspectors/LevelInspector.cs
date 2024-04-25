@@ -6,13 +6,13 @@ using UnityEngine.UIElements;
 namespace LDtkVaniaEditor
 {
     [CustomEditor(typeof(MV_Level))]
-    public class MV_LevelInspector : Editor
+    public class LevelInspector : Editor
     {
         public VisualTreeAsset _inspectorXML;
 
         public override VisualElement CreateInspectorGUI()
         {
-            MV_LevelsElement levelsElement = new(_inspectorXML);
+            LevelElement levelsElement = new();
             return levelsElement;
         }
     }
