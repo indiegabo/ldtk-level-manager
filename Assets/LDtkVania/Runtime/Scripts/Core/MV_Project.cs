@@ -175,12 +175,17 @@ namespace LDtkVania
         {
             if (level == null) return;
 
+            if (!string.IsNullOrEmpty(level.SceneAssetGuid))
+            {
+                AssetDatabase.DeleteAsset(AssetDatabase.GUIDToAssetPath(level.SceneAssetGuid));
+            }
+
+            AssetDatabase.RemoveObjectFromAsset(level);
+
             if (_levels.ContainsKey(level.Iid))
             {
                 _levels.Remove(level.Iid);
             }
-
-            AssetDatabase.RemoveObjectFromAsset(level);
         }
 
         public void Remove(string iid)

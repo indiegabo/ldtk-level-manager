@@ -89,7 +89,8 @@ namespace LDtkVania
             if (asset != null)
             {
                 _asset = asset;
-                _name = asset.name;
+                _name = _asset.name;
+                name = _asset.name;
             }
 
             if (ldtkFile != null)

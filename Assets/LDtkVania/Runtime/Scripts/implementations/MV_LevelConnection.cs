@@ -2,43 +2,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LDtkUnity;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace LDtkVania
 {
-    public class MV_LevelConnection : MonoBehaviour, MV_IConnection
+    public class MV_LevelConnection : MonoBehaviour, IConnection
     {
         #region Inspector
 
         [SerializeField]
-        private BoxCollider2D _collider2D;
-
         private string _playerTag;
 
         [SerializeField]
-        private List<string> _transitionsTargets;
-
-        [SerializeField]
-        private float _colliderWidth;
-
-        [SerializeField]
-        private float _colliderHeight;
-
-        [SerializeField]
-        private float _colliderVerticalOffset;
-
-        [SerializeField]
-        private float _colliderHorizontalOffset;
-
-        [SerializeField]
         private UnityEvent _used;
+
+        [Button]
+        public void TriggerLevelTransition()
+        {
+            _ = TransitionTask();
+        }
 
         #endregion
 
         #region Fields
 
         private LDtkFields _fields;
+        private BoxCollider2D _collider2D;
+
         private bool _active;
         private bool _transitioning;
 
@@ -47,16 +39,29 @@ namespace LDtkVania
         private Vector2 _spawnPosition;
         private int _directionSign;
 
+
+        private float _colliderWidth;
+        private float _colliderHeight;
+        private float _colliderVerticalOffset;
+        private float _colliderHorizontalOffset;
+
         #endregion
 
         #region Getters
 
         public UnityEvent Used => _used;
-
-        string MV_IConnection.TargetLevelIid => _targetLevelIid;
-        string MV_IConnection.Key => _key;
-        Vector2 MV_IConnection.SpawnPosition => _spawnPosition;
-        public int DirectionSign => _directionSign;
+        public LDtkFields Fields
+        {
+            get
+            {
+                if (_fields == null)
+                {
+                    _fields = GetComponent<LDtkFields>();
+                    Setup(_fields);
+                }
+                return _fields;
+            }
+        }
 
         #endregion
 
@@ -64,21 +69,31 @@ namespace LDtkVania
 
         private void Awake()
         {
-            _fields = GetComponent<LDtkFields>();
-            Setup(_fields);
         }
 
         #endregion
 
-        #region Activation
+        #region IConnection
 
-        void MV_IConnection.Activate()
+        string IConnection.TargetLevelIid => _targetLevelIid;
+        string IConnection.Key => _key;
+        Vector2 IConnection.SpawnPoint => _spawnPosition;
+        public int FacingSign => _directionSign;
+
+        void IConnection.Initialize()
+        {
+            _collider2D = GetComponent<BoxCollider2D>();
+            _fields = GetComponent<LDtkFields>();
+            Setup(_fields);
+        }
+
+        void IConnection.Activate()
         {
             gameObject.SetActive(true);
             _active = true;
         }
 
-        void MV_IConnection.Deactivate()
+        void IConnection.Deactivate()
         {
             _active = false;
             gameObject.SetActive(false);
@@ -96,13 +111,11 @@ namespace LDtkVania
             _spawnPosition = fields.GetPoint("SpawnPosition");
             _directionSign = fields.GetInt("DirectionSign");
 
-            // _transitionsTargets = fields.GetStringArray(_globalTransitionsTargetsKey).ToList();
+            _colliderWidth = fields.GetFloat("ColliderWidth");
+            _colliderHeight = fields.GetFloat("ColliderHeight");
 
-            // _colliderWidth = fields.GetFloat(_colliderWidthKey);
-            // _colliderHeight = fields.GetFloat(_colliderHeightKey);
-
-            // _colliderVerticalOffset = fields.GetFloat(_colliderVerticalOffsetKey);
-            // _colliderHorizontalOffset = fields.GetFloat(_colliderHorizontalOffsetKey);
+            _colliderVerticalOffset = fields.GetFloat("ColliderVerticalOffset");
+            _colliderHorizontalOffset = fields.GetFloat("ColliderHorizontalOffset");
 
             SetupPosition();
             SetupCollider();
@@ -151,7 +164,7 @@ namespace LDtkVania
             _collider2D.size = new Vector2(_colliderWidth, _colliderHeight);
         }
 
-        private async Task TriggerLevelTransition()
+        private async Task TransitionTask()
         {
             _transitioning = true;
             await MV_LevelTransitioner.Instance.TransitionInto(this);
@@ -162,7 +175,7 @@ namespace LDtkVania
         {
             if (!_active || _transitioning || !otherCollider.gameObject.CompareTag(_playerTag)) return;
             _used.Invoke();
-            _ = TriggerLevelTransition();
+            _ = TransitionTask();
         }
 
         #endregion

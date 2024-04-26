@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace LDtkVania
 {
-    [CreateAssetMenu(fileName = "Player Control Bridge", menuName = "MV/Player Control/Player Control Bridge")]
+    [CreateAssetMenu(fileName = "Player Control Bridge", menuName = "LDtkVania/Player Control/Bridge")]
     public class MV_PlayerControlBridge : ScriptableObject
     {
         #region Inspector     

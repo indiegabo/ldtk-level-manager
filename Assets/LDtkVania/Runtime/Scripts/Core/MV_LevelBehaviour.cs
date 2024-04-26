@@ -14,9 +14,6 @@ namespace LDtkVania
         #region Inspector
 
         [SerializeField]
-        private bool _waitOnCameraBlend = true;
-
-        [SerializeField]
         private GameObjectProvider _mainCharacterProvider;
 
         [SerializeField]
@@ -37,15 +34,12 @@ namespace LDtkVania
 
         private LDtkIid _ldtkIid;
 
-        private CinemachineBrain _cinemachineBrain;
         private MV_Level _mvLevel;
 
         private MV_LevelDefaultSpawnPoint _defaultSpawnPoint;
 
-        private bool _waitingOnBlend = false;
-
-        private Dictionary<string, MV_IConnection> _connections;
-        private Dictionary<string, MV_ICheckpoint> _checkpoints;
+        private Dictionary<string, IConnection> _connections;
+        private Dictionary<string, ILevelAnchor> _checkpoints;
 
         #endregion
 
@@ -76,10 +70,7 @@ namespace LDtkVania
 
             BroadcastMessage("OnLevelAwake", this, SendMessageOptions.DontRequireReceiver);
 
-            if (Camera.main != null)
-                _cinemachineBrain = Camera.main.GetComponent<CinemachineBrain>();
-
-            EvaluateConnections();
+            InitializeConnections();
             EvaluateCheckpoints();
 
             MV_LevelManager.Instance.RegisterAsBehaviour(_ldtkIid.Iid, this);
@@ -99,7 +90,7 @@ namespace LDtkVania
         /// </summary>
         /// <param name="trail"></param>
         /// <returns></returns>
-        public async Task Prepare()
+        public void Prepare()
         {
             if (_defaultSpawnPoint == null)
             {
@@ -110,37 +101,34 @@ namespace LDtkVania
             Vector2 point = _defaultSpawnPoint.transform.position;
             _preparationStartedEvent.Invoke(this, point);
             SpawnCharacter(point, _defaultSpawnPoint.DirectionSign);
-            await WaitOnCameraBlend();
             _preparedEvent.Invoke(this, MV_LevelTrail.FromPoint(point));
 
         }
 
-        public async Task Prepare(MV_ICheckpoint checkpoint)
+        public void Prepare(ILevelAnchor checkpoint)
         {
-            if (!_checkpoints.TryGetValue(checkpoint.Iid, out MV_ICheckpoint registeredCheckpoint))
+            if (!_checkpoints.TryGetValue(checkpoint.AnchorIid, out ILevelAnchor registeredCheckpoint))
             {
-                MV_Logger.Error($"{name} could not be prepared because {checkpoint.Iid} is not present on dictionary", this);
+                MV_Logger.Error($"{name} could not be prepared because {checkpoint.AnchorIid} is not present on dictionary", this);
                 return;
             }
 
-            _preparationStartedEvent.Invoke(this, registeredCheckpoint.SpawnPosition);
-            SpawnCharacter(registeredCheckpoint.SpawnPosition, registeredCheckpoint.DirectionSign);
-            await WaitOnCameraBlend();
+            _preparationStartedEvent.Invoke(this, registeredCheckpoint.SpawnPoint);
+            SpawnCharacter(registeredCheckpoint.SpawnPoint, registeredCheckpoint.FacingSign);
             _preparedEvent.Invoke(this, MV_LevelTrail.FromCheckpoint(checkpoint));
         }
 
-        public async Task Prepare(MV_IConnection connection)
+        public void Prepare(IConnection connection)
         {
-            if (!_checkpoints.TryGetValue(connection.Key, out MV_ICheckpoint registeredCheckpoint))
+            if (!_connections.TryGetValue(connection.Key, out IConnection registeredConnection))
             {
                 MV_Logger.Error($"{name} could not be prepared because the connection key \"{connection.Key}\" is not present on dictionary", this);
                 return;
             }
 
-            _preparationStartedEvent.Invoke(this, connection.SpawnPosition);
-            SpawnCharacter(connection.SpawnPosition, connection.DirectionSign);
-            await WaitOnCameraBlend();
-            _preparedEvent.Invoke(this, MV_LevelTrail.FromConnection(connection));
+            _preparationStartedEvent.Invoke(this, registeredConnection.SpawnPoint);
+            SpawnCharacter(registeredConnection.SpawnPoint, registeredConnection.FacingSign);
+            _preparedEvent.Invoke(this, MV_LevelTrail.FromConnection(registeredConnection));
         }
 
         /// <summary>
@@ -166,9 +154,9 @@ namespace LDtkVania
 
         #region Connections
 
-        private void EvaluateConnections()
+        private void InitializeConnections()
         {
-            _connections = new Dictionary<string, MV_IConnection>();
+            _connections = new Dictionary<string, IConnection>();
 
             string connectionsContainerName = MV_LevelManager.Instance.ConnectionsContainerName;
 
@@ -176,12 +164,15 @@ namespace LDtkVania
                 ? transform.Find(connectionsContainerName)
                 : transform;
 
+            if (connectionsContainer == null) return;
+
             _defaultSpawnPoint = connectionsContainer.GetComponentInChildren<MV_LevelDefaultSpawnPoint>();
 
-            MV_IConnection[] connectionsComponents = connectionsContainer.GetComponentsInChildren<MV_IConnection>();
+            IConnection[] connectionsComponents = connectionsContainer.GetComponentsInChildren<IConnection>();
 
-            foreach (MV_IConnection connection in connectionsComponents)
+            foreach (IConnection connection in connectionsComponents)
             {
+                connection.Initialize();
                 if (_connections.ContainsKey(connection.Key))
                 {
                     MV_Logger.Warning($"{name} has more than one connection with the same key: {connection.Key}. Using the first found", this);
@@ -195,7 +186,7 @@ namespace LDtkVania
         {
             if (_connections == null) return;
 
-            foreach (MV_IConnection connection in _connections.Values)
+            foreach (IConnection connection in _connections.Values)
             {
                 connection.Activate();
             }
@@ -205,7 +196,7 @@ namespace LDtkVania
         {
             if (_connections == null) return;
 
-            foreach (MV_IConnection connection in _connections.Values)
+            foreach (IConnection connection in _connections.Values)
             {
                 connection.Deactivate();
             }
@@ -217,22 +208,22 @@ namespace LDtkVania
 
         private void EvaluateCheckpoints()
         {
-            _checkpoints = new Dictionary<string, MV_ICheckpoint>();
+            _checkpoints = new Dictionary<string, ILevelAnchor>();
 
             Transform checkpointsContainer = transform.Find(MV_LevelManager.Instance.CheckpointsContainerName);
 
             if (checkpointsContainer == null) return;
 
-            MV_ICheckpoint[] checkpointsComponents = checkpointsContainer.GetComponentsInChildren<MV_ICheckpoint>();
+            ILevelAnchor[] checkpointsComponents = checkpointsContainer.GetComponentsInChildren<ILevelAnchor>();
 
-            foreach (MV_ICheckpoint checkpoint in checkpointsComponents)
+            foreach (ILevelAnchor checkpoint in checkpointsComponents)
             {
-                if (_checkpoints.ContainsKey(checkpoint.Iid))
+                if (_checkpoints.ContainsKey(checkpoint.AnchorIid))
                 {
-                    MV_Logger.Warning($"{name} has more than one checkpoint with the same key: {checkpoint.Iid}. Using the first found", this);
+                    MV_Logger.Warning($"{name} has more than one checkpoint with the same key: {checkpoint.AnchorIid}. Using the first found", this);
                 }
 
-                _checkpoints.Add(checkpoint.Iid, checkpoint);
+                _checkpoints.Add(checkpoint.AnchorIid, checkpoint);
             }
         }
 
@@ -242,57 +233,13 @@ namespace LDtkVania
 
         private void SpawnCharacter(Vector2 position, int directionSign)
         {
-            if (!_mainCharacterProvider.TryGetComponent(out MV_ILevelSpawnSubject spawnSubject))
+            if (!_mainCharacterProvider.TryGetComponent(out ILevelSpawnSubject spawnSubject))
             {
-                MV_Logger.Error($"{name} could not find an ({nameof(MV_ILevelSpawnSubject)}) to spawn", this);
+                MV_Logger.Error($"{name} could not find an ({nameof(ILevelSpawnSubject)}) to spawn", this);
                 return;
             }
 
             spawnSubject.Spawn(position, directionSign);
-        }
-
-        #endregion
-
-        #region Camera
-
-        private async Task WaitOnCameraBlend()
-        {
-            if (!_waitOnCameraBlend) return;
-
-            _waitingOnBlend = true;
-
-            StartCoroutine(DelayForCameraBlendDuration());
-
-            while (_waitingOnBlend)
-            {
-                await Task.Yield();
-            }
-        }
-
-
-        private IEnumerator DelayForCameraBlendDuration()
-        {
-            if (_cinemachineBrain == null)
-            {
-                _waitingOnBlend = false;
-                yield break;
-            }
-
-            yield return Coroutines.GetWaitForSeconds(0.5f);
-
-            CinemachineBlend blend = _cinemachineBrain.ActiveBlend;
-
-            if (blend != null)
-            {
-                float duration = blend.Duration - 0.5f;
-
-                if (duration > 0)
-                {
-                    yield return Coroutines.GetWaitForSeconds(duration);
-                }
-            }
-
-            _waitingOnBlend = false;
         }
 
         #endregion

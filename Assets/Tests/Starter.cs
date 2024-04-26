@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using LDtkUnity;
 using LDtkVania;
 using UnityEngine;
@@ -7,16 +8,26 @@ public class Starter : MonoBehaviour
     #region Inspector
 
     [SerializeField] private MV_LevelManager _levelManager;
-    [SerializeField] private LDtkLevelFile _levelFile;
+    [SerializeField] private MV_Level _level;
+    [SerializeField] private MV_PlayerControlBridge _playerControlBridge;
 
     #endregion
 
     #region Behaviour
 
-    private void Awake()
+    private void Start()
     {
-        Level level = _levelFile.FromJson;
-        _ = _levelManager.FullLevelLoad(level.Iid, MV_LevelLoadMode.LoadAndEnter);
+        _ = LoadLevel();
+    }
+
+    #endregion
+
+    #region Loading
+
+    private async Task LoadLevel()
+    {
+        await _levelManager.FullLevelLoad(_level.Iid, MV_LevelLoadMode.LoadAndEnter);
+        _playerControlBridge.GiveControl();
     }
 
     #endregion

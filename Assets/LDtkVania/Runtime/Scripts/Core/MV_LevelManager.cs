@@ -127,14 +127,16 @@ namespace LDtkVania
             _loadedObjects.Clear();
             _loadedScenes.Clear();
 
-            await LoadLevelAndNeighboursAsync(level);
+            await LoadNeighboursAsync(level);
 
             if (!mode.Equals(MV_LevelLoadMode.LoadAndEnter))
             {
                 return;
             };
 
-            await Prepare(level, loadNeighbours: false); // Neighbours already fully loaded.
+            _currentLevel = level;
+            _currentBehaviour = _registeredBehaviours[_currentLevel.Iid];
+            _currentBehaviour.Prepare();
 
             EnterLevel();
         }
@@ -145,7 +147,7 @@ namespace LDtkVania
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
-        public async Task Prepare(MV_Level level, bool loadNeighbours = true)
+        public void Prepare(MV_Level level)
         {
             if (string.IsNullOrEmpty(level.Iid))
             {
@@ -161,11 +163,9 @@ namespace LDtkVania
 
             _currentLevel = level;
             _currentBehaviour = _registeredBehaviours[_currentLevel.Iid];
+            _ = LoadNeighboursAsync(_currentLevel);
 
-            if (loadNeighbours)
-                await LoadLevelAndNeighboursAsync(_currentLevel);
-
-            await _currentBehaviour.Prepare();
+            _currentBehaviour.Prepare();
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace LDtkVania
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
-        public async Task PrepareLevel(string iid, bool loadNeighbours = true)
+        public void PrepareLevel(string iid)
         {
             if (!TryGetLevel(iid, out MV_Level level))
             {
@@ -191,10 +191,9 @@ namespace LDtkVania
             _currentLevel = level;
             _currentBehaviour = levelBehaviour;
 
-            if (loadNeighbours)
-                await LoadLevelAndNeighboursAsync(_currentLevel);
+            _ = LoadNeighboursAsync(_currentLevel);
 
-            await _currentBehaviour.Prepare();
+            _currentBehaviour.Prepare();
         }
 
         /// <summary>
@@ -203,7 +202,7 @@ namespace LDtkVania
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
-        public async Task PrepareLevel(MV_ICheckpoint checkpoint, bool loadNeighbours = true)
+        public void PrepareLevel(ILevelAnchor checkpoint)
         {
             string iid = checkpoint.LevelIId;
 
@@ -222,13 +221,12 @@ namespace LDtkVania
             _currentLevel = level;
             _currentBehaviour = levelBehaviour;
 
-            if (loadNeighbours)
-                await LoadLevelAndNeighboursAsync(_currentLevel);
+            _ = LoadNeighboursAsync(_currentLevel);
 
-            await _currentBehaviour.Prepare(checkpoint);
+            _currentBehaviour.Prepare(checkpoint);
         }
 
-        public async Task PrepareLevel(MV_IConnection connection, bool loadNeighbours = true)
+        public void PrepareLevel(IConnection connection)
         {
             string iid = connection.TargetLevelIid;
 
@@ -247,10 +245,9 @@ namespace LDtkVania
             _currentLevel = level;
             _currentBehaviour = _registeredBehaviours[_currentLevel.Iid];
 
-            if (loadNeighbours)
-                await LoadLevelAndNeighboursAsync(_currentLevel);
+            _ = LoadNeighboursAsync(_currentLevel);
 
-            await _currentBehaviour.Prepare(connection);
+            _currentBehaviour.Prepare(connection);
         }
 
         public void EnterLevel()
@@ -262,8 +259,6 @@ namespace LDtkVania
             }
 
             _currentBehaviour.Enter();
-            // Debug.Log(trail.spawnPosition);
-            // Debug.Log(trail.connectionKey);
             _levelEnteredEvent.Invoke(_currentLevel);
         }
 
@@ -282,7 +277,7 @@ namespace LDtkVania
 
         #region Loading Neighbours
 
-        private async Task LoadLevelAndNeighboursAsync(MV_Level level)
+        private async Task LoadNeighboursAsync(MV_Level level)
         {
             _shouldBeLoaded.Clear();
             _shouldBeUnloaded.Clear();
@@ -404,12 +399,14 @@ namespace LDtkVania
 
             if (_loadedScenes.TryGetValue(iid, out SceneInstance sceneInstance))
             {
-                AsyncOperationHandle handle = Addressables.UnloadSceneAsync(sceneInstance);
+                AsyncOperationHandle handle = Addressables.UnloadSceneAsync(sceneInstance, false);
                 await handle.Task;
 
                 if (handle.Status != AsyncOperationStatus.Succeeded)
                 {
                     MV_Logger.Error($"Async operation for unloading level {level.Name} as a scene failed.", this);
+                    MV_Logger.Warning($"Handle status: {handle.Status}");
+                    MV_Logger.Warning($"{handle.OperationException?.StackTrace}");
                     return;
                 }
 

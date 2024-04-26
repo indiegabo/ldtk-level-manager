@@ -1,15 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using LDtkVania;
+using TarodevController;
 using UnityEngine;
 
-public class Character : MonoBehaviour, MV_ILevelSpawnSubject
+public class Character : MonoBehaviour, ILevelSpawnSubject
 {
     [SerializeField] private GameObjectProvider _characterProvider;
+    [SerializeField] private MV_PlayerControlBridge _playerControlBridge;
+
+    private PlayerController _playerController;
+    private Rigidbody2D _rb;
 
     private void Awake()
     {
+        _rb = GetComponent<Rigidbody2D>();
         _characterProvider.Register(gameObject);
+        _playerController = GetComponent<PlayerController>();
+    }
+
+    private void OnEnable()
+    {
+        _playerControlBridge.PlayerControlChanged.AddListener(OnPlayerControlChanged);
+        if (_playerControlBridge.IsControlled)
+        {
+            _playerController.GiveControl();
+        }
+    }
+
+    private void OnDisable()
+    {
+        _playerControlBridge.PlayerControlChanged.RemoveListener(OnPlayerControlChanged);
     }
 
     private void OnDestroy()
@@ -19,6 +38,20 @@ public class Character : MonoBehaviour, MV_ILevelSpawnSubject
 
     public void Spawn(Vector2 position, int directionSign)
     {
-        transform.position = position;
+        transform.position = new Vector3(position.x, position.y - 0.5f, transform.position.z);
+    }
+
+    private void OnPlayerControlChanged(bool shouldControl)
+    {
+        if (shouldControl)
+        {
+            _rb.velocity = Vector3.zero;
+            _playerController.GiveControl();
+        }
+        else
+        {
+            _rb.velocity = Vector3.zero;
+            _playerController.RemoveControl();
+        }
     }
 }
