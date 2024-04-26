@@ -7,50 +7,14 @@ using UnityEngine.Events;
 
 namespace LDtkVania
 {
-    public class MV_LevelConnection : MonoBehaviour, ILDtkImportedFields
+    public class MV_LevelConnection : MonoBehaviour, MV_IConnection
     {
         #region Inspector
-
-        [SerializeField]
-        private MV_LevelTransitioner _transitioner;
 
         [SerializeField]
         private BoxCollider2D _collider2D;
 
         private string _playerTag;
-
-        [SerializeField]
-        private string _targetLevelKey;
-
-        [SerializeField]
-        private string _spawnPositionKey;
-
-        [SerializeField]
-        private string _connectionKeyKey;
-
-        [SerializeField]
-        private string _globalTransitionsTargetsKey;
-
-        [SerializeField]
-        private string _directionSignKey;
-
-        [SerializeField]
-        private string _colliderWidthKey;
-
-        [SerializeField]
-        private string _colliderHeightKey;
-
-        [SerializeField]
-        private string _colliderVerticalOffsetKey;
-
-        [SerializeField]
-        private string _colliderHorizontalOffsetKey;
-
-        [SerializeField]
-        private string _targetLevelIid;
-
-        [SerializeField]
-        private MV_LevelTrail _trail;
 
         [SerializeField]
         private List<string> _transitionsTargets;
@@ -67,11 +31,6 @@ namespace LDtkVania
         [SerializeField]
         private float _colliderHorizontalOffset;
 
-        private void TriggerSetup()
-        {
-            Setup(Fields);
-        }
-
         [SerializeField]
         private UnityEvent _used;
 
@@ -83,32 +42,21 @@ namespace LDtkVania
         private bool _active;
         private bool _transitioning;
 
+        private string _key;
+        private string _targetLevelIid;
+        private Vector2 _spawnPosition;
+        private int _directionSign;
+
         #endregion
 
         #region Getters
 
-        public Vector2 EnterSpawnPosition => _trail.SpawnPosition;
-        public int DirectionSign => _trail.DirectionSign;
-
-        public MV_LevelTrail Trail => _trail;
-
-        public LDtkFields Fields
-        {
-            get
-            {
-                if (_fields == null)
-                {
-                    _fields = GetComponent<LDtkFields>();
-                    if (_fields == null)
-                    {
-                        MV_Logger.Error("Could not find LDtkFields component", this);
-                    }
-                };
-                return _fields;
-            }
-        }
-
         public UnityEvent Used => _used;
+
+        string MV_IConnection.TargetLevelIid => _targetLevelIid;
+        string MV_IConnection.Key => _key;
+        Vector2 MV_IConnection.SpawnPosition => _spawnPosition;
+        public int DirectionSign => _directionSign;
 
         #endregion
 
@@ -116,29 +64,21 @@ namespace LDtkVania
 
         private void Awake()
         {
-            Setup(Fields);
-        }
-
-        #endregion
-
-        #region LDtk Fields
-
-        public void OnLDtkImportFields(LDtkFields fields)
-        {
-            Setup(fields);
+            _fields = GetComponent<LDtkFields>();
+            Setup(_fields);
         }
 
         #endregion
 
         #region Activation
 
-        public void Activate()
+        void MV_IConnection.Activate()
         {
             gameObject.SetActive(true);
             _active = true;
         }
 
-        public void Deactivate()
+        void MV_IConnection.Deactivate()
         {
             _active = false;
             gameObject.SetActive(false);
@@ -151,22 +91,18 @@ namespace LDtkVania
 
         private void Setup(LDtkFields fields)
         {
-            _targetLevelIid = fields.GetString(_targetLevelKey);
+            _targetLevelIid = fields.GetString("TargetLevelIid");
+            _key = fields.GetString("ConnectionKey");
+            _spawnPosition = fields.GetPoint("SpawnPosition");
+            _directionSign = fields.GetInt("DirectionSign");
 
-            _trail = new MV_LevelTrail
-            {
-                ConnectionKey = fields.GetString(_connectionKeyKey),
-                SpawnPosition = fields.GetPoint(_spawnPositionKey).CenterInUnit(),
-                DirectionSign = fields.GetInt(_directionSignKey)
-            };
+            // _transitionsTargets = fields.GetStringArray(_globalTransitionsTargetsKey).ToList();
 
-            _transitionsTargets = fields.GetStringArray(_globalTransitionsTargetsKey).ToList();
+            // _colliderWidth = fields.GetFloat(_colliderWidthKey);
+            // _colliderHeight = fields.GetFloat(_colliderHeightKey);
 
-            _colliderWidth = fields.GetFloat(_colliderWidthKey);
-            _colliderHeight = fields.GetFloat(_colliderHeightKey);
-
-            _colliderVerticalOffset = fields.GetFloat(_colliderVerticalOffsetKey);
-            _colliderHorizontalOffset = fields.GetFloat(_colliderHorizontalOffsetKey);
+            // _colliderVerticalOffset = fields.GetFloat(_colliderVerticalOffsetKey);
+            // _colliderHorizontalOffset = fields.GetFloat(_colliderHorizontalOffsetKey);
 
             SetupPosition();
             SetupCollider();
@@ -218,7 +154,7 @@ namespace LDtkVania
         private async Task TriggerLevelTransition()
         {
             _transitioning = true;
-            await _transitioner.TransitionIntoLevel(_targetLevelIid, _trail, _transitionsTargets);
+            await MV_LevelTransitioner.Instance.TransitionInto(this);
             _transitioning = false;
         }
 

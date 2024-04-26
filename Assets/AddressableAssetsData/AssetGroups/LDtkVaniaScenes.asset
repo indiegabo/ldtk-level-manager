@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: LDtkVaniaScenes
+  m_EditorClassIdentifier: 
+  m_GroupName: LDtkVaniaScenes
+  m_Data:
+    m_SerializedData: []
+  m_GUID: a55affece5b368c40af4769e4a2bd44d
+  m_SerializeEntries:
+  - m_GUID: 815435dee73780544a5226865c2cb83c
+    m_Address: LDtkSceneLevel_601a6d50-c640-11ed-8852-c79dd4f3aa7c
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - LDtkSceneLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3dea7dbcefa88fd44b1f0d54496535a9
+    m_Address: LDtkSceneLevel_708e2ae0-7820-11ed-9426-3bc681e9ee3d
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - LDtkSceneLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aaa382c3ab6abe140b113dc6f544b6c3
+    m_Address: LDtkSceneLevel_3e9a4410-7820-11ed-b3a0-432f751e5411
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - LDtkSceneLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: 1ba21a4611ac85b4f95e8eab66dc3553, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 189040724006c3040a1d1bd4bfa93d6b, type: 2}
+    - {fileID: 11400000, guid: ed0c195211919df4b812e0cba9677a1f, type: 2}

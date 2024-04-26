@@ -11,20 +11,24 @@ namespace LDtkVaniaEditor
     public class LevelElement : VisualElement
     {
         private const string TemplateName = "LevelInspector";
-        private const string LDtkVaniaSceneName = "LDtkVaniaScene";
+        private const string SceneLabelName = "LDtkVaniaScene";
+        private const string AddressableGroupName = "LDtkVaniaScenes";
+        private const string AddressableSceneLabel = "LDtkSceneLevel";
+        private const string SceneAddressPrefix = "LDtkSceneLevel";
 
         private MV_Level _level;
 
         private TextField _fieldIid;
 
         private Button _buttonIidCopy;
-        private Button _buttonAddScene;
-        private Button _buttonRemoveScene;
+        private Button _buttonCreateScene;
+        private Button _buttonDestroyScene;
 
         private PropertyField _fieldAsset;
         private PropertyField _fieldLDtkAsset;
         private TextField _fieldAssetPath;
         private TextField _fieldAddressableKey;
+        private TextField _fieldSceneAddressableKey;
         private PropertyField _fieldScene;
 
         public LevelElement(MV_Level level)
@@ -42,11 +46,22 @@ namespace LDtkVaniaEditor
                 _fieldIid.text.CopyToClipboard();
             };
 
-            _buttonAddScene = container.Q<Button>("button-add-scene");
-            _buttonAddScene.clicked += () => CreateScene();
+            _fieldScene = container.Q<PropertyField>("field-scene");
+            _fieldScene.SetEnabled(false);
 
-            _buttonRemoveScene = container.Q<Button>("button-remove-scene");
-            _buttonRemoveScene.clicked += () => RemoveScene();
+            _buttonCreateScene = container.Q<Button>("button-create-scene");
+            _buttonCreateScene.clicked += () =>
+            {
+                CreateScene();
+                EvaluateSceneDisplay();
+            };
+
+            _buttonDestroyScene = container.Q<Button>("button-destroy-scene");
+            _buttonDestroyScene.clicked += () =>
+            {
+                DestroyScene();
+                EvaluateSceneDisplay();
+            };
 
             _fieldAsset = container.Q<PropertyField>("field-asset");
             _fieldAsset.SetEnabled(false);
@@ -74,9 +89,36 @@ namespace LDtkVaniaEditor
                 _fieldAddressableKey.text.CopyToClipboard();
             };
 
-            _fieldScene = container.Q<PropertyField>("field-scenes");
+            _fieldSceneAddressableKey = container.Q<TextField>("field-scene-addressable-key");
+            _fieldSceneAddressableKey.SetEnabled(false);
 
+            Button buttonSceneAdreesableKeyCopy = container.Q<Button>("button-scene-addressable-key-copy");
+            buttonSceneAdreesableKeyCopy.clicked += () =>
+            {
+                if (string.IsNullOrEmpty(_fieldSceneAddressableKey.text)) return;
+                _fieldSceneAddressableKey.text.CopyToClipboard();
+            };
+
+            EvaluateSceneDisplay();
             Add(container);
+        }
+
+        private void EvaluateSceneDisplay()
+        {
+            if (string.IsNullOrEmpty(_level.SceneAssetGuid))
+            {
+                _fieldScene.style.display = DisplayStyle.None;
+                _buttonDestroyScene.style.display = DisplayStyle.None;
+
+                _buttonCreateScene.style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                _fieldScene.style.display = DisplayStyle.Flex;
+                _buttonDestroyScene.style.display = DisplayStyle.Flex;
+
+                _buttonCreateScene.style.display = DisplayStyle.None;
+            }
         }
 
         private void CreateScene()
@@ -88,6 +130,7 @@ namespace LDtkVaniaEditor
             }
 
             if (!RequestPathForUser(_level.Name, out string path)) return;
+
             GameObject ldtkLevelObject = PrefabUtility.InstantiatePrefab(_level.Asset) as GameObject;
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
             SceneManager.MoveGameObjectToScene(ldtkLevelObject, scene);
@@ -96,16 +139,22 @@ namespace LDtkVaniaEditor
             EditorSceneManager.CloseScene(scene, true);
 
             SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
-            _level.SceneAssetGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(sceneAsset));
+            string addressableAddress = $"{SceneAddressPrefix}_{_level.Iid}";
+            if (!sceneAsset.TrySetAsAddressable(addressableAddress, AddressableGroupName, AddressableSceneLabel))
+            {
+                MV_Logger.Error($"Could not set scene for level <color=#FFFFFF>{_level.Name}</color> as addressable. Please check the console for errors.", _level);
+            }
 
-            AssetDatabase.SetLabels(sceneAsset, new string[] { LDtkVaniaSceneName });
             _level.Scene = SceneField.FromAsset(sceneAsset);
+            _level.SceneAssetGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(sceneAsset));
+            _level.SceneAddressableKey = addressableAddress;
+            AssetDatabase.SetLabels(sceneAsset, new string[] { SceneLabelName });
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
 
-        private void RemoveScene()
+        private void DestroyScene()
         {
             if (!TryScenePath(_level.SceneAssetGuid, out string scenePath))
             {
@@ -129,11 +178,14 @@ namespace LDtkVaniaEditor
 
             _level.Scene = null;
             _level.SceneAssetGuid = null;
+            _level.SceneAddressableKey = null;
         }
 
         private bool RequestPathForUser(string levelName, out string scenePath)
         {
             string chosenPath = EditorUtility.OpenFolderPanel("Select a folder", Application.dataPath, "");
+
+            if (string.IsNullOrEmpty(chosenPath)) { scenePath = null; return false; }
 
             if (!chosenPath.StartsWith(Application.dataPath))
             {

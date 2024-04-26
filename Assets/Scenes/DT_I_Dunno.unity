@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &981056113
+--- !u!1001 &323264559
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -142,7 +142,7 @@ PrefabInstance:
     - target: {fileID: -3782989926940789401, guid: 06f65a889db371949af7b7151b1e66f4, type: 3}
       propertyPath: m_ColliderPaths.Array.data[0].m_Collider
       value: 
-      objectReference: {fileID: 981056114}
+      objectReference: {fileID: 323264560}
     - target: {fileID: -3782989926940789401, guid: 06f65a889db371949af7b7151b1e66f4, type: 3}
       propertyPath: m_CompositePaths.m_Paths.Array.data[0].Array.size
       value: 4
@@ -202,7 +202,7 @@ PrefabInstance:
     - target: {fileID: -858846090054667441, guid: 06f65a889db371949af7b7151b1e66f4, type: 3}
       propertyPath: m_ColliderPaths.Array.data[0].m_Collider
       value: 
-      objectReference: {fileID: 981056115}
+      objectReference: {fileID: 323264561}
     - target: {fileID: 473562989423569362, guid: 06f65a889db371949af7b7151b1e66f4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.0625
@@ -248,18 +248,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: -1934345717165055291, guid: 06f65a889db371949af7b7151b1e66f4, type: 3}
---- !u!19719996 &981056114 stripped
+--- !u!19719996 &323264560 stripped
 TilemapCollider2D:
   m_CorrespondingSourceObject: {fileID: -1004564285569138807, guid: 06f65a889db371949af7b7151b1e66f4, type: 3}
-  m_PrefabInstance: {fileID: 981056113}
+  m_PrefabInstance: {fileID: 323264559}
   m_PrefabAsset: {fileID: 0}
---- !u!19719996 &981056115 stripped
+--- !u!19719996 &323264561 stripped
 TilemapCollider2D:
   m_CorrespondingSourceObject: {fileID: 2425458106089991729, guid: 06f65a889db371949af7b7151b1e66f4, type: 3}
-  m_PrefabInstance: {fileID: 981056113}
+  m_PrefabInstance: {fileID: 323264559}
   m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 981056113}
+  - {fileID: 323264559}

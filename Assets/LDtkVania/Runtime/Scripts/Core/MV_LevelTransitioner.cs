@@ -6,19 +6,29 @@ using LDtkVania.Transitioning;
 
 namespace LDtkVania
 {
-    [CreateAssetMenu(fileName = "Level Transitioner", menuName = "LDtkVania/Level Transitioner")]
-    public class MV_LevelTransitioner : ScriptableObject
+    public class MV_LevelTransitioner : MonoBehaviour
     {
-        #region Inspector
+        #region Static
+
+        private static MV_LevelTransitioner _instance;
+        public static MV_LevelTransitioner Instance => _instance;
+
+        #endregion
+
+        #region Inspector        
+
+        [Tooltip("Mark this if you want this object to NOT be destroyed whe a new scene is loaded.")]
+        [SerializeField]
+        private bool _persistent = true;
+
+        [SerializeField]
+        private bool _alertAboutOtherInstances;
 
         [SerializeField]
         private MV_PlayerControlBridge _playerControlBridge;
 
         [SerializeField]
         private LevelTransitionsProvider _globalTransitionsProvider;
-
-        [SerializeField]
-        private MV_LevelManager _levelHandler;
 
         [SerializeField]
         private GameObjectProvider _mainCharacterProvider;
@@ -46,6 +56,32 @@ namespace LDtkVania
 
         #endregion
 
+        #region Behaviour
+
+        private void Awake()
+        {
+            MV_LevelTransitioner currentInstance = Instance;
+
+            if (currentInstance != null && currentInstance != this)
+            {
+                if (_alertAboutOtherInstances)
+                {
+                    MV_Logger.Error($"{name} - Awake interrupted due to other instance being already active.", this);
+                }
+
+                Destroy(gameObject);
+
+                return;
+            }
+
+            _instance = this;
+
+            if (_persistent)
+                DontDestroyOnLoad(gameObject);
+        }
+
+        #endregion
+
         #region Transition performing
 
         /// <summary>
@@ -58,21 +94,44 @@ namespace LDtkVania
         /// <param name="closeTransitions"></param>
         /// <param name="openTransitions"></param>
         /// <returns></returns>
-        public async Task TransitionIntoLevel(
+        public async Task TransitionInto(
             string levelIid,
-            MV_LevelTrail trail,
             List<string> globalTransitionsTargets = null,
             List<ITransition> closeTransitions = null,
             List<ITransition> openTransitions = null
         )
         {
-            if (!MV_LevelManager.Instance.TryGetLevel(levelIid, out MV_Level metroidvaniaLevel))
-            {
+            await BeforePreparationTask(globalTransitionsTargets, closeTransitions);
+            await MV_LevelManager.Instance.PrepareLevel(levelIid);
+            await AfterPreparationTask(globalTransitionsTargets, openTransitions);
+        }
 
-                MV_Logger.Error($"Level {levelIid} not found in level dictionary");
-                return;
-            }
+        public async Task TransitionInto(
+            MV_IConnection connection,
+            List<string> globalTransitionsTargets = null,
+            List<ITransition> closeTransitions = null,
+            List<ITransition> openTransitions = null
+        )
+        {
+            await BeforePreparationTask(globalTransitionsTargets, closeTransitions);
+            await MV_LevelManager.Instance.PrepareLevel(connection);
+            await AfterPreparationTask(globalTransitionsTargets, openTransitions);
+        }
 
+        public async Task TransitionInto(
+            MV_ICheckpoint checkpoint,
+            List<string> globalTransitionsTargets = null,
+            List<ITransition> closeTransitions = null,
+            List<ITransition> openTransitions = null
+        )
+        {
+            await BeforePreparationTask(globalTransitionsTargets, closeTransitions);
+            await MV_LevelManager.Instance.PrepareLevel(checkpoint);
+            await AfterPreparationTask(globalTransitionsTargets, openTransitions);
+        }
+
+        private async Task BeforePreparationTask(List<string> globalTransitionsTargets = null, List<ITransition> closeTransitions = null)
+        {
             _transitioning = true;
             _transitionStartedEvent.Invoke();
 
@@ -84,10 +143,10 @@ namespace LDtkVania
 
             // Must be after closing curtains because of camera blend
             MV_LevelManager.Instance.ExitLevel();
+        }
 
-            // Preparing level
-            await MV_LevelManager.Instance.PrepareLevel(metroidvaniaLevel, trail);
-
+        private async Task AfterPreparationTask(List<string> globalTransitionsTargets = null, List<ITransition> openTransitions = null)
+        {
             // Opening curtains
             await PerformTransitions(LevelTransitionMoment.Open, globalTransitionsTargets, openTransitions);
 

@@ -14,10 +14,10 @@ namespace LDtkVania
         private UnityEvent<MV_LevelBehaviour> _exited;
 
         [SerializeField]
-        private UnityEvent<MV_LevelBehaviour, MV_LevelConnection, MV_ICheckpoint> _preparationStarted;
+        private UnityEvent<MV_LevelBehaviour, Vector2> _preparationStarted;
 
         [SerializeField]
-        private UnityEvent<MV_LevelBehaviour> _prepared;
+        private UnityEvent<MV_LevelBehaviour, MV_LevelTrail> _prepared;
 
         [SerializeField]
         private UnityEvent<MV_LevelBehaviour> _entered;
@@ -38,8 +38,8 @@ namespace LDtkVania
         public UnityEvent<MV_LevelBehaviour> LevelSet => _levelSet;
 
         public UnityEvent<MV_LevelBehaviour> Exited => _exited;
-        public UnityEvent<MV_LevelBehaviour, MV_LevelConnection, MV_ICheckpoint> PreparationStarted => _preparationStarted;
-        public UnityEvent<MV_LevelBehaviour> Prepared => _prepared;
+        public UnityEvent<MV_LevelBehaviour, Vector2> PreparationStarted => _preparationStarted;
+        public UnityEvent<MV_LevelBehaviour, MV_LevelTrail> Prepared => _prepared;
         public UnityEvent<MV_LevelBehaviour> Entered => _entered;
 
         #endregion
@@ -76,14 +76,14 @@ namespace LDtkVania
             _exited.Invoke(behaviour);
         }
 
-        private void OnLevelPreparationStarted(MV_LevelBehaviour behaviour, MV_LevelConnection connection, MV_ICheckpoint checkpointData)
+        private void OnLevelPreparationStarted(MV_LevelBehaviour behaviour, Vector2 point)
         {
-            _preparationStarted.Invoke(behaviour, connection, checkpointData);
+            _preparationStarted.Invoke(behaviour, point);
         }
 
-        private void OnLevelPrepared(MV_LevelBehaviour behaviour)
+        private void OnLevelPrepared(MV_LevelBehaviour behaviour, MV_LevelTrail trail)
         {
-            _prepared.Invoke(behaviour);
+            _prepared.Invoke(behaviour, trail);
         }
 
         private void OnLevelEntered(MV_LevelBehaviour behaviour)

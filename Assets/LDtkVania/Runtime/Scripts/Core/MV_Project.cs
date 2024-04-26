@@ -48,8 +48,8 @@ namespace LDtkVania
         #region Getters
 
         public bool SyncLevelsAtCompile => _syncLevelsAtCompile;
-        public string ConnectionsContainerName => _connectionsContainerName;
-        public string CheckpointsContainerName => _checkpointsContainerName;
+        public string ConnectionsContainerName => "Connections";
+        public string CheckpointsContainerName => "Checkpoints";
         public List<AssetLabelReference> LevelsLabels => _levelsLabels;
 
         public LdtkJson LDtkProject => _ldtkProjectFile.FromJson;
