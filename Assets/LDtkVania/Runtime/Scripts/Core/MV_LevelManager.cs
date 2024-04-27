@@ -355,7 +355,7 @@ namespace LDtkVania
         {
             if (!TryGetLevel(iid, out MV_Level level)) return;
 
-            if (string.IsNullOrEmpty(level.SceneAddressableKey))
+            if (!level.HasScene)
             {
                 if (_loadedObjects.ContainsKey(iid)) return;
 
@@ -374,7 +374,7 @@ namespace LDtkVania
             else
             {
                 if (_loadedScenes.ContainsKey(iid)) return;
-                AsyncOperationHandle<SceneInstance> handle = Addressables.LoadSceneAsync(level.SceneAddressableKey, LoadSceneMode.Additive);
+                AsyncOperationHandle<SceneInstance> handle = Addressables.LoadSceneAsync(level.Scene.SceneAddressableKey, LoadSceneMode.Additive);
                 await handle.Task;
 
                 if (handle.Status != AsyncOperationStatus.Succeeded)

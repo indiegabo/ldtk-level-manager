@@ -1,9 +1,9 @@
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -62,3 +62,4 @@ public static class AddressableExtensions
         return true;
     }
 }
+#endif

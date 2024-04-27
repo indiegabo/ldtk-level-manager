@@ -175,9 +175,9 @@ namespace LDtkVania
         {
             if (level == null) return;
 
-            if (!string.IsNullOrEmpty(level.SceneAssetGuid))
+            if (level.HasScene)
             {
-                AssetDatabase.DeleteAsset(AssetDatabase.GUIDToAssetPath(level.SceneAssetGuid));
+                AssetDatabase.DeleteAsset(AssetDatabase.GUIDToAssetPath(level.Scene.SceneAssetGuid));
             }
 
             AssetDatabase.RemoveObjectFromAsset(level);
