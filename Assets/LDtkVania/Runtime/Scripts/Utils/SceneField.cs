@@ -12,7 +12,7 @@ namespace LDtkVania
     /// I moved the property drawer solution into an editor folder.
     /// </summary>
     [System.Serializable]
-    public class SceneField
+    public class SceneField : Object
     {
         [SerializeField]
         private SceneAsset _sceneAsset;

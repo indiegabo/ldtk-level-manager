@@ -177,7 +177,7 @@ namespace LDtkVania
 
             if (level.HasScene)
             {
-                AssetDatabase.DeleteAsset(AssetDatabase.GUIDToAssetPath(level.Scene.SceneAssetGuid));
+                AssetDatabase.DeleteAsset(AssetDatabase.GUIDToAssetPath(level.Scene.AssetGuid));
             }
 
             AssetDatabase.RemoveObjectFromAsset(level);

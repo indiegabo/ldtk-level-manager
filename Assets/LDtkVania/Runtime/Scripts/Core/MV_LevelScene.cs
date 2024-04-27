@@ -1,14 +1,13 @@
-using LDtkUnity;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
+using System.Linq;
+
+
 
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using UnityEditor.AddressableAssets;
-using UnityEditor.AddressableAssets.Settings;
-using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 #endif
 
 namespace LDtkVania
@@ -18,27 +17,26 @@ namespace LDtkVania
     {
         #region Inspector
 
-        [SerializeField] private SceneField _scene;
-        [SerializeField] private string _sceneAssetGuid;
-        [SerializeField] private string _sceneAddressableKey;
+        [SerializeField] private SceneAsset _asset;
+        [SerializeField] private string _assetGuid;
+        [SerializeField] private string _addressableKey;
 
-        public SceneField Scene { get => _scene; set => _scene = value; }
-        public string SceneAssetGuid { get => _sceneAssetGuid; set => _sceneAssetGuid = value; }
-        public string SceneAddressableKey { get => _sceneAddressableKey; set => _sceneAddressableKey = value; }
+        public SceneAsset Asset { get => _asset; set => _asset = value; }
+        public string AssetGuid { get => _assetGuid; set => _assetGuid = value; }
+        public string AddressableKey { get => _addressableKey; set => _addressableKey = value; }
 
         #endregion
 
         #region  Unity Editor
 #if UNITY_EDITOR
-
-        private static readonly string SceneAddressPrefix = "LDtkSceneLevel";
-        private static readonly string AddressableGroupName = "LDtkVaniaScenes";
-        private static readonly string AddressableSceneLabel = "LDtkSceneLevel";
-        private static readonly string SceneLabelName = "LDtkVaniaScene";
+        public static readonly string SceneAddressPrefix = "LDtkSceneLevel";
+        public static readonly string AddressableGroupName = "LDtkVaniaScenes";
+        public static readonly string AddressableSceneLabel = "LDtkSceneLevel";
+        public static readonly string SceneLabelName = "LDtkVaniaScene";
 
         public static bool CreateSceneForLevel(MV_Level level, out MV_LevelScene levelScene)
         {
-            if (level.HasScene && TryScenePath(level.Scene.SceneAssetGuid, out string existentScenePath))
+            if (level.HasScene && TryScenePath(level.Scene.AssetGuid, out string existentScenePath))
             {
                 MV_Logger.Error($"A scene for level <color=#FFFFFF>{level.Name}</color> already exists. It can be found at <color=#FFFFFF>{existentScenePath}</color> .", level);
                 levelScene = null;
@@ -65,18 +63,18 @@ namespace LDtkVania
                 MV_Logger.Error($"Could not set scene for level <color=#FFFFFF>{level.Name}</color> as addressable. Please check the console for errors.", level);
             }
 
-            levelScene = new()
+
+            levelScene = new MV_LevelScene()
             {
-                Scene = SceneField.FromAsset(sceneAsset),
-                SceneAssetGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(sceneAsset)),
-                SceneAddressableKey = addressableAddress
+                Asset = sceneAsset,
+                AssetGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(sceneAsset)),
+                AddressableKey = addressableAddress
             };
 
             AssetDatabase.SetLabels(sceneAsset, new string[] { SceneLabelName });
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-
             return true;
         }
 
@@ -84,7 +82,7 @@ namespace LDtkVania
         {
             if (!level.HasScene) return false;
 
-            if (!TryScenePath(level.Scene.SceneAssetGuid, out string scenePath))
+            if (!TryScenePath(level.Scene.AssetGuid, out string scenePath))
             {
                 MV_Logger.Error($"Could not find scene for level <color=#FFFFFF>{level.Name}</color> . Did you create the scene through a LDtkVaniaProject inspector?", level);
                 return false;
@@ -99,7 +97,24 @@ namespace LDtkVania
 
             if (!confirmed) return false;
 
-            AssetDatabase.DeleteAsset(scenePath);
+            SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath);
+            if (sceneAsset == null)
+            {
+                return true;
+            }
+
+            List<string> labels = AssetDatabase.GetLabels(level.Scene.Asset).ToList();
+            labels.Add("LDtkSceneDeletion");
+
+            AssetDatabase.SetLabels(sceneAsset, labels.ToArray());
+            EditorUtility.SetDirty(sceneAsset);
+            AssetDatabase.SaveAssetIfDirty(sceneAsset);
+
+            if (!AssetDatabase.DeleteAsset(scenePath))
+            {
+                MV_Logger.Error($"Could not delete scene for level <color=#FFFFFF>{level.Name}</color> . Please check the console for errors.", level);
+                return false;
+            }
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();

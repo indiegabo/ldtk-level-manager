@@ -374,7 +374,7 @@ namespace LDtkVania
             else
             {
                 if (_loadedScenes.ContainsKey(iid)) return;
-                AsyncOperationHandle<SceneInstance> handle = Addressables.LoadSceneAsync(level.Scene.SceneAddressableKey, LoadSceneMode.Additive);
+                AsyncOperationHandle<SceneInstance> handle = Addressables.LoadSceneAsync(level.Scene.AddressableKey, LoadSceneMode.Additive);
                 await handle.Task;
 
                 if (handle.Status != AsyncOperationStatus.Succeeded)

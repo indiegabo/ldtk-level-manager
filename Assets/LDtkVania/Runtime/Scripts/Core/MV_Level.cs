@@ -31,7 +31,7 @@ namespace LDtkVania
         public string Iid => _iid;
         public Object Asset => _asset;
 
-        public bool HasScene => _scene != null;
+        public bool HasScene => _scene != null && !string.IsNullOrEmpty(_scene.AddressableKey);
         public MV_LevelScene Scene => _scene;
 
         public string AssetPath => _assetPath;

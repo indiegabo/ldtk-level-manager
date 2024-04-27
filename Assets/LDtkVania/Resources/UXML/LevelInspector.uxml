@@ -4,12 +4,17 @@
         <ui:TextField picking-mode="Ignore" label="Iid" binding-path="_iid" name="field-iid" readonly="true" class="level-field" />
         <ui:Button text="Copy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-iid-copy" style="width: 40px;" />
     </ui:VisualElement>
-    <ui:VisualElement name="container-scene" style="flex-grow: 0; flex-direction: row;">
-        <uie:PropertyField name="field-scene" label="Scene" binding-path="_scene" style="flex-grow: 1;" />
-        <ui:Button text="Destroy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-destroy-scene" style="flex-shrink: 1; min-width: 50px; background-color: rgb(84, 16, 16);" />
-        <ui:Button text="Create Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-create-scene" tooltip="Creates an addressable scene containing the level Prefab. The scene will be loaded as additive scene instead of instantiating the GameObject" style="flex-grow: 1;" />
+    <ui:VisualElement name="container-wrapping" style="flex-grow: 1;">
+        <ui:Label tabindex="-1" text="Wrapping" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-wrapping" />
+        <ui:VisualElement name="container-wrapping-content" style="flex-grow: 1; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;">
+            <ui:VisualElement name="container-scene-element" style="flex-grow: 0; margin-bottom: 5px;" />
+            <ui:VisualElement name="container-scene-buttons" style="flex-grow: 0; flex-direction: row;">
+                <ui:Button text="Wrap in a Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-create-scene" tooltip="Creates an addressable scene containing the level Prefab. The scene will be loaded as additive scene instead of instantiating the GameObject" enable-rich-text="true" style="flex-grow: 1;" />
+                <ui:Button text="Destroy Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-destroy-scene" tooltip="Permanently destroys the wrapper scene" style="flex-grow: 1; background-color: rgb(99, 12, 12);" />
+            </ui:VisualElement>
+        </ui:VisualElement>
     </ui:VisualElement>
-    <ui:Foldout text="Info" name="foldout-info" value="false" style="margin-left: 12px;">
+    <ui:Foldout text="General Info" name="foldout-info" value="false" style="margin-left: 12px;">
         <uie:PropertyField name="field-asset" binding-path="_asset" label="Asset" class="level-info" />
         <uie:PropertyField name="field-ldtk-asset" binding-path="_levelFile" label="LDtk File" class="level-info" />
         <ui:VisualElement name="container-asset-path" style="flex-grow: 1; flex-direction: row; flex-shrink: 0;">
@@ -19,10 +24,6 @@
         <ui:VisualElement name="container-addressable-key" style="flex-grow: 1; flex-direction: row; flex-shrink: 0;">
             <ui:TextField picking-mode="Ignore" label="Addressable Key" name="field-addressable-key" binding-path="_assetKey" class="level-field" />
             <ui:Button text="Copy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-addressable-key-copy" style="width: 40px;" />
-        </ui:VisualElement>
-        <ui:VisualElement name="container-scene-addressable-key" style="flex-grow: 1; flex-direction: row; flex-shrink: 0;">
-            <ui:TextField picking-mode="Ignore" label="Scene Addressable Key" name="field-scene-addressable-key" binding-path="_sceneAddressableKey" class="level-field" />
-            <ui:Button text="Copy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-scene-addressable-key-copy" style="width: 40px;" />
         </ui:VisualElement>
     </ui:Foldout>
 </ui:UXML>

@@ -6,6 +6,8 @@ namespace LDtkVaniaEditor
 {
     public class TabViewElement : VisualElement
     {
+        public static string LastUsedTab = "Main";
+
         private const string TemplateName = "TabViewTemplate";
         private const string TabButtonClassName = "tab-button";
         private const string TabButtonSelectedClassName = "tab-button--selected";
@@ -29,13 +31,13 @@ namespace LDtkVaniaEditor
             Add(_containerMain);
         }
 
-        public void AddTab(string name, VisualElement view, bool activate = false)
+        public void AddTab(string name, VisualElement view)
         {
             GenerateButton(name);
             view.SetEnabled(false);
             _views.Add(name, view);
 
-            if (activate)
+            if (name == LastUsedTab)
             {
                 SelectTab(name);
             }
@@ -81,6 +83,8 @@ namespace LDtkVaniaEditor
                 viewElement.SetEnabled(true);
                 _containerViews.Add(viewElement);
             }
+
+            LastUsedTab = name;
         }
 
         private void DismissTab(string name)
