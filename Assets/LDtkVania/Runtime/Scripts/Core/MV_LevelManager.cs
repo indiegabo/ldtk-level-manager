@@ -321,8 +321,8 @@ namespace LDtkVania
 
         private void AddNeighboursToList(HashSet<string> list, string iid)
         {
-            if (!TryGetLevel(iid, out MV_Level metroidvaniaLevel)) return;
-            foreach (LDtkUnity.Level neighbour in metroidvaniaLevel.LDtkLevel.Neighbours)
+            if (!TryGetLevel(iid, out MV_Level level)) return;
+            foreach (LDtkUnity.Level neighbour in level.LDtkLevel.Neighbours)
             {
                 if (!TryGetLevel(neighbour.Iid, out MV_Level mvLevel))
                 {

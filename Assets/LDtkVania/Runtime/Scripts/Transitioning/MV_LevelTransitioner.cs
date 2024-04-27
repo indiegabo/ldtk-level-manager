@@ -84,16 +84,6 @@ namespace LDtkVania
 
         #region Transition performing
 
-        /// <summary>
-        /// Transition into the given Metroidvania Level.
-        /// 
-        /// </summary>
-        /// <param name="levelIid"></param>
-        /// <param name="trail"></param>
-        /// <param name="globalTransitionsTargets"></param>
-        /// <param name="closeTransitions"></param>
-        /// <param name="openTransitions"></param>
-        /// <returns></returns>
         public async Task TransitionInto(
             string levelIid,
             List<string> globalTransitionsTargets = null,

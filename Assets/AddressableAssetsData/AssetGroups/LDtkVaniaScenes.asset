@@ -23,6 +23,24 @@ MonoBehaviour:
     m_SerializedLabels:
     - LDtkSceneLevel
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 476cc06093bb4d04a869eb2c482cf6d2
+    m_Address: LDtkSceneLevel_f277f910-fec0-11ee-9039-191aedcc41c6
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - LDtkSceneLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ce2e1ac4935422545b96559814adffec
+    m_Address: LDtkSceneLevel_49e346a0-fec0-11ee-9039-5b61900789be
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - LDtkSceneLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0373e8a962f654a44b3a003cc7c51e0e
+    m_Address: LDtkSceneLevel_53fb5a10-fec0-11ee-9039-81cd82f7857a
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - LDtkSceneLevel
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 1ba21a4611ac85b4f95e8eab66dc3553, type: 2}
   m_SchemaSet:

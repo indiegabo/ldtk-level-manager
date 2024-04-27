@@ -359,7 +359,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5.625
+  orthographic size: 6.75
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -369,7 +369,7 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 0
   m_HDR: 1
-  m_AllowMSAA: 0
+  m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 0
@@ -384,7 +384,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 80, y: 0, z: -9.5}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -640,7 +640,7 @@ MonoBehaviour:
   _persistent: 0
   _alertAboutOtherInstances: 0
   _project: {fileID: 11400000, guid: a26d07e3821e26442b643f5b0cb8e8e7, type: 2}
-  _depth: 2
+  _depth: 1
   _levelPreparedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -695,7 +695,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelManager: {fileID: 1174395035}
-  _level: {fileID: -770698536373402054, guid: a26d07e3821e26442b643f5b0cb8e8e7, type: 2}
+  _level: {fileID: 1198586393528663002, guid: a26d07e3821e26442b643f5b0cb8e8e7, type: 2}
   _playerControlBridge: {fileID: 11400000, guid: 636229da706c4bd46ae3acd44cb5bc8c, type: 2}
 --- !u!4 &1805706594
 Transform:

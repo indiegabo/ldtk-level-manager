@@ -127,12 +127,14 @@ namespace TarodevController
         public void GiveControl()
         {
             _underControl = true;
+            _frameVelocity = Vector2.zero;
         }
 
         [Button]
         public void RemoveControl()
         {
             _underControl = false;
+            _frameVelocity = Vector2.zero;
         }
 
         #endregion
