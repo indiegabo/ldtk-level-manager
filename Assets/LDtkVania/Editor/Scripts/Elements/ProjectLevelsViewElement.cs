@@ -5,6 +5,7 @@ using UnityEditor.UIElements;
 using LDtkUnity;
 using UnityEditor;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LDtkVaniaEditor
 {
@@ -37,9 +38,16 @@ namespace LDtkVaniaEditor
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
 
             _fieldFilterName = _containerMain.Q<TextField>("field-filter-name");
+            _fieldFilterName.RegisterCallback<KeyDownEvent>(evt =>
+            {
+                if (evt.keyCode == KeyCode.Return || evt.keyCode == KeyCode.KeypadEnter)
+                {
+                    ApplyFilters();
+                }
+            }, TrickleDown.TrickleDown);
 
             _buttonFilter = _containerMain.Q<Button>("button-filter");
-            _buttonFilter.clicked += OnFilterButtonClicked;
+            _buttonFilter.clicked += ApplyFilters;
 
             _listLevels = _containerMain.Q<ListView>("list-levels");
             _listLevels.makeItem = () => new LevelListItemElement();
@@ -55,19 +63,19 @@ namespace LDtkVaniaEditor
 
         #endregion
 
-        private void OnFilterButtonClicked()
+        private void ApplyFilters()
         {
-            string term = _fieldFilterName.text.ToLower();
+            string nameTerm = _fieldFilterName.text.ToLower();
 
-            if (string.IsNullOrEmpty(term))
+            if (string.IsNullOrEmpty(nameTerm))
             {
                 PopulateSearchablesWithAll();
                 return;
             }
 
-            _searchableLevels = _levels.FindAll(x => x.Name.ToLower().Contains(term));
-            _listLevels.itemsSource = _searchableLevels;
+            _searchableLevels = _levels.FindAll(level => level.Name.ToLower().Contains(nameTerm));
 
+            _listLevels.itemsSource = _searchableLevels;
             _listLevels.RefreshItems();
         }
 

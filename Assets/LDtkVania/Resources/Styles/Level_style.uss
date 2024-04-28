@@ -9,3 +9,11 @@
     flex-grow: 1;
     margin-right: 5px;
 }
+
+.filter-field {
+}
+
+.filter-field > Label {
+    max-width: 60px;
+    min-width: 60px;
+}

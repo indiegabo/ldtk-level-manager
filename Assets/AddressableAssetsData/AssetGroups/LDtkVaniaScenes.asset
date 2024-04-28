@@ -16,13 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: a55affece5b368c40af4769e4a2bd44d
-  m_SerializeEntries:
-  - m_GUID: 4bee4a144a04ee343af284eb18f9ce9e
-    m_Address: LDtkSceneLevel_363b42a0-7820-11ed-a571-2bca691f63e1
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - LDtkSceneLevel
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 1ba21a4611ac85b4f95e8eab66dc3553, type: 2}
   m_SchemaSet:

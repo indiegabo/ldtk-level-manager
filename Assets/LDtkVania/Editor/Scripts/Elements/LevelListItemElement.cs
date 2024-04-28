@@ -4,11 +4,18 @@ using LDtkVania;
 using UnityEditor.UIElements;
 using LDtkUnity;
 using UnityEditor;
+using System.Collections.Generic;
 
 namespace LDtkVaniaEditor
 {
     public class LevelListItemElement : VisualElement
     {
+        #region Static
+
+        private static readonly HashSet<string> _expandedFoldouts = new();
+
+        #endregion
+
         #region Fields
 
         private MV_Level _level;
@@ -66,11 +73,25 @@ namespace LDtkVaniaEditor
             _levelElement = new LevelElement(level);
 
             _foldoutMain.text = _level.Name;
+            _foldoutMain.value = _expandedFoldouts.Contains(level.Iid);
             _serialized = new(_level);
             _levelElement.Bind(_serialized);
 
             // Add the levels element to the foldout.
             _foldoutMain.Add(_levelElement);
+
+            _foldoutMain.RegisterValueChangedCallback(evt =>
+            {
+                if (evt.newValue)
+                {
+                    if (!_expandedFoldouts.Contains(level.Iid))
+                        _expandedFoldouts.Add(level.Iid);
+                }
+                else
+                {
+                    _expandedFoldouts.Remove(level.Iid);
+                }
+            });
         }
 
         #endregion
