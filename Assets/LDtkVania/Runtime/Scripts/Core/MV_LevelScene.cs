@@ -34,12 +34,12 @@ namespace LDtkVania
         {
             if (level.HasScene && TryScenePath(level.Scene.AssetGuid, out string existentScenePath))
             {
-                MV_Logger.Error($"A scene for level <color=#FFFFFF>{level.Name}</color> already exists. It can be found at <color=#FFFFFF>{existentScenePath}</color> .", level);
+                MV_Logger.Error($"A scene for level <color=#FFFFFF>{level.name}</color> already exists. It can be found at <color=#FFFFFF>{existentScenePath}</color> .", level);
                 levelScene = null;
                 return false;
             }
 
-            if (!RequestPathForUser(level.Name, out string path))
+            if (!RequestPathForUser(level.name, out string path))
             {
                 levelScene = null;
                 return false;
@@ -56,7 +56,7 @@ namespace LDtkVania
             string addressableAddress = $"{SceneAddressPrefix}_{level.Iid}";
             if (!sceneAsset.TrySetAsAddressable(addressableAddress, AddressableGroupName, AddressableSceneLabel))
             {
-                MV_Logger.Error($"Could not set scene for level <color=#FFFFFF>{level.Name}</color> as addressable. Please check the console for errors.", level);
+                MV_Logger.Error($"Could not set scene for level <color=#FFFFFF>{level.name}</color> as addressable. Please check the console for errors.", level);
             }
 
             levelScene = new MV_LevelScene()
@@ -78,13 +78,13 @@ namespace LDtkVania
 
             if (!TryScenePath(level.Scene.AssetGuid, out string scenePath))
             {
-                MV_Logger.Error($"Could not find scene for level <color=#FFFFFF>{level.Name}</color> . Did you create the scene through a LDtkVaniaProject inspector?", level);
+                MV_Logger.Error($"Could not find scene for level <color=#FFFFFF>{level.name}</color> . Did you create the scene through a LDtkVaniaProject inspector?", level);
                 return false;
             }
 
             bool confirmed = EditorUtility.DisplayDialog(
                 "Caution!",
-                $"Destroy scene for level {level.Name}? This is irreversible and might result in work loss!",
+                $"Destroy scene for level {level.name}? This is irreversible and might result in work loss!",
                 "I understand. Go on.",
                 "Cancel"
             );
@@ -106,7 +106,7 @@ namespace LDtkVania
 
             if (!AssetDatabase.DeleteAsset(scenePath))
             {
-                MV_Logger.Error($"Could not delete scene for level <color=#FFFFFF>{level.Name}</color> . Please check the console for errors.", level);
+                MV_Logger.Error($"Could not delete scene for level <color=#FFFFFF>{level.name}</color> . Please check the console for errors.", level);
                 return false;
             }
 

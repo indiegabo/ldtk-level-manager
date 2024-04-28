@@ -73,7 +73,7 @@ namespace LDtkVaniaEditor
                 return;
             }
 
-            _searchableLevels = _levels.FindAll(level => level.Name.ToLower().Contains(nameTerm));
+            _searchableLevels = _levels.FindAll(level => level.name.ToLower().Contains(nameTerm));
 
             _listLevels.itemsSource = _searchableLevels;
             _listLevels.RefreshItems();

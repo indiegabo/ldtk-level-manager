@@ -36,8 +36,6 @@ namespace LDtkVania
         public string AssetPath => _assetPath;
         public string AddressableKey => _assetKey;
 
-        public string Name => _name;
-
         // LDtk
         public LDtkLevelFile LevelFile => _levelFile;
         public Level LDtkLevel
@@ -63,8 +61,6 @@ namespace LDtkVania
 
             _asset = asset;
             _levelFile = ldtkFile;
-
-            _name = asset.name;
         }
 
         #endregion
@@ -85,7 +81,6 @@ namespace LDtkVania
             if (asset != null)
             {
                 _asset = asset;
-                _name = _asset.name;
                 name = _asset.name;
             }
 

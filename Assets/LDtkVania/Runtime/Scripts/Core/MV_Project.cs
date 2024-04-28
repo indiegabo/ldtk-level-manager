@@ -144,18 +144,18 @@ namespace LDtkVania
             if (file == null) return null;
 
             Level ldtkLevel = file.FromJson;
-            if (TryGetLevel(ldtkLevel.Iid, out MV_Level mvLevel))
+            if (TryGetLevel(ldtkLevel.Iid, out MV_Level level))
             {
-                mvLevel.UpdateInfo(componentLevel, location, asset, file);
-                return mvLevel.Iid;
+                level.UpdateInfo(componentLevel, location, asset, file);
+                return level.Iid;
             }
 
-            mvLevel = CreateInstance<MV_Level>();
-            mvLevel.name = asset.name;
-            mvLevel.Initialize(componentLevel, location, asset, file);
-            Add(mvLevel);
+            level = CreateInstance<MV_Level>();
+            level.name = asset.name;
+            level.Initialize(componentLevel, location, asset, file);
+            Add(level);
 
-            return mvLevel.Iid;
+            return level.Iid;
         }
         public void Add(MV_Level level)
         {

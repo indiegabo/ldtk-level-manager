@@ -267,7 +267,7 @@
 //             }
 
 //             mvLevel = CreateInstance<MV_Level>();
-//             mvLevel.name = asset.name;
+//             mvlevel.name = asset.name;
 //             mvLevel.Initialize(componentLevel, location, asset, file);
 //             Add(mvLevel);
 

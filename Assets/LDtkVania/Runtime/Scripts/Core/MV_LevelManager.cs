@@ -343,7 +343,7 @@ namespace LDtkVania
 
                 if (handle.Status != AsyncOperationStatus.Succeeded)
                 {
-                    MV_Logger.Error($"Async operation for level {level.Name} as an object failed.", this);
+                    MV_Logger.Error($"Async operation for level {level.name} as an object failed.", this);
                     return;
                 }
 
@@ -358,7 +358,7 @@ namespace LDtkVania
 
                 if (handle.Status != AsyncOperationStatus.Succeeded)
                 {
-                    MV_Logger.Error($"Async operation for loading level {level.Name} as a scene failed.", this);
+                    MV_Logger.Error($"Async operation for loading level {level.name} as a scene failed.", this);
                     return;
                 }
 
@@ -383,7 +383,7 @@ namespace LDtkVania
 
                 if (handle.Status != AsyncOperationStatus.Succeeded)
                 {
-                    MV_Logger.Error($"Async operation for unloading level {level.Name} as a scene failed.", this);
+                    MV_Logger.Error($"Async operation for unloading level {level.name} as a scene failed.", this);
                     MV_Logger.Warning($"Handle status: {handle.Status}");
                     MV_Logger.Warning($"{handle.OperationException?.StackTrace}");
                     return;
@@ -436,7 +436,7 @@ namespace LDtkVania
 
             if (_registeredBehaviours.ContainsKey(iid))
             {
-                MV_Logger.Warning($"Level {level.Name}({level.Iid}) already registered as behaviour but is trying to be registered again", this);
+                MV_Logger.Warning($"Level {level.name}({level.Iid}) already registered as behaviour but is trying to be registered again", this);
                 return;
             }
 

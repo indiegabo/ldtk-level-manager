@@ -210,8 +210,8 @@ MonoBehaviour:
   _assetPath: Assets/LDtk/LDtkVaniaSample/DT_I_Dunno.ldtkl
   _assetKey: Assets/LDtk/LDtkVaniaSample/DT_I_Dunno.ldtkl
   _scene:
-    _assetGuid: 
-    _addressableKey: 
+    _assetGuid: 5dd3aeb6f8cf6464fac9daa182402c55
+    _addressableKey: LDtkSceneLevel_601a6d50-c640-11ed-8852-c79dd4f3aa7c
 --- !u!114 &4248322157802390973
 MonoBehaviour:
   m_ObjectHideFlags: 0
