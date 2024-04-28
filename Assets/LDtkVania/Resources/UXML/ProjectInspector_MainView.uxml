@@ -1,3 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <ui:Button text="Sync Levels" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-sync-levels" />
+    <Style src="project://database/Assets/LDtkVania/Resources/Styles/ProjectMainView_style.uss?fileID=7433441132597879392&amp;guid=f2a2b7edccabd9b4b9af38f2c37f6ce3&amp;type=3#ProjectMainView_style" />
+    <ui:Foldout text="Worlds" name="foldout-worlds" tooltip="The list of worlds recognized in the LDtkProject" style="padding-top: 4px; padding-right: 4px; padding-bottom: 4px; padding-left: 4px;" />
+    <ui:DropdownField label="Dropdown" name="field-worlds" />
 </ui:UXML>

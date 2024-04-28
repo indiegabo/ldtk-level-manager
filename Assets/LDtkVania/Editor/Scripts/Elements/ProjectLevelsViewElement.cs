@@ -15,6 +15,7 @@ namespace LDtkVaniaEditor
 
         private const string TemplateName = "ProjectInspector_LevelsView";
 
+        private MV_Project _project;
         private List<MV_Level> _levels;
         private List<MV_Level> _searchableLevels = new();
 
@@ -22,6 +23,7 @@ namespace LDtkVaniaEditor
         private ListView _listLevels;
         private TextField _fieldFilterName;
         private Button _buttonFilter;
+        private Button _buttonSyncLevels;
 
         #endregion
 
@@ -31,9 +33,10 @@ namespace LDtkVaniaEditor
 
         #region Constructors
 
-        public ProjectLevelsViewElement(List<MV_Level> levels)
+        public ProjectLevelsViewElement(MV_Project project)
         {
-            _levels = levels;
+            _project = project;
+            _levels = _project.GetLevels();
 
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
 
@@ -56,6 +59,9 @@ namespace LDtkVaniaEditor
                 LevelListItemElement item = e as LevelListItemElement;
                 item.Level = _searchableLevels[i];
             };
+
+            _buttonSyncLevels = _containerMain.Q<Button>("button-sync-levels");
+            _buttonSyncLevels.clicked += () => _project.SyncLevels();
 
             PopulateSearchablesWithAll();
             Add(_containerMain);

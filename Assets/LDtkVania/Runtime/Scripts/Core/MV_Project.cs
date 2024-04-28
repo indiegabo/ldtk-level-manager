@@ -45,6 +45,12 @@ namespace LDtkVania
 
         #endregion
 
+        #region Fields
+
+        private LdtkJson _ldtkProject;
+
+        #endregion
+
         #region Getters
 
         public bool SyncLevelsAtCompile => _syncLevelsAtCompile;
@@ -52,7 +58,7 @@ namespace LDtkVania
         public string CheckpointsContainerName => "Checkpoints";
         public List<AssetLabelReference> LevelsLabels => _levelsLabels;
 
-        public LdtkJson LDtkProject => _ldtkProjectFile.FromJson;
+        public LdtkJson LDtkProject => _ldtkProject ??= _ldtkProjectFile.FromJson;
         public int PixelsPerUnit => LDtkProject.DefaultGridSize;
 
         #endregion
@@ -157,6 +163,7 @@ namespace LDtkVania
 
             return level.Iid;
         }
+
         public void Add(MV_Level level)
         {
             if (!_levels.ContainsKey(level.Iid))

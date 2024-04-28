@@ -26,7 +26,6 @@ namespace LDtkVaniaEditor
         public override VisualElement CreateInspectorGUI()
         {
             _project = target as MV_Project;
-            List<MV_Level> levels = _project.GetLevels();
 
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
             _fieldLDtkProject = _containerMain.Q<ObjectField>("field-ldtk-project");
@@ -39,7 +38,7 @@ namespace LDtkVaniaEditor
 
             _tabViewElement = new();
             ProjectMainViewElement mainViewElement = new(_project);
-            ProjectLevelsViewElement levelsViewElement = new(levels);
+            ProjectLevelsViewElement levelsViewElement = new(_project);
 
             _tabViewElement.AddTab("Main", mainViewElement);
             _tabViewElement.AddTab("Levels", levelsViewElement);

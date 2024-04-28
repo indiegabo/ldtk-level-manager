@@ -640,7 +640,7 @@ MonoBehaviour:
   _persistent: 0
   _alertAboutOtherInstances: 0
   _project: {fileID: 11400000, guid: a26d07e3821e26442b643f5b0cb8e8e7, type: 2}
-  _depth: 2
+  _depth: 1
   _levelPreparedEvent:
     m_PersistentCalls:
       m_Calls: []
