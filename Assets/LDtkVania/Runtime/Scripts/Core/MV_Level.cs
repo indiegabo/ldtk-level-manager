@@ -5,7 +5,6 @@ using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace LDtkVania
 {
-    [System.Serializable]
     public class MV_Level : ScriptableObject
     {
         #region Inspector

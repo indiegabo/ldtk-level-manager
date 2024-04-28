@@ -176,24 +176,11 @@ namespace LDtkVania
         /// <returns></returns>
         public void PrepareLevel(string iid)
         {
-            if (!TryGetLevel(iid, out MV_Level level))
+            if (!SetLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
             {
-                MV_Logger.Error($"Trying to prepare a level by Iid {iid} but it was not found.", this);
                 return;
             }
-
-            if (!_registeredBehaviours.TryGetValue(iid, out MV_LevelBehaviour levelBehaviour))
-            {
-                MV_Logger.Error($"Trying to prepare a level by Iid {iid} but it is not registered.", this);
-                return;
-            }
-
-            _currentLevel = level;
-            _currentBehaviour = levelBehaviour;
-
-            _ = LoadNeighboursAsync(_currentLevel);
-
-            _currentBehaviour.Prepare();
+            levelBehaviour.Prepare();
         }
 
         /// <summary>
@@ -204,50 +191,42 @@ namespace LDtkVania
         /// <returns></returns>
         public void PrepareLevel(ILevelAnchor checkpoint)
         {
-            string iid = checkpoint.LevelIId;
-
-            if (!TryGetLevel(iid, out MV_Level level))
+            if (!SetLevelForPreparation(checkpoint.LevelIId, out MV_LevelBehaviour levelBehaviour))
             {
-                MV_Logger.Error($"Trying to prepare a level by Iid {iid} but it was not found.", this);
                 return;
             }
-
-            if (!_registeredBehaviours.TryGetValue(iid, out MV_LevelBehaviour levelBehaviour))
-            {
-                MV_Logger.Error($"Trying to prepare a level by Iid {iid} but it is not registered.", this);
-                return;
-            }
-
-            _currentLevel = level;
-            _currentBehaviour = levelBehaviour;
-
-            _ = LoadNeighboursAsync(_currentLevel);
-
-            _currentBehaviour.Prepare(checkpoint);
+            levelBehaviour.Prepare(checkpoint);
         }
 
         public void PrepareLevel(IConnection connection)
         {
-            string iid = connection.TargetLevelIid;
+            if (!SetLevelForPreparation(connection.TargetLevelIid, out MV_LevelBehaviour levelBehaviour))
+            {
+                return;
+            }
+            levelBehaviour.Prepare(connection);
+        }
 
+        private bool SetLevelForPreparation(string iid, out MV_LevelBehaviour behaviour)
+        {
             if (!TryGetLevel(iid, out MV_Level level))
             {
                 MV_Logger.Error($"Trying to prepare a level by Iid {iid} but it was not found.", this);
-                return;
+                behaviour = null;
+                return false;
             }
 
-            if (!_registeredBehaviours.TryGetValue(iid, out MV_LevelBehaviour levelBehaviour))
+            if (!_registeredBehaviours.TryGetValue(iid, out behaviour))
             {
                 MV_Logger.Error($"Trying to prepare a level by Iid {iid} but it is not registered.", this);
-                return;
+                return false;
             }
 
             _currentLevel = level;
-            _currentBehaviour = _registeredBehaviours[_currentLevel.Iid];
-
+            _currentBehaviour = behaviour;
             _ = LoadNeighboursAsync(_currentLevel);
 
-            _currentBehaviour.Prepare(connection);
+            return true;
         }
 
         public void EnterLevel()

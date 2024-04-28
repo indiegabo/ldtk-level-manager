@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cinemachine;
 using LDtkUnity;
+using Sirenix.Utilities;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Tilemaps;
 
 namespace LDtkVania
 {
@@ -33,7 +35,6 @@ namespace LDtkVania
         #region Fields
 
         private LDtkIid _ldtkIid;
-
         private MV_Level _mvLevel;
 
         private MV_LevelDefaultSpawnPoint _defaultSpawnPoint;
@@ -85,11 +86,6 @@ namespace LDtkVania
 
         #region Level Cycle
 
-        /// <summary>
-        /// Prepares the cycle. This should be triggered while curtains are closed
-        /// </summary>
-        /// <param name="trail"></param>
-        /// <returns></returns>
         public void Prepare()
         {
             if (_defaultSpawnPoint == null)
@@ -102,7 +98,6 @@ namespace LDtkVania
             _preparationStartedEvent.Invoke(this, point);
             SpawnCharacter(point, _defaultSpawnPoint.DirectionSign);
             _preparedEvent.Invoke(this, MV_LevelTrail.FromPoint(point));
-
         }
 
         public void Prepare(ILevelAnchor checkpoint)
@@ -131,19 +126,12 @@ namespace LDtkVania
             _preparedEvent.Invoke(this, MV_LevelTrail.FromConnection(registeredConnection));
         }
 
-        /// <summary>
-        /// Enters the level activating its subjects
-        /// </summary>
-        /// <returns></returns>
         public void Enter()
         {
             EnableConnections();
             _enteredEvent.Invoke(this);
         }
 
-        /// <summary>
-        /// Exits the level
-        /// </summary>
         public void Exit()
         {
             DisableConnections();

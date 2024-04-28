@@ -4,7 +4,6 @@ using UnityEngine.Events;
 using System.Threading.Tasks;
 using LDtkVania.Transitioning;
 using Cinemachine;
-using System.Collections;
 using System;
 
 namespace LDtkVania
@@ -20,7 +19,7 @@ namespace LDtkVania
 
         #region Inspector        
 
-        [Tooltip("Mark this if you want this object to NOT be destroyed whe a new scene is loaded.")]
+        [Tooltip("Mark this if you want this object to NOT be destroyed when a new scene is loaded.")]
         [SerializeField]
         private bool _persistent = true;
 

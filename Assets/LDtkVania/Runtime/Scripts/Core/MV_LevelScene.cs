@@ -3,8 +3,6 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Linq;
 
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -17,11 +15,9 @@ namespace LDtkVania
     {
         #region Inspector
 
-        [SerializeField] private SceneAsset _asset;
         [SerializeField] private string _assetGuid;
         [SerializeField] private string _addressableKey;
 
-        public SceneAsset Asset { get => _asset; set => _asset = value; }
         public string AssetGuid { get => _assetGuid; set => _assetGuid = value; }
         public string AddressableKey { get => _addressableKey; set => _addressableKey = value; }
 
@@ -63,10 +59,8 @@ namespace LDtkVania
                 MV_Logger.Error($"Could not set scene for level <color=#FFFFFF>{level.Name}</color> as addressable. Please check the console for errors.", level);
             }
 
-
             levelScene = new MV_LevelScene()
             {
-                Asset = sceneAsset,
                 AssetGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(sceneAsset)),
                 AddressableKey = addressableAddress
             };
@@ -80,7 +74,7 @@ namespace LDtkVania
 
         public static bool DestroySceneForLevel(MV_Level level)
         {
-            if (!level.HasScene) return false;
+            if (!level.HasScene) return true;
 
             if (!TryScenePath(level.Scene.AssetGuid, out string scenePath))
             {
@@ -103,7 +97,7 @@ namespace LDtkVania
                 return true;
             }
 
-            List<string> labels = AssetDatabase.GetLabels(level.Scene.Asset).ToList();
+            List<string> labels = AssetDatabase.GetLabels(sceneAsset).ToList();
             labels.Add("LDtkSceneDeletion");
 
             AssetDatabase.SetLabels(sceneAsset, labels.ToArray());

@@ -5,6 +5,7 @@ using UnityEditor.UIElements;
 using UnityEditor;
 using UnityEngine.AI;
 using UnityEditor.SceneManagement;
+using UnityEditor.SearchService;
 
 namespace LDtkVaniaEditor
 {
@@ -27,7 +28,7 @@ namespace LDtkVaniaEditor
 
                 if (_levelScene != null)
                 {
-                    _fieldAsset.SetValueWithoutNotify(_levelScene.Asset);
+                    SetSceneAsset(_levelScene.AssetGuid);
                 }
                 else
                 {
@@ -54,6 +55,17 @@ namespace LDtkVaniaEditor
             if (_fieldAsset.value == null) return;
             string path = AssetDatabase.GetAssetPath(_fieldAsset.value);
             EditorSceneManager.OpenScene(path);
+        }
+
+        private void SetSceneAsset(string assetGuid)
+        {
+            if (string.IsNullOrEmpty(assetGuid)) return;
+
+            string path = AssetDatabase.GUIDToAssetPath(assetGuid);
+            SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
+            if (sceneAsset == null) return;
+            _fieldAsset.SetValueWithoutNotify(sceneAsset);
+
         }
     }
 }

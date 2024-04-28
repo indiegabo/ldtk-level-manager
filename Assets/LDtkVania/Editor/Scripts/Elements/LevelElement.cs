@@ -58,6 +58,8 @@ namespace LDtkVaniaEditor
                 {
                     _level.SetScene(levelScene);
                     _levelSceneElement.LevelScene = levelScene;
+                    EditorUtility.SetDirty(_level);
+                    AssetDatabase.SaveAssetIfDirty(_level);
                 }
                 EvaluateSceneDisplay();
             };
@@ -69,6 +71,8 @@ namespace LDtkVaniaEditor
                 {
                     _level.SetScene(null);
                     _levelSceneElement.LevelScene = null;
+                    EditorUtility.SetDirty(_level);
+                    AssetDatabase.SaveAssetIfDirty(_level);
                 }
 
                 EvaluateSceneDisplay();
