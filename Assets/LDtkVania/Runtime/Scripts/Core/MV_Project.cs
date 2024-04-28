@@ -180,11 +180,12 @@ namespace LDtkVania
 
         public void Remove(MV_Level level)
         {
+            Debug.Log($"Removing level {level.name}");
             if (level == null) return;
 
             if (level.HasScene)
             {
-                AssetDatabase.DeleteAsset(AssetDatabase.GUIDToAssetPath(level.Scene.AssetGuid));
+                MV_LevelScene.DestroySceneForLevel(level, false);
             }
 
             AssetDatabase.RemoveObjectFromAsset(level);

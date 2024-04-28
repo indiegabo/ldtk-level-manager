@@ -84,27 +84,6 @@ MonoBehaviour:
   _scene:
     _assetGuid: 
     _addressableKey: 
---- !u!114 &-348715986294954313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76238ae897cf99441a858f74751e647c, type: 3}
-  m_Name: Factory_Level_6
-  m_EditorClassIdentifier: 
-  _name: Factory_Level_6
-  _iid: 91bd22b0-fec0-11ee-ad97-ff832db4e1af
-  _asset: {fileID: 1186078075996592438, guid: 58c50afbae7b05b4abe2e880aff3ee7d, type: 3}
-  _levelFile: {fileID: -8655009601392300639, guid: 58c50afbae7b05b4abe2e880aff3ee7d, type: 3}
-  _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_Level_6.ldtkl
-  _assetKey: Assets/LDtk/LDtkVaniaSample/Factory_Level_6.ldtkl
-  _scene:
-    _assetGuid: 
-    _addressableKey: 
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,8 +113,6 @@ MonoBehaviour:
     - fce2b020-c640-11ed-8852-5d77cfb88076
     - b8abf8a0-ed50-11ed-a82b-5f61164d4b1d
     - e4e69a60-ed50-11ed-a82b-27cab0fad380
-    - 319de590-fec0-11ee-ad97-ddb54c937e61
-    - 91bd22b0-fec0-11ee-ad97-ff832db4e1af
     _values:
     - {fileID: 4218617737925109417}
     - {fileID: -7516222117174053424}
@@ -147,29 +124,6 @@ MonoBehaviour:
     - {fileID: 4248322157802390973}
     - {fileID: 7130967340839773493}
     - {fileID: -6138061074205172029}
-    - {fileID: 2761775508385565415}
-    - {fileID: -348715986294954313}
---- !u!114 &2761775508385565415
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76238ae897cf99441a858f74751e647c, type: 3}
-  m_Name: Factory_Level_5
-  m_EditorClassIdentifier: 
-  _name: Factory_Level_5
-  _iid: 319de590-fec0-11ee-ad97-ddb54c937e61
-  _asset: {fileID: -1896602609992895789, guid: 921b963a8ce35d548b66159c59878ebd, type: 3}
-  _levelFile: {fileID: -8655009601392300639, guid: 921b963a8ce35d548b66159c59878ebd, type: 3}
-  _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_Level_5.ldtkl
-  _assetKey: Assets/LDtk/LDtkVaniaSample/Factory_Level_5.ldtkl
-  _scene:
-    _assetGuid: 
-    _addressableKey: 
 --- !u!114 &3362248849076978597
 MonoBehaviour:
   m_ObjectHideFlags: 0

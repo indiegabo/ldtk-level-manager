@@ -7,13 +7,13 @@ namespace LDtkVaniaEditor
     {
         protected override void OnPostprocessProject(GameObject root)
         {
-            Debug.Log($"Post process LDtk project: {root.name}");
+            // Debug.Log($"Post process LDtk project: {root.name}");
         }
 
         protected override void OnPostprocessLevel(GameObject root, LdtkJson projectJson)
         {
-            LDtkIid lDtkIid = root.GetComponent<LDtkIid>();
-            Debug.Log($"Post process LDtk level: {root.name}");
+            // LDtkIid lDtkIid = root.GetComponent<LDtkIid>();
+            // Debug.Log($"Post process LDtk level: {root.name}");
         }
     }
 }

@@ -72,7 +72,7 @@ namespace LDtkVania
             return true;
         }
 
-        public static bool DestroySceneForLevel(MV_Level level)
+        public static bool DestroySceneForLevel(MV_Level level, bool requestConfirmation = true)
         {
             if (!level.HasScene) return true;
 
@@ -82,14 +82,17 @@ namespace LDtkVania
                 return false;
             }
 
-            bool confirmed = EditorUtility.DisplayDialog(
-                "Caution!",
-                $"Destroy scene for level {level.name}? This is irreversible and might result in work loss!",
-                "I understand. Go on.",
-                "Cancel"
-            );
+            if (requestConfirmation)
+            {
+                bool confirmed = EditorUtility.DisplayDialog(
+                    "Caution!",
+                    $"Destroy scene for level {level.name}? This is irreversible and might result in work loss!",
+                    "I understand. Go on.",
+                    "Cancel"
+                );
 
-            if (!confirmed) return false;
+                if (!confirmed) return false;
+            }
 
             SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath);
             if (sceneAsset == null)
