@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using LDtkUnity;
 using LDtkVania;
 using UnityEngine;
@@ -13,9 +14,12 @@ namespace LDtkVaniaEditor
         private const string TemplateName = "ProjectInspector_MainView";
 
         private MV_Project _project;
+        private List<MV_World> _worlds;
+
         private TemplateContainer _containerMain;
-        private Foldout _foldoutWorlds;
-        private DropdownField _fieldWorlds;
+        private Button _buttonSyncWorlds;
+        private ListView _listWorlds;
+        // private DropdownField _fieldWorlds;
 
         #endregion
 
@@ -24,14 +28,26 @@ namespace LDtkVaniaEditor
         public ProjectMainViewElement(MV_Project project)
         {
             _project = project;
+            _worlds = _project.GetWorlds();
+
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
 
-            _foldoutWorlds = _containerMain.Q<Foldout>("foldout-worlds");
-            _foldoutWorlds.value = false;
-            FillWorldsFoldout(_foldoutWorlds, _project);
+            _buttonSyncWorlds = _containerMain.Q<Button>("button-sync-worlds");
+            _buttonSyncWorlds.clicked += () =>
+            {
+                World[] worlds = _project.LDtkProject.Worlds;
+                _project.SyncWorlds(worlds);
+                _worlds = _project.GetWorlds();
+            };
 
-            _fieldWorlds = _containerMain.Q<DropdownField>("field-worlds");
-            FillWorldsDropdown(_fieldWorlds, _project);
+            _listWorlds = _containerMain.Q<ListView>("list-worlds");
+            _listWorlds.itemsSource = _worlds;
+            _listWorlds.makeItem = () => new WorldListItemElement();
+            _listWorlds.bindItem = (e, i) =>
+            {
+                WorldListItemElement item = e as WorldListItemElement;
+                item.World = _worlds[i];
+            };
 
             Add(_containerMain);
         }
@@ -39,28 +55,6 @@ namespace LDtkVaniaEditor
         #endregion
 
         #region Worlds
-
-        private void FillWorldsFoldout(Foldout foldout, MV_Project project)
-        {
-            World[] worlds = project.LDtkProject.Worlds;
-            for (int i = 0; i < worlds.Length; i++)
-            {
-                World world = worlds[i];
-                Label labelWorldName = new() { text = world.Identifier };
-                labelWorldName.AddToClassList("world-name");
-                foldout.Add(labelWorldName);
-            }
-        }
-
-        private void FillWorldsDropdown(DropdownField dropdown, MV_Project project)
-        {
-            World[] worlds = project.LDtkProject.Worlds;
-            for (int i = 0; i < worlds.Length; i++)
-            {
-                World world = worlds[i];
-                dropdown.choices.Add(world.Identifier);
-            }
-        }
 
         #endregion
 

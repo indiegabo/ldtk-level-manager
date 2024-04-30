@@ -9,12 +9,12 @@ namespace LDtkVania
     {
         #region Inspector
 
-        [SerializeField] private string _name;
+        [SerializeField] private string _displayName;
         [SerializeField] private string _iid;
         [SerializeField] private Object _asset;
         [SerializeField] private LDtkLevelFile _levelFile;
         [SerializeField] private string _assetPath;
-        [SerializeField] private string _assetKey;
+        [SerializeField] private string _addressableKey;
         [SerializeField] private MV_LevelScene _scene;
 
         #endregion
@@ -34,7 +34,7 @@ namespace LDtkVania
         public MV_LevelScene Scene => _scene;
 
         public string AssetPath => _assetPath;
-        public string AddressableKey => _assetKey;
+        public string AddressableKey => _addressableKey;
 
         // LDtk
         public LDtkLevelFile LevelFile => _levelFile;
@@ -57,7 +57,7 @@ namespace LDtkVania
             _iid = lDtkIid.Iid;
 
             _assetPath = location.InternalId;
-            _assetKey = location.PrimaryKey;
+            _addressableKey = location.PrimaryKey;
 
             _asset = asset;
             _levelFile = ldtkFile;
@@ -75,7 +75,7 @@ namespace LDtkVania
             if (location != null)
             {
                 _assetPath = location.InternalId;
-                _assetKey = location.PrimaryKey;
+                _addressableKey = location.PrimaryKey;
             }
 
             if (asset != null)

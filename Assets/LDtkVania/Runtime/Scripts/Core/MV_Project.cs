@@ -43,6 +43,12 @@ namespace LDtkVania
         [SerializeField]
         private MV_LevelsDictionary _levels = new();
 
+        [SerializeField]
+        private MV_LevelsDictionary _lostLevels = new();
+
+        [SerializeField]
+        private MV_WorldsDictionary _worlds = new();
+
         #endregion
 
         #region Fields
@@ -77,14 +83,18 @@ namespace LDtkVania
         }
 
 
-        public bool HasLevel(string iid)
-        {
-            return _levels.ContainsKey(iid);
-        }
+        public bool HasLevel(string iid) => _levels.ContainsKey(iid);
 
         public List<MV_Level> GetLevels()
         {
             return _levels.Values.ToList();
+        }
+
+        public bool HasWorld(string iid) => _worlds.ContainsKey(iid);
+
+        public List<MV_World> GetWorlds()
+        {
+            return _worlds.Values.ToList();
         }
 
         #endregion
@@ -94,10 +104,45 @@ namespace LDtkVania
         [System.Serializable]
         public class MV_LevelsDictionary : SerializedDictionary<string, MV_Level> { }
 
+        [System.Serializable]
+        public class MV_WorldsDictionary : SerializedDictionary<string, MV_World> { }
+
         #endregion
 
 #if UNITY_EDITOR
         #region Editor Only
+
+        public void SyncWorlds(IEnumerable<World> worlds)
+        {
+            HashSet<string> existingIids = new();
+
+            foreach (World world in worlds)
+            {
+                if (_worlds.ContainsKey(world.Iid))
+                {
+                    _worlds[world.Iid].UpdateInfo(world);
+                }
+                else
+                {
+                    _worlds.Add(world.Iid, new MV_World(world));
+                }
+
+                existingIids.Add(world.Iid);
+            }
+
+            HashSet<string> toRemoveIids = new();
+
+            foreach (string iid in _worlds.Keys)
+            {
+                if (existingIids.Contains(iid)) continue;
+                toRemoveIids.Add(iid);
+            }
+
+            foreach (string iid in toRemoveIids)
+            {
+                _worlds.Remove(iid);
+            }
+        }
 
         public void SyncLevels()
         {
@@ -131,7 +176,7 @@ namespace LDtkVania
             // Removing in a separate step to avoid modifying the collection while iterating
             foreach (string iid in levelsToRemove)
             {
-                Remove(iid);
+                SoftRemoveLevel(iid);
             }
 
             AssetDatabase.SaveAssets();
@@ -159,12 +204,12 @@ namespace LDtkVania
             level = CreateInstance<MV_Level>();
             level.name = asset.name;
             level.Initialize(componentLevel, location, asset, file);
-            Add(level);
+            AddLevel(level);
 
             return level.Iid;
         }
 
-        public void Add(MV_Level level)
+        public void AddLevel(MV_Level level)
         {
             if (!_levels.ContainsKey(level.Iid))
             {
@@ -178,10 +223,9 @@ namespace LDtkVania
 
         }
 
-        public void Remove(MV_Level level)
+        public void RemoveLevel(MV_Level level)
         {
-            Debug.Log($"Removing level {level.name}");
-            if (level == null) return;
+            if (level == null || !_levels.ContainsKey(level.Iid)) return;
 
             if (level.HasScene)
             {
@@ -196,11 +240,21 @@ namespace LDtkVania
             }
         }
 
-        public void Remove(string iid)
+        public void RemoveLevel(string iid)
         {
             if (!_levels.ContainsKey(iid)) return;
             MV_Level level = _levels[iid];
-            Remove(level);
+            RemoveLevel(level);
+        }
+
+        public void SoftRemoveLevel(string iid)
+        {
+            if (!_levels.TryGetValue(iid, out MV_Level level)) return;
+
+            _levels.Remove(iid);
+
+            if (_lostLevels.ContainsKey(iid)) return;
+            _lostLevels.Add(iid, level);
         }
 
         public void Clear()
