@@ -137,7 +137,17 @@ MonoBehaviour:
     - _iid: 7f865a90-c640-11ed-a835-078936813e60
       _ldtkName: Factory
       _displayName: teste my testinho
-      _areas: []
+      _areas:
+      - _iid: eca075fb-c5e7-492b-9b0f-0d9af699ad5e
+        _displayName: teste
+      - _iid: 35558845-6af9-402a-a79b-10f7096d433a
+        _displayName: 
+      - _iid: a21e7f0b-157c-4b64-bb9e-10fd143deaf9
+        _displayName: 
+      - _iid: b32e5955-f3c4-49e9-b2ac-a5c973295c8b
+        _displayName: 
+      - _iid: 2c12eb54-1931-41f2-befb-ccc14863d69d
+        _displayName: 
     - _iid: 78079cf0-c640-11ed-bdac-f1f4e542fc31
       _ldtkName: Detached_Levels
       _displayName: Detached

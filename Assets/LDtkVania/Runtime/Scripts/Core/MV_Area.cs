@@ -11,15 +11,14 @@ namespace LDtkVania
         private string _iid;
 
         [SerializeField]
-        public string _name;
+        public string _displayName;
 
         public string Iid => _iid;
-        public string Name => _name;
+        public string DisplayName { get => _displayName; set => _displayName = value; }
 
-        public MV_Area(string iid, string name)
+        public MV_Area(string iid)
         {
             _iid = iid;
-            _name = name;
         }
     }
 }
