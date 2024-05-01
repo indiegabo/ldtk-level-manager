@@ -67,7 +67,7 @@ namespace LDtkVaniaEditor
             // Create a new instance of MV_LevelsElement using the provided visual tree asset.
             _worldElement = new WorldElement(world);
 
-            _foldoutMain.text = world.Name;
+            _foldoutMain.text = world.LDtkName;
             _foldoutMain.value = _expandedFoldouts.Contains(world.Iid);
 
             // Add the levels element to the foldout.

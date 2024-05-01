@@ -19,7 +19,6 @@ namespace LDtkVaniaEditor
         private TemplateContainer _containerMain;
         private Button _buttonSyncWorlds;
         private ListView _listWorlds;
-        // private DropdownField _fieldWorlds;
 
         #endregion
 

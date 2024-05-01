@@ -22,7 +22,7 @@ namespace LDtkVania
         public string Iid => _iid;
         public string Name => !string.IsNullOrEmpty(_displayName) ? _displayName : _ldtkName;
         public string LDtkName => _ldtkName;
-        public string DisplayName => _displayName;
+        public string DisplayName { get => _displayName; set => _displayName = value; }
 
         public MV_World(World world)
         {

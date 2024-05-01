@@ -114,6 +114,7 @@ namespace LDtkVania
 
         public void SyncWorlds(IEnumerable<World> worlds)
         {
+            // _worlds.Clear();
             HashSet<string> existingIids = new();
 
             foreach (World world in worlds)
@@ -124,7 +125,8 @@ namespace LDtkVania
                 }
                 else
                 {
-                    _worlds.Add(world.Iid, new MV_World(world));
+                    MV_World mv_world = new(world);
+                    _worlds.Add(world.Iid, mv_world);
                 }
 
                 existingIids.Add(world.Iid);
