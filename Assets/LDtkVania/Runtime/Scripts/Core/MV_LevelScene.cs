@@ -101,7 +101,7 @@ namespace LDtkVania
             }
 
             List<string> labels = AssetDatabase.GetLabels(sceneAsset).ToList();
-            labels.Add("LDtkSceneDeletion");
+            labels.Remove(SceneLabelName);
 
             AssetDatabase.SetLabels(sceneAsset, labels.ToArray());
             EditorUtility.SetDirty(sceneAsset);
