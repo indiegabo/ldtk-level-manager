@@ -1,5 +1,4 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Assets/LDtkVania/Resources/Styles/Level_style.uss?fileID=7433441132597879392&amp;guid=29cac97f9a0a8214e911f21f7fa01b2d&amp;type=3#Level_style" />
-    <ui:TextField picking-mode="Ignore" label="Display Name" name="field-display-name" />
-    <ui:ListView name="list-areas" virtualization-method="DynamicHeight" selection-type="None" show-foldout-header="true" header-title="Areas" show-add-remove-footer="true" show-bound-collection-size="false" />
+    <ui:TextField picking-mode="Ignore" label="Iid" name="field-iid" binding-path="_iid" />
+    <ui:TextField picking-mode="Ignore" label="Display Name" name="field-display-name" binding-path="_displayName" />
 </ui:UXML>

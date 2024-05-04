@@ -18,6 +18,9 @@ namespace LDtkVaniaEditor
         private TemplateContainer _containerMain;
         private TabViewElement _tabViewElement;
         private ObjectField _fieldLDtkProject;
+        private LdtkJson _ldtkJson;
+
+        private ProgressBar _progressBar;
 
         #endregion
 
@@ -26,6 +29,13 @@ namespace LDtkVaniaEditor
         public override VisualElement CreateInspectorGUI()
         {
             _project = target as MV_Project;
+            _ldtkJson = _project.LDtkProject;
+
+            Debug.Log($"Creating inspector for project: {_project.name}");
+            _progressBar = new ProgressBar
+            {
+                title = "Loading project..."
+            };
 
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
             _fieldLDtkProject = _containerMain.Q<ObjectField>("field-ldtk-project");
@@ -37,6 +47,7 @@ namespace LDtkVaniaEditor
             });
 
             _tabViewElement = new();
+            _containerMain.Add(_tabViewElement);
             ProjectMainViewElement mainViewElement = new(_project);
             ProjectLevelsViewElement levelsViewElement = new(_project);
 
@@ -55,18 +66,7 @@ namespace LDtkVaniaEditor
 
         private void EvaluateTabViewPresence(LDtkProjectFile projectFile)
         {
-            if (projectFile == null)
-            {
-                if (!_containerMain.Contains(_tabViewElement)) return;
-                _containerMain.Remove(_tabViewElement);
-                return;
-            }
-            else
-            {
-                if (_containerMain.Contains(_tabViewElement)) return;
-                _containerMain.Add(_tabViewElement);
-            }
-
+            _tabViewElement.style.display = projectFile != null ? DisplayStyle.Flex : DisplayStyle.None;
         }
     }
 }

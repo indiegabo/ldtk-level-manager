@@ -41,4 +41,4 @@ ScriptedImporter:
     _asset: {fileID: 5676502465883309792, guid: 8dfe4624c95fcea43b79048492e53de3, type: 3}
   _enumGenerate: 1
   _enumPath: LDtkEnums.cs
-  _enumNamespace: Poputara.LDtk
+  _enumNamespace: 

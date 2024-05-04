@@ -17,8 +17,8 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: a55affece5b368c40af4769e4a2bd44d
   m_SerializeEntries:
-  - m_GUID: 5dd3aeb6f8cf6464fac9daa182402c55
-    m_Address: LDtkSceneLevel_601a6d50-c640-11ed-8852-c79dd4f3aa7c
+  - m_GUID: 7fb0d53a851f63f4c91e84ba5f9974be
+    m_Address: LDtkSceneLevel_363b42a0-7820-11ed-a571-2bca691f63e1
     m_ReadOnly: 0
     m_SerializedLabels:
     - LDtkSceneLevel

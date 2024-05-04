@@ -38,16 +38,10 @@ namespace LDtkVania
         private string _checkpointsContainerName;
 
         [SerializeField]
-        private List<AssetLabelReference> _levelsLabels = new();
-
-        [SerializeField]
         private MV_LevelsDictionary _levels = new();
 
         [SerializeField]
         private MV_LevelsDictionary _lostLevels = new();
-
-        [SerializeField]
-        private MV_WorldsDictionary _worlds = new();
 
         #endregion
 
@@ -62,7 +56,6 @@ namespace LDtkVania
         public bool SyncLevelsAtCompile => _syncLevelsAtCompile;
         public string ConnectionsContainerName => "Connections";
         public string CheckpointsContainerName => "Checkpoints";
-        public List<AssetLabelReference> LevelsLabels => _levelsLabels;
 
         public LdtkJson LDtkProject => _ldtkProject ??= _ldtkProjectFile.FromJson;
         public int PixelsPerUnit => LDtkProject.DefaultGridSize;
@@ -90,13 +83,6 @@ namespace LDtkVania
             return _levels.Values.ToList();
         }
 
-        public bool HasWorld(string iid) => _worlds.ContainsKey(iid);
-
-        public List<MV_World> GetWorlds()
-        {
-            return _worlds.Values.ToList();
-        }
-
         #endregion
 
         #region Classes
@@ -104,50 +90,15 @@ namespace LDtkVania
         [System.Serializable]
         public class MV_LevelsDictionary : SerializedDictionary<string, MV_Level> { }
 
-        [System.Serializable]
-        public class MV_WorldsDictionary : SerializedDictionary<string, MV_World> { }
-
         #endregion
 
 #if UNITY_EDITOR
         #region Editor Only
 
-        public void SyncWorlds(IEnumerable<World> worlds)
-        {
-            // _worlds.Clear();
-            HashSet<string> existingIids = new();
-
-            foreach (World world in worlds)
-            {
-                if (_worlds.ContainsKey(world.Iid))
-                {
-                    _worlds[world.Iid].UpdateInfo(world);
-                }
-                else
-                {
-                    MV_World mv_world = new(world);
-                    _worlds.Add(world.Iid, mv_world);
-                }
-
-                existingIids.Add(world.Iid);
-            }
-
-            HashSet<string> toRemoveIids = new();
-
-            foreach (string iid in _worlds.Keys)
-            {
-                if (existingIids.Contains(iid)) continue;
-                toRemoveIids.Add(iid);
-            }
-
-            foreach (string iid in toRemoveIids)
-            {
-                _worlds.Remove(iid);
-            }
-        }
-
         public void SyncLevels()
         {
+            LdtkJson ldtkProjectJson = _ldtkProjectFile.FromJson;
+
             HashSet<string> presentLevels = new();
 
             AsyncOperationHandle handle = Addressables.LoadResourceLocationsAsync(AddressablesLevelsLabel);
@@ -159,7 +110,7 @@ namespace LDtkVania
 
             foreach (IResourceLocation location in locations)
             {
-                string levelIid = HandleLevelLocation(location);
+                string levelIid = CreateOrUpdateBasedOnLocation(ldtkProjectJson, location);
                 if (string.IsNullOrEmpty(levelIid)) continue;
 
                 presentLevels.Add(levelIid);
@@ -185,7 +136,7 @@ namespace LDtkVania
             AssetDatabase.Refresh();
         }
 
-        private string HandleLevelLocation(IResourceLocation location)
+        private string CreateOrUpdateBasedOnLocation(LdtkJson projectJSON, IResourceLocation location)
         {
             LDtkComponentLevel componentLevel = AssetDatabase.LoadAssetAtPath<LDtkComponentLevel>(location.InternalId);
             if (componentLevel == null) return null;
@@ -199,13 +150,13 @@ namespace LDtkVania
             Level ldtkLevel = file.FromJson;
             if (TryGetLevel(ldtkLevel.Iid, out MV_Level level))
             {
-                level.UpdateInfo(componentLevel, location, asset, file);
+                level.UpdateInfo(projectJSON, componentLevel, location, asset, file);
                 return level.Iid;
             }
 
             level = CreateInstance<MV_Level>();
             level.name = asset.name;
-            level.Initialize(componentLevel, location, asset, file);
+            level.Initialize(projectJSON, componentLevel, location, asset, file);
             AddLevel(level);
 
             return level.Iid;
@@ -259,13 +210,20 @@ namespace LDtkVania
             _lostLevels.Add(iid, level);
         }
 
-        public void Clear()
+        public void HardClear()
         {
             GetLevels().ForEach(level =>
             {
                 AssetDatabase.RemoveObjectFromAsset(level);
             });
+
+            foreach (MV_Level level in _lostLevels.Values)
+            {
+                AssetDatabase.RemoveObjectFromAsset(level);
+            }
+
             _levels.Clear();
+            _lostLevels.Clear();
         }
 
         #endregion

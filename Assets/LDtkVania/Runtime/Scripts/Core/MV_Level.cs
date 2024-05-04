@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using LDtkUnity;
 using UnityEngine;
 using UnityEngine.ResourceManagement.ResourceLocations;
@@ -9,8 +10,10 @@ namespace LDtkVania
     {
         #region Inspector
 
-        [SerializeField] private string _displayName;
         [SerializeField] private string _iid;
+        [SerializeField] private string _displayName;
+        [SerializeField] private string _world;
+        [SerializeField] private string _area;
         [SerializeField] private Object _asset;
         [SerializeField] private LDtkLevelFile _levelFile;
         [SerializeField] private string _assetPath;
@@ -28,6 +31,8 @@ namespace LDtkVania
         #region Getters
 
         public string Iid => _iid;
+        public string Name => !string.IsNullOrEmpty(_displayName) ? _displayName : name;
+        public string Area => _area;
         public Object Asset => _asset;
 
         public bool HasScene => _scene != null && !string.IsNullOrEmpty(_scene.AddressableKey);
@@ -51,26 +56,29 @@ namespace LDtkVania
 
         #region Constructors
 
-        public void Initialize(LDtkComponentLevel ldtkComponentLevel, IResourceLocation location, Object asset, LDtkLevelFile ldtkFile)
+        public void Initialize(LdtkJson projectJSON, LDtkComponentLevel ldtkComponentLevel, IResourceLocation location, Object asset, LDtkLevelFile ldtkFile)
         {
             LDtkIid lDtkIid = ldtkComponentLevel.GetComponent<LDtkIid>();
             _iid = lDtkIid.Iid;
 
-            _assetPath = location.InternalId;
-            _addressableKey = location.PrimaryKey;
-
-            _asset = asset;
-            _levelFile = ldtkFile;
+            UpdateInfo(projectJSON, ldtkComponentLevel, location, asset, ldtkFile);
         }
 
         #endregion
 
         #region Gathering info
 
-        public void UpdateInfo(LDtkComponentLevel ldtkComponentLevel, IResourceLocation location = null, Object asset = null, LDtkLevelFile ldtkFile = null)
+        public void UpdateInfo(LdtkJson projectJSON, LDtkComponentLevel ldtkComponentLevel, IResourceLocation location = null, Object asset = null, LDtkLevelFile ldtkFile = null)
         {
-            LDtkIid lDtkIid = ldtkComponentLevel.GetComponent<LDtkIid>();
-            _iid = lDtkIid.Iid;
+            LDtkFields fields = ldtkComponentLevel.GetComponent<LDtkFields>();
+
+            string displayName = fields.GetString("displayName");
+            if (!string.IsNullOrEmpty(displayName))
+                name = displayName;
+
+            string area = fields.GetValueAsString("ldtkVaniaArea");
+            if (!string.IsNullOrEmpty(area))
+                _area = area;
 
             if (location != null)
             {
@@ -81,13 +89,14 @@ namespace LDtkVania
             if (asset != null)
             {
                 _asset = asset;
-                name = _asset.name;
             }
 
             if (ldtkFile != null)
             {
                 _levelFile = ldtkFile;
             }
+
+            // Find the world name of this level
         }
 
         #endregion

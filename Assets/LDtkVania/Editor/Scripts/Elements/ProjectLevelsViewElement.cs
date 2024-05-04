@@ -64,6 +64,9 @@ namespace LDtkVaniaEditor
             _buttonSyncLevels.clicked += () => _project.SyncLevels();
 
             PopulateSearchablesWithAll();
+
+            // World world = projectJSON.Worlds.FirstOrDefault(w => w.Levels.Any(l => l.Iid == _iid));
+            // _world = world?.Identifier;
             Add(_containerMain);
         }
 

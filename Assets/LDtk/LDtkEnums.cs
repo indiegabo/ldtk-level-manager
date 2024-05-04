@@ -8,37 +8,43 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Poputara.LDtk
+/// <summary>
+/// LDtk Enum for LDtkEnums
+/// </summary>
+public enum GlobalTransitionsTarget
 {
-    /// <summary>
-    /// LDtk Enum for LDtkEnums
-    /// </summary>
-    public enum GlobalTransitionsTarget
-    {
-        Lights
-    }
+    Lights
+}
 
-    /// <summary>
-    /// LDtk Enum for LDtkEnums
-    /// </summary>
-    public enum CameraSize
-    {
-        Tiny,
-        Small,
-        Medium,
-        Large,
-        ExtraLarge,
-        ExtremelyLarge
-    }
+/// <summary>
+/// LDtk Enum for LDtkEnums
+/// </summary>
+public enum CameraSize
+{
+    Tiny,
+    Small,
+    Medium,
+    Large,
+    ExtraLarge,
+    ExtremelyLarge
+}
 
-    /// <summary>
-    /// LDtk Enum for LDtkEnums
-    /// </summary>
-    public enum EnemyType
-    {
-        Dummy,
-        TaraBug,
-        TaraCapBug,
-        JumpBug
-    }
+/// <summary>
+/// LDtk Enum for LDtkEnums
+/// </summary>
+public enum EnemyType
+{
+    Dummy,
+    TaraBug,
+    TaraCapBug,
+    JumpBug
+}
+
+/// <summary>
+/// LDtk Enum for LDtkEnums
+/// </summary>
+public enum LDtkVaniAreas
+{
+    Factory,
+    City
 }
