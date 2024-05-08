@@ -10,18 +10,18 @@ namespace LDtkVania.Utils
 
         [HideInInspector]
         [SerializeField]
-        private List<TKey> _keys = new();
+        private List<TKey> _listKeys = new();
 
         [HideInInspector]
         [SerializeField]
-        private List<TValue> _values = new();
+        private List<TValue> _listValues = new();
 
         #endregion
 
         #region Properties
 
-        protected List<TKey> keys => _keys;
-        protected List<TValue> values => _values;
+        protected List<TKey> ListKeys => _listKeys;
+        protected List<TValue> ListValues => _listValues;
 
         #endregion
 
@@ -29,23 +29,23 @@ namespace LDtkVania.Utils
 
         public void OnAfterDeserialize()
         {
-            this.Clear();
+            Clear();
 
-            for (int i = 0; i < _keys.Count && i < _values.Count; i++)
+            for (int i = 0; i < _listKeys.Count && i < _listValues.Count; i++)
             {
-                this[_keys[i]] = _values[i];
+                this[_listKeys[i]] = _listValues[i];
             }
         }
 
         public void OnBeforeSerialize()
         {
-            _keys.Clear();
-            _values.Clear();
+            _listKeys.Clear();
+            _listValues.Clear();
 
             foreach (var item in this)
             {
-                _keys.Add(item.Key);
-                _values.Add(item.Value);
+                _listKeys.Add(item.Key);
+                _listValues.Add(item.Value);
             }
         }
 
