@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace LDtkVania
+namespace LDtkVania.Utils
 {
     /// <summary>
     /// This is a solution to working with scene assets through Unity's inspector.

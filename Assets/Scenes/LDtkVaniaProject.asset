@@ -134,6 +134,24 @@ MonoBehaviour:
   _lostLevels:
     _keys: []
     _values: []
+  _areasLevels:
+    _keys:
+    - Area 1
+    - Area 2
+    - Area 3
+    _values:
+    - _levels:
+      - Area 1_0
+      - Area 2_1
+      - Area 3_2
+    - _levels:
+      - Area 1_0
+      - Area 2_1
+      - Area 3_2
+    - _levels:
+      - Area 1_0
+      - Area 2_1
+      - Area 3_2
 --- !u!114 &2364842603879116921
 MonoBehaviour:
   m_ObjectHideFlags: 0

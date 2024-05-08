@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace LDtkVania
+namespace LDtkVania.Utils
 {
     public static class AsyncOperationExtension
     {

@@ -1,13 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Cinemachine;
 using LDtkUnity;
-using Sirenix.Utilities;
+using LDtkVania.Utils;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Tilemaps;
 
 namespace LDtkVania
 {

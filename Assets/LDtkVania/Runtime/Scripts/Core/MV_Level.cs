@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using LDtkUnity;
 using UnityEngine;
 using UnityEngine.ResourceManagement.ResourceLocations;

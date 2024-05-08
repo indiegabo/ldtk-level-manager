@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using LDtkVania.Utils;
 
 namespace LDtkVania.Transitioning
 {

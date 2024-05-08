@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace LDtkVania
+namespace LDtkVania.Utils
 {
     [CreateAssetMenu(fileName = "GameObjectProvider", menuName = "LDtkVania/Providers/GameObjectProvider")]
     public class GameObjectProvider : ScriptableObject

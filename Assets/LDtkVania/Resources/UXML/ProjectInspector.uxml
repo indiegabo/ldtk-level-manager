@@ -1,3 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement name="container-tests" style="flex-grow: 1; flex-direction: row; align-items: center; justify-content: center;">
+        <ui:Button text="Action 1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-action-1" />
+        <ui:Button text="Action 2" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-action-2" />
+        <ui:Button text="Action 3" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-action-3" />
+    </ui:VisualElement>
     <uie:ObjectField label="Ldtk Project Json" type="LDtkUnity.LDtkProjectFile, LDtkUnity.Runtime" binding-path="_ldtkProjectFile" name="field-ldtk-project" style="margin-bottom: 3px;" />
 </ui:UXML>

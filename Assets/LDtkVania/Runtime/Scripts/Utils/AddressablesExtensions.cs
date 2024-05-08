@@ -7,59 +7,62 @@ using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-public static class AddressableExtensions
+namespace LDtkVania.Utils
 {
-    public static void SetAddressableGroup(this Object obj, string groupName)
+    public static class AddressableExtensions
     {
-        var settings = AddressableAssetSettingsDefaultObject.Settings;
-
-        if (settings)
+        public static void SetAddressableGroup(this Object obj, string groupName)
         {
-            var group = settings.FindGroup(groupName);
-            if (!group)
-                group = settings.CreateGroup(groupName, false, false, true, null, typeof(ContentUpdateGroupSchema), typeof(BundledAssetGroupSchema));
+            var settings = AddressableAssetSettingsDefaultObject.Settings;
 
-            var assetpath = AssetDatabase.GetAssetPath(obj);
-            var guid = AssetDatabase.AssetPathToGUID(assetpath);
+            if (settings)
+            {
+                var group = settings.FindGroup(groupName);
+                if (!group)
+                    group = settings.CreateGroup(groupName, false, false, true, null, typeof(ContentUpdateGroupSchema), typeof(BundledAssetGroupSchema));
 
-            var e = settings.CreateOrMoveEntry(guid, group, false, false);
-            var entriesAdded = new List<AddressableAssetEntry> { e };
+                var assetpath = AssetDatabase.GetAssetPath(obj);
+                var guid = AssetDatabase.AssetPathToGUID(assetpath);
 
-            group.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, entriesAdded, false, true);
-            settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, entriesAdded, true, false);
-        }
-    }
+                var e = settings.CreateOrMoveEntry(guid, group, false, false);
+                var entriesAdded = new List<AddressableAssetEntry> { e };
 
-    public static bool TrySetAsAddressable(this SceneAsset obj, string address, string groupName, string labelName = null)
-    {
-        string guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(obj));
-
-        if (string.IsNullOrEmpty(guid)) return false;
-
-        AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
-
-        if (string.IsNullOrEmpty(groupName)) return false;
-
-        AddressableAssetGroup group = settings.FindGroup(groupName)
-            ?? settings.CreateGroup(groupName, false, true, true, null, typeof(ContentUpdateGroupSchema), typeof(BundledAssetGroupSchema));
-
-        AssetReference assetReference = settings.CreateAssetReference(guid);
-        assetReference.SetEditorAsset(obj);
-        AddressableAssetEntry entry = settings.CreateOrMoveEntry(guid, group);
-
-        // This will fail if asset is being created on AssetPostprocessor
-        if (entry == null) return false;
-
-        entry.SetAddress(address);
-
-        if (!string.IsNullOrEmpty(labelName))
-        {
-            settings.AddLabel(labelName);
-            entry.SetLabel(labelName, true);
+                group.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, entriesAdded, false, true);
+                settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, entriesAdded, true, false);
+            }
         }
 
-        settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, entry, true);
-        return true;
+        public static bool TrySetAsAddressable(this SceneAsset obj, string address, string groupName, string labelName = null)
+        {
+            string guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(obj));
+
+            if (string.IsNullOrEmpty(guid)) return false;
+
+            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+
+            if (string.IsNullOrEmpty(groupName)) return false;
+
+            AddressableAssetGroup group = settings.FindGroup(groupName)
+                ?? settings.CreateGroup(groupName, false, true, true, null, typeof(ContentUpdateGroupSchema), typeof(BundledAssetGroupSchema));
+
+            AssetReference assetReference = settings.CreateAssetReference(guid);
+            assetReference.SetEditorAsset(obj);
+            AddressableAssetEntry entry = settings.CreateOrMoveEntry(guid, group);
+
+            // This will fail if asset is being created on AssetPostprocessor
+            if (entry == null) return false;
+
+            entry.SetAddress(address);
+
+            if (!string.IsNullOrEmpty(labelName))
+            {
+                settings.AddLabel(labelName);
+                entry.SetLabel(labelName, true);
+            }
+
+            settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, entry, true);
+            return true;
+        }
     }
 }
 #endif

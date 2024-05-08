@@ -1,6 +1,7 @@
 using System;
 using Cinemachine;
 using LDtkUnity;
+using LDtkVania.Utils;
 using UnityEngine;
 
 namespace LDtkVania

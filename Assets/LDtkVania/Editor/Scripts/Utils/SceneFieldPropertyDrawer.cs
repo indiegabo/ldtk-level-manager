@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEditor;
 using LDtkVania;
+using LDtkVania.Utils;
 
 namespace LDtkVaniaEditor
 {

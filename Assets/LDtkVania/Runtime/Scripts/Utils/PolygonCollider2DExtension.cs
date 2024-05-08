@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-namespace LDtkVania
+namespace LDtkVania.Utils
 {
     public static class PolygonCollider2DExtension
     {

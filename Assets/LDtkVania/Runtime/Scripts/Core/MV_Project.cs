@@ -5,6 +5,8 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using System.Linq;
+using LDtkVania.Utils;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -42,6 +44,9 @@ namespace LDtkVania
 
         [SerializeField]
         private MV_LevelsDictionary _lostLevels = new();
+
+        [SerializeField]
+        private MV_AreasDictionary _areasLevels;
 
         #endregion
 
@@ -85,10 +90,76 @@ namespace LDtkVania
 
         #endregion
 
+        public void CreateHashSet()
+        {
+            _areasLevels = new MV_AreasDictionary();
+            List<string> areasNames = new()
+            {
+                "Area 1",
+                "Area 2",
+                "Area 3"
+            };
+
+            foreach (string area in areasNames)
+            {
+                _areasLevels[area] = new AreaLevelList();
+                for (int i = 0; i < areasNames.Count; i++)
+                {
+                    string levelName = areasNames[i] + "_" + i;
+                    _areasLevels[area].Add(levelName);
+                }
+            }
+        }
+
+        public void LogHashSet()
+        {
+            foreach (var pair in _areasLevels)
+            {
+                Debug.Log($"Area: {pair.Key}:");
+                foreach (var levelName in pair.Value.Levels)
+                {
+                    Debug.Log($"Level: {levelName}");
+                }
+            }
+        }
+
+        public void DestroyHashSet()
+        {
+            _areasLevels.Clear();
+        }
+
         #region Classes
 
         [System.Serializable]
         public class MV_LevelsDictionary : SerializedDictionary<string, MV_Level> { }
+
+        [System.Serializable]
+        public class MV_AreasDictionary : SerializedDictionary<string, AreaLevelList> { }
+
+        [System.Serializable]
+        public class AreaLevelList
+        {
+            [SerializeField]
+            private List<string> _levels = new();
+
+            public List<string> Levels => _levels;
+
+            public void Add(string level)
+            {
+                if (_levels.Contains(level)) return;
+                _levels.Add(level);
+            }
+
+            public void Clear()
+            {
+                _levels.Clear();
+            }
+
+            public void Remove(string level)
+            {
+                _levels.Remove(level);
+            }
+        }
 
         #endregion
 
