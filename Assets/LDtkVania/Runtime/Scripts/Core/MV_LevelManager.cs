@@ -338,7 +338,7 @@ namespace LDtkVania
             {
                 if (_loadedObjects.ContainsKey(iid)) return;
 
-                AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(level.AddressableKey);
+                AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(level.Address);
                 await handle.Task;
 
                 if (handle.Status != AsyncOperationStatus.Succeeded)

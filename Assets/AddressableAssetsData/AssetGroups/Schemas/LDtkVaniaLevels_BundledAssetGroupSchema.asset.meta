@@ -1,9 +1,8 @@
 fileFormatVersion: 2
-guid: 7fb0d53a851f63f4c91e84ba5f9974be
-labels:
-- LDtkVaniaScene
-DefaultImporter:
+guid: 46ba38008c75d854e97de6c7c62d65a8
+NativeFormatImporter:
   externalObjects: {}
+  mainObjectFileID: 11400000
   userData: 
   assetBundleName: 
   assetBundleVariant: 

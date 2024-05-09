@@ -32,7 +32,7 @@ namespace LDtkVania.Utils
             }
         }
 
-        public static bool TrySetAsAddressable(this SceneAsset obj, string address, string groupName, string labelName = null)
+        public static bool TrySetAsAddressable(this Object obj, string address, string groupName, string labelName = null)
         {
             string guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(obj));
 

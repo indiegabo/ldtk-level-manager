@@ -99,10 +99,10 @@ namespace LDtkVaniaEditor
                 _fieldAssetPath.text.CopyToClipboard();
             };
 
-            _fieldAddressableKey = _containerMain.Q<TextField>("field-addressable-key");
+            _fieldAddressableKey = _containerMain.Q<TextField>("field-address");
             _fieldAddressableKey.SetEnabled(false);
 
-            Button buttonAdreesableKeyCopy = _containerMain.Q<Button>("button-addressable-key-copy");
+            Button buttonAdreesableKeyCopy = _containerMain.Q<Button>("button-address-copy");
             buttonAdreesableKeyCopy.clicked += () =>
             {
                 if (string.IsNullOrEmpty(_fieldAddressableKey.text)) return;

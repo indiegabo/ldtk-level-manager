@@ -15,17 +15,11 @@ MonoBehaviour:
   m_GroupName: LDtkVaniaScenes
   m_Data:
     m_SerializedData: []
-  m_GUID: a55affece5b368c40af4769e4a2bd44d
-  m_SerializeEntries:
-  - m_GUID: 7fb0d53a851f63f4c91e84ba5f9974be
-    m_Address: LDtkSceneLevel_363b42a0-7820-11ed-a571-2bca691f63e1
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - LDtkSceneLevel
-    FlaggedDuringContentUpdateRestriction: 0
+  m_GUID: 2f69e7d10b9e98d4aaf4aaca130a7e8b
+  m_SerializeEntries: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 1ba21a4611ac85b4f95e8eab66dc3553, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 189040724006c3040a1d1bd4bfa93d6b, type: 2}
-    - {fileID: 11400000, guid: ed0c195211919df4b812e0cba9677a1f, type: 2}
+    - {fileID: 11400000, guid: eea0aca5b321e5b4e94255b5fb6afd20, type: 2}
+    - {fileID: 11400000, guid: 7c7ba90d623b3b543a87876c30e20376, type: 2}

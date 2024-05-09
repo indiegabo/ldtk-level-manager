@@ -17,13 +17,8 @@ ScriptedImporter:
   _geometryType: 0
   _createBackgroundColor: 0
   _createLevelBoundsTrigger: 0
+  _useParallax: 1
   _intGridValues:
-  - _key: Hazardous_1
-    _asset: {fileID: 11400000, guid: bb51330e92096124895556dcd60f5799, type: 2}
-  - _key: Hazardous_2
-    _asset: {fileID: 11400000, guid: cb243f2ce6844c145ac156b17e160b51, type: 2}
-  - _key: Hazardous_3
-    _asset: {fileID: 11400000, guid: e219ac39b2475be4bb5bc6908bc6cce4, type: 2}
   - _key: Ground_1
     _asset: {fileID: 11400000, guid: 08217e8fd8e15c64cb8ba4e3a344bd1c, type: 2}
   - _key: Ground_2

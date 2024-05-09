@@ -18,7 +18,6 @@ namespace LDtkVaniaEditor
         private TemplateContainer _containerMain;
         private TabViewElement _tabViewElement;
         private ObjectField _fieldLDtkProject;
-        private LdtkJson _ldtkJson;
 
         private ProgressBar _progressBar;
 
@@ -29,9 +28,7 @@ namespace LDtkVaniaEditor
         public override VisualElement CreateInspectorGUI()
         {
             _project = target as MV_Project;
-            _ldtkJson = _project.LDtkProject;
 
-            Debug.Log($"Creating inspector for project: {_project.name}");
             _progressBar = new ProgressBar
             {
                 title = "Loading project..."

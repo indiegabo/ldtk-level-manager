@@ -22,9 +22,9 @@
             <ui:TextField picking-mode="Ignore" label="Asset Path" name="field-asset-path" binding-path="_assetPath" class="level-field" />
             <ui:Button text="Copy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-asset-path-copy" style="width: 40px;" />
         </ui:VisualElement>
-        <ui:VisualElement name="container-addressable-key" style="flex-grow: 1; flex-direction: row; flex-shrink: 0;">
-            <ui:TextField picking-mode="Ignore" label="Addressable Key" name="field-addressable-key" binding-path="_addressableKey" class="level-field" />
-            <ui:Button text="Copy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-addressable-key-copy" style="width: 40px;" />
+        <ui:VisualElement name="container-addres" style="flex-grow: 1; flex-direction: row; flex-shrink: 0;">
+            <ui:TextField picking-mode="Ignore" label="Address" name="field-address" binding-path="_address" class="level-field" />
+            <ui:Button text="Copy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-address-copy" style="width: 40px;" />
         </ui:VisualElement>
     </ui:Foldout>
 </ui:UXML>
