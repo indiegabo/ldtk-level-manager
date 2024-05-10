@@ -18,6 +18,7 @@ namespace LDtkVaniaEditor
 
         #region Fields
 
+        private MV_Project _project;
         private MV_Level _level;
 
         LevelElement _levelElement;
@@ -46,8 +47,10 @@ namespace LDtkVaniaEditor
         /// Initializes a new instance of the <see cref="LevelListItemElement"/> class.
         /// </summary>
         /// <param name="tree">The visual tree asset to be used for creating the levels element.</param>
-        public LevelListItemElement()
+        public LevelListItemElement(MV_Project project)
         {
+            _project = project;
+
             // Create a new foldout with its value set to false.
             _foldoutMain = new Foldout()
             {
@@ -66,11 +69,13 @@ namespace LDtkVaniaEditor
         {
             if (_levelElement != null)
             {
+                _levelElement.CompletelyRemove -= OnCompletelyRemove;
                 _foldoutMain.Remove(_levelElement);
             }
 
             // Create a new instance of MV_LevelsElement using the provided visual tree asset.
             _levelElement = new LevelElement(level);
+            _levelElement.CompletelyRemove += OnCompletelyRemove;
 
             _foldoutMain.text = _level.name;
             _foldoutMain.value = _expandedFoldouts.Contains(level.Iid);
@@ -92,6 +97,14 @@ namespace LDtkVaniaEditor
                     _expandedFoldouts.Remove(level.Iid);
                 }
             });
+        }
+
+        private void OnCompletelyRemove()
+        {
+            Debug.Log("Completely removed");
+            _project.RemoveLevel(_level.Iid);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
 
         #endregion

@@ -6,6 +6,8 @@ using UnityEditor;
 
 namespace LDtkVaniaEditor
 {
+    public delegate void CompletelyRemoveEvent();
+
     public class LevelElement : VisualElement
     {
         private const string TemplateName = "LevelInspector";
@@ -17,10 +19,12 @@ namespace LDtkVaniaEditor
 
         private TextField _fieldIid;
 
+        private Button _buttonCompletlyRemove;
         private Button _buttonIidCopy;
         private Button _buttonCreateScene;
         private Button _buttonDestroyScene;
 
+        private VisualElement _containerLeftBehind;
         private TextField _fieldArea;
         private VisualElement _containerSceneElement;
         private PropertyField _fieldAsset;
@@ -29,10 +33,19 @@ namespace LDtkVaniaEditor
         private TextField _fieldAddressableKey;
         private TextField _fieldSceneAddressableKey;
 
+        public CompletelyRemoveEvent CompletelyRemove;
+
         public LevelElement(MV_Level level)
         {
             _level = level;
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
+            _containerLeftBehind = _containerMain.Q<VisualElement>("container-left-behind");
+            _containerLeftBehind.style.display = _level.LeftBehind ? DisplayStyle.Flex : DisplayStyle.None;
+            _buttonCompletlyRemove = _containerMain.Q<Button>("button-completly-remove");
+            _buttonCompletlyRemove.clicked += () =>
+            {
+                CompletelyRemove?.Invoke();
+            };
 
             _fieldIid = _containerMain.Q<TextField>("field-iid");
             _fieldIid.SetEnabled(false);

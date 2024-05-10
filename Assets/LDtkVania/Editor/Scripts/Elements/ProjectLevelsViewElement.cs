@@ -36,7 +36,7 @@ namespace LDtkVaniaEditor
         public ProjectLevelsViewElement(MV_Project project)
         {
             _project = project;
-            _levels = _project.GetLevels();
+            _levels = _project.GetAllLevels();
 
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
 
@@ -53,7 +53,7 @@ namespace LDtkVaniaEditor
             _buttonFilter.clicked += ApplyFilters;
 
             _listLevels = _containerMain.Q<ListView>("list-levels");
-            _listLevels.makeItem = () => new LevelListItemElement();
+            _listLevels.makeItem = () => new LevelListItemElement(_project);
             _listLevels.bindItem = (e, i) =>
             {
                 LevelListItemElement item = e as LevelListItemElement;

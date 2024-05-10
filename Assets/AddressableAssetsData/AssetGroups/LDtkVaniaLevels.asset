@@ -77,12 +77,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - LDtkVaniaLevel
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: cbd672044268ab041ac2fd5ae801ecf7
-    m_Address: LDtkVaniaLevel_b7390380-fec0-11ee-b106-a905f0dd4eac
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - LDtkVaniaLevel
-    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 1ba21a4611ac85b4f95e8eab66dc3553, type: 2}
   m_SchemaSet:

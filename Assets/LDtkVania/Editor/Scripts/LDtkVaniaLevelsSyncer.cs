@@ -40,8 +40,10 @@ namespace LDtkVaniaEditor
 
             project.SyncLevels();
 
+            ClearProjectToProcess();
             // No need to process levels since the project is already synced
             ClearProcessSubjectLevels();
+
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }

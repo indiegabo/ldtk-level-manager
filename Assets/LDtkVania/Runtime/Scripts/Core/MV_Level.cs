@@ -25,6 +25,7 @@ namespace LDtkVania
         [SerializeField] private string _assetPath;
         [SerializeField] private string _address;
         [SerializeField] private MV_LevelScene _scene;
+        [SerializeField] private bool _leftBehind;
 
         #endregion
 
@@ -40,6 +41,7 @@ namespace LDtkVania
         public string Name => !string.IsNullOrEmpty(_displayName) ? _displayName : name;
         public string Area => _area;
         public Object Asset => _asset;
+        public bool LeftBehind => _leftBehind;
 
         public bool HasScene => _scene != null && !string.IsNullOrEmpty(_scene.AddressableKey);
         public MV_LevelScene Scene => _scene;

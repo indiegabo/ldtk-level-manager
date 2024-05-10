@@ -1,12 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using LDtkUnity;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceLocations;
 using System.Linq;
 using LDtkVania.Utils;
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -85,7 +81,7 @@ namespace LDtkVania
 
         public bool HasLevel(string iid) => _levels.ContainsKey(iid);
 
-        public List<MV_Level> GetLevels()
+        public List<MV_Level> GetAllLevels()
         {
             return _levels.Values.ToList();
         }
@@ -339,20 +335,17 @@ namespace LDtkVania
             _lostLevels.Add(iid, level);
         }
 
-        public void ReintegrateLevel(MV_Level lostLevel)
-        {
-
-        }
-
         public void HardClear()
         {
-            GetLevels().ForEach(level =>
+            GetAllLevels().ForEach(level =>
             {
+                if (level == null) return;
                 AssetDatabase.RemoveObjectFromAsset(level);
             });
 
             foreach (MV_Level level in _lostLevels.Values)
             {
+                if (level == null) return;
                 AssetDatabase.RemoveObjectFromAsset(level);
             }
 
@@ -365,6 +358,11 @@ namespace LDtkVania
             Debug.Log($"Project has been cleared!");
             Debug.Log($"Levels: {_levels.Count}");
             Debug.Log($"Lost levels: {_lostLevels.Count}");
+        }
+
+        public List<MV_Level> GetAllLeftBehind()
+        {
+            return _lostLevels.Values.ToList();
         }
 
         #endregion
