@@ -17,10 +17,12 @@ namespace LDtkVaniaEditor
 
         private MV_Project _project;
         private List<MV_Level> _levels;
+        private List<MV_Level> _leftBehind;
         private List<MV_Level> _searchableLevels = new();
 
         private TemplateContainer _containerMain;
         private ListView _listLevels;
+        private ListView _listLeftBehind;
         private TextField _fieldFilterName;
         private Button _buttonFilter;
         private Button _buttonSyncLevels;
@@ -37,6 +39,7 @@ namespace LDtkVaniaEditor
         {
             _project = project;
             _levels = _project.GetAllLevels();
+            _leftBehind = _project.GetAllLeftBehind();
 
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
 
@@ -53,12 +56,22 @@ namespace LDtkVaniaEditor
             _buttonFilter.clicked += ApplyFilters;
 
             _listLevels = _containerMain.Q<ListView>("list-levels");
-            _listLevels.makeItem = () => new LevelListItemElement(_project);
+            _listLevels.makeItem = () => new LevelListItemElement();
             _listLevels.bindItem = (e, i) =>
             {
                 LevelListItemElement item = e as LevelListItemElement;
                 item.Level = _searchableLevels[i];
             };
+
+            _listLeftBehind = _containerMain.Q<ListView>("list-left-behind");
+            _listLeftBehind.makeItem = () => new LevelListItemElement();
+            _listLeftBehind.bindItem = (e, i) =>
+            {
+                LevelListItemElement item = e as LevelListItemElement;
+                item.Level = _leftBehind[i];
+            };
+
+            _listLeftBehind.itemsSource = _leftBehind;
 
             _buttonSyncLevels = _containerMain.Q<Button>("button-sync-levels");
             _buttonSyncLevels.clicked += () => _project.SyncLevels();

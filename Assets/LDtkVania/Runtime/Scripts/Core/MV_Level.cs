@@ -16,6 +16,7 @@ namespace LDtkVania
 
         #region Inspector
 
+        [SerializeField] private MV_Project _project;
         [SerializeField] private string _iid;
         [SerializeField] private string _displayName;
         [SerializeField] private string _world;
@@ -37,6 +38,7 @@ namespace LDtkVania
 
         #region Getters
 
+        public MV_Project Project => _project;
         public string Iid => _iid;
         public string Name => !string.IsNullOrEmpty(_displayName) ? _displayName : name;
         public string Area => _area;
@@ -66,6 +68,7 @@ namespace LDtkVania
 
         public void Initialize(MV_LevelProcessingData data)
         {
+            _project = data.project;
             _iid = data.iid;
             UpdateInfo(data);
         }
@@ -99,6 +102,15 @@ namespace LDtkVania
         public void SetScene(MV_LevelScene levelScene)
         {
             _scene = levelScene;
+        }
+
+        #endregion
+
+        #region Leaving Behind
+
+        public void SetLeftBehind(bool leftBehind)
+        {
+            _leftBehind = leftBehind;
         }
 
         #endregion

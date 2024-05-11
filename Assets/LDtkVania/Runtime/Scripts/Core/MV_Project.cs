@@ -249,6 +249,7 @@ namespace LDtkVania
 
             MV_LevelProcessingData processingData = new()
             {
+                project = this,
                 iid = ldtkIid.Iid,
                 assetPath = levelAssetPath,
                 address = address,
@@ -287,6 +288,7 @@ namespace LDtkVania
             }
             else
             {
+                level.SetLeftBehind(false);
                 _levels[level.Iid] = level;
             }
 
@@ -294,7 +296,6 @@ namespace LDtkVania
             {
                 _lostLevels.Remove(level.Iid);
             }
-
         }
 
         public void RemoveLevel(string iid)
@@ -321,6 +322,8 @@ namespace LDtkVania
                     MV_LevelScene.DestroySceneForLevel(lostLevel, false);
                 }
 
+                AssetDatabase.RemoveObjectFromAsset(lostLevel);
+
                 _lostLevels.Remove(lostLevel.Iid);
             }
         }
@@ -333,6 +336,7 @@ namespace LDtkVania
 
             if (_lostLevels.ContainsKey(iid)) return;
             _lostLevels.Add(iid, level);
+            level.SetLeftBehind(true);
         }
 
         public void HardClear()

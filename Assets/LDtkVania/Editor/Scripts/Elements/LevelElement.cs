@@ -6,8 +6,6 @@ using UnityEditor;
 
 namespace LDtkVaniaEditor
 {
-    public delegate void CompletelyRemoveEvent();
-
     public class LevelElement : VisualElement
     {
         private const string TemplateName = "LevelInspector";
@@ -31,21 +29,17 @@ namespace LDtkVaniaEditor
         private PropertyField _fieldLDtkAsset;
         private TextField _fieldAssetPath;
         private TextField _fieldAddressableKey;
-        private TextField _fieldSceneAddressableKey;
-
-        public CompletelyRemoveEvent CompletelyRemove;
 
         public LevelElement(MV_Level level)
         {
             _level = level;
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
+
             _containerLeftBehind = _containerMain.Q<VisualElement>("container-left-behind");
             _containerLeftBehind.style.display = _level.LeftBehind ? DisplayStyle.Flex : DisplayStyle.None;
+
             _buttonCompletlyRemove = _containerMain.Q<Button>("button-completly-remove");
-            _buttonCompletlyRemove.clicked += () =>
-            {
-                CompletelyRemove?.Invoke();
-            };
+            _buttonCompletlyRemove.clicked += OnCompletlyRemove;
 
             _fieldIid = _containerMain.Q<TextField>("field-iid");
             _fieldIid.SetEnabled(false);
@@ -83,18 +77,7 @@ namespace LDtkVaniaEditor
             };
 
             _buttonDestroyScene = _containerMain.Q<Button>("button-destroy-scene");
-            _buttonDestroyScene.clicked += () =>
-            {
-                if (MV_LevelScene.DestroySceneForLevel(_level))
-                {
-                    _level.SetScene(null);
-                    _levelSceneElement.LevelScene = null;
-                    EditorUtility.SetDirty(_level);
-                    AssetDatabase.SaveAssetIfDirty(_level);
-                }
-
-                EvaluateSceneDisplay();
-            };
+            _buttonDestroyScene.clicked += DestroyScene;
 
             _fieldAsset = _containerMain.Q<PropertyField>("field-asset");
             _fieldAsset.SetEnabled(false);
@@ -142,6 +125,27 @@ namespace LDtkVaniaEditor
 
                 _buttonCreateScene.style.display = DisplayStyle.Flex;
             }
+        }
+
+        private void OnCompletlyRemove()
+        {
+            _level.Project.RemoveLevel(_level.Iid);
+            EditorUtility.SetDirty(_level.Project);
+            AssetDatabase.SaveAssetIfDirty(_level.Project);
+            AssetDatabase.Refresh();
+        }
+
+        private void DestroyScene()
+        {
+            if (MV_LevelScene.DestroySceneForLevel(_level))
+            {
+                _level.SetScene(null);
+                _levelSceneElement.LevelScene = null;
+                EditorUtility.SetDirty(_level);
+                AssetDatabase.SaveAssetIfDirty(_level);
+            }
+
+            EvaluateSceneDisplay();
         }
     }
 }
