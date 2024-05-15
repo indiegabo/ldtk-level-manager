@@ -58,30 +58,6 @@ namespace LDtkVaniaEditor
 
             EvaluateTabViewPresence(_fieldLDtkProject.value as LDtkProjectFile);
 
-            Button buttonAction1 = _containerMain.Q<Button>("button-action-1");
-            buttonAction1.clicked += () =>
-            {
-                _project.CreateHashSet();
-                EditorUtility.SetDirty(_project);
-                AssetDatabase.SaveAssetIfDirty(_project);
-            };
-
-            Button buttonAction2 = _containerMain.Q<Button>("button-action-2");
-            buttonAction2.clicked += () =>
-            {
-                _project.LogHashSet();
-                EditorUtility.SetDirty(_project);
-                AssetDatabase.SaveAssetIfDirty(_project);
-            };
-
-            Button buttonAction3 = _containerMain.Q<Button>("button-action-3");
-            buttonAction3.clicked += () =>
-            {
-                _project.DestroyHashSet();
-                EditorUtility.SetDirty(_project);
-                AssetDatabase.SaveAssetIfDirty(_project);
-            };
-
             return _containerMain;
         }
 

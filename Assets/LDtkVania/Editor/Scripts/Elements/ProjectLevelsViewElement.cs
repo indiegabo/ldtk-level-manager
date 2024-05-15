@@ -38,7 +38,22 @@ namespace LDtkVaniaEditor
         public ProjectLevelsViewElement(MV_Project project)
         {
             _project = project;
-            _levels = _project.GetAllLevels();
+
+            MV_LevelListFilters filters = new MV_LevelListFilters()
+            {
+                world = "city",
+                area = "factory",
+            };
+
+            MV_PaginationInfo pagination = new()
+            {
+                PageIndex = 1,
+                PageSize = 2,
+            };
+
+            MV_PaginatedResponse<MV_Level> response = _project.GetPaginatedLevels(filters, pagination);
+
+            _levels = response.Items;
             _leftBehind = _project.GetAllLeftBehind();
 
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
