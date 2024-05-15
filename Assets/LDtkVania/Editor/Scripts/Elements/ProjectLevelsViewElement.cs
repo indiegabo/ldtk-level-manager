@@ -39,7 +39,7 @@ namespace LDtkVaniaEditor
         {
             _project = project;
 
-            MV_LevelListFilters filters = new MV_LevelListFilters()
+            MV_LevelListFilters filters = new()
             {
                 world = "city",
                 area = "factory",
@@ -47,12 +47,12 @@ namespace LDtkVaniaEditor
 
             MV_PaginationInfo pagination = new()
             {
-                PageIndex = 1,
+                PageIndex = 2,
                 PageSize = 2,
             };
 
             MV_PaginatedResponse<MV_Level> response = _project.GetPaginatedLevels(filters, pagination);
-
+            Debug.Log($"Levels: {response.TotalCount}");
             _levels = response.Items;
             _leftBehind = _project.GetAllLeftBehind();
 
