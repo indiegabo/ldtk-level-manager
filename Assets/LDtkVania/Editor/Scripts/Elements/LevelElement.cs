@@ -23,6 +23,7 @@ namespace LDtkVaniaEditor
         private Button _buttonDestroyScene;
 
         private VisualElement _containerLeftBehind;
+        private TextField _fieldWorld;
         private TextField _fieldArea;
         private VisualElement _containerSceneElement;
         private PropertyField _fieldAsset;
@@ -44,9 +45,13 @@ namespace LDtkVaniaEditor
             _fieldIid = _containerMain.Q<TextField>("field-iid");
             _fieldIid.SetEnabled(false);
 
+            _fieldWorld = _containerMain.Q<TextField>("field-world");
+            _fieldWorld.SetEnabled(false);
+            _fieldWorld.style.display = string.IsNullOrEmpty(_level.WorldName) ? DisplayStyle.None : DisplayStyle.Flex;
+
             _fieldArea = _containerMain.Q<TextField>("field-area");
             _fieldArea.SetEnabled(false);
-            _fieldArea.style.display = string.IsNullOrEmpty(_level.Area) ? DisplayStyle.None : DisplayStyle.Flex;
+            _fieldArea.style.display = string.IsNullOrEmpty(_level.AreaName) ? DisplayStyle.None : DisplayStyle.Flex;
 
             _buttonIidCopy = _containerMain.Q<Button>("button-iid-copy");
             _buttonIidCopy.clicked += () =>

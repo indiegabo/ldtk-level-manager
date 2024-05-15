@@ -8,7 +8,8 @@
         <ui:TextField picking-mode="Ignore" label="Iid" binding-path="_iid" name="field-iid" readonly="true" class="level-field" />
         <ui:Button text="Copy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-iid-copy" style="width: 40px;" />
     </ui:VisualElement>
-    <ui:TextField picking-mode="Ignore" label="Area" name="field-area" binding-path="_area" />
+    <ui:TextField picking-mode="Ignore" label="World" name="field-world" binding-path="_worldName" />
+    <ui:TextField picking-mode="Ignore" label="Area" name="field-area" binding-path="_areaName" />
     <ui:VisualElement name="container-wrapping" style="flex-grow: 1;">
         <ui:Label tabindex="-1" text="Wrapping" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-wrapping" />
         <ui:VisualElement name="container-wrapping-content" style="flex-grow: 1; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;">

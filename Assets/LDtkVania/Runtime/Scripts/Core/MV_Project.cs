@@ -180,7 +180,7 @@ namespace LDtkVania
                     if (!ldtkFiles.TryGetValue(level.Iid, out LDtkLevelFile levelFile)) continue;
 
                     string assetPath = AssetDatabase.GetAssetPath(levelFile);
-                    string levelIid = ProcessLevelFile(assetPath, levelFile);
+                    string levelIid = ProcessLevelFile(assetPath, levelFile, world);
 
                     if (string.IsNullOrEmpty(levelIid)) continue;
 
@@ -228,7 +228,7 @@ namespace LDtkVania
             return levels;
         }
 
-        public string ProcessLevelFile(string levelAssetPath, LDtkLevelFile levelFile)
+        public string ProcessLevelFile(string levelAssetPath, LDtkLevelFile levelFile, World world = null)
         {
             LDtkComponentLevel componentLevel = AssetDatabase.LoadAssetAtPath<LDtkComponentLevel>(levelAssetPath);
             if (componentLevel == null) return string.Empty;
@@ -255,7 +255,8 @@ namespace LDtkVania
                 address = address,
                 ldtkComponentLevel = componentLevel,
                 asset = asset,
-                ldtkFile = levelFile
+                ldtkFile = levelFile,
+                world = world
             };
 
             if (TryGetLevel(ldtkIid.Iid, out MV_Level level))

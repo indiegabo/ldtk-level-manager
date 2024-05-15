@@ -64,7 +64,6 @@ namespace LDtkVaniaEditor
                 LDtkLevelFile levelFile = AssetDatabase.LoadAssetAtPath<LDtkLevelFile>(entry.levelAssetPath);
 
                 if (levelFile == null) continue;
-                Debug.Log($"Process level: {entry.levelAssetPath}");
                 project.ProcessLevelFile(entry.levelAssetPath, levelFile);
             }
 

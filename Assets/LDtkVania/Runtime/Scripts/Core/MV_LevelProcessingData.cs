@@ -12,5 +12,6 @@ namespace LDtkVania
         public LDtkComponentLevel ldtkComponentLevel;
         public Object asset;
         public LDtkLevelFile ldtkFile;
+        public World world;
     }
 }

@@ -72,7 +72,11 @@ namespace LDtkVaniaEditor
             // Create a new instance of MV_LevelsElement using the provided visual tree asset.
             _levelElement = new LevelElement(level);
 
-            _foldoutMain.text = _level.name;
+            string levelName = $"<b>{level.Name}</b> ";
+            levelName += !string.IsNullOrEmpty(level.WorldName) ? $"[{level.WorldName}] " : string.Empty;
+            levelName += !string.IsNullOrEmpty(level.AreaName) ? $"[{level.AreaName}] " : string.Empty;
+
+            _foldoutMain.text = levelName;
             _foldoutMain.value = _expandedFoldouts.Contains(level.Iid);
             _serialized = new(_level);
             _levelElement.Bind(_serialized);
