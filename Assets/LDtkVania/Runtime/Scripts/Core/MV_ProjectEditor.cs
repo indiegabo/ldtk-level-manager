@@ -279,11 +279,11 @@ namespace LDtkVania
             if (_ldtkProjectFile == null) return default;
 
             LdtkJson ldtkJson = _ldtkProjectFile.FromJson;
-            MV_WorldAreasDictionary worldAreasDictionary = new();
+            _worldAreas.Clear();
 
             foreach (World world in ldtkJson.Worlds)
             {
-                worldAreasDictionary.Add(world.Identifier, new MV_WorldAreas()
+                _worldAreas.Add(world.Identifier, new MV_WorldAreas()
                 {
                     worldIid = world.Iid,
                     worldName = world.Identifier,
@@ -294,14 +294,17 @@ namespace LDtkVania
             foreach (MV_Level level in _levels.Values)
             {
                 if (string.IsNullOrEmpty(level.WorldName) || string.IsNullOrEmpty(level.AreaName)) continue;
-                if (!worldAreasDictionary.TryGetValue(level.WorldName, out MV_WorldAreas worldAreas)) continue;
+                if (!_worldAreas.TryGetValue(level.WorldName, out MV_WorldAreas worldAreas)) continue;
                 if (worldAreas.areas.Contains(level.AreaName)) continue;
                 worldAreas.areas.Add(level.AreaName);
             }
 
-            _worldAreas = worldAreasDictionary;
+            foreach (MV_WorldAreas worldAreas in _worldAreas.Values)
+            {
+                Debug.Log($"World {worldAreas.worldName} - Areas: {string.Join(", ", worldAreas.areas)}");
+            }
 
-            return worldAreasDictionary;
+            return _worldAreas;
         }
     }
 

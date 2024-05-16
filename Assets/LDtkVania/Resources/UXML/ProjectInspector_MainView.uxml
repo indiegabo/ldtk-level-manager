@@ -1,3 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Assets/LDtkVania/Resources/Styles/ProjectMainView_style.uss?fileID=7433441132597879392&amp;guid=f2a2b7edccabd9b4b9af38f2c37f6ce3&amp;type=3#ProjectMainView_style" />
+    <ui:VisualElement name="container-worlds" style="flex-grow: 1; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; background-color: rgba(0, 0, 0, 0.42); border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;">
+        <ui:ListView name="list-worlds" header-title="Levels" show-border="true" reorderable="false" horizontal-scrolling="false" show-foldout-header="false" show-add-remove-footer="false" show-bound-collection-size="false" fixed-item-height="1" virtualization-method="DynamicHeight" show-alternating-row-backgrounds="None" selection-type="None" />
+    </ui:VisualElement>
 </ui:UXML>

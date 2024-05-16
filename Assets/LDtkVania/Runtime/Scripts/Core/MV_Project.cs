@@ -79,6 +79,11 @@ namespace LDtkVania
 
         #region World and areas
 
+        public List<MV_WorldAreas> GetAllWorldAreas()
+        {
+            return _worldAreas.Values.ToList();
+        }
+
         public MV_WorldAreas GetWorldAreas(string worldName)
         {
             if (!_worldAreas.ContainsKey(worldName)) return null;
