@@ -30,6 +30,9 @@ namespace LDtkVania
         [SerializeField]
         private MV_LevelsDictionary _lostLevels = new();
 
+        [SerializeField]
+        private MV_WorldAreasDictionary _worldAreas = new();
+
         #endregion
 
         #region Fields
@@ -44,9 +47,11 @@ namespace LDtkVania
         public string ConnectionsContainerName => "Connections";
         public string CheckpointsContainerName => "Checkpoints";
 
-        public bool HasProjectFile => _ldtkProjectFile != null;
+        public bool IsInitialized => _ldtkProjectFile != null;
+        public LDtkProjectFile LDtkProjectFile => _ldtkProjectFile;
         public LdtkJson LDtkProject => _ldtkProject ??= _ldtkProjectFile.FromJson;
         public int PixelsPerUnit => LDtkProject.DefaultGridSize;
+        public MV_WorldAreasDictionary WorldAreas => _worldAreas;
 
         #endregion
 
@@ -72,10 +77,39 @@ namespace LDtkVania
 
         #endregion
 
+        #region World and areas
+
+        public MV_WorldAreas GetWorldAreas(string worldName)
+        {
+            if (!_worldAreas.ContainsKey(worldName)) return null;
+            return _worldAreas[worldName];
+        }
+
+        public bool TryGetWorldAreas(string worldName, out MV_WorldAreas mvWorldAreas)
+        {
+            return _worldAreas.TryGetValue(worldName, out mvWorldAreas);
+        }
+
+        public bool TryGetWorldAreas(MV_Level level, out MV_WorldAreas mvWorldAreas)
+        {
+            if (string.IsNullOrEmpty(level.WorldName))
+            {
+                MV_Logger.Warning($"Trying to get world areas for level {level.Name}({level.Iid}) but it has no world name defined", this);
+                mvWorldAreas = null;
+                return false;
+            }
+            return _worldAreas.TryGetValue(level.WorldName, out mvWorldAreas);
+        }
+
+        #endregion
+
         #region Classes
 
         [System.Serializable]
         public class MV_LevelsDictionary : SerializedDictionary<string, MV_Level> { }
+
+        [System.Serializable]
+        public class MV_WorldAreasDictionary : SerializedDictionary<string, MV_WorldAreas> { }
 
         #endregion
 

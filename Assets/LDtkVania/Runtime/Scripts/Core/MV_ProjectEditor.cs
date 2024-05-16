@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using LDtkUnity;
 using LDtkVania.Utils;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace LDtkVania
 {
@@ -18,6 +19,15 @@ namespace LDtkVania
         public static string AddressablesLevelsLabel = "LDtkLevels";
 
         #endregion
+
+        public void Initialize(LDtkProjectFile projectFile)
+        {
+            _ldtkProjectFile = projectFile;
+            SyncLevels();
+            EvaluateWorldAreas();
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+        }
 
         public void SyncLevels()
         {
@@ -262,6 +272,36 @@ namespace LDtkVania
             };
 
             return response;
+        }
+
+        public MV_WorldAreasDictionary EvaluateWorldAreas()
+        {
+            if (_ldtkProjectFile == null) return default;
+
+            LdtkJson ldtkJson = _ldtkProjectFile.FromJson;
+            MV_WorldAreasDictionary worldAreasDictionary = new();
+
+            foreach (World world in ldtkJson.Worlds)
+            {
+                worldAreasDictionary.Add(world.Identifier, new MV_WorldAreas()
+                {
+                    worldIid = world.Iid,
+                    worldName = world.Identifier,
+                    areas = new List<string>(),
+                });
+            }
+
+            foreach (MV_Level level in _levels.Values)
+            {
+                if (string.IsNullOrEmpty(level.WorldName) || string.IsNullOrEmpty(level.AreaName)) continue;
+                if (!worldAreasDictionary.TryGetValue(level.WorldName, out MV_WorldAreas worldAreas)) continue;
+                if (worldAreas.areas.Contains(level.AreaName)) continue;
+                worldAreas.areas.Add(level.AreaName);
+            }
+
+            _worldAreas = worldAreasDictionary;
+
+            return worldAreasDictionary;
         }
     }
 

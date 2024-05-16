@@ -1,3 +1,3 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <uie:ObjectField label="Ldtk Project Json" type="LDtkUnity.LDtkProjectFile, LDtkUnity.Runtime" binding-path="_ldtkProjectFile" name="field-ldtk-project" style="margin-bottom: 3px;" />
+    <uie:ObjectField label="Ldtk Project Json" type="LDtkUnity.LDtkProjectFile, LDtkUnity.Runtime" name="field-ldtk-project" style="margin-bottom: 3px;" />
 </ui:UXML>

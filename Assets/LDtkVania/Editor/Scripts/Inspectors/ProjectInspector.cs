@@ -37,10 +37,15 @@ namespace LDtkVaniaEditor
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
             _fieldLDtkProject = _containerMain.Q<ObjectField>("field-ldtk-project");
             _fieldLDtkProject.objectType = typeof(LDtkProjectFile);
+            _fieldLDtkProject.SetValueWithoutNotify(_project.LDtkProjectFile);
+            _fieldLDtkProject.SetEnabled(!_project.IsInitialized);
 
             _fieldLDtkProject.RegisterCallback<ChangeEvent<Object>>(e =>
             {
-                EvaluateTabViewPresence(e.newValue as LDtkProjectFile);
+                LDtkProjectFile projectFile = e.newValue as LDtkProjectFile;
+                if (projectFile == null) return;
+                _project.Initialize(projectFile);
+                EvaluateTabViewPresence(_project.IsInitialized);
             });
 
             _tabViewElement = new();
@@ -56,14 +61,14 @@ namespace LDtkVaniaEditor
                 _tabViewElement.SelectTab("Main");
             }
 
-            EvaluateTabViewPresence(_fieldLDtkProject.value as LDtkProjectFile);
+            EvaluateTabViewPresence(_project.IsInitialized);
 
             return _containerMain;
         }
 
-        private void EvaluateTabViewPresence(LDtkProjectFile projectFile)
+        private void EvaluateTabViewPresence(bool hasProjectFile)
         {
-            _tabViewElement.style.display = projectFile != null ? DisplayStyle.Flex : DisplayStyle.None;
+            _tabViewElement.style.display = hasProjectFile ? DisplayStyle.Flex : DisplayStyle.None;
         }
     }
 }

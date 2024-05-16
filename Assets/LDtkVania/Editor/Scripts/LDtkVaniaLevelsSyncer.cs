@@ -39,6 +39,7 @@ namespace LDtkVaniaEditor
             }
 
             project.SyncLevels();
+            project.EvaluateWorldAreas();
 
             ClearProjectToProcess();
             ClearProcessSubjectLevels();// No need to process levels since the project is already synced
@@ -66,6 +67,11 @@ namespace LDtkVaniaEditor
                 project.ProcessLevelFile(entry.levelAssetPath, levelFile);
             }
 
+            foreach (MV_Project project in projects.Values)
+            {
+                project.EvaluateWorldAreas();
+            }
+
             ClearProcessSubjectLevels();
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
@@ -81,7 +87,7 @@ namespace LDtkVaniaEditor
                 string guid = guids[i];
                 string path = AssetDatabase.GUIDToAssetPath(guid);
                 MV_Project project = AssetDatabase.LoadAssetAtPath<MV_Project>(path);
-                if (project == null || !project.HasProjectFile)
+                if (project == null || !project.IsInitialized)
                 {
                     continue;
                 }

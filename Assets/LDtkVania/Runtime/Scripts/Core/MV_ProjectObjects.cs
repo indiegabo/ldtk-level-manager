@@ -13,4 +13,12 @@ namespace LDtkVania
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
     }
+
+    [System.Serializable]
+    public class MV_WorldAreas
+    {
+        public string worldIid;
+        public string worldName;
+        public List<string> areas;
+    }
 }

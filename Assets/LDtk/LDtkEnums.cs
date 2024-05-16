@@ -46,5 +46,5 @@ public enum EnemyType
 public enum LDtkVaniAreas
 {
     Factory,
-    City
+    Mall
 }

@@ -52,7 +52,7 @@ namespace LDtkVaniaEditor
             };
 
             MV_PaginatedResponse<MV_Level> response = _project.GetPaginatedLevels(filters, pagination);
-            Debug.Log($"Levels: {response.TotalCount}");
+
             _levels = response.Items;
             _leftBehind = _project.GetAllLeftBehind();
 
