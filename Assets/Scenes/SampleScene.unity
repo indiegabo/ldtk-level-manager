@@ -509,7 +509,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _persistent: 0
   _alertAboutOtherInstances: 0
-  _project: {fileID: 11400000, guid: a26d07e3821e26442b643f5b0cb8e8e7, type: 2}
+  _project: {fileID: 11400000, guid: 3ddb9f2cdc92cbb438368720b28ac634, type: 2}
   _depth: 1
   _levelPreparedEvent:
     m_PersistentCalls:
@@ -565,7 +565,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelManager: {fileID: 1174395035}
-  _level: {fileID: 8617106740995083831, guid: a26d07e3821e26442b643f5b0cb8e8e7, type: 2}
+  _level: {fileID: 2098799783506964517, guid: 3ddb9f2cdc92cbb438368720b28ac634, type: 2}
   _playerControlBridge: {fileID: 11400000, guid: 636229da706c4bd46ae3acd44cb5bc8c, type: 2}
 --- !u!4 &1805706594
 Transform:

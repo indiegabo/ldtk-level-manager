@@ -2,7 +2,9 @@
     <Style src="project://database/Assets/LDtkVania/Resources/Styles/Level_style.uss?fileID=7433441132597879392&amp;guid=29cac97f9a0a8214e911f21f7fa01b2d&amp;type=3#Level_style" />
     <ui:Button text="Sync Levels" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-sync-levels" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 3px; margin-right: 0; margin-bottom: 3px; margin-left: 0; background-color: rgb(67, 67, 67); height: 25px;" />
     <ui:VisualElement name="container-filters" style="flex-grow: 1; margin-bottom: 5px; flex-wrap: nowrap;">
-        <ui:TextField picking-mode="Ignore" label="Name" name="field-filter-name" class="filter-field" style="margin-right: 0; margin-left: 0; margin-bottom: 5px;" />
+        <ui:DropdownField label="World" name="field-filter-world" class="filter-field" />
+        <ui:DropdownField label="Area" name="field-filter-area" class="filter-field" />
+        <ui:TextField picking-mode="Ignore" label="Name" name="field-filter-name" class="filter-field" style="margin-bottom: 3px;" />
         <ui:VisualElement name="container-button-filter" style="flex-grow: 1; flex-direction: row-reverse; flex-wrap: wrap;">
             <ui:Button text="Search" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-filter" style="max-width: 60px; flex-direction: column; flex-wrap: nowrap; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
         </ui:VisualElement>

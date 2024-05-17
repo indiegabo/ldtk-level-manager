@@ -44,8 +44,8 @@ namespace LDtkVaniaEditor
             ClearProjectToProcess();
             ClearProcessSubjectLevels();// No need to process levels since the project is already synced
 
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
+            EditorUtility.SetDirty(project);
+            AssetDatabase.SaveAssetIfDirty(project);
         }
 
         private static void ProcessLevels()
@@ -70,11 +70,11 @@ namespace LDtkVaniaEditor
             foreach (MV_Project project in projects.Values)
             {
                 project.EvaluateWorldAreas();
+                EditorUtility.SetDirty(project);
+                AssetDatabase.SaveAssetIfDirty(project);
             }
 
             ClearProcessSubjectLevels();
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
 
         }
 

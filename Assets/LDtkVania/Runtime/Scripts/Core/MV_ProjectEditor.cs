@@ -243,18 +243,27 @@ namespace LDtkVania
             if (!string.IsNullOrEmpty(filters.area))
                 filters.area = filters.area.ToLower();
 
-            var query = _levels.Values;
+            if (!string.IsNullOrEmpty(filters.levelName))
+                filters.levelName = filters.levelName.ToLower();
+
+            List<MV_Level> filteredLevels = _levels.Values.ToList();
 
             if (!string.IsNullOrEmpty(filters.world) && !string.IsNullOrEmpty(filters.area))
             {
-                query.Where(level => level.AreaName.ToLower() == filters.area && level.WorldName.ToLower() == filters.world);
+                filteredLevels = _levels.Values.Where(level => level.AreaName.ToLower() == filters.area
+                    && level.WorldName.ToLower() == filters.world
+                ).ToList();
             }
             else if (!string.IsNullOrEmpty(filters.world))
             {
-                query.Where(level => level.WorldName == filters.world);
+                filteredLevels = _levels.Values.Where(level => level.WorldName.ToLower() == filters.world).ToList();
             }
 
-            var filteredLevels = query.ToList();
+            if (!string.IsNullOrEmpty(filters.levelName))
+            {
+                filteredLevels = filteredLevels.Where(level => level.Name.ToLower().Contains(filters.levelName.ToLower())).ToList();
+            }
+
             int total = filteredLevels.Count;
 
             var result = filteredLevels
@@ -304,6 +313,9 @@ namespace LDtkVania
                 Debug.Log($"World {worldAreas.worldName} - Areas: {string.Join(", ", worldAreas.areas)}");
             }
 
+            EditorUtility.SetDirty(this);
+            AssetDatabase.SaveAssetIfDirty(this);
+
             return _worldAreas;
         }
     }
@@ -312,6 +324,7 @@ namespace LDtkVania
     {
         public string world;
         public string area;
+        public string levelName;
     }
 }
 #endif

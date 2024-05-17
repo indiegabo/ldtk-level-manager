@@ -31,14 +31,6 @@ namespace LDtkVaniaEditor
             _project = project;
             _worldAreas = _project.GetAllWorldAreas();
 
-            foreach (MV_WorldAreas world in _worldAreas)
-            {
-                foreach (string area in world.areas)
-                {
-                    Debug.Log(area);
-                }
-            }
-
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
 
             _listWorlds = _containerMain.Q<ListView>("list-worlds");

@@ -108,15 +108,5 @@ namespace LDtkVania
 
         #endregion
 
-        #region Classes
-
-        [System.Serializable]
-        public class MV_LevelsDictionary : SerializedDictionary<string, MV_Level> { }
-
-        [System.Serializable]
-        public class MV_WorldAreasDictionary : SerializedDictionary<string, MV_WorldAreas> { }
-
-        #endregion
-
     }
 }

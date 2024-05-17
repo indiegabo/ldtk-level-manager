@@ -23,6 +23,8 @@ namespace LDtkVaniaEditor
         private TemplateContainer _containerMain;
         private ListView _listLevels;
         private ListView _listLeftBehind;
+        private DropdownField _fieldFilterWorld;
+        private DropdownField _fieldFilterArea;
         private TextField _fieldFilterName;
         private Button _buttonFilter;
         private Button _buttonSyncLevels;
@@ -38,37 +40,30 @@ namespace LDtkVaniaEditor
         public ProjectLevelsViewElement(MV_Project project)
         {
             _project = project;
-
-            MV_LevelListFilters filters = new()
-            {
-                world = "city",
-                area = "factory",
-            };
-
-            MV_PaginationInfo pagination = new()
-            {
-                PageIndex = 2,
-                PageSize = 2,
-            };
-
-            MV_PaginatedResponse<MV_Level> response = _project.GetPaginatedLevels(filters, pagination);
-
-            _levels = response.Items;
             _leftBehind = _project.GetAllLeftBehind();
 
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
 
-            _fieldFilterName = _containerMain.Q<TextField>("field-filter-name");
-            _fieldFilterName.RegisterCallback<KeyDownEvent>(evt =>
+            _fieldFilterWorld = _containerMain.Q<DropdownField>("field-filter-world");
+            List<string> worldChoices = new()
             {
-                if (evt.keyCode == KeyCode.Return || evt.keyCode == KeyCode.KeypadEnter)
-                {
-                    ApplyFilters();
-                }
-            }, TrickleDown.TrickleDown);
+                "None",
+            };
+
+            foreach (MV_WorldAreas worldAreas in _project.GetAllWorldAreas())
+            {
+                worldChoices.Add(worldAreas.worldName);
+            }
+
+            _fieldFilterWorld.choices = worldChoices;
+            _fieldFilterWorld.SetValueWithoutNotify(worldChoices[0]);
+            _fieldFilterWorld.RegisterValueChangedCallback(evt => EvaluateAreaFilter(evt.newValue));
+
+            _fieldFilterArea = _containerMain.Q<DropdownField>("field-filter-area");
+            _fieldFilterName = _containerMain.Q<TextField>("field-filter-name");
 
             _buttonFilter = _containerMain.Q<Button>("button-filter");
-            _buttonFilter.clicked += ApplyFilters;
+            _buttonFilter.clicked += Paginate;
 
             _listLevels = _containerMain.Q<ListView>("list-levels");
             _listLevels.makeItem = () => new LevelListItemElement();
@@ -91,7 +86,8 @@ namespace LDtkVaniaEditor
             _buttonSyncLevels = _containerMain.Q<Button>("button-sync-levels");
             _buttonSyncLevels.clicked += () => _project.SyncLevels();
 
-            PopulateSearchablesWithAll();
+            EvaluateAreaFilter("None");
+            Paginate();
 
             // World world = projectJSON.Worlds.FirstOrDefault(w => w.Levels.Any(l => l.Iid == _iid));
             // _world = world?.Identifier;
@@ -100,33 +96,54 @@ namespace LDtkVaniaEditor
 
         #endregion
 
-        private void ApplyFilters()
+        private void Paginate()
         {
-            string nameTerm = _fieldFilterName.text.ToLower();
-
-            if (string.IsNullOrEmpty(nameTerm))
+            MV_LevelListFilters filters = new()
             {
-                PopulateSearchablesWithAll();
-                return;
-            }
+                world = _fieldFilterWorld.value == "None" ? null : _fieldFilterWorld.value,
+                area = _fieldFilterArea.value == "None" ? null : _fieldFilterArea.value,
+                levelName = _fieldFilterName.value.ToLower(),
+            };
 
-            _searchableLevels = _levels.FindAll(level => level.name.ToLower().Contains(nameTerm));
+            MV_PaginationInfo pagination = new()
+            {
+                PageIndex = 1,
+                PageSize = 10,
+            };
 
+            _searchableLevels = _project.GetPaginatedLevels(filters, pagination).Items;
             _listLevels.itemsSource = _searchableLevels;
+
             _listLevels.RefreshItems();
         }
 
-        private void PopulateSearchablesWithAll()
+        private void EvaluateAreaFilter(string newValue)
         {
-            _searchableLevels.Clear();
-            _searchableLevels.Capacity = _levels.Count; // pre-allocate capacity to avoid resizing
-            foreach (MV_Level level in _levels)
+            if (newValue == "None")
             {
-                _searchableLevels.Add(level);
+                ClearAreaFilter();
+                return;
+            }
+            _project.WorldAreas.TryGetValue(newValue, out MV_WorldAreas worldAreas);
+
+            if (worldAreas.areas.Count == 0)
+            {
+                ClearAreaFilter();
+                return;
             }
 
-            _listLevels.itemsSource = _searchableLevels;
-            _listLevels.RefreshItems();
+            _fieldFilterArea.style.display = DisplayStyle.Flex;
+            _fieldFilterArea.choices = worldAreas.areas;
+
+            void ClearAreaFilter()
+            {
+                _fieldFilterArea.choices = new()
+                {
+                    ""
+                };
+                _fieldFilterArea.SetValueWithoutNotify("");
+                _fieldFilterArea.style.display = DisplayStyle.None;
+            }
         }
     }
 }
