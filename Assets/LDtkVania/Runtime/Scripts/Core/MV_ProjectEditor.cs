@@ -235,8 +235,15 @@ namespace LDtkVania
             return _lostLevels.Values.ToList();
         }
 
+        /// <summary>
+        /// Returns a paginated list of levels filtered by world, area and level name.
+        /// </summary>
+        /// <param name="filters">The filters to apply</param>
+        /// <param name="pagination">The pagination info</param>
+        /// <returns>A paginated list of levels</returns>
         public MV_PaginatedResponse<MV_Level> GetPaginatedLevels(MV_LevelListFilters filters, MV_PaginationInfo pagination)
         {
+            // Normalize the input filter values to lower case
             if (!string.IsNullOrEmpty(filters.world))
                 filters.world = filters.world.ToLower();
 
@@ -246,8 +253,10 @@ namespace LDtkVania
             if (!string.IsNullOrEmpty(filters.levelName))
                 filters.levelName = filters.levelName.ToLower();
 
+            // Get all levels
             List<MV_Level> filteredLevels = _levels.Values.ToList();
 
+            // Apply world and area filters
             if (!string.IsNullOrEmpty(filters.world) && !string.IsNullOrEmpty(filters.area))
             {
                 filteredLevels = _levels.Values.Where(level => level.AreaName.ToLower() == filters.area
@@ -259,6 +268,7 @@ namespace LDtkVania
                 filteredLevels = _levels.Values.Where(level => level.WorldName.ToLower() == filters.world).ToList();
             }
 
+            // Apply level name filter
             if (!string.IsNullOrEmpty(filters.levelName))
             {
                 filteredLevels = filteredLevels.Where(level => level.Name.ToLower().Contains(filters.levelName.ToLower())).ToList();
@@ -266,6 +276,7 @@ namespace LDtkVania
 
             int total = filteredLevels.Count;
 
+            // Get the levels for the current page
             var result = filteredLevels
                 .Skip((pagination.PageIndex - 1) * pagination.PageSize)
                 .Take(pagination.PageSize)
@@ -274,6 +285,7 @@ namespace LDtkVania
                 .ThenBy(level => level.Name)
                 .ToList();
 
+            // Create the paginated response
             MV_PaginatedResponse<MV_Level> response = new()
             {
                 TotalCount = total,

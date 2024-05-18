@@ -16,7 +16,6 @@ namespace LDtkVaniaEditor
         private const string TemplateName = "ProjectInspector_LevelsView";
 
         private MV_Project _project;
-        private List<MV_Level> _levels;
         private List<MV_Level> _leftBehind;
         private List<MV_Level> _searchableLevels = new();
 
@@ -28,6 +27,8 @@ namespace LDtkVaniaEditor
         private TextField _fieldFilterName;
         private Button _buttonFilter;
         private Button _buttonSyncLevels;
+        private Label _labelTotalOfLevels;
+        private PaginatorElement _paginatorElement;
 
         #endregion
 
@@ -64,6 +65,18 @@ namespace LDtkVaniaEditor
 
             _buttonFilter = _containerMain.Q<Button>("button-filter");
             _buttonFilter.clicked += Paginate;
+
+            _labelTotalOfLevels = _containerMain.Q<Label>("label-total-of-levels-number");
+            _labelTotalOfLevels.text = _project.LevelsCount.ToString();
+
+            VisualElement containerLabelPagination = _containerMain.Q<VisualElement>("container-label-pagination");
+
+            _paginatorElement = new();
+            _paginatorElement.style.flexGrow = 1;
+            _paginatorElement.style.flexShrink = 0;
+            _paginatorElement.InitializePagination(_project.LevelsCount);
+            _paginatorElement.PaginationChanged += pagination => Paginate();
+            containerLabelPagination.Add(_paginatorElement);
 
             _listLevels = _containerMain.Q<ListView>("list-levels");
             _listLevels.makeItem = () => new LevelListItemElement();
@@ -105,13 +118,11 @@ namespace LDtkVaniaEditor
                 levelName = _fieldFilterName.value.ToLower(),
             };
 
-            MV_PaginationInfo pagination = new()
-            {
-                PageIndex = 1,
-                PageSize = 10,
-            };
+            MV_PaginationInfo pagination = _paginatorElement.Pagination;
 
-            _searchableLevels = _project.GetPaginatedLevels(filters, pagination).Items;
+            MV_PaginatedResponse<MV_Level> response = _project.GetPaginatedLevels(filters, pagination);
+            _paginatorElement.TotalOfItems = response.TotalCount;
+            _searchableLevels = response.Items;
             _listLevels.itemsSource = _searchableLevels;
 
             _listLevels.RefreshItems();

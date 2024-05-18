@@ -3,9 +3,7 @@ using UnityEngine.UIElements;
 using LDtkVania;
 using UnityEditor.UIElements;
 using UnityEditor;
-using UnityEngine.AI;
 using UnityEditor.SceneManagement;
-using UnityEditor.SearchService;
 
 namespace LDtkVaniaEditor
 {

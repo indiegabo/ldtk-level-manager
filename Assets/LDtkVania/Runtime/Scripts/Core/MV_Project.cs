@@ -48,6 +48,7 @@ namespace LDtkVania
         public string CheckpointsContainerName => "Checkpoints";
 
         public bool IsInitialized => _ldtkProjectFile != null;
+        public int LevelsCount => _levels.Count;
         public LDtkProjectFile LDtkProjectFile => _ldtkProjectFile;
         public LdtkJson LDtkProject => _ldtkProject ??= _ldtkProjectFile.FromJson;
         public int PixelsPerUnit => LDtkProject.DefaultGridSize;
@@ -99,7 +100,7 @@ namespace LDtkVania
         {
             if (string.IsNullOrEmpty(level.WorldName))
             {
-                MV_Logger.Warning($"Trying to get world areas for level {level.Name}({level.Iid}) but it has no world name defined", this);
+                MV_Logger.Warning($"Trying to get world areas for level {level.Name}({level.Iid}) but it has no world name defined.", this);
                 mvWorldAreas = null;
                 return false;
             }
