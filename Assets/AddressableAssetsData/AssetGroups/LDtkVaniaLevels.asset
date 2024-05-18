@@ -77,6 +77,18 @@ MonoBehaviour:
     m_SerializedLabels:
     - LDtkVaniaLevel
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 71ea5190e1e1e91469bd914dd7877962
+    m_Address: LDtkVaniaLevel_aaffd4b0-fec0-11ee-bb1b-a5e053972db7
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - LDtkVaniaLevel
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b87da3994c22f6744868fa00e05e449f
+    m_Address: LDtkVaniaLevel_c3003d70-fec0-11ee-bb1b-0bb462c76224
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - LDtkVaniaLevel
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 1ba21a4611ac85b4f95e8eab66dc3553, type: 2}
   m_SchemaSet:

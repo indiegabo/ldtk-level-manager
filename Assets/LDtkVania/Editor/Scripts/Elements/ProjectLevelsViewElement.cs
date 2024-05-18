@@ -74,8 +74,8 @@ namespace LDtkVaniaEditor
             _paginatorElement = new();
             _paginatorElement.style.flexGrow = 1;
             _paginatorElement.style.flexShrink = 0;
-            _paginatorElement.InitializePagination(_project.LevelsCount);
             _paginatorElement.PaginationChanged += pagination => Paginate();
+            _paginatorElement.TotalOfItems = _project.LevelsCount;
             containerLabelPagination.Add(_paginatorElement);
 
             _listLevels = _containerMain.Q<ListView>("list-levels");
@@ -128,14 +128,14 @@ namespace LDtkVaniaEditor
             _listLevels.RefreshItems();
         }
 
-        private void EvaluateAreaFilter(string newValue)
+        private void EvaluateAreaFilter(string selectedWorld)
         {
-            if (newValue == "None")
+            if (selectedWorld == "None")
             {
                 ClearAreaFilter();
                 return;
             }
-            _project.WorldAreas.TryGetValue(newValue, out MV_WorldAreas worldAreas);
+            _project.WorldAreas.TryGetValue(selectedWorld, out MV_WorldAreas worldAreas);
 
             if (worldAreas.areas.Count == 0)
             {
@@ -144,13 +144,18 @@ namespace LDtkVaniaEditor
             }
 
             _fieldFilterArea.style.display = DisplayStyle.Flex;
-            _fieldFilterArea.choices = worldAreas.areas;
+            List<string> areaChoices = new()
+            {
+                "None"
+            };
+            areaChoices.AddRange(worldAreas.areas);
+            _fieldFilterArea.choices = areaChoices;
 
             void ClearAreaFilter()
             {
                 _fieldFilterArea.choices = new()
                 {
-                    ""
+                    "None"
                 };
                 _fieldFilterArea.SetValueWithoutNotify("");
                 _fieldFilterArea.style.display = DisplayStyle.None;

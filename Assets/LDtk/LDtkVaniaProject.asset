@@ -100,6 +100,31 @@ MonoBehaviour:
     _assetGuid: 
     _addressableKey: 
   _leftBehind: 0
+--- !u!114 &-3622563694642677845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76238ae897cf99441a858f74751e647c, type: 3}
+  m_Name: Downer
+  m_EditorClassIdentifier: 
+  _project: {fileID: 11400000}
+  _iid: c3003d70-fec0-11ee-bb1b-0bb462c76224
+  _displayName: 
+  _worldName: City
+  _areaName: Mall
+  _asset: {fileID: 4963939832751170114, guid: b87da3994c22f6744868fa00e05e449f, type: 3}
+  _levelFile: {fileID: -8655009601392300639, guid: b87da3994c22f6744868fa00e05e449f, type: 3}
+  _assetPath: Assets/LDtk/LDtkVaniaSample/City_Level_6.ldtkl
+  _address: LDtkVaniaLevel_c3003d70-fec0-11ee-bb1b-0bb462c76224
+  _scene:
+    _assetGuid: 
+    _addressableKey: 
+  _leftBehind: 0
 --- !u!114 &-3467360402089087480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,6 +200,31 @@ MonoBehaviour:
     _assetGuid: 
     _addressableKey: 
   _leftBehind: 0
+--- !u!114 &-1045136818092547134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76238ae897cf99441a858f74751e647c, type: 3}
+  m_Name: Down
+  m_EditorClassIdentifier: 
+  _project: {fileID: 11400000}
+  _iid: aaffd4b0-fec0-11ee-bb1b-a5e053972db7
+  _displayName: 
+  _worldName: City
+  _areaName: Mall
+  _asset: {fileID: -1350629669093334568, guid: 71ea5190e1e1e91469bd914dd7877962, type: 3}
+  _levelFile: {fileID: -8655009601392300639, guid: 71ea5190e1e1e91469bd914dd7877962, type: 3}
+  _assetPath: Assets/LDtk/LDtkVaniaSample/City_Level_5.ldtkl
+  _address: LDtkVaniaLevel_aaffd4b0-fec0-11ee-bb1b-a5e053972db7
+  _scene:
+    _assetGuid: 
+    _addressableKey: 
+  _leftBehind: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,6 +253,8 @@ MonoBehaviour:
     - fce2b020-c640-11ed-8852-5d77cfb88076
     - b8abf8a0-ed50-11ed-a82b-5f61164d4b1d
     - e4e69a60-ed50-11ed-a82b-27cab0fad380
+    - aaffd4b0-fec0-11ee-bb1b-a5e053972db7
+    - c3003d70-fec0-11ee-bb1b-0bb462c76224
     _listValues:
     - {fileID: -8156441514942254829}
     - {fileID: 4532574535930493133}
@@ -214,6 +266,8 @@ MonoBehaviour:
     - {fileID: -4884962670782242128}
     - {fileID: 1838632918185511580}
     - {fileID: -7519130230592279957}
+    - {fileID: -1045136818092547134}
+    - {fileID: -3622563694642677845}
   _lostLevels:
     _listKeys: []
     _listValues: []

@@ -320,11 +320,6 @@ namespace LDtkVania
                 worldAreas.areas.Add(level.AreaName);
             }
 
-            foreach (MV_WorldAreas worldAreas in _worldAreas.Values)
-            {
-                Debug.Log($"World {worldAreas.worldName} - Areas: {string.Join(", ", worldAreas.areas)}");
-            }
-
             EditorUtility.SetDirty(this);
             AssetDatabase.SaveAssetIfDirty(this);
 

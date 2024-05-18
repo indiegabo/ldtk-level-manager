@@ -69,6 +69,7 @@ namespace LDtkVaniaEditor
             }
 
             _buttonCreateScene = _containerMain.Q<Button>("button-create-scene");
+            _buttonCreateScene.SetEnabled(!_level.LeftBehind);
             _buttonCreateScene.clicked += () =>
             {
                 if (MV_LevelScene.CreateSceneForLevel(_level, out MV_LevelScene levelScene))
