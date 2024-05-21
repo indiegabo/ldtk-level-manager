@@ -26,9 +26,8 @@ namespace LDtkVania
 
         #region  Unity Editor
 #if UNITY_EDITOR
-        public static readonly string SceneAddressPrefix = "LDtkSceneLevel";
         public static readonly string AddressableGroupName = "LDtkVaniaScenes";
-        public static readonly string AddressableSceneLabel = "LDtkSceneLevel";
+        public static readonly string AddressableSceneLabel = "LDtkVaniaScene";
         public static readonly string SceneLabelName = "LDtkVaniaScene";
 
         public static bool CreateSceneForLevel(MV_Level level, out MV_LevelScene levelScene)
@@ -54,7 +53,7 @@ namespace LDtkVania
             EditorSceneManager.CloseScene(scene, true);
 
             SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
-            string addressableAddress = $"{SceneAddressPrefix}_{level.Iid}";
+            string addressableAddress = $"{AddressableSceneLabel}_{level.Iid}";
             if (!sceneAsset.TrySetAsAddressable(addressableAddress, AddressableGroupName, AddressableSceneLabel))
             {
                 MV_Logger.Error($"Could not set scene for level <color=#FFFFFF>{level.name}</color> as addressable. Please check the console for errors.", level);
@@ -101,10 +100,7 @@ namespace LDtkVania
                 return true;
             }
 
-            List<string> labels = AssetDatabase.GetLabels(sceneAsset).ToList();
-            labels.Remove(SceneLabelName);
-
-            AssetDatabase.SetLabels(sceneAsset, labels.ToArray());
+            AssetDatabase.SetLabels(sceneAsset, new string[0]);
             EditorUtility.SetDirty(sceneAsset);
             AssetDatabase.SaveAssetIfDirty(sceneAsset);
 

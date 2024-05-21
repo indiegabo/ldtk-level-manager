@@ -20,6 +20,25 @@ namespace LDtkVania
 
         #endregion
 
+        public void ClearBeforeDeletion()
+        {
+            IEnumerable<MV_Level> levels = _levels.Values.Concat(_lostLevels.Values);
+            foreach (MV_Level mvLevel in levels)
+            {
+                mvLevel.LevelFile.UnsetAdressable();
+
+                if (!mvLevel.LeftBehind) continue;
+
+                string path = AssetDatabase.GUIDToAssetPath(mvLevel.Scene.AssetGuid);
+                SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
+                if (sceneAsset != null)
+                {
+                    AssetDatabase.SetLabels(sceneAsset, new string[0]);
+                    sceneAsset.UnsetAdressable();
+                }
+            }
+        }
+
         public void Initialize(LDtkProjectFile projectFile)
         {
             _ldtkProjectFile = projectFile;
@@ -259,13 +278,20 @@ namespace LDtkVania
             // Apply world and area filters
             if (!string.IsNullOrEmpty(filters.world) && !string.IsNullOrEmpty(filters.area))
             {
-                filteredLevels = _levels.Values.Where(level => level.AreaName.ToLower() == filters.area
-                    && level.WorldName.ToLower() == filters.world
-                ).ToList();
+                filteredLevels = _levels.Values.Where(level =>
+                {
+                    if (string.IsNullOrEmpty(level.AreaName) || string.IsNullOrEmpty(level.WorldName)) return false;
+                    return level.AreaName.ToLower() == filters.area
+                    && level.WorldName.ToLower() == filters.world;
+                }).ToList();
             }
             else if (!string.IsNullOrEmpty(filters.world))
             {
-                filteredLevels = _levels.Values.Where(level => level.WorldName.ToLower() == filters.world).ToList();
+                filteredLevels = _levels.Values.Where(level =>
+                {
+                    if (string.IsNullOrEmpty(level.WorldName)) return false;
+                    return level.WorldName.ToLower() == filters.world;
+                }).ToList();
             }
 
             // Apply level name filter

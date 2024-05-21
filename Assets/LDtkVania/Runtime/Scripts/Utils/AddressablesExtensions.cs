@@ -63,6 +63,19 @@ namespace LDtkVania.Utils
             settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, entry, true);
             return true;
         }
+
+        public static void UnsetAdressable(this Object obj)
+        {
+            string guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(obj));
+            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+            settings.RemoveAssetEntry(guid);
+        }
+
+        public static void UnsetAdressable(string guid)
+        {
+            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+            settings.RemoveAssetEntry(guid);
+        }
     }
 }
 #endif
