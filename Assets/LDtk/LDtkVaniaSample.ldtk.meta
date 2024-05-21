@@ -26,8 +26,8 @@ ScriptedImporter:
   _entities:
   - _key: Connection
     _asset: {fileID: 7480802360855543441, guid: c9142ffe618af61468e951e56962dfa0, type: 3}
-  - _key: DefaultSpawnPoint
-    _asset: {fileID: 7426832046601277372, guid: 458de0c0c4104d7459cfaefe72ffa0ba, type: 3}
+  - _key: Anchor
+    _asset: {fileID: 8491176365153170283, guid: 2256c93a5d4de7f4d97c0e332be2fe84, type: 3}
   - _key: Enemies
     _asset: {fileID: 1084648958945649673, guid: c561df5a7c315554a8e1500dce788204, type: 3}
   - _key: DataSyncStation

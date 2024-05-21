@@ -28,17 +28,16 @@ namespace LDtkVania
 
         #region Fields
 
+        private LDtkIid _ldtkIid;
         private LDtkFields _fields;
+        private MV_LevelAnchor _LevelAnchor;
         private BoxCollider2D _collider2D;
 
         private bool _active;
         private bool _transitioning;
 
-        private string _key;
         private string _targetLevelIid;
-        private Vector2 _spawnPosition;
-        private int _directionSign;
-
+        private string _targetConnectionIid;
 
         private float _colliderWidth;
         private float _colliderHeight;
@@ -50,75 +49,66 @@ namespace LDtkVania
         #region Getters
 
         public UnityEvent Used => _used;
-        public LDtkFields Fields
-        {
-            get
-            {
-                if (_fields == null)
-                {
-                    _fields = GetComponent<LDtkFields>();
-                    Setup(_fields);
-                }
-                return _fields;
-            }
-        }
 
         #endregion
 
         #region Behaviour
 
-        private void Awake()
-        {
-        }
-
         #endregion
 
         #region IConnection
 
-        string IConnection.TargetLevelIid => _targetLevelIid;
-        string IConnection.Key => _key;
-        Vector2 IConnection.SpawnPoint => _spawnPosition;
-        public int FacingSign => _directionSign;
+        public string Iid
+        {
+            get
+            {
+                if (_ldtkIid == null)
+                {
+                    _ldtkIid = GetComponent<LDtkIid>();
+                }
+                return _ldtkIid.Iid;
+            }
+        }
+
+        string IConnection.TargetIid => _targetConnectionIid;
+
+        ILevelAnchor IConnection.Anchor
+        {
+            get
+            {
+                if (_LevelAnchor == null)
+                {
+                    LDtkReferenceToAnEntityInstance anchorRef = _fields.GetEntityReference("Anchor");
+                    _LevelAnchor = anchorRef.GetEntity().GetComponent<MV_LevelAnchor>();
+                }
+                return _LevelAnchor;
+            }
+        }
 
         void IConnection.Initialize()
         {
             _collider2D = GetComponent<BoxCollider2D>();
+            _ldtkIid = GetComponent<LDtkIid>();
             _fields = GetComponent<LDtkFields>();
-            Setup(_fields);
-        }
 
-        void IConnection.Activate()
-        {
-            gameObject.SetActive(true);
-            _active = true;
-        }
+            LDtkReferenceToAnEntityInstance entityRef = _fields.GetEntityReference("TargetConnection");
+            _targetConnectionIid = entityRef.EntityIid;
+            _targetLevelIid = entityRef.LevelIid;
 
-        void IConnection.Deactivate()
-        {
-            _active = false;
-            gameObject.SetActive(false);
-        }
+            _colliderWidth = _fields.GetFloat("Width");
+            _colliderHeight = _fields.GetFloat("Height");
 
-
-        #endregion
-
-        #region Setup
-
-        private void Setup(LDtkFields fields)
-        {
-            _targetLevelIid = fields.GetString("TargetLevelIid");
-            _key = fields.GetString("ConnectionKey");
-            _spawnPosition = fields.GetPoint("SpawnPosition");
-            _directionSign = fields.GetInt("DirectionSign");
-
-            _colliderWidth = fields.GetFloat("ColliderWidth");
-            _colliderHeight = fields.GetFloat("ColliderHeight");
-
-            _colliderVerticalOffset = fields.GetFloat("ColliderVerticalOffset");
-            _colliderHorizontalOffset = fields.GetFloat("ColliderHorizontalOffset");
+            _colliderVerticalOffset = _fields.GetFloat("VerticalOffset");
+            _colliderHorizontalOffset = _fields.GetFloat("HorizontalOffset");
 
             SetupPosition();
             SetupCollider();
+        }
+
+        void IConnection.SetActive(bool isActive)
+        {
+            _active = true;
+            gameObject.SetActive(isActive);
         }
 
         #endregion
@@ -150,7 +140,7 @@ namespace LDtkVania
         {
             _collider2D.isTrigger = true;
 
-            SetiColliderSize();
+            SetColliderSize();
             SetColliderOffset();
         }
 
@@ -159,7 +149,7 @@ namespace LDtkVania
             _collider2D.offset = new Vector2(_colliderHorizontalOffset, _colliderVerticalOffset);
         }
 
-        private void SetiColliderSize()
+        private void SetColliderSize()
         {
             _collider2D.size = new Vector2(_colliderWidth, _colliderHeight);
         }
@@ -167,7 +157,7 @@ namespace LDtkVania
         private async Task TransitionTask()
         {
             _transitioning = true;
-            // await MV_LevelTransitioner.Instance.TransitionInto(this);
+            await MV_LevelTransitioner.Instance.TransitionInto(_targetLevelIid, this);
             _transitioning = false;
         }
 

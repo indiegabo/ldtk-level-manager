@@ -4,13 +4,11 @@ namespace LDtkVania
 {
     public interface IConnection
     {
-        string Key { get; }
-        string TargetLevelIid { get; }
-        Vector2 SpawnPoint { get; }
-        int FacingSign { get; }
+        string Iid { get; }
+        string TargetIid { get; }
+        ILevelAnchor Anchor { get; }
 
         void Initialize();
-        void Activate();
-        void Deactivate();
+        void SetActive(bool isActive);
     }
 }

@@ -44,8 +44,8 @@ namespace LDtkVania
         #region Getters
 
         public bool SyncLevelsAtCompile => _syncLevelsAtCompile;
-        public string ConnectionsContainerName => "Connections";
-        public string CheckpointsContainerName => "Checkpoints";
+        public string ConnectionsContainerName => "Anchors_And_Connections";
+        public string AnchorsContainerName => "Anchors_And_Connections";
 
         public bool IsInitialized => _ldtkProjectFile != null;
         public int LevelsCount => _levels.Count;

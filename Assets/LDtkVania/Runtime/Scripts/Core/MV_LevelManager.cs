@@ -69,7 +69,7 @@ namespace LDtkVania
 
         public MV_LevelManagerStrategy Strategy => _strategy;
         public string ConnectionsContainerName => _project.ConnectionsContainerName;
-        public string CheckpointsContainerName => _project.CheckpointsContainerName;
+        public string AnchorsContainerName => _project.AnchorsContainerName;
 
         public UnityEvent<MV_Level> LevelPreparedEvent => _levelPreparedEvent;
         public UnityEvent<MV_Level> LevelEnteredEvent => _levelEnteredEvent;
@@ -119,7 +119,7 @@ namespace LDtkVania
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
-        public async Task LoadLevelAndNeighbours(string iid, MV_LevelLoadMode mode = MV_LevelLoadMode.LoadOnly)
+        public async Task LoadLevelAndNeighbours(string iid, MV_LevelLoadMode mode = MV_LevelLoadMode.LoadOnly, ILevelAnchor anchor = null)
         {
             if (!TryGetLevel(iid, out MV_Level level))
             {
@@ -137,19 +137,19 @@ namespace LDtkVania
 
             await LoadNeighboursAsync(level);
 
-            if (!mode.Equals(MV_LevelLoadMode.LoadAndEnter))
+            if (!mode.Equals(MV_LevelLoadMode.LoadAndEnter) || anchor == null)
             {
                 return;
             };
 
             _currentLevel = level;
             _currentBehaviour = _registeredBehaviours[_currentLevel.Iid];
-            _currentBehaviour.Prepare();
+            _currentBehaviour.Prepare(anchor);
 
             EnterLevel();
         }
 
-        public async Task LoadWorld(string worldName, MV_Level levelToEnter = null)
+        public async Task LoadWorld(string worldName)
         {
             if (!_strategy.Equals(MV_LevelManagerStrategy.Worlds))
             {
@@ -174,21 +174,13 @@ namespace LDtkVania
             _loadedScenes.Clear();
 
             await LoadMultipleAsync(iids);
-
-            if (levelToEnter == null) return;
-
-            _currentLevel = levelToEnter;
-            _currentBehaviour = _registeredBehaviours[_currentLevel.Iid];
-            _currentBehaviour.Prepare();
-
-            EnterLevel();
         }
 
         /// <summary>
-        /// Prepares the level to be entered through a connection by Iid.
+        /// Prepares the level to be entered through an anchor.
         /// </summary>
-        /// <param name="iid">The Iid of the connection to use to enter the level.</param>
-        public void PrepareLevel(string iid)
+        /// <param name="anchor">The anchor to use to enter the level.</param>
+        public void PrepareLevel(string iid, Vector2 position, int facingSign)
         {
             // If the level could not be found, do not attempt to prepare it.
             if (!SetLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
@@ -196,18 +188,14 @@ namespace LDtkVania
                 return;
             }
 
-            // Prepare the level so that it can be entered.
-            levelBehaviour.Prepare();
+            // Prepare the level for entering through the anchor.
+            levelBehaviour.Prepare(position, facingSign);
         }
 
-        /// <summary>
-        /// Prepares the level to be entered through an anchor.
-        /// </summary>
-        /// <param name="anchor">The anchor to use to enter the level.</param>
         public void PrepareLevel(string iid, ILevelAnchor anchor)
         {
             // If the level could not be found, do not attempt to prepare it.
-            if (!SetLevelForPreparation(anchor.LevelIId, out MV_LevelBehaviour levelBehaviour))
+            if (!SetLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
             {
                 return;
             }
@@ -222,7 +210,7 @@ namespace LDtkVania
         /// <param name="connection">The connection to use to enter the level.</param>
         public void PrepareLevel(string iid, IConnection connection)
         {
-            if (!SetLevelForPreparation(connection.TargetLevelIid, out MV_LevelBehaviour levelBehaviour))
+            if (!SetLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
             {
                 // If the level could not be found, do not attempt to prepare it.
                 return;

@@ -3,7 +3,7 @@ using LDtkVania.Utils;
 using TarodevController;
 using UnityEngine;
 
-public class Character : MonoBehaviour, ILevelSpawnSubject
+public class Character : MonoBehaviour, ILevelPlacementSubject
 {
     [SerializeField] private GameObjectProvider _characterProvider;
     [SerializeField] private MV_PlayerControlBridge _playerControlBridge;
@@ -37,7 +37,7 @@ public class Character : MonoBehaviour, ILevelSpawnSubject
         _characterProvider.Unregister();
     }
 
-    public void Spawn(Vector2 position, int directionSign)
+    public void PlaceInLevel(Vector2 position, int directionSign)
     {
         transform.position = new Vector3(position.x, position.y - 0.5f, transform.position.z);
     }
