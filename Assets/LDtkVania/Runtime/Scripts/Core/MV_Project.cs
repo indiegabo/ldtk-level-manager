@@ -80,6 +80,31 @@ namespace LDtkVania
 
         #region World and areas
 
+        public List<MV_Level> GetAllLevelsInWorld(string worldName)
+        {
+            if (!_worldAreas.ContainsKey(worldName)) return null;
+
+            List<MV_Level> levels = new();
+            foreach (MV_Level level in _levels.Values)
+            {
+                if (level.WorldName == worldName) levels.Add(level);
+            }
+            return levels;
+        }
+
+        public HashSet<string> GetAllLevelsIidsInWorld(string worldName)
+        {
+            if (!_worldAreas.ContainsKey(worldName)) return null;
+
+            HashSet<string> iids = new();
+            foreach (MV_Level level in _levels.Values)
+            {
+                if (level.WorldName == worldName) iids.Add(level.Iid);
+            }
+
+            return iids;
+        }
+
         public List<MV_WorldAreas> GetAllWorldAreas()
         {
             return _worldAreas.Values.ToList();

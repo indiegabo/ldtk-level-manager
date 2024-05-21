@@ -96,6 +96,20 @@ namespace LDtkVania
         }
 
         public async Task TransitionInto(
+            string levelIid,
+            ILevelAnchor anchor,
+            List<string> globalTransitionsTargets = null,
+            List<ITransition> closeTransitions = null,
+            List<ITransition> openTransitions = null
+        )
+        {
+            await BeforePreparationTask(globalTransitionsTargets, closeTransitions);
+            MV_LevelManager.Instance.PrepareLevel(levelIid, anchor);
+            await AfterPreparationTask(globalTransitionsTargets, openTransitions);
+        }
+
+        public async Task TransitionInto(
+            string levelIid,
             IConnection connection,
             List<string> globalTransitionsTargets = null,
             List<ITransition> closeTransitions = null,
@@ -103,19 +117,7 @@ namespace LDtkVania
         )
         {
             await BeforePreparationTask(globalTransitionsTargets, closeTransitions);
-            MV_LevelManager.Instance.PrepareLevel(connection);
-            await AfterPreparationTask(globalTransitionsTargets, openTransitions);
-        }
-
-        public async Task TransitionInto(
-            ILevelAnchor checkpoint,
-            List<string> globalTransitionsTargets = null,
-            List<ITransition> closeTransitions = null,
-            List<ITransition> openTransitions = null
-        )
-        {
-            await BeforePreparationTask(globalTransitionsTargets, closeTransitions);
-            MV_LevelManager.Instance.PrepareLevel(checkpoint);
+            MV_LevelManager.Instance.PrepareLevel(levelIid, connection);
             await AfterPreparationTask(globalTransitionsTargets, openTransitions);
         }
 

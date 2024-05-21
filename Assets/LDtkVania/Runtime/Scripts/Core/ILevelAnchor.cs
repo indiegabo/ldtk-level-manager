@@ -4,7 +4,7 @@ namespace LDtkVania
 {
     public interface ILevelAnchor
     {
-        string AnchorIid { get; }
+        string Iid { get; }
         string LevelIId { get; }
         Vector2 SpawnPoint { get; }
         int FacingSign { get; }

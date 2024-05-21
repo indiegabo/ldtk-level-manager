@@ -35,7 +35,7 @@ namespace LDtkVania
         private MV_LevelDefaultSpawnPoint _defaultSpawnPoint;
 
         private Dictionary<string, IConnection> _connections;
-        private Dictionary<string, ILevelAnchor> _checkpoints;
+        private Dictionary<string, ILevelAnchor> _anchors;
 
         #endregion
 
@@ -67,7 +67,7 @@ namespace LDtkVania
             BroadcastMessage("OnLevelAwake", this, SendMessageOptions.DontRequireReceiver);
 
             InitializeConnections();
-            EvaluateCheckpoints();
+            EvaluateAnchors();
 
             MV_LevelManager.Instance.RegisterAsBehaviour(_ldtkIid.Iid, this);
         }
@@ -95,17 +95,17 @@ namespace LDtkVania
             _preparedEvent.Invoke(this, MV_LevelTrail.FromPoint(point));
         }
 
-        public void Prepare(ILevelAnchor checkpoint)
+        public void Prepare(ILevelAnchor anchor)
         {
-            if (!_checkpoints.TryGetValue(checkpoint.AnchorIid, out ILevelAnchor registeredCheckpoint))
+            if (!_anchors.TryGetValue(anchor.Iid, out ILevelAnchor registeredCheckpoint))
             {
-                MV_Logger.Error($"{name} could not be prepared because {checkpoint.AnchorIid} is not present on dictionary", this);
+                MV_Logger.Error($"{name} could not be prepared because {anchor.Iid} is not present on dictionary", this);
                 return;
             }
 
             _preparationStartedEvent.Invoke(this, registeredCheckpoint.SpawnPoint);
             SpawnCharacter(registeredCheckpoint.SpawnPoint, registeredCheckpoint.FacingSign);
-            _preparedEvent.Invoke(this, MV_LevelTrail.FromCheckpoint(checkpoint));
+            _preparedEvent.Invoke(this, MV_LevelTrail.FromCheckpoint(anchor));
         }
 
         public void Prepare(IConnection connection)
@@ -189,9 +189,9 @@ namespace LDtkVania
 
         #region Checkpoints
 
-        private void EvaluateCheckpoints()
+        private void EvaluateAnchors()
         {
-            _checkpoints = new Dictionary<string, ILevelAnchor>();
+            _anchors = new Dictionary<string, ILevelAnchor>();
 
             Transform checkpointsContainer = transform.Find(MV_LevelManager.Instance.CheckpointsContainerName);
 
@@ -201,12 +201,12 @@ namespace LDtkVania
 
             foreach (ILevelAnchor checkpoint in checkpointsComponents)
             {
-                if (_checkpoints.ContainsKey(checkpoint.AnchorIid))
+                if (_anchors.ContainsKey(checkpoint.Iid))
                 {
-                    MV_Logger.Warning($"{name} has more than one checkpoint with the same key: {checkpoint.AnchorIid}. Using the first found", this);
+                    MV_Logger.Warning($"{name} has more than one checkpoint with the same key: {checkpoint.Iid}. Using the first found", this);
                 }
 
-                _checkpoints.Add(checkpoint.AnchorIid, checkpoint);
+                _anchors.Add(checkpoint.Iid, checkpoint);
             }
         }
 

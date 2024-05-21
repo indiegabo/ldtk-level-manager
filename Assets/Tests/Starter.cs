@@ -9,6 +9,7 @@ public class Starter : MonoBehaviour
 
     [SerializeField] private MV_LevelManager _levelManager;
     [SerializeField] private MV_Level _level;
+    [SerializeField] private string _worldName;
     [SerializeField] private MV_PlayerControlBridge _playerControlBridge;
 
     #endregion
@@ -17,16 +18,27 @@ public class Starter : MonoBehaviour
 
     private void Start()
     {
-        _ = LoadLevel();
+        if (!string.IsNullOrEmpty(_worldName))
+        {
+            _ = LoadWorld(_worldName, _level);
+            return;
+        }
+        _ = LoadStandAloneLevel();
     }
 
     #endregion
 
     #region Loading
 
-    private async Task LoadLevel()
+    private async Task LoadStandAloneLevel()
     {
-        await _levelManager.FullLevelLoad(_level.Iid, MV_LevelLoadMode.LoadAndEnter);
+        await _levelManager.LoadLevelAndNeighbours(_level.Iid, MV_LevelLoadMode.LoadAndEnter);
+        _playerControlBridge.GiveControl();
+    }
+
+    private async Task LoadWorld(string worldName, MV_Level level)
+    {
+        await _levelManager.LoadWorld(worldName, level);
         _playerControlBridge.GiveControl();
     }
 

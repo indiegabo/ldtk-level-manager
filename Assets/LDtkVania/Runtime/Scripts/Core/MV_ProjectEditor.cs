@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using LDtkUnity;
 using LDtkVania.Utils;
 using System.Linq;
-using JetBrains.Annotations;
 
 namespace LDtkVania
 {

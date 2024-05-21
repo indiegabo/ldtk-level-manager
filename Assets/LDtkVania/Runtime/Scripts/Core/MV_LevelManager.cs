@@ -7,6 +7,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using LDtkUnity;
+using System.Linq;
 
 namespace LDtkVania
 {
@@ -33,6 +34,9 @@ namespace LDtkVania
         private MV_Project _project;
 
         [SerializeField]
+        private MV_LevelManagerStrategy _strategy;
+
+        [SerializeField]
         [Min(1)]
         private int _depth = 1;
 
@@ -49,6 +53,7 @@ namespace LDtkVania
 
         #region Fields
 
+        private LdtkJson _ldtkJson;
         private MV_Level _currentLevel;
         private MV_LevelBehaviour _currentBehaviour;
 
@@ -62,6 +67,7 @@ namespace LDtkVania
 
         #region Getters
 
+        public MV_LevelManagerStrategy Strategy => _strategy;
         public string ConnectionsContainerName => _project.ConnectionsContainerName;
         public string CheckpointsContainerName => _project.CheckpointsContainerName;
 
@@ -75,8 +81,6 @@ namespace LDtkVania
 
         public void Awake()
         {
-            LDtkIidBank.CacheIidData(_project.LDtkProject);
-
             MV_LevelManager currentInstance = Instance;
 
             if (currentInstance != null && currentInstance != this)
@@ -95,6 +99,10 @@ namespace LDtkVania
 
             if (_persistent)
                 DontDestroyOnLoad(gameObject);
+
+
+            LDtkIidBank.CacheIidData(_project.LDtkProject);
+            _ldtkJson = _project.LDtkProject;
         }
 
         #endregion
@@ -111,7 +119,7 @@ namespace LDtkVania
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
-        public async Task FullLevelLoad(string iid, MV_LevelLoadMode mode = MV_LevelLoadMode.LoadOnly)
+        public async Task LoadLevelAndNeighbours(string iid, MV_LevelLoadMode mode = MV_LevelLoadMode.LoadOnly)
         {
             if (!TryGetLevel(iid, out MV_Level level))
             {
@@ -141,31 +149,39 @@ namespace LDtkVania
             EnterLevel();
         }
 
-        /// <summary>
-        /// This should be used while transitioning from one level to another.
-        /// Have in mind that the target level should be already registered.
-        /// </summary>
-        /// <param name="level"></param>
-        /// <returns></returns>
-        public void Prepare(MV_Level level)
+        public async Task LoadWorld(string worldName, MV_Level levelToEnter = null)
         {
-            if (string.IsNullOrEmpty(level.Iid))
+            if (!_strategy.Equals(MV_LevelManagerStrategy.Worlds))
             {
-                MV_Logger.Error($"Null or Empty level Iid.", this);
+                MV_Logger.Error($"LoadWorld method can only be used with when strategy is set to '{MV_LevelManagerStrategy.Worlds}'.", this);
                 return;
             }
 
-            if (!_registeredBehaviours.ContainsKey(level.Iid))
+            HashSet<string> iids = _project.GetAllLevelsIidsInWorld(worldName);
+
+            if (iids == null || iids.Count == 0)
             {
-                MV_Logger.Error($"Trying to prepare a non registered level.", this);
+                MV_Logger.Error($"Trying to load world {worldName} but it has no levels.", this);
                 return;
             }
 
-            _currentLevel = level;
+            ExitLevel();
+
+            await UnloadAllAsync();
+
+            _registeredBehaviours.Clear();
+            _loadedObjects.Clear();
+            _loadedScenes.Clear();
+
+            await LoadMultipleAsync(iids);
+
+            if (levelToEnter == null) return;
+
+            _currentLevel = levelToEnter;
             _currentBehaviour = _registeredBehaviours[_currentLevel.Iid];
-            _ = LoadNeighboursAsync(_currentLevel);
-
             _currentBehaviour.Prepare();
+
+            EnterLevel();
         }
 
         /// <summary>
@@ -188,7 +204,7 @@ namespace LDtkVania
         /// Prepares the level to be entered through an anchor.
         /// </summary>
         /// <param name="anchor">The anchor to use to enter the level.</param>
-        public void PrepareLevel(ILevelAnchor anchor)
+        public void PrepareLevel(string iid, ILevelAnchor anchor)
         {
             // If the level could not be found, do not attempt to prepare it.
             if (!SetLevelForPreparation(anchor.LevelIId, out MV_LevelBehaviour levelBehaviour))
@@ -196,7 +212,7 @@ namespace LDtkVania
                 return;
             }
 
-            // Prepare the level for entering through the connection.
+            // Prepare the level for entering through the anchor.
             levelBehaviour.Prepare(anchor);
         }
 
@@ -204,7 +220,7 @@ namespace LDtkVania
         /// Prepares the level to be entered through a connection.
         /// </summary>
         /// <param name="connection">The connection to use to enter the level.</param>
-        public void PrepareLevel(IConnection connection)
+        public void PrepareLevel(string iid, IConnection connection)
         {
             if (!SetLevelForPreparation(connection.TargetLevelIid, out MV_LevelBehaviour levelBehaviour))
             {
@@ -231,9 +247,19 @@ namespace LDtkVania
                 return false;
             }
 
-            _currentLevel = level;
-            _currentBehaviour = behaviour;
-            _ = LoadNeighboursAsync(_currentLevel);
+            switch (_strategy)
+            {
+                case MV_LevelManagerStrategy.Worlds:
+                    PrepareLevelInWorld(level, behaviour);
+                    break;
+                case MV_LevelManagerStrategy.Areas:
+                    PrepareLevelInArea(level, behaviour);
+                    break;
+                case MV_LevelManagerStrategy.Neighbours:
+                default:
+                    PrepareNeighbouredLevel(level, behaviour);
+                    break;
+            }
 
             return true;
         }
@@ -259,6 +285,26 @@ namespace LDtkVania
                 if (_currentLevel != null)
                     _levelExitedEvent.Invoke(_currentLevel);
             }
+        }
+
+        private void PrepareNeighbouredLevel(MV_Level level, MV_LevelBehaviour behaviour)
+        {
+            _currentLevel = level;
+            _currentBehaviour = behaviour;
+            _ = LoadNeighboursAsync(_currentLevel);
+
+        }
+
+        private void PrepareLevelInWorld(MV_Level level, MV_LevelBehaviour behaviour)
+        {
+            _currentLevel = level;
+            _currentBehaviour = behaviour;
+        }
+
+        private void PrepareLevelInArea(MV_Level level, MV_LevelBehaviour behaviour)
+        {
+            _currentLevel = level;
+            _currentBehaviour = behaviour;
         }
 
         #endregion

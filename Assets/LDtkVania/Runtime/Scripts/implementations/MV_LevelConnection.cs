@@ -167,7 +167,7 @@ namespace LDtkVania
         private async Task TransitionTask()
         {
             _transitioning = true;
-            await MV_LevelTransitioner.Instance.TransitionInto(this);
+            // await MV_LevelTransitioner.Instance.TransitionInto(this);
             _transitioning = false;
         }
 

@@ -510,6 +510,7 @@ MonoBehaviour:
   _persistent: 0
   _alertAboutOtherInstances: 0
   _project: {fileID: 11400000, guid: 3ddb9f2cdc92cbb438368720b28ac634, type: 2}
+  _strategy: 1
   _depth: 1
   _levelPreparedEvent:
     m_PersistentCalls:
@@ -565,7 +566,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelManager: {fileID: 1174395035}
-  _level: {fileID: 5182763932445400190, guid: 3ddb9f2cdc92cbb438368720b28ac634, type: 2}
+  _level: {fileID: 4128397339610914830, guid: 3ddb9f2cdc92cbb438368720b28ac634, type: 2}
+  _worldName: City
   _playerControlBridge: {fileID: 11400000, guid: 636229da706c4bd46ae3acd44cb5bc8c, type: 2}
 --- !u!4 &1805706594
 Transform:
