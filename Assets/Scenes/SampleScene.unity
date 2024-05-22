@@ -650,8 +650,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelManager: {fileID: 1174395035}
-  _level: {fileID: 4128397339610914830, guid: 3ddb9f2cdc92cbb438368720b28ac634, type: 2}
-  _worldName: City
+  _level: {fileID: 6805081341101619786, guid: 3ddb9f2cdc92cbb438368720b28ac634, type: 2}
+  _worldName: 
   _spawnPoint: {fileID: 81918762}
   _playerControlBridge: {fileID: 11400000, guid: 636229da706c4bd46ae3acd44cb5bc8c, type: 2}
 --- !u!4 &1805706594

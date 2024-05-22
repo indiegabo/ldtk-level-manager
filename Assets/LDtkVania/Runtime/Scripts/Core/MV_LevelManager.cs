@@ -118,7 +118,7 @@ namespace LDtkVania
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
-        public async Task LoadLevelAndNeighbours(string iid, MV_LevelLoadMode mode = MV_LevelLoadMode.LoadOnly, ILevelAnchor anchor = null)
+        public async Task LoadLevelAndNeighbours(string iid, MV_LevelLoadMode mode = MV_LevelLoadMode.LoadOnly, string anchorIid = null)
         {
             if (!TryGetLevel(iid, out MV_Level level))
             {
@@ -136,14 +136,14 @@ namespace LDtkVania
 
             await LoadNeighboursAsync(level);
 
-            if (!mode.Equals(MV_LevelLoadMode.LoadAndEnter) || anchor == null)
+            if (!mode.Equals(MV_LevelLoadMode.LoadAndEnter) || string.IsNullOrEmpty(anchorIid))
             {
                 return;
             };
 
             _currentLevel = level;
             _currentBehaviour = _registeredBehaviours[_currentLevel.Iid];
-            _currentBehaviour.Prepare(anchor);
+            _currentBehaviour.Prepare(anchorIid);
 
             EnterLevel();
         }
@@ -175,6 +175,18 @@ namespace LDtkVania
             await LoadMultipleAsync(iids);
         }
 
+        public void PrepareLevel(string iid)
+        {
+            // If the level could not be found, do not attempt to prepare it.
+            if (!SetLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
+            {
+                return;
+            }
+
+            // Prepare the level for entering through the anchor.
+            levelBehaviour.Prepare();
+        }
+
         /// <summary>
         /// Prepares the level to be entered through an anchor.
         /// </summary>
@@ -191,7 +203,7 @@ namespace LDtkVania
             levelBehaviour.Prepare(position, facingSign);
         }
 
-        public void PrepareLevel(string iid, ILevelAnchor anchor)
+        public void PrepareLevel(string iid, string anchorIid)
         {
             // If the level could not be found, do not attempt to prepare it.
             if (!SetLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
@@ -200,7 +212,7 @@ namespace LDtkVania
             }
 
             // Prepare the level for entering through the anchor.
-            levelBehaviour.Prepare(anchor);
+            levelBehaviour.Prepare(anchorIid);
         }
 
         /// <summary>

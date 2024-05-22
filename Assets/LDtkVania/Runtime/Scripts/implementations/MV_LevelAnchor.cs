@@ -8,6 +8,7 @@ namespace LDtkVania
         private LDtkIid _ldtkIid;
         private LDtkFields _fields;
         private int _facingSign;
+        private bool _main;
 
         public string Iid
         {
@@ -22,6 +23,7 @@ namespace LDtkVania
         }
         public Vector2 SpawnPoint => transform.position;
         public int FacingSign => _facingSign;
+        public bool Main => _main;
 
         #region Behaviour
 
@@ -31,6 +33,7 @@ namespace LDtkVania
             _fields = GetComponent<LDtkFields>();
 
             _facingSign = _fields.GetInt("FacingSign");
+            _main = _fields.GetBool("Main");
         }
 
         #endregion

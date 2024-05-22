@@ -85,14 +85,14 @@ namespace LDtkVania
 
         public async Task TransitionInto(
             string levelIid,
-            ILevelAnchor anchor,
+            string anchorIid,
             List<string> globalTransitionsTargets = null,
             List<ITransition> closeTransitions = null,
             List<ITransition> openTransitions = null
         )
         {
             await BeforePreparationTask(globalTransitionsTargets, closeTransitions);
-            MV_LevelManager.Instance.PrepareLevel(levelIid, anchor);
+            MV_LevelManager.Instance.PrepareLevel(levelIid, anchorIid);
             await AfterPreparationTask(globalTransitionsTargets, openTransitions);
         }
 

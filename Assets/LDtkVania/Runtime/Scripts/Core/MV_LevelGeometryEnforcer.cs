@@ -25,7 +25,7 @@ namespace LDtkVania
 
             if (!MV_LevelManager.Instance.TryGetLevel(_ldtkIid.Iid, out _mvLevel))
             {
-                MV_Logger.Error($"{name} could not be activated because {_ldtkIid.Iid} is not present on dictionary", this);
+                MV_Logger.Error($"{name} could not have its geometry enforced because there was no level found under the LDtk Iid {_ldtkIid.Iid}", this);
                 return;
             }
 
@@ -38,6 +38,8 @@ namespace LDtkVania
 
         private void HandleLevelGeometry(MV_Level level)
         {
+            // Only needed if the level has a scene. This solution is focused
+            // on levels pre instantiated in scenes.
             if (!level.HasScene) return;
 
             GetComponentsInChildren<CompositeCollider2D>().ForEach(collider =>

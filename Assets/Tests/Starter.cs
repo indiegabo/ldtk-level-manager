@@ -34,7 +34,7 @@ public class Starter : MonoBehaviour
     private async Task LoadStandAloneLevel()
     {
         await _levelManager.LoadLevelAndNeighbours(_level.Iid, MV_LevelLoadMode.LoadOnly);
-        _levelManager.PrepareLevel(_level.Iid, _spawnPoint.position, 1);
+        _levelManager.PrepareLevel(_level.Iid);
         _levelManager.EnterLevel();
         _playerControlBridge.GiveControl();
     }

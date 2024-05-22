@@ -54,28 +54,30 @@ namespace LDtkVania
         {
             if (!TryGetComponent(out _ldtkIid))
             {
-                MV_Logger.Error($"{name} has no {nameof(LDtkIid)} component", this);
+                MV_Logger.Error($"Level {name} has no {nameof(LDtkIid)} component", this);
                 return;
             }
 
             if (!TryGetComponent(out _ldtkComponentLevel))
             {
-                MV_Logger.Error($"{name} has no {nameof(LDtkComponentLevel)} component", this);
+                MV_Logger.Error($"Level {name} has no {nameof(LDtkComponentLevel)} component", this);
                 return;
             }
 
             if (!MV_LevelManager.Instance.TryGetLevel(_ldtkIid.Iid, out _mvLevel))
             {
-                MV_Logger.Error($"{name} could not be activated because {_ldtkIid.Iid} is not present on dictionary", this);
+                MV_Logger.Error($"Level {name} could not be activated because {_ldtkIid.Iid} is not present on dictionary", this);
                 return;
             }
 
-            BroadcastMessage("OnLevelAwake", this, SendMessageOptions.DontRequireReceiver);
+            name = _mvLevel.Name;
 
             EvaluateConnections();
             EvaluateAnchors();
 
             MV_LevelManager.Instance.RegisterAsBehaviour(_ldtkIid.Iid, this);
+
+            BroadcastMessage("OnLevelAwake", this, SendMessageOptions.DontRequireReceiver);
         }
 
         private void OnDestroy()
@@ -87,24 +89,40 @@ namespace LDtkVania
 
         #region Level Cycle
 
-        public void Prepare(Vector2 spawnPoint, int facingSign)
+        public void Prepare()
         {
-            _preparationStartedEvent.Invoke(this, spawnPoint);
-            PlaceCharacter(spawnPoint, facingSign);
-            _preparedEvent.Invoke(this, MV_LevelTrail.FromPoint(spawnPoint));
+            if (_anchors.Count == 0)
+            {
+                MV_Logger.Error($"Level {name} could not be prepared because there are no anchors", this);
+                return;
+            }
+
+            ILevelAnchor mainAnchor = _anchors.Values.FirstOrDefault(x => x.Main);
+            if (mainAnchor == null)
+            {
+                string message = $"Level {name} is trying to prepare with a main anchor but there is no anchor set as \"Main\" in the registry.";
+                message += $"Using the first available anchor.";
+                MV_Logger.Warning(message, this);
+            }
+
+            mainAnchor = _anchors.Values.FirstOrDefault();
+
+            _preparationStartedEvent.Invoke(this, mainAnchor.SpawnPoint);
+            PlaceCharacter(mainAnchor.SpawnPoint, mainAnchor.FacingSign);
+            _preparedEvent.Invoke(this, MV_LevelTrail.FromPoint(mainAnchor.SpawnPoint));
         }
 
-        public void Prepare(ILevelAnchor anchor)
+        public void Prepare(string anchorIid)
         {
-            if (!_anchors.TryGetValue(anchor.Iid, out ILevelAnchor registeredAnchor))
+            if (!_anchors.TryGetValue(anchorIid, out ILevelAnchor registeredAnchor))
             {
-                MV_Logger.Error($"{name} could not be prepared because {anchor.Iid} is not present on dictionary", this);
+                MV_Logger.Error($"Level {name} could not be prepared because there is no anchor by Iid \"{anchorIid}\" present on the anchors registry.", this);
                 return;
             }
 
             _preparationStartedEvent.Invoke(this, registeredAnchor.SpawnPoint);
             PlaceCharacter(registeredAnchor.SpawnPoint, registeredAnchor.FacingSign);
-            _preparedEvent.Invoke(this, MV_LevelTrail.FromAnchor(anchor));
+            _preparedEvent.Invoke(this, MV_LevelTrail.FromAnchor(registeredAnchor));
         }
 
         public void Prepare(IConnection connection)
@@ -112,13 +130,22 @@ namespace LDtkVania
             // It is comming from a connection, so it must find the target connection withing the dictionary
             if (!_connections.TryGetValue(connection.TargetIid, out IConnection registeredConnection))
             {
-                MV_Logger.Error($"{name} could not be prepared because the connection Iid \"{connection.TargetIid}\" is not present on dictionary", this);
+                string message = $"Level {name} could not be prepared because the connection Iid \"{connection.TargetIid}\"";
+                message += "is not present on the connections registry.";
+                MV_Logger.Error(message, this);
                 return;
             }
 
             _preparationStartedEvent.Invoke(this, registeredConnection.Anchor.SpawnPoint);
             PlaceCharacter(registeredConnection.Anchor.SpawnPoint, registeredConnection.Anchor.FacingSign);
             _preparedEvent.Invoke(this, MV_LevelTrail.FromConnection(registeredConnection));
+        }
+
+        public void Prepare(Vector2 spawnPoint, int facingSign)
+        {
+            _preparationStartedEvent.Invoke(this, spawnPoint);
+            PlaceCharacter(spawnPoint, facingSign);
+            _preparedEvent.Invoke(this, MV_LevelTrail.FromPoint(spawnPoint));
         }
 
         public void Enter()
@@ -152,7 +179,7 @@ namespace LDtkVania
             {
                 if (_connections.ContainsKey(connection.Iid))
                 {
-                    MV_Logger.Warning($"{name} has more than one connection with the same Iid: {connection.Iid}. Using the first found", this);
+                    MV_Logger.Warning($"Level {name} has more than one connection with the same Iid: {connection.Iid}. Using the first found.", this);
                 }
                 _connections.Add(connection.Iid, connection);
                 connection.Initialize();
@@ -182,7 +209,7 @@ namespace LDtkVania
 
         #endregion
 
-        #region Checkpoints
+        #region Anchors
 
         private void EvaluateAnchors()
         {
@@ -198,7 +225,7 @@ namespace LDtkVania
             {
                 if (_anchors.ContainsKey(anchor.Iid))
                 {
-                    MV_Logger.Warning($"{name} has more than one anchors with the same Iid: {anchor.Iid}. Using the first found", this);
+                    MV_Logger.Warning($"Level {name} has more than one anchors with the same Iid: {anchor.Iid}. Using the first found", this);
                 }
 
                 _anchors.Add(anchor.Iid, anchor);
@@ -213,7 +240,7 @@ namespace LDtkVania
         {
             if (!_mainCharacterProvider.TryGetComponent(out ILevelPlacementSubject placementSubject))
             {
-                MV_Logger.Error($"{name} could not find an ({nameof(ILevelPlacementSubject)}) to place the character into", this);
+                MV_Logger.Error($"Level {name} could not find an ({nameof(ILevelPlacementSubject)}) to place the character into", this);
                 return;
             }
 
