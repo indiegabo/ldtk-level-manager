@@ -15,6 +15,13 @@ namespace LDtkVania
         public int PageSize { get; set; }
     }
 
+    public struct MV_LevelListFilters
+    {
+        public string world;
+        public string area;
+        public string levelName;
+    }
+
     [System.Serializable]
     public class MV_WorldAreas
     {

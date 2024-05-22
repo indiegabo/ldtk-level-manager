@@ -350,13 +350,13 @@ namespace LDtkVania
 
             return _worldAreas;
         }
-    }
 
-    public struct MV_LevelListFilters
-    {
-        public string world;
-        public string area;
-        public string levelName;
+        public void SetAnchorsLayer(string layerName)
+        {
+            _anchorsLayerName = layerName;
+            EditorUtility.SetDirty(this);
+            AssetDatabase.SaveAssetIfDirty(this);
+        }
     }
 }
 #endif

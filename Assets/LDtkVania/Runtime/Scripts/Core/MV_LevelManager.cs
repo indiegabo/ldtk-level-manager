@@ -68,8 +68,7 @@ namespace LDtkVania
         #region Getters
 
         public MV_LevelManagerStrategy Strategy => _strategy;
-        public string ConnectionsContainerName => _project.ConnectionsContainerName;
-        public string AnchorsContainerName => _project.AnchorsContainerName;
+        public string AnchorsLayerName => _project.AnchorsLayerName;
 
         public UnityEvent<MV_Level> LevelPreparedEvent => _levelPreparedEvent;
         public UnityEvent<MV_Level> LevelEnteredEvent => _levelEnteredEvent;

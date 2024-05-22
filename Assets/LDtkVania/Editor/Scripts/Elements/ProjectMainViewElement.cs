@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Linq;
 using LDtkUnity;
 using LDtkVania;
 using UnityEngine;
@@ -14,13 +15,16 @@ namespace LDtkVaniaEditor
         private const string TemplateName = "ProjectInspector_MainView";
 
         private MV_Project _project;
+        private LdtkJson _ldtkJson;
 
         private TemplateContainer _containerMain;
 
         private VisualElement _containerWorlds;
+        private DropdownField _dropdownAnchorsLayer;
         private ListView _listWorlds;
 
         private List<MV_WorldAreas> _worldAreas;
+        private List<string> _layers;
 
         #endregion
 
@@ -29,9 +33,16 @@ namespace LDtkVaniaEditor
         public ProjectMainViewElement(MV_Project project)
         {
             _project = project;
+            _ldtkJson = _project.LDtkProject;
             _worldAreas = _project.GetAllWorldAreas();
+            _layers = _ldtkJson.Defs.Layers.Select(x => x.Identifier).ToList();
 
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
+
+            _dropdownAnchorsLayer = _containerMain.Q<DropdownField>("dropdown-anchors-layer");
+            _dropdownAnchorsLayer.choices = _layers;
+            _dropdownAnchorsLayer.value = _project.AnchorsLayerName;
+            _dropdownAnchorsLayer.RegisterValueChangedCallback(x => _project.SetAnchorsLayer(x.newValue));
 
             _listWorlds = _containerMain.Q<ListView>("list-worlds");
             _listWorlds.itemsSource = _worldAreas;

@@ -141,7 +141,7 @@ namespace LDtkVania
         {
             _connections = new Dictionary<string, IConnection>();
 
-            LDtkComponentLayer componentLayer = _ldtkComponentLevel.LayerInstances.FirstOrDefault(l => l.Identifier == MV_LevelManager.Instance.ConnectionsContainerName);
+            LDtkComponentLayer componentLayer = _ldtkComponentLevel.LayerInstances.FirstOrDefault(l => l.Identifier == MV_LevelManager.Instance.AnchorsLayerName);
             Transform connectionsContainer = componentLayer != null ? componentLayer.transform : transform;
 
             if (connectionsContainer == null) return;
@@ -188,7 +188,7 @@ namespace LDtkVania
         {
             _anchors = new Dictionary<string, ILevelAnchor>();
 
-            Transform anchorsTransform = transform.Find(MV_LevelManager.Instance.AnchorsContainerName);
+            Transform anchorsTransform = transform.Find(MV_LevelManager.Instance.AnchorsLayerName);
 
             if (anchorsTransform == null) return;
 
