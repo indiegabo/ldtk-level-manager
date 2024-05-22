@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace LDtkVania
 {
+    [Tooltip("Enforces the geometry of the level. Only needed if the level has a scene. This solution is focused on levels wrapped in scenes.")]
     public class MV_LevelGeometryEnforcer : MonoBehaviour
     {
         #region Fields
