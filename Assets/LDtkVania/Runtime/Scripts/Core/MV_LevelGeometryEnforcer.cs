@@ -1,6 +1,6 @@
 using LDtkUnity;
-using Sirenix.Utilities;
 using UnityEngine;
+using System.Linq;
 
 namespace LDtkVania
 {
@@ -42,10 +42,12 @@ namespace LDtkVania
             // on levels pre instantiated in scenes.
             if (!level.HasScene) return;
 
-            GetComponentsInChildren<CompositeCollider2D>().ForEach(collider =>
+            var colliders = GetComponentsInChildren<CompositeCollider2D>();
+
+            foreach (var collider in colliders)
             {
                 collider.GenerateGeometry();
-            });
+            }
         }
 
         #endregion
