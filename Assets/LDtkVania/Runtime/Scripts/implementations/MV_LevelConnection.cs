@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LDtkUnity;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -17,12 +16,6 @@ namespace LDtkVania
 
         [SerializeField]
         private UnityEvent _used;
-
-        [Button]
-        public void TriggerLevelTransition()
-        {
-            _ = TransitionTask();
-        }
 
         #endregion
 
