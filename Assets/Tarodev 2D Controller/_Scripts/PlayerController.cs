@@ -128,6 +128,7 @@ namespace TarodevController
         {
             _underControl = true;
             _frameVelocity = Vector2.zero;
+            _rb.velocity = Vector2.zero;
         }
 
         [Button]
@@ -135,6 +136,7 @@ namespace TarodevController
         {
             _underControl = false;
             _frameVelocity = Vector2.zero;
+            _rb.velocity = Vector2.zero;
         }
 
         #endregion

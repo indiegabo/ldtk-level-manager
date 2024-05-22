@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LDtkUnity;
+using LDtkVania.Transitioning;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,6 +11,9 @@ namespace LDtkVania
     public class MV_LevelConnection : MonoBehaviour, IConnection
     {
         #region Inspector
+
+        [SerializeField]
+        private MV_LevelTransitionBridge _transitionBridge;
 
         [SerializeField]
         private string _playerTag;
@@ -151,7 +155,7 @@ namespace LDtkVania
         {
             if (!_active || !otherCollider.gameObject.CompareTag(_playerTag)) return;
             _used.Invoke();
-
+            _transitionBridge.TransitionInto(_targetLevelIid, this);
             // await MV_LevelTransitioner.Instance.TransitionInto(_targetLevelIid, this);
         }
 

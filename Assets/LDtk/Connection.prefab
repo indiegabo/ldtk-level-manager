@@ -90,6 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84ad5c5ed5f45e34ab7abbff5e0006a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _transitionBridge: {fileID: 11400000, guid: 31d0bb6bc7af34b4eace8a47d0bb8aab, type: 2}
   _playerTag: Player
   _used:
     m_PersistentCalls:

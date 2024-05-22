@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Events;
 using System.Threading.Tasks;
-using LDtkVania.Transitioning;
 using Cinemachine;
 using System;
 
@@ -10,24 +9,10 @@ namespace LDtkVania.Transitioning
 {
     public class MV_LevelTransitioner : MonoBehaviour
     {
-        #region Static
-
-        private static MV_LevelTransitioner _instance;
-        public static MV_LevelTransitioner Instance => _instance;
-
-        #endregion
-
         #region Inspector        
 
-        [Tooltip("Mark this if you want this object to NOT be destroyed when a new scene is loaded.")]
         [SerializeField]
-        private bool _persistent = true;
-
-        [SerializeField]
-        private bool _alertAboutOtherInstances;
-
-        [SerializeField]
-        private LevelTransitionsProvider _globalTransitionsProvider;
+        private MV_LevelTransitionBridge _transitionBridge;
 
         [SerializeField]
         private UnityEvent _transitionStartedEvent;
@@ -56,24 +41,16 @@ namespace LDtkVania.Transitioning
 
         private void Awake()
         {
-            MV_LevelTransitioner currentInstance = Instance;
+        }
 
-            if (currentInstance != null && currentInstance != this)
-            {
-                if (_alertAboutOtherInstances)
-                {
-                    MV_Logger.Error($"{name} - Awake interrupted due to other instance being already active.", this);
-                }
+        private void OnEnable()
+        {
+            _transitionBridge.Register(this);
+        }
 
-                Destroy(gameObject);
-
-                return;
-            }
-
-            _instance = this;
-
-            if (_persistent)
-                DontDestroyOnLoad(gameObject);
+        private void OnDisable()
+        {
+            _transitionBridge.ClearRegistry();
         }
 
         #endregion
@@ -82,117 +59,73 @@ namespace LDtkVania.Transitioning
 
         public void TransitionInto(
             string levelIid,
-            string spotIid,
-            List<string> globalTransitionsTargets = null,
-            List<ITransition> closeTransitions = null,
-            List<ITransition> openTransitions = null
+            string spotIid
         )
         {
-            _ = TransitionIntoAwaitable(levelIid, spotIid, globalTransitionsTargets, closeTransitions, openTransitions);
+            _ = TransitionIntoAwaitable(levelIid, spotIid);
         }
 
         public void TransitionInto(
             string levelIid,
-            IConnection connection,
-            List<string> globalTransitionsTargets = null,
-            List<ITransition> closeTransitions = null,
-            List<ITransition> openTransitions = null
+            IConnection connection
         )
         {
-            _ = TransitionIntoAwaitable(levelIid, connection, globalTransitionsTargets, closeTransitions, openTransitions);
+            _ = TransitionIntoAwaitable(levelIid, connection);
         }
 
         public async Task TransitionIntoAwaitable(
             string levelIid,
-            string spotIid,
-            List<string> globalTransitionsTargets = null,
-            List<ITransition> closeTransitions = null,
-            List<ITransition> openTransitions = null
+            string spotIid
         )
         {
-            await BeforePreparationTask(globalTransitionsTargets, closeTransitions);
+            await BeforePreparationTask();
             MV_LevelManager.Instance.PrepareLevel(levelIid, spotIid);
-            await AfterPreparationTask(globalTransitionsTargets, openTransitions);
+            await AfterPreparationTask();
         }
 
         public async Task TransitionIntoAwaitable(
             string levelIid,
-            IConnection connection,
-            List<string> globalTransitionsTargets = null,
-            List<ITransition> closeTransitions = null,
-            List<ITransition> openTransitions = null
+            IConnection connection
         )
         {
-            await BeforePreparationTask(globalTransitionsTargets, closeTransitions);
+            await BeforePreparationTask();
             MV_LevelManager.Instance.PrepareLevel(levelIid, connection);
-            await AfterPreparationTask(globalTransitionsTargets, openTransitions);
+            await AfterPreparationTask();
         }
 
-        private async Task BeforePreparationTask(List<string> globalTransitionsTargets = null, List<ITransition> closeTransitions = null)
+        private async Task BeforePreparationTask()
         {
             _transitioning = true;
             _transitionStartedEvent.Invoke();
 
-            // Removing control from player
-
             // Closing curtains
-            await PerformTransitions(LevelTransitionMoment.Close, globalTransitionsTargets, closeTransitions);
+            await PerformTransitions(LevelTransitionMoment.Close);
 
             // Must be after closing curtains because of camera blend
             MV_LevelManager.Instance.ExitLevel();
         }
 
-        private async Task AfterPreparationTask(List<string> globalTransitionsTargets = null, List<ITransition> openTransitions = null)
+        private async Task AfterPreparationTask()
         {
             // Opening curtains
-            await PerformTransitions(LevelTransitionMoment.Open, globalTransitionsTargets, openTransitions);
-
-            // "Activating" level
-            MV_LevelManager.Instance.EnterLevel();
+            await PerformTransitions(LevelTransitionMoment.Open);
 
             if (Camera.main.TryGetComponent<CinemachineBrain>(out var cinemachineBrain))
             {
                 await WaitOnCameraBlend(cinemachineBrain);
             }
 
+            // "Activating" level
+            MV_LevelManager.Instance.EnterLevel();
+
             _transitioning = false;
             _transitionEndedEvent.Invoke();
         }
 
-        private async Task PerformTransitions(LevelTransitionMoment moment, List<string> transitionTargets, List<ITransition> transitions)
+        private async Task PerformTransitions(LevelTransitionMoment moment)
         {
-            if (transitionTargets == null) return;
-
-            if (_transitionTasks == null)
-            {
-                _transitionTasks = new List<Task>();
-            }
-            else
-            {
-                _transitionTasks.Clear();
-            }
-
-            foreach (string target in transitionTargets)
-            {
-                List<ITransition> globalTransitions = _globalTransitionsProvider.GetTransitions(moment, target);
-
-                if (globalTransitions == null) continue;
-
-                foreach (ITransition transition in globalTransitions)
-                {
-                    _transitionTasks.Add(transition.TransitionInto());
-                }
-            }
-
-            if (transitions != null)
-            {
-                foreach (ITransition transition in transitions)
-                {
-                    _transitionTasks.Add(transition.TransitionInto());
-                }
-            }
-
-            await Task.WhenAll(_transitionTasks);
+            // For now this is just a dummy transition
+            await Task.CompletedTask;
         }
 
         #endregion

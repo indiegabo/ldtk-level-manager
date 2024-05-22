@@ -28,6 +28,18 @@ namespace LDtkVania.Transitioning
 
         #region Transitioning
 
+        public void TransitionInto(string levelIid, string spotIid)
+        {
+            if (_levelTransitioner == null) return;
+            _levelTransitioner.TransitionInto(levelIid, spotIid);
+        }
+
+        public void TransitionInto(string levelIid, IConnection connection)
+        {
+            if (_levelTransitioner == null) return;
+            _levelTransitioner.TransitionInto(levelIid, connection);
+        }
+
         #endregion
     }
 }
