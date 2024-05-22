@@ -20,7 +20,7 @@ namespace LDtkVaniaEditor
         private TemplateContainer _containerMain;
 
         private VisualElement _containerWorlds;
-        private DropdownField _dropdownAnchorsLayer;
+        private DropdownField _dropdownNavigationLayer;
         private ListView _listWorlds;
 
         private List<MV_WorldAreas> _worldAreas;
@@ -39,10 +39,10 @@ namespace LDtkVaniaEditor
 
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
 
-            _dropdownAnchorsLayer = _containerMain.Q<DropdownField>("dropdown-anchors-layer");
-            _dropdownAnchorsLayer.choices = _layers;
-            _dropdownAnchorsLayer.value = _project.AnchorsLayerName;
-            _dropdownAnchorsLayer.RegisterValueChangedCallback(x => _project.SetAnchorsLayer(x.newValue));
+            _dropdownNavigationLayer = _containerMain.Q<DropdownField>("dropdown-navigation-layer");
+            _dropdownNavigationLayer.choices = _layers;
+            _dropdownNavigationLayer.value = _project.NavigationLayer;
+            _dropdownNavigationLayer.RegisterValueChangedCallback(x => _project.SetNavigationLayer(x.newValue));
 
             _listWorlds = _containerMain.Q<ListView>("list-worlds");
             _listWorlds.itemsSource = _worldAreas;

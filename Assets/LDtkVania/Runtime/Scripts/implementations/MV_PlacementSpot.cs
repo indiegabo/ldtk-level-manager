@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LDtkVania
 {
-    public class MV_LevelAnchor : MonoBehaviour, ILevelAnchor
+    public class MV_PlacementSpot : MonoBehaviour, IPlacementSpot
     {
         private LDtkIid _ldtkIid;
         private LDtkFields _fields;
@@ -37,7 +37,6 @@ namespace LDtkVania
         }
 
         #endregion
-
 
         #region Setup
 

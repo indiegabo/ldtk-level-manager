@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1513230098248179976}
   - component: {fileID: 408340707775083136}
   m_Layer: 0
-  m_Name: Level Anchor
+  m_Name: PlacementSpot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

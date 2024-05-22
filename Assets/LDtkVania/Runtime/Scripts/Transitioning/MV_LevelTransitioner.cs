@@ -6,7 +6,7 @@ using LDtkVania.Transitioning;
 using Cinemachine;
 using System;
 
-namespace LDtkVania
+namespace LDtkVania.Transitioning
 {
     public class MV_LevelTransitioner : MonoBehaviour
     {
@@ -25,9 +25,6 @@ namespace LDtkVania
 
         [SerializeField]
         private bool _alertAboutOtherInstances;
-
-        [SerializeField]
-        private MV_PlayerControlBridge _playerControlBridge;
 
         [SerializeField]
         private LevelTransitionsProvider _globalTransitionsProvider;
@@ -83,20 +80,42 @@ namespace LDtkVania
 
         #region Transition performing
 
-        public async Task TransitionInto(
+        public void TransitionInto(
             string levelIid,
-            string anchorIid,
+            string spotIid,
+            List<string> globalTransitionsTargets = null,
+            List<ITransition> closeTransitions = null,
+            List<ITransition> openTransitions = null
+        )
+        {
+            _ = TransitionIntoAwaitable(levelIid, spotIid, globalTransitionsTargets, closeTransitions, openTransitions);
+        }
+
+        public void TransitionInto(
+            string levelIid,
+            IConnection connection,
+            List<string> globalTransitionsTargets = null,
+            List<ITransition> closeTransitions = null,
+            List<ITransition> openTransitions = null
+        )
+        {
+            _ = TransitionIntoAwaitable(levelIid, connection, globalTransitionsTargets, closeTransitions, openTransitions);
+        }
+
+        public async Task TransitionIntoAwaitable(
+            string levelIid,
+            string spotIid,
             List<string> globalTransitionsTargets = null,
             List<ITransition> closeTransitions = null,
             List<ITransition> openTransitions = null
         )
         {
             await BeforePreparationTask(globalTransitionsTargets, closeTransitions);
-            MV_LevelManager.Instance.PrepareLevel(levelIid, anchorIid);
+            MV_LevelManager.Instance.PrepareLevel(levelIid, spotIid);
             await AfterPreparationTask(globalTransitionsTargets, openTransitions);
         }
 
-        public async Task TransitionInto(
+        public async Task TransitionIntoAwaitable(
             string levelIid,
             IConnection connection,
             List<string> globalTransitionsTargets = null,
@@ -115,8 +134,6 @@ namespace LDtkVania
             _transitionStartedEvent.Invoke();
 
             // Removing control from player
-            if (_playerControlBridge != null)
-                _playerControlBridge.RemoveControl();
 
             // Closing curtains
             await PerformTransitions(LevelTransitionMoment.Close, globalTransitionsTargets, closeTransitions);
@@ -137,10 +154,6 @@ namespace LDtkVania
             {
                 await WaitOnCameraBlend(cinemachineBrain);
             }
-
-            // Giving back player control
-            if (_playerControlBridge != null)
-                _playerControlBridge.GiveControl();
 
             _transitioning = false;
             _transitionEndedEvent.Invoke();

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace LDtkVania
 {
-    public interface ILevelAnchor
+    public interface IPlacementSpot
     {
         string Iid { get; }
         public bool Main { get; }

@@ -2,8 +2,10 @@ using UnityEngine;
 
 namespace LDtkVania
 {
-    public interface ILevelPlacementSubject
+    public interface ICharacterLevelFlowSubject
     {
+        void OnLevelExit();
+        void OnLevelEnter();
         void PlaceInLevel(Vector2 position, int directionSign);
     }
 }

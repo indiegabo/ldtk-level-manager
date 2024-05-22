@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace LDtkVania
+namespace LDtkVania.Transitioning
 {
     public interface ITransition
     {

@@ -1,12 +1,9 @@
 namespace LDtkVania
 {
-    public interface IConnection
+    public interface IPortal
     {
         string Iid { get; }
         string TargetIid { get; }
         IPlacementSpot Spot { get; }
-
-        void Initialize();
-        void SetActive(bool isActive);
     }
 }

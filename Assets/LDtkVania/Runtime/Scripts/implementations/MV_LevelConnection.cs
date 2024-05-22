@@ -23,7 +23,7 @@ namespace LDtkVania
 
         private LDtkIid _ldtkIid;
         private LDtkFields _fields;
-        private MV_LevelAnchor _LevelAnchor;
+        private MV_PlacementSpot _spot;
         private BoxCollider2D _collider2D;
 
         private bool _active;
@@ -65,16 +65,16 @@ namespace LDtkVania
 
         string IConnection.TargetIid => _targetConnectionIid;
 
-        ILevelAnchor IConnection.Anchor
+        IPlacementSpot IConnection.Spot
         {
             get
             {
-                if (_LevelAnchor == null)
+                if (_spot == null)
                 {
-                    LDtkReferenceToAnEntityInstance anchorRef = _fields.GetEntityReference("Anchor");
-                    _LevelAnchor = anchorRef.GetEntity().GetComponent<MV_LevelAnchor>();
+                    LDtkReferenceToAnEntityInstance spotRef = _fields.GetEntityReference("Spot");
+                    _spot = spotRef.GetEntity().GetComponent<MV_PlacementSpot>();
                 }
-                return _LevelAnchor;
+                return _spot;
             }
         }
 
@@ -84,7 +84,7 @@ namespace LDtkVania
             _ldtkIid = GetComponent<LDtkIid>();
             _fields = GetComponent<LDtkFields>();
 
-            LDtkReferenceToAnEntityInstance entityRef = _fields.GetEntityReference("TargetConnection");
+            LDtkReferenceToAnEntityInstance entityRef = _fields.GetEntityReference("Target");
             _targetConnectionIid = entityRef.EntityIid;
             _targetLevelIid = entityRef.LevelIid;
 
@@ -147,18 +147,12 @@ namespace LDtkVania
             _collider2D.size = new Vector2(_colliderWidth, _colliderHeight);
         }
 
-        private async Task TransitionTask()
-        {
-            _transitioning = true;
-            await MV_LevelTransitioner.Instance.TransitionInto(_targetLevelIid, this);
-            _transitioning = false;
-        }
-
         private void OnTriggerEnter2D(Collider2D otherCollider)
         {
-            if (!_active || _transitioning || !otherCollider.gameObject.CompareTag(_playerTag)) return;
+            if (!_active || !otherCollider.gameObject.CompareTag(_playerTag)) return;
             _used.Invoke();
-            _ = TransitionTask();
+
+            // await MV_LevelTransitioner.Instance.TransitionInto(_targetLevelIid, this);
         }
 
         #endregion

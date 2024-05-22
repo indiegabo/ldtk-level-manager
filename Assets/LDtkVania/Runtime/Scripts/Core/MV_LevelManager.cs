@@ -68,7 +68,7 @@ namespace LDtkVania
         #region Getters
 
         public MV_LevelManagerStrategy Strategy => _strategy;
-        public string AnchorsLayerName => _project.AnchorsLayerName;
+        public string NavigationLayer => _project.NavigationLayer;
 
         public UnityEvent<MV_Level> LevelPreparedEvent => _levelPreparedEvent;
         public UnityEvent<MV_Level> LevelEnteredEvent => _levelEnteredEvent;
@@ -118,7 +118,7 @@ namespace LDtkVania
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
-        public async Task LoadLevelAndNeighbours(string iid, MV_LevelLoadMode mode = MV_LevelLoadMode.LoadOnly, string anchorIid = null)
+        public async Task LoadLevelAndNeighbours(string iid, MV_LevelLoadMode mode = MV_LevelLoadMode.LoadOnly, string spotIid = null)
         {
             if (!TryGetLevel(iid, out MV_Level level))
             {
@@ -136,14 +136,14 @@ namespace LDtkVania
 
             await LoadNeighboursAsync(level);
 
-            if (!mode.Equals(MV_LevelLoadMode.LoadAndEnter) || string.IsNullOrEmpty(anchorIid))
+            if (!mode.Equals(MV_LevelLoadMode.LoadAndEnter) || string.IsNullOrEmpty(spotIid))
             {
                 return;
             };
 
             _currentLevel = level;
             _currentBehaviour = _registeredBehaviours[_currentLevel.Iid];
-            _currentBehaviour.Prepare(anchorIid);
+            _currentBehaviour.Prepare(spotIid);
 
             EnterLevel();
         }
@@ -183,14 +183,14 @@ namespace LDtkVania
                 return;
             }
 
-            // Prepare the level for entering through the anchor.
+            // Prepare the level for entering through the spot.
             levelBehaviour.Prepare();
         }
 
         /// <summary>
-        /// Prepares the level to be entered through an anchor.
+        /// Prepares the level to be entered through an spot.
         /// </summary>
-        /// <param name="anchor">The anchor to use to enter the level.</param>
+        /// <param name="spot">The spot to use to enter the level.</param>
         public void PrepareLevel(string iid, Vector2 position, int facingSign)
         {
             // If the level could not be found, do not attempt to prepare it.
@@ -199,11 +199,11 @@ namespace LDtkVania
                 return;
             }
 
-            // Prepare the level for entering through the anchor.
+            // Prepare the level for entering through the spot.
             levelBehaviour.Prepare(position, facingSign);
         }
 
-        public void PrepareLevel(string iid, string anchorIid)
+        public void PrepareLevel(string iid, string spotIid)
         {
             // If the level could not be found, do not attempt to prepare it.
             if (!SetLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
@@ -211,8 +211,8 @@ namespace LDtkVania
                 return;
             }
 
-            // Prepare the level for entering through the anchor.
-            levelBehaviour.Prepare(anchorIid);
+            // Prepare the level for entering through the spot.
+            levelBehaviour.Prepare(spotIid);
         }
 
         /// <summary>

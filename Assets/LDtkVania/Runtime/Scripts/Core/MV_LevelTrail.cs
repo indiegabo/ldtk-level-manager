@@ -17,13 +17,13 @@ namespace LDtkVania
             };
         }
 
-        public static MV_LevelTrail FromAnchor(ILevelAnchor anchor)
+        public static MV_LevelTrail FromSpot(IPlacementSpot spot)
         {
             return new MV_LevelTrail
             {
-                _iid = anchor.Iid,
-                _spawnPosition = anchor.SpawnPoint,
-                _facingSign = anchor.FacingSign
+                _iid = spot.Iid,
+                _spawnPosition = spot.SpawnPoint,
+                _facingSign = spot.FacingSign
             };
         }
 
@@ -32,8 +32,8 @@ namespace LDtkVania
             return new MV_LevelTrail
             {
                 _iid = connection.Iid,
-                _spawnPosition = connection.Anchor.SpawnPoint,
-                _facingSign = connection.Anchor.FacingSign
+                _spawnPosition = connection.Spot.SpawnPoint,
+                _facingSign = connection.Spot.FacingSign
             };
         }
 

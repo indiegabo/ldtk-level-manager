@@ -7,18 +7,35 @@ ScriptedImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-  script: {instanceID: 0}
+  script: {fileID: 11500000, guid: aaa16bfc62c086f4fb45da87b6acf9b1, type: 3}
   _reimportOnDependencyChange: 1
-  _jsonFile: {instanceID: 0}
+  _jsonFile: {fileID: -164016180542632921, guid: df7f3fbd68adee24db1bda124d3e43be, type: 3}
   _pixelsPerUnit: 16
-  _customLevelPrefab: {instanceID: 0}
+  _customLevelPrefab: {fileID: 4400579314322995303, guid: 29da767cee5b88840a7979bba5836271, type: 3}
   _intGridValueColorsVisible: 0
   _useCompositeCollider: 1
   _geometryType: 0
   _createBackgroundColor: 1
   _createLevelBoundsTrigger: 0
-  _intGridValues: []
-  _entities: []
+  _useParallax: 1
+  _intGridValues:
+  - _key: Ground_1
+    _asset: {fileID: 11400000, guid: 08217e8fd8e15c64cb8ba4e3a344bd1c, type: 2}
+  - _key: Ground_2
+    _asset: {instanceID: 0}
+  _entities:
+  - _key: Connection
+    _asset: {fileID: 7480802360855543441, guid: c9142ffe618af61468e951e56962dfa0, type: 3}
+  - _key: PlacementSpot
+    _asset: {fileID: 8491176365153170283, guid: 2256c93a5d4de7f4d97c0e332be2fe84, type: 3}
+  - _key: Portal
+    _asset: {instanceID: 0}
+  - _key: Enemies
+    _asset: {instanceID: 0}
+  - _key: DataSyncStation
+    _asset: {instanceID: 0}
+  - _key: Grabbable_Dispenser
+    _asset: {instanceID: 0}
   _enumGenerate: 0
   _enumPath: 
   _enumNamespace: 

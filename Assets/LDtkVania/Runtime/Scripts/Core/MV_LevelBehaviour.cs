@@ -35,7 +35,7 @@ namespace LDtkVania
         private MV_Level _mvLevel;
 
         private Dictionary<string, IConnection> _connections;
-        private Dictionary<string, ILevelAnchor> _anchors;
+        private Dictionary<string, IPlacementSpot> _spots;
 
         #endregion
 
@@ -73,7 +73,7 @@ namespace LDtkVania
             name = _mvLevel.Name;
 
             EvaluateConnections();
-            EvaluateAnchors();
+            EvaluateSpots();
 
             MV_LevelManager.Instance.RegisterAsBehaviour(_ldtkIid.Iid, this);
 
@@ -91,38 +91,37 @@ namespace LDtkVania
 
         public void Prepare()
         {
-            if (_anchors.Count == 0)
+            if (_spots.Count == 0)
             {
-                MV_Logger.Error($"Level {name} could not be prepared because there are no anchors", this);
+                MV_Logger.Error($"Level {name} could not be prepared because there are no spots", this);
                 return;
             }
 
-            ILevelAnchor mainAnchor = _anchors.Values.FirstOrDefault(x => x.Main);
-            if (mainAnchor == null)
+            IPlacementSpot mainSpot = _spots.Values.FirstOrDefault(x => x.Main);
+            if (mainSpot == null)
             {
-                string message = $"Level {name} is trying to prepare with a main anchor but there is no anchor set as \"Main\" in the registry.";
-                message += $"Using the first available anchor.";
+                string message = $"Level {name} is trying to prepare with a main spot but there is no spot set as \"Main\" in the registry.";
+                message += $"Using the first available spot.";
                 MV_Logger.Warning(message, this);
+                mainSpot = _spots.Values.FirstOrDefault();
             }
 
-            mainAnchor = _anchors.Values.FirstOrDefault();
-
-            _preparationStartedEvent.Invoke(this, mainAnchor.SpawnPoint);
-            PlaceCharacter(mainAnchor.SpawnPoint, mainAnchor.FacingSign);
-            _preparedEvent.Invoke(this, MV_LevelTrail.FromPoint(mainAnchor.SpawnPoint));
+            _preparationStartedEvent.Invoke(this, mainSpot.SpawnPoint);
+            PlaceCharacter(mainSpot.SpawnPoint, mainSpot.FacingSign);
+            _preparedEvent.Invoke(this, MV_LevelTrail.FromPoint(mainSpot.SpawnPoint));
         }
 
-        public void Prepare(string anchorIid)
+        public void Prepare(string spotIid)
         {
-            if (!_anchors.TryGetValue(anchorIid, out ILevelAnchor registeredAnchor))
+            if (!_spots.TryGetValue(spotIid, out IPlacementSpot registeredSpot))
             {
-                MV_Logger.Error($"Level {name} could not be prepared because there is no anchor by Iid \"{anchorIid}\" present on the anchors registry.", this);
+                MV_Logger.Error($"Level {name} could not be prepared because there is no spot by Iid \"{spotIid}\" present on the spots registry.", this);
                 return;
             }
 
-            _preparationStartedEvent.Invoke(this, registeredAnchor.SpawnPoint);
-            PlaceCharacter(registeredAnchor.SpawnPoint, registeredAnchor.FacingSign);
-            _preparedEvent.Invoke(this, MV_LevelTrail.FromAnchor(registeredAnchor));
+            _preparationStartedEvent.Invoke(this, registeredSpot.SpawnPoint);
+            PlaceCharacter(registeredSpot.SpawnPoint, registeredSpot.FacingSign);
+            _preparedEvent.Invoke(this, MV_LevelTrail.FromSpot(registeredSpot));
         }
 
         public void Prepare(IConnection connection)
@@ -136,8 +135,8 @@ namespace LDtkVania
                 return;
             }
 
-            _preparationStartedEvent.Invoke(this, registeredConnection.Anchor.SpawnPoint);
-            PlaceCharacter(registeredConnection.Anchor.SpawnPoint, registeredConnection.Anchor.FacingSign);
+            _preparationStartedEvent.Invoke(this, registeredConnection.Spot.SpawnPoint);
+            PlaceCharacter(registeredConnection.Spot.SpawnPoint, registeredConnection.Spot.FacingSign);
             _preparedEvent.Invoke(this, MV_LevelTrail.FromConnection(registeredConnection));
         }
 
@@ -151,12 +150,28 @@ namespace LDtkVania
         public void Enter()
         {
             EnableConnections();
+
+            if (!_mainCharacterProvider.TryGetComponent(out ICharacterLevelFlowSubject levelFlowSubject))
+            {
+                MV_Logger.Error($"Level {name} could not find an ({nameof(ICharacterLevelFlowSubject)}) to call {nameof(ICharacterLevelFlowSubject.OnLevelEnter)}", this);
+                return;
+            }
+
+            levelFlowSubject.OnLevelEnter();
             _enteredEvent.Invoke(this);
         }
 
         public void Exit()
         {
             DisableConnections();
+
+            if (!_mainCharacterProvider.TryGetComponent(out ICharacterLevelFlowSubject levelFlowSubject))
+            {
+                MV_Logger.Error($"Level {name} could not find an ({nameof(ICharacterLevelFlowSubject)}) to call {nameof(ICharacterLevelFlowSubject.OnLevelExit)}", this);
+                return;
+            }
+
+            levelFlowSubject.OnLevelExit();
             _exitedEvent.Invoke(this);
         }
 
@@ -168,7 +183,7 @@ namespace LDtkVania
         {
             _connections = new Dictionary<string, IConnection>();
 
-            LDtkComponentLayer componentLayer = _ldtkComponentLevel.LayerInstances.FirstOrDefault(l => l.Identifier == MV_LevelManager.Instance.AnchorsLayerName);
+            LDtkComponentLayer componentLayer = _ldtkComponentLevel.LayerInstances.FirstOrDefault(l => l.Identifier == MV_LevelManager.Instance.NavigationLayer);
             Transform connectionsContainer = componentLayer != null ? componentLayer.transform : transform;
 
             if (connectionsContainer == null) return;
@@ -209,26 +224,26 @@ namespace LDtkVania
 
         #endregion
 
-        #region Anchors
+        #region Spots
 
-        private void EvaluateAnchors()
+        private void EvaluateSpots()
         {
-            _anchors = new Dictionary<string, ILevelAnchor>();
+            _spots = new Dictionary<string, IPlacementSpot>();
 
-            Transform anchorsTransform = transform.Find(MV_LevelManager.Instance.AnchorsLayerName);
+            Transform spotsTransform = transform.Find(MV_LevelManager.Instance.NavigationLayer);
 
-            if (anchorsTransform == null) return;
+            if (spotsTransform == null) return;
 
-            ILevelAnchor[] anchorComponents = anchorsTransform.GetComponentsInChildren<ILevelAnchor>();
+            IPlacementSpot[] spotComponents = spotsTransform.GetComponentsInChildren<IPlacementSpot>();
 
-            foreach (ILevelAnchor anchor in anchorComponents)
+            foreach (IPlacementSpot spot in spotComponents)
             {
-                if (_anchors.ContainsKey(anchor.Iid))
+                if (_spots.ContainsKey(spot.Iid))
                 {
-                    MV_Logger.Warning($"Level {name} has more than one anchors with the same Iid: {anchor.Iid}. Using the first found", this);
+                    MV_Logger.Warning($"Level {name} has more than one spots with the same Iid: {spot.Iid}. Using the first found", this);
                 }
 
-                _anchors.Add(anchor.Iid, anchor);
+                _spots.Add(spot.Iid, spot);
             }
         }
 
@@ -238,13 +253,13 @@ namespace LDtkVania
 
         private void PlaceCharacter(Vector2 position, int directionSign)
         {
-            if (!_mainCharacterProvider.TryGetComponent(out ILevelPlacementSubject placementSubject))
+            if (!_mainCharacterProvider.TryGetComponent(out ICharacterLevelFlowSubject levelFlowSubject))
             {
-                MV_Logger.Error($"Level {name} could not find an ({nameof(ILevelPlacementSubject)}) to place the character into", this);
+                MV_Logger.Error($"Level {name} could not find an ({nameof(ICharacterLevelFlowSubject)}) to place the character into", this);
                 return;
             }
 
-            placementSubject.PlaceInLevel(position, directionSign);
+            levelFlowSubject.PlaceInLevel(position, directionSign);
         }
 
         #endregion

@@ -19,7 +19,7 @@ namespace LDtkVania
         private bool _syncLevelsAtCompile = true;
 
         [SerializeField]
-        private string _anchorsLayerName;
+        private string _navigationLayer;
 
         [SerializeField]
         private MV_LevelsDictionary _levels = new();
@@ -41,7 +41,7 @@ namespace LDtkVania
         #region Getters
 
         public bool SyncLevelsAtCompile => _syncLevelsAtCompile;
-        public string AnchorsLayerName => _anchorsLayerName;
+        public string NavigationLayer => _navigationLayer;
 
         public bool IsInitialized => _ldtkProjectFile != null;
         public int LevelsCount => _levels.Count;

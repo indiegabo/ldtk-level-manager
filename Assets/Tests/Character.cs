@@ -3,10 +3,9 @@ using LDtkVania.Utils;
 using TarodevController;
 using UnityEngine;
 
-public class Character : MonoBehaviour, ILevelPlacementSubject
+public class Character : MonoBehaviour, ICharacterLevelFlowSubject
 {
     [SerializeField] private GameObjectProvider _characterProvider;
-    [SerializeField] private MV_PlayerControlBridge _playerControlBridge;
 
     private PlayerController _playerController;
     private Rigidbody2D _rb;
@@ -16,25 +15,12 @@ public class Character : MonoBehaviour, ILevelPlacementSubject
         _rb = GetComponent<Rigidbody2D>();
         _characterProvider.Register(gameObject);
         _playerController = GetComponent<PlayerController>();
+        _playerController.RemoveControl();
     }
 
-    private void OnEnable()
+    public void OnLevelExit()
     {
-        _playerControlBridge.PlayerControlChanged.AddListener(OnPlayerControlChanged);
-        if (_playerControlBridge.IsControlled)
-        {
-            _playerController.GiveControl();
-        }
-    }
-
-    private void OnDisable()
-    {
-        _playerControlBridge.PlayerControlChanged.RemoveListener(OnPlayerControlChanged);
-    }
-
-    private void OnDestroy()
-    {
-        _characterProvider.Unregister();
+        _playerController.RemoveControl();
     }
 
     public void PlaceInLevel(Vector2 position, int directionSign)
@@ -42,17 +28,8 @@ public class Character : MonoBehaviour, ILevelPlacementSubject
         transform.position = new Vector3(position.x, position.y - 0.5f, transform.position.z);
     }
 
-    private void OnPlayerControlChanged(bool shouldControl)
+    public void OnLevelEnter()
     {
-        if (shouldControl)
-        {
-            _rb.velocity = Vector3.zero;
-            _playerController.GiveControl();
-        }
-        else
-        {
-            _rb.velocity = Vector3.zero;
-            _playerController.RemoveControl();
-        }
+        _playerController.GiveControl();
     }
 }

@@ -351,9 +351,9 @@ namespace LDtkVania
             return _worldAreas;
         }
 
-        public void SetAnchorsLayer(string layerName)
+        public void SetNavigationLayer(string layerName)
         {
-            _anchorsLayerName = layerName;
+            _navigationLayer = layerName;
             EditorUtility.SetDirty(this);
             AssetDatabase.SaveAssetIfDirty(this);
         }
