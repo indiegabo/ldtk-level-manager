@@ -37,6 +37,16 @@ namespace LDtkVania
             };
         }
 
+        public static MV_LevelTrail FromPortal(IPortal portal)
+        {
+            return new MV_LevelTrail
+            {
+                _iid = portal.Iid,
+                _spawnPosition = portal.Spot.SpawnPoint,
+                _facingSign = portal.Spot.FacingSign
+            };
+        }
+
         #endregion
 
         #region Fields

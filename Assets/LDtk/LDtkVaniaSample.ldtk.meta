@@ -29,7 +29,7 @@ ScriptedImporter:
   - _key: PlacementSpot
     _asset: {fileID: 8491176365153170283, guid: 2256c93a5d4de7f4d97c0e332be2fe84, type: 3}
   - _key: Portal
-    _asset: {instanceID: 0}
+    _asset: {fileID: 8197947690036917936, guid: 7008c72c532da6540a9595e4f48f3967, type: 3}
   - _key: Enemies
     _asset: {instanceID: 0}
   - _key: DataSyncStation

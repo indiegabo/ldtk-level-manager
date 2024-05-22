@@ -8,6 +8,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using LDtkUnity;
 using System.Linq;
+using System;
 
 namespace LDtkVania
 {
@@ -229,6 +230,18 @@ namespace LDtkVania
 
             // Prepare the level for entering through the connection.
             levelBehaviour.Prepare(connection);
+        }
+
+        public void PrepareLevel(string iid, IPortal portal)
+        {
+            if (!SetLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
+            {
+                // If the level could not be found, do not attempt to prepare it.
+                return;
+            }
+
+            // Prepare the level for entering through the portal.
+            levelBehaviour.Prepare(portal);
         }
 
         private bool SetLevelForPreparation(string iid, out MV_LevelBehaviour behaviour)
@@ -496,6 +509,7 @@ namespace LDtkVania
 
                 // Destroy the loaded object
                 Destroy(loadedObject);
+                return;
             }
 
             // Check if the level has been loaded as a scene
@@ -552,18 +566,23 @@ namespace LDtkVania
             // Create a list of unload tasks
             List<Task> tasks = new();
 
+            List<GameObject> objectsToUnload = _loadedObjects.Values.ToList();
+            List<SceneInstance> scenesToUnload = _loadedScenes.Values.ToList();
+            _loadedObjects.Clear();
+            _loadedScenes.Clear();
+
             // Iterate over each level that has been loaded as an object
-            foreach (var pair in _loadedObjects)
+            foreach (GameObject levelObject in objectsToUnload)
             {
-                // Add the unload task to the list
-                tasks.Add(UnloadAsync(pair.Key));
+                Destroy(levelObject);
             }
 
             // Iterate over each level that has been loaded as a scene
-            foreach (var pair in _loadedScenes)
+            foreach (SceneInstance sceneInstance in scenesToUnload)
             {
-                // Add the unload task to the list
-                tasks.Add(UnloadAsync(pair.Key));
+                // Start the unload operation
+                AsyncOperationHandle handle = Addressables.UnloadSceneAsync(sceneInstance, false);
+                tasks.Add(handle.Task);
             }
 
             // Wait for all unload tasks to finish

@@ -36,6 +36,7 @@ namespace LDtkVania
 
         private Dictionary<string, IConnection> _connections;
         private Dictionary<string, IPlacementSpot> _spots;
+        private Dictionary<string, IPortal> _portals;
 
         #endregion
 
@@ -72,11 +73,17 @@ namespace LDtkVania
 
             name = _mvLevel.Name;
 
-            EvaluateConnections();
-            EvaluateSpots();
+            LDtkComponentLayer componentLayer = _ldtkComponentLevel.LayerInstances.FirstOrDefault(
+                l => l != null && l.Identifier == MV_LevelManager.Instance.NavigationLayer
+            );
+
+            Transform navigationContainer = componentLayer != null ? componentLayer.transform : transform;
+
+            EvaluateSpots(navigationContainer);
+            EvaluateConnections(navigationContainer);
+            EvaluatePortals(navigationContainer);
 
             MV_LevelManager.Instance.RegisterAsBehaviour(_ldtkIid.Iid, this);
-
             BroadcastMessage("OnLevelAwake", this, SendMessageOptions.DontRequireReceiver);
         }
 
@@ -126,7 +133,7 @@ namespace LDtkVania
 
         public void Prepare(IConnection connection)
         {
-            // It is comming from a connection, so it must find the target connection withing the dictionary
+            // It is comming from a connection, so it must find the target connection within the dictionary
             if (!_connections.TryGetValue(connection.TargetIid, out IConnection registeredConnection))
             {
                 string message = $"Level {name} could not be prepared because the connection Iid \"{connection.TargetIid}\"";
@@ -138,6 +145,22 @@ namespace LDtkVania
             _preparationStartedEvent.Invoke(this, registeredConnection.Spot.SpawnPoint);
             PlaceCharacter(registeredConnection.Spot.SpawnPoint, registeredConnection.Spot.FacingSign);
             _preparedEvent.Invoke(this, MV_LevelTrail.FromConnection(registeredConnection));
+        }
+
+        public void Prepare(IPortal portal)
+        {
+            // It is comming from a portal, so it must find the target portal within the dictionary
+            if (!_portals.TryGetValue(portal.TargetIid, out IPortal registeredPortal))
+            {
+                string message = $"Level {name} could not be prepared because the portal under Iid \"{portal.TargetIid}\"";
+                message += "is not present on the portals registry.";
+                MV_Logger.Error(message, this);
+                return;
+            }
+
+            _preparationStartedEvent.Invoke(this, registeredPortal.Spot.SpawnPoint);
+            PlaceCharacter(registeredPortal.Spot.SpawnPoint, registeredPortal.Spot.FacingSign);
+            _preparedEvent.Invoke(this, MV_LevelTrail.FromPortal(registeredPortal));
         }
 
         public void Prepare(Vector2 spawnPoint, int facingSign)
@@ -163,7 +186,7 @@ namespace LDtkVania
 
         public void Exit()
         {
-            DisableConnections();
+            DisableNavigators();
 
             if (!_mainCharacterProvider.TryGetComponent(out ICharacterLevelFlowSubject levelFlowSubject))
             {
@@ -177,18 +200,30 @@ namespace LDtkVania
 
         #endregion
 
-        #region Connections
+        #region Navigation
 
-        private void EvaluateConnections()
+        private void EvaluateSpots(Transform navigationContainer)
+        {
+            _spots = new Dictionary<string, IPlacementSpot>();
+
+            IPlacementSpot[] spotComponents = navigationContainer.GetComponentsInChildren<IPlacementSpot>();
+
+            foreach (IPlacementSpot spot in spotComponents)
+            {
+                if (_spots.ContainsKey(spot.Iid))
+                {
+                    MV_Logger.Warning($"Level {name} has more than one spots with the same Iid: {spot.Iid}. Using the first found", this);
+                }
+
+                _spots.Add(spot.Iid, spot);
+            }
+        }
+
+        private void EvaluateConnections(Transform navigationContainer)
         {
             _connections = new Dictionary<string, IConnection>();
 
-            LDtkComponentLayer componentLayer = _ldtkComponentLevel.LayerInstances.FirstOrDefault(l => l.Identifier == MV_LevelManager.Instance.NavigationLayer);
-            Transform connectionsContainer = componentLayer != null ? componentLayer.transform : transform;
-
-            if (connectionsContainer == null) return;
-
-            IConnection[] connectionsComponents = connectionsContainer.GetComponentsInChildren<IConnection>();
+            IConnection[] connectionsComponents = navigationContainer.GetComponentsInChildren<IConnection>();
 
             foreach (IConnection connection in connectionsComponents)
             {
@@ -204,46 +239,43 @@ namespace LDtkVania
 
         private void EnableConnections()
         {
-            if (_connections == null) return;
-
             foreach (IConnection connection in _connections.Values)
             {
                 connection.SetActive(true);
             }
+
+            foreach (IPortal portal in _portals.Values)
+            {
+                portal.SetActive(true);
+            }
         }
 
-        private void DisableConnections()
+        private void DisableNavigators()
         {
-            if (_connections == null) return;
-
             foreach (IConnection connection in _connections.Values)
             {
                 connection.SetActive(false);
             }
+
+            foreach (IPortal portal in _portals.Values)
+            {
+                portal.SetActive(false);
+            }
         }
 
-        #endregion
-
-        #region Spots
-
-        private void EvaluateSpots()
+        private void EvaluatePortals(Transform navigationContainer)
         {
-            _spots = new Dictionary<string, IPlacementSpot>();
+            _portals = new Dictionary<string, IPortal>();
 
-            Transform spotsTransform = transform.Find(MV_LevelManager.Instance.NavigationLayer);
+            IPortal[] portalComponents = navigationContainer.GetComponentsInChildren<IPortal>();
 
-            if (spotsTransform == null) return;
-
-            IPlacementSpot[] spotComponents = spotsTransform.GetComponentsInChildren<IPlacementSpot>();
-
-            foreach (IPlacementSpot spot in spotComponents)
+            foreach (IPortal portal in portalComponents)
             {
-                if (_spots.ContainsKey(spot.Iid))
+                if (_portals.ContainsKey(portal.Iid))
                 {
-                    MV_Logger.Warning($"Level {name} has more than one spots with the same Iid: {spot.Iid}. Using the first found", this);
+                    MV_Logger.Warning($"Level {name} has more than one portal with the same Iid: {portal.Iid}. Using the first found.", this);
                 }
-
-                _spots.Add(spot.Iid, spot);
+                _portals.Add(portal.Iid, portal);
             }
         }
 

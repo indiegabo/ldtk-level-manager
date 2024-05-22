@@ -190,7 +190,8 @@ MonoBehaviour:
       areas: []
     - worldIid: b8abd190-ed50-11ed-a82b-63bae5b82235
       worldName: World2
-      areas: []
+      areas:
+      - World_2_Area
 --- !u!114 &1019849792975982639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,13 +202,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76238ae897cf99441a858f74751e647c, type: 3}
-  m_Name: World2_Area21_0_Json
+  m_Name: World 2 A
   m_EditorClassIdentifier: 
   _project: {fileID: 11400000}
   _iid: b8abf8a0-ed50-11ed-a82b-5f61164d4b1d
   _displayName: 
   _worldName: World2
-  _areaName: 
+  _areaName: World_2_Area
   _asset: {fileID: -4431292731194727884, guid: 08e957a8ad6f6b74dbe4144b7ef052de, type: 3}
   _levelFile: {fileID: -8655009601392300639, guid: 08e957a8ad6f6b74dbe4144b7ef052de, type: 3}
   _assetPath: Assets/LDtk/LDtkVaniaSample/World2_Area21_0.ldtkl
@@ -307,7 +308,7 @@ MonoBehaviour:
   _iid: e4e69a60-ed50-11ed-a82b-27cab0fad380
   _displayName: 
   _worldName: World2
-  _areaName: 
+  _areaName: World_2_Area
   _asset: {fileID: -4397231438475380068, guid: 4bd683881bd98e24d8d832a7cd12ca0f, type: 3}
   _levelFile: {fileID: -8655009601392300639, guid: 4bd683881bd98e24d8d832a7cd12ca0f, type: 3}
   _assetPath: Assets/LDtk/LDtkVaniaSample/World2_Area22_1.ldtkl
@@ -338,8 +339,8 @@ MonoBehaviour:
   _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_4.ldtkl
   _address: LDtkVaniaLevel_49e346a0-fec0-11ee-9039-5b61900789be
   _scene:
-    _assetGuid: 
-    _addressableKey: 
+    _assetGuid: 4ab2c8bc4aa55d846b81f75da0fcf839
+    _addressableKey: LDtkVaniaScene_49e346a0-fec0-11ee-9039-5b61900789be
   _leftBehind: 0
 --- !u!114 &9125919403822248938
 MonoBehaviour:

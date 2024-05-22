@@ -40,6 +40,12 @@ namespace LDtkVania.Transitioning
             _levelTransitioner.TransitionInto(levelIid, connection);
         }
 
+        public void TransitionToPortal(string levelIid, IPortal portal)
+        {
+            if (_levelTransitioner == null) return;
+            _levelTransitioner.TransitionToPortal(levelIid, portal);
+        }
+
         #endregion
     }
 }
