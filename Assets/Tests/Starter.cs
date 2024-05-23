@@ -42,14 +42,14 @@ public class Starter : MonoBehaviour
     {
         await _levelManager.LoadLevel(_level.Iid);
         _levelManager.Prepare(_level.Iid);
-        _levelManager.EnterLevel();
+        _levelManager.Enter();
     }
 
     private async Task LoadWorld(string worldName, MV_Level level)
     {
         await _levelManager.LoadWorld(worldName);
         _levelManager.Prepare(level.Iid, _spawnPoint.position, 1);
-        _levelManager.EnterLevel();
+        _levelManager.Enter();
     }
 
     private async Task LoadArea(string areaName, MV_Level level)

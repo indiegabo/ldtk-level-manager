@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LDtkUnity;
 using LDtkVania.Transitioning;
 using UnityEngine;
@@ -155,8 +152,7 @@ namespace LDtkVania
         {
             if (!_active || !otherCollider.gameObject.CompareTag(_playerTag)) return;
             _used.Invoke();
-            _transitionBridge.TransitionInto(_targetLevelIid, this);
-            // await MV_LevelTransitioner.Instance.TransitionInto(_targetLevelIid, this);
+            _transitionBridge.TransitionToConnection(_targetLevelIid, this);
         }
 
         #endregion

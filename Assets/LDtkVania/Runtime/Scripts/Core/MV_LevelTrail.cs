@@ -7,52 +7,59 @@ namespace LDtkVania
     {
         #region Static
 
-        public static MV_LevelTrail FromPoint(Vector2 point, int facingSign = 1)
+        public static MV_LevelTrail FromPoint(string levelIid, Vector2 point, int facingSign = 1)
         {
             return new MV_LevelTrail
             {
-                _iid = null,
+                _levelIid = levelIid,
                 _spawnPosition = point,
                 _facingSign = facingSign,
             };
         }
 
-        public static MV_LevelTrail FromSpot(IPlacementSpot spot)
+        public static MV_LevelTrail FromSpot(string levelIid, IPlacementSpot spot)
         {
             return new MV_LevelTrail
             {
-                _iid = spot.Iid,
+                _levelIid = levelIid,
                 _spawnPosition = spot.SpawnPoint,
                 _facingSign = spot.FacingSign
             };
         }
 
-        public static MV_LevelTrail FromConnection(IConnection connection)
+        public static MV_LevelTrail FromConnection(string levelIid, IConnection connection)
         {
             return new MV_LevelTrail
             {
-                _iid = connection.Iid,
+                _levelIid = levelIid,
                 _spawnPosition = connection.Spot.SpawnPoint,
                 _facingSign = connection.Spot.FacingSign
             };
         }
 
-        public static MV_LevelTrail FromPortal(IPortal portal)
+        public static MV_LevelTrail FromPortal(string levelIid, IPortal portal)
         {
             return new MV_LevelTrail
             {
-                _iid = portal.Iid,
+                _levelIid = levelIid,
                 _spawnPosition = portal.Spot.SpawnPoint,
                 _facingSign = portal.Spot.FacingSign
             };
         }
+
+        public static MV_LevelTrail Empty => new()
+        {
+            _levelIid = string.Empty,
+            _spawnPosition = Vector2.zero,
+            _facingSign = 1
+        };
 
         #endregion
 
         #region Fields
 
         [SerializeField]
-        private string _iid;
+        private string _levelIid;
 
         [SerializeField]
         private Vector2 _spawnPosition;
@@ -65,9 +72,19 @@ namespace LDtkVania
 
         #region Properties
 
-        public string Iid { readonly get => _iid; set => _iid = value; }
+        public string LevelIid { readonly get => _levelIid; set => _levelIid = value; }
         public Vector2 SpawnPosition { readonly get => _spawnPosition; set => _spawnPosition = value; }
         public int FacingSign { readonly get => _facingSign; set => _facingSign = value; }
+
+        #endregion
+
+        #region Getters
+
+        /// <summary>
+        /// Checks if the trail (<see cref="MV_LevelTrail"/>) is valid. <br />
+        /// A trail is valid if the level Iid is not empty.
+        /// </summary>
+        public readonly bool IsValid => string.IsNullOrEmpty(_levelIid);
 
         #endregion
     }

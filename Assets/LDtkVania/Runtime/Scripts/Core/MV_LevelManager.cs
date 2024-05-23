@@ -8,7 +8,6 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using LDtkUnity;
 using System.Linq;
-using System;
 
 namespace LDtkVania
 {
@@ -35,20 +34,14 @@ namespace LDtkVania
         private MV_Project _project;
 
         [SerializeField]
-        private MV_LevelManagerStrategy _strategy;
+        private MV_LevelLoadingStrategy _loadingStrategy;
 
         [SerializeField]
         [Min(1)]
         private int _depth = 1;
 
         [SerializeField]
-        private UnityEvent<MV_Level> _levelPreparedEvent;
-
-        [SerializeField]
-        private UnityEvent<MV_Level> _levelEnteredEvent;
-
-        [SerializeField]
-        private UnityEvent<MV_Level> _levelExitedEvent;
+        private MV_LevelNavigationBridge _navigationBridge;
 
         #endregion
 
@@ -67,15 +60,40 @@ namespace LDtkVania
 
         #region Getters
 
-        public MV_LevelManagerStrategy Strategy => _strategy;
+        /// <summary>
+        /// The current loading strategy (<see cref="MV_LevelLoadingStrategy"/>) of the LevelManger (<see cref="MV_LevelManager"/>).
+        /// </summary>
+        public MV_LevelLoadingStrategy LoadingStrategy => _loadingStrategy;
+
+        /// <summary>
+        /// The navigation layer's name set in the LDtk project
+        /// </summary>
         public string NavigationLayer => _project.NavigationLayer;
 
+        /// <summary>
+        /// The current level (<see cref="MV_Level"/>).
+        /// </summary>
         public MV_Level CurrentLevel => _currentLevel;
+
+        /// <summary>
+        /// The current level's behaviour (<see cref="MV_LevelBehaviour"/>).
+        /// </summary>
         public MV_LevelBehaviour CurrentBehaviour => _currentBehaviour;
 
-        public UnityEvent<MV_Level> LevelPreparedEvent => _levelPreparedEvent;
-        public UnityEvent<MV_Level> LevelEnteredEvent => _levelEnteredEvent;
-        public UnityEvent<MV_Level> LevelDeactivatedEvent => _levelExitedEvent;
+        /// <summary>
+        /// The event that is triggered when a level is exited.
+        /// </summary>
+        public UnityEvent<MV_LevelBehaviour> LevelExitedEvent => _navigationBridge.LevelExitedEvent;
+
+        /// <summary>
+        /// The event that is triggered when a level is prepared.
+        /// </summary>
+        public UnityEvent<MV_LevelBehaviour, MV_LevelTrail> LevelPreparedEvent => _navigationBridge.LevelPreparedEvent;
+
+        /// <summary>
+        /// The event that is triggered when a level is entered.
+        /// </summary>
+        public UnityEvent<MV_LevelBehaviour> LevelEnteredEvent => _navigationBridge.LevelEnteredEvent;
 
         #endregion
 
@@ -109,26 +127,51 @@ namespace LDtkVania
 
         #region Entering Levels
 
+        /// <summary>
+        /// Loads a level by its LDtk Iid. If the level is not present in the project, <br />
+        /// an error will be logged and no action will be taken. <br />
+        /// <br />
+        /// The level will be loaded using the current Manager's defined strategy (<see cref="MV_LevelLoadingStrategy"/>).
+        /// <br />
+        /// <b>Strategies:</b>
+        /// <list type="bullet">
+        /// <item><b>Neighbours:</b> Guarantees the presence of the level and its immediate neighbours.</item>
+        /// <item><b>Worlds:</b> Guarantees the presence of the level and its entire world. </item>
+        /// <item><b>Area:</b> Guarantees the presence of the level and the entire area it is in.</item>
+        /// </list>
+        /// </summary>
+        /// <param name="iid">The LDtk Iid of the level to load.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task LoadLevel(string iid)
         {
             if (!TryGetLevel(iid, out MV_Level level))
             {
-                MV_Logger.Error($"Level under LDtk Iid {iid} not found while trying a full load", this);
+                MV_Logger.Error($"Level under LDtk Iid {iid} not present in project {_project.name}", this);
                 return;
             }
 
-            switch (_strategy)
+            /// Load the level using the current strategy.
+            switch (_loadingStrategy)
             {
-                case MV_LevelManagerStrategy.Neighbours:
+                /// Load the level by loading its neighboring levels.
+                case MV_LevelLoadingStrategy.Neighbours:
                     await LoadNeighboursAsync(level);
                     break;
-                case MV_LevelManagerStrategy.Worlds:
+
+                /// Load the level by loading its world.
+                /// If the current level is not in the same world as the level to load,
+                /// the world will be loaded. Otherwise, nothing changes.
+                case MV_LevelLoadingStrategy.Worlds:
                     if (_currentLevel == null || _currentLevel.WorldName != level.WorldName)
                     {
                         await LoadWorld(level.WorldName);
                     }
                     break;
-                case MV_LevelManagerStrategy.Areas:
+
+                /// Load the level by loading its area.
+                /// If the current level is not in the same area as the level to load,
+                /// the area will be loaded. Otherwise, nothing changes.
+                case MV_LevelLoadingStrategy.Areas:
                     if (_currentLevel == null || _currentLevel.AreaName != level.AreaName)
                     {
                         await LoadArea(level.AreaName);
@@ -137,14 +180,35 @@ namespace LDtkVania
             }
         }
 
+        /// <summary>
+        /// Load a level by its MV_Level object.
+        /// This is a shortcut for calling <see cref="LoadLevel(string)"/> with the
+        /// Iid of the level.
+        /// </summary>
+        /// <param name="level">The level to load.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public async Task LoadLevel(MV_Level level)
+        {
+            await LoadLevel(level.Iid);
+        }
+
+        /// <summary>
+        /// Unloads all loaded levels and loads all levels of a given world (by name). If the world is not present in the project, <br/>
+        /// an error will be logged and no action will be taken.<br/>
+        /// <br/>
+        /// Your LDtk project must have a world with the given name.
+        /// </summary>
+        /// <param name="worldName">The name of the world to load.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task LoadWorld(string worldName)
         {
-            if (!_strategy.Equals(MV_LevelManagerStrategy.Worlds))
+            if (!_loadingStrategy.Equals(MV_LevelLoadingStrategy.Worlds))
             {
-                MV_Logger.Error($"LoadWorld method can only be used with when strategy is set to '{MV_LevelManagerStrategy.Worlds}'.", this);
+                MV_Logger.Error($"LoadWorld method can only be used with when strategy is set to '{MV_LevelLoadingStrategy.Worlds}'.", this);
                 return;
             }
 
+            /// Get all the Iids of the levels in the given world.
             HashSet<string> iids = _project.GetAllLevelsIidsInWorld(worldName);
 
             if (iids == null || iids.Count == 0)
@@ -153,185 +217,263 @@ namespace LDtkVania
                 return;
             }
 
-            ExitLevel();
+            /// Exit the current level before loading new ones.
+            Exit();
 
+            /// Unload all loaded levels and objects before loading new ones.
             await UnloadAllAsync();
 
+            /// Clear the lists of registered behaviors and loaded objects and scenes
+            /// before loading new levels.
             _registeredBehaviours.Clear();
             _loadedObjects.Clear();
             _loadedScenes.Clear();
 
+            /// Load all the levels in the given world.
             await LoadMultipleAsync(iids);
         }
 
+        /// <summary>
+        /// Unloads all loaded levels and loads all levels of a given area (by name). If the area is not present in the project, <br/>
+        /// an error will be logged and no action will be taken.<br/>
+        /// <br/>
+        /// Your LDtk project must have an area (ldtkVaniaArea enum) with the given name.
+        /// </summary>
+        /// <param name="worldName">The name of the world to load.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task LoadArea(string areaName)
         {
-            if (!_strategy.Equals(MV_LevelManagerStrategy.Areas))
+            if (!_loadingStrategy.Equals(MV_LevelLoadingStrategy.Areas))
             {
-                MV_Logger.Error($"LoadArea method can only be used with when strategy is set to '{MV_LevelManagerStrategy.Areas}'.", this);
+                // LoadArea can only be used when the strategy is set to MV_LevelLoadingStrategy.Areas
+                MV_Logger.Error(
+                    $"LoadArea method can only be used with when strategy is set to '{MV_LevelLoadingStrategy.Areas}'.",
+                    this);
                 return;
             }
 
+            /// Get all the Iids of the levels in the given area.
             HashSet<string> iids = _project.GetAllLevelsIidsInArea(areaName);
 
             if (iids == null || iids.Count == 0)
             {
+                // If there are no levels in the area, log an error and return.
                 MV_Logger.Error($"Trying to load area {areaName} but it has no levels.", this);
                 return;
             }
 
-            ExitLevel();
+            /// Exit the current level before loading new ones.
+            Exit();
 
+            /// Unload all loaded levels and objects before loading new ones.
             await UnloadAllAsync();
 
+            /// Clear the lists of registered behaviors and loaded objects and scenes
+            /// before loading new levels.
             _registeredBehaviours.Clear();
             _loadedObjects.Clear();
             _loadedScenes.Clear();
 
+            /// Load all the levels in the given area.
             await LoadMultipleAsync(iids);
         }
 
+        /// <summary>
+        /// Prepares the level to be entered. The target MV_LevelBehaviour will <br/>
+        /// try finding a spot set as main to place the character into.<br/>
+        /// <br/>
+        /// <b>Important:</b> This should be called when curtains are closed.<br/>
+        /// <br/>
+        /// </summary>
+        /// <param name="iid">The Iid of the level to prepare.</param>
         public void Prepare(string iid)
         {
             // If the level could not be found, do not attempt to prepare it.
-            if (!PerformPreparation(iid, out MV_LevelBehaviour levelBehaviour))
+            if (!EvaluateLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
             {
+                // The level could not be found, do not attempt to prepare it.
                 return;
             }
 
-            // Prepare the level for entering through the spot.
-            levelBehaviour.Prepare();
+            // Prepare the level for entering through the main spot.
+            if (!levelBehaviour.Prepare(out MV_LevelTrail trail)) return;
+
+            if (_navigationBridge != null)
+                _navigationBridge.LevelPreparedEvent.Invoke(levelBehaviour, trail);
         }
 
         /// <summary>
-        /// Prepares the level to be entered through an spot.
+        /// Prepares the level to be entered placing the character at the given position.<br/>
+        /// <br/>
+        /// <b>Important:</b> This should be called when curtains are closed.<br/>
+        /// <br/>
         /// </summary>
-        /// <param name="spot">The spot to use to enter the level.</param>
+        /// <param name="iid">The Iid of the level to prepare.</param>
+        /// <param name="position">The position to place the character at.</param>
+        /// <param name="facingSign">The facing sign of the character.</param>
         public void Prepare(string iid, Vector2 position, int facingSign)
         {
             // If the level could not be found, do not attempt to prepare it.
-            if (!PerformPreparation(iid, out MV_LevelBehaviour levelBehaviour))
+            if (!EvaluateLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
             {
                 return;
             }
 
             // Prepare the level for entering through the spot.
-            levelBehaviour.Prepare(position, facingSign);
-        }
+            if (!levelBehaviour.Prepare(position, facingSign, out MV_LevelTrail trail)) return;
 
-        public void Prepare(string iid, string spotIid)
-        {
-            // If the level could not be found, do not attempt to prepare it.
-            if (!PerformPreparation(iid, out MV_LevelBehaviour levelBehaviour))
-            {
-                return;
-            }
-
-            // Prepare the level for entering through the spot.
-            levelBehaviour.Prepare(spotIid);
+            if (_navigationBridge != null)
+                _navigationBridge.LevelPreparedEvent.Invoke(levelBehaviour, trail);
         }
 
         /// <summary>
-        /// Prepares the level to be entered through a connection.
+        /// Prepares the level to be entered placing the character at a given spot.<br/>
+        /// <br/>
+        /// <b>Important:</b> This should be called when curtains are closed.<br/>
+        /// <br/>
+        /// </summary>
+        /// <param name="iid">The Iid of the level to prepare.</param>
+        /// <param name="spotIid">The Iid of the spot to use at the character placement.</param>
+        public void Prepare(string iid, string spotIid)
+        {
+            // If the level could not be found, do not attempt to prepare it.
+            if (!EvaluateLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
+            {
+                return;
+            }
+
+            // Prepare the level for entering through the spot.
+            if (!levelBehaviour.Prepare(spotIid, out MV_LevelTrail trail)) return;
+
+            if (_navigationBridge != null)
+                _navigationBridge.LevelPreparedEvent.Invoke(levelBehaviour, trail);
+        }
+
+
+        /// <summary>
+        /// Prepares the level to be entered through a connection.<br/>       
+        /// <br/>
+        /// <b>Important:</b> This should be called when curtains are closed.<br/>
+        /// <br/>
         /// </summary>
         /// <param name="connection">The connection to use to enter the level.</param>
         public void Prepare(string iid, IConnection connection)
         {
-            if (!PerformPreparation(iid, out MV_LevelBehaviour levelBehaviour))
+            if (!EvaluateLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
             {
                 // If the level could not be found, do not attempt to prepare it.
                 return;
             }
 
             // Prepare the level for entering through the connection.
-            levelBehaviour.Prepare(connection);
+            if (!levelBehaviour.Prepare(connection, out MV_LevelTrail trail)) return;
+
+            if (_navigationBridge != null)
+                _navigationBridge.LevelPreparedEvent.Invoke(levelBehaviour, trail);
         }
 
+        /// <summary>
+        /// Prepares the level to be entered through a portal.<br/>
+        /// <br/>
+        /// <b>Important:</b> This should be called when curtains are closed.<br/>
+        /// <br/>
+        /// </summary>
+        /// <param name="iid">The Iid of the level to prepare.</param>
+        /// <param name="portal">The portal to use to enter the level.</param>
         public void Prepare(string iid, IPortal portal)
         {
-            if (!PerformPreparation(iid, out MV_LevelBehaviour levelBehaviour))
+            // If the level could not be found, do not attempt to prepare it.
+            if (!EvaluateLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
             {
-                // If the level could not be found, do not attempt to prepare it.
                 return;
             }
 
             // Prepare the level for entering through the portal.
-            levelBehaviour.Prepare(portal);
+            if (!levelBehaviour.Prepare(portal, out MV_LevelTrail trail)) return;
+
+            if (_navigationBridge != null)
+                _navigationBridge.LevelPreparedEvent.Invoke(levelBehaviour, trail);
         }
 
-        private bool PerformPreparation(string iid, out MV_LevelBehaviour behaviour)
+        /// <summary>
+        /// Evaluates the level to be entered by its Iid.
+        /// </summary>
+        /// <param name="iid">The Iid of the level to prepare.</param>
+        /// <param name="behaviour">The MV_LevelBehaviour to prepare.</param>
+        /// <returns><c>true</c> if the level was prepared successfully, <c>false</c> otherwise.</returns>
+        private bool EvaluateLevelForPreparation(string iid, out MV_LevelBehaviour behaviour)
         {
+            // Tries to get a level by its Iid.
             if (!TryGetLevel(iid, out MV_Level level))
             {
+                // If the level is not found, log the error and return false.
                 MV_Logger.Error($"Trying to prepare a level by Iid {iid} but it was not found.", this);
                 behaviour = null;
                 return false;
             }
 
+            // Tries to get the MV_LevelBehaviour for the level.
             if (!_registeredBehaviours.TryGetValue(iid, out behaviour))
             {
+                // If the level is not registered, log the error and return false.
                 MV_Logger.Error($"Trying to prepare a level by Iid {iid} but it is not registered.", this);
                 return false;
             }
 
-            switch (_strategy)
+            // Prepares the level according to the strategy.
+
+            _currentLevel = level;
+            _currentBehaviour = behaviour;
+            if (_loadingStrategy.Equals(MV_LevelLoadingStrategy.Neighbours))
             {
-                case MV_LevelManagerStrategy.Worlds:
-                    PrepareLevelInWorld(level, behaviour);
-                    break;
-                case MV_LevelManagerStrategy.Areas:
-                    PrepareLevelInArea(level, behaviour);
-                    break;
-                case MV_LevelManagerStrategy.Neighbours:
-                default:
-                    PrepareNeighbouredLevel(level, behaviour);
-                    break;
+                _ = LoadNeighboursAsync(_currentLevel);
             }
 
+            // If the level was prepared, return true.
             return true;
         }
 
-        public void EnterLevel()
+        /// <summary>
+        /// Enters the current prepared level.<br/>
+        /// <br/>
+        /// <b>Important:</b> This is the method you call AFTER opening the curtains.<br/>
+        /// <br/>        
+        /// </summary>
+        /// <param name="iid">The Iid of the level to enter.</param>
+        public void Enter()
         {
             if (_currentLevel == null || _currentBehaviour == null)
             {
+                // If the level is not prepared, log the error and return false.
                 MV_Logger.Error($"Trying to enter a non prepared level.", this);
                 return;
             }
 
+            // Enters the level according to its behaviour.
             _currentBehaviour.Enter();
-            _levelEnteredEvent.Invoke(_currentLevel);
+            // Invokes the level entered event for the current level.
+            if (_navigationBridge != null)
+                _navigationBridge.LevelEnteredEvent.Invoke(_currentBehaviour);
         }
 
-        public void ExitLevel()
+        /// <summary>
+        /// Exits the current entered level.<br/>
+        /// <br/>
+        /// <b>Important:</b> This should be called when the curtains are already fully closed<br/>
+        /// since all level subjects will receive a level exited event in the same frame.<br/>
+        /// <br/>        
+        /// </summary>
+        public void Exit()
         {
             if (_currentBehaviour != null)
             {
+                // Calls the level exited event for the current level.
                 _currentBehaviour.Exit();
 
-                if (_currentLevel != null)
-                    _levelExitedEvent.Invoke(_currentLevel);
+                // Invokes the level exited event for the current level.
+                if (_navigationBridge != null)
+                    _navigationBridge.LevelExitedEvent.Invoke(_currentBehaviour);
             }
-        }
-
-        private void PrepareNeighbouredLevel(MV_Level level, MV_LevelBehaviour behaviour)
-        {
-            _currentLevel = level;
-            _currentBehaviour = behaviour;
-            _ = LoadNeighboursAsync(_currentLevel);
-
-        }
-
-        private void PrepareLevelInWorld(MV_Level level, MV_LevelBehaviour behaviour)
-        {
-            _currentLevel = level;
-            _currentBehaviour = behaviour;
-        }
-
-        private void PrepareLevelInArea(MV_Level level, MV_LevelBehaviour behaviour)
-        {
-            _currentLevel = level;
-            _currentBehaviour = behaviour;
         }
 
         #endregion
@@ -339,10 +481,10 @@ namespace LDtkVania
         #region Loading Neighbours
 
         /// <summary>
-        /// This will load all neighbours of the given level up to a certain depth.
+        /// This will load all neighbours of the given level up to the defined depth.
         /// </summary>
         /// <param name="level">The level to load neighbours from.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         private async Task LoadNeighboursAsync(MV_Level level)
         {
             // Check if the given level is null
@@ -352,12 +494,7 @@ namespace LDtkVania
                 return;
             }
 
-            // Check if the given depth is negative
-            if (_depth <= 0)
-            {
-                MV_Logger.Error($"Trying to load neighbours for a level with a negative depth.", this);
-                return;
-            }
+            float depth = Mathf.Clamp(_depth, 1, 10);
 
             // Create a queue to store the levels to be loaded
             Queue<(MV_Level, int)> queue = new();
@@ -377,7 +514,7 @@ namespace LDtkVania
                 (MV_Level currentLevel, int currentDepth) = queue.Dequeue();
 
                 // If the current depth is less than the given depth
-                if (currentDepth < _depth)
+                if (currentDepth < depth)
                 {
                     // For each neighbour of the current level
                     foreach (Level neighbour in currentLevel.LDtkLevel.Neighbours)

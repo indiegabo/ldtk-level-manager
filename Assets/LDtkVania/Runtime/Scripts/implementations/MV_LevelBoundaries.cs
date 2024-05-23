@@ -29,7 +29,6 @@ namespace LDtkVania
 
         private MV_LevelBehaviour _levelBehaviour;
         private LDtkComponentLevel _ldtkComponentLevel;
-        private CinemachineConfiner2D _confiner;
 
         #endregion
 
@@ -39,7 +38,6 @@ namespace LDtkVania
         {
             _levelBehaviour = GetComponent<MV_LevelBehaviour>();
             _ldtkComponentLevel = GetComponent<LDtkComponentLevel>();
-            _confiner = _virtualCamera.GetComponent<CinemachineConfiner2D>();
             Vector2 size = _ldtkComponentLevel.Size;
             _boundaries.points = new Vector2[] {
                 new(size.x, size.y),

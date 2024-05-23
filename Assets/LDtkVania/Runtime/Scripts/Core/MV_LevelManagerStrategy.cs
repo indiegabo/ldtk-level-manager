@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace LDtkVania
 {
-    public enum MV_LevelManagerStrategy
+    public enum MV_LevelLoadingStrategy
     {
         [InspectorName("Level and Neighbours")]
         Neighbours,

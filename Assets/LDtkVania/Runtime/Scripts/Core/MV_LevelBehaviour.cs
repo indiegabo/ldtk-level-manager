@@ -32,7 +32,7 @@ namespace LDtkVania
 
         private LDtkIid _ldtkIid;
         private LDtkComponentLevel _ldtkComponentLevel;
-        private MV_Level _mvLevel;
+        private MV_Level _level;
 
         private Dictionary<string, IConnection> _connections;
         private Dictionary<string, IPlacementSpot> _spots;
@@ -41,6 +41,11 @@ namespace LDtkVania
         #endregion
 
         #region Getters
+
+        /// <summary>
+        /// The <see cref="MV_Level"/> associated with this <see cref="MV_LevelBehaviour"/>.
+        /// </summary>
+        public MV_Level Level => _level;
 
         public UnityEvent<MV_LevelBehaviour> ExitedEvent => _exitedEvent;
         public UnityEvent<MV_LevelBehaviour, Vector2> PreparationStartedEvent => _preparationStartedEvent;
@@ -65,13 +70,13 @@ namespace LDtkVania
                 return;
             }
 
-            if (!MV_LevelManager.Instance.TryGetLevel(_ldtkIid.Iid, out _mvLevel))
+            if (!MV_LevelManager.Instance.TryGetLevel(_ldtkIid.Iid, out _level))
             {
                 MV_Logger.Error($"Level {name} could not be activated because {_ldtkIid.Iid} is not present on dictionary", this);
                 return;
             }
 
-            name = _mvLevel.Name;
+            name = _level.Name;
 
             LDtkComponentLayer componentLayer = _ldtkComponentLevel.LayerInstances.FirstOrDefault(
                 l => l != null && l.Identifier == MV_LevelManager.Instance.NavigationLayer
@@ -96,15 +101,17 @@ namespace LDtkVania
 
         #region Level Cycle
 
-        public void Prepare()
+        public bool Prepare(out MV_LevelTrail trail)
         {
             if (_spots.Count == 0)
             {
                 MV_Logger.Error($"Level {name} could not be prepared because there are no spots", this);
-                return;
+                trail = MV_LevelTrail.Empty;
+                return false;
             }
 
             IPlacementSpot mainSpot = _spots.Values.FirstOrDefault(x => x.Main);
+
             if (mainSpot == null)
             {
                 string message = $"Level {name} is trying to prepare with a main spot but there is no spot set as \"Main\" in the registry.";
@@ -113,25 +120,31 @@ namespace LDtkVania
                 mainSpot = _spots.Values.FirstOrDefault();
             }
 
+            trail = MV_LevelTrail.FromSpot(_level.Iid, mainSpot);
             _preparationStartedEvent.Invoke(this, mainSpot.SpawnPoint);
             PlaceCharacter(mainSpot.SpawnPoint, mainSpot.FacingSign);
-            _preparedEvent.Invoke(this, MV_LevelTrail.FromPoint(mainSpot.SpawnPoint));
+            _preparedEvent.Invoke(this, trail);
+
+            return true;
         }
 
-        public void Prepare(string spotIid)
+        public bool Prepare(string spotIid, out MV_LevelTrail trail)
         {
             if (!_spots.TryGetValue(spotIid, out IPlacementSpot registeredSpot))
             {
                 MV_Logger.Error($"Level {name} could not be prepared because there is no spot by Iid \"{spotIid}\" present on the spots registry.", this);
-                return;
+                trail = MV_LevelTrail.Empty;
+                return false;
             }
 
+            trail = MV_LevelTrail.FromSpot(_level.Iid, registeredSpot);
             _preparationStartedEvent.Invoke(this, registeredSpot.SpawnPoint);
             PlaceCharacter(registeredSpot.SpawnPoint, registeredSpot.FacingSign);
-            _preparedEvent.Invoke(this, MV_LevelTrail.FromSpot(registeredSpot));
+            _preparedEvent.Invoke(this, trail);
+            return true;
         }
 
-        public void Prepare(IConnection connection)
+        public bool Prepare(IConnection connection, out MV_LevelTrail trail)
         {
             // It is comming from a connection, so it must find the target connection within the dictionary
             if (!_connections.TryGetValue(connection.TargetIid, out IConnection registeredConnection))
@@ -139,15 +152,18 @@ namespace LDtkVania
                 string message = $"Level {name} could not be prepared because the connection Iid \"{connection.TargetIid}\"";
                 message += "is not present on the connections registry.";
                 MV_Logger.Error(message, this);
-                return;
+                trail = MV_LevelTrail.Empty;
+                return false;
             }
 
+            trail = MV_LevelTrail.FromConnection(_level.Iid, registeredConnection);
             _preparationStartedEvent.Invoke(this, registeredConnection.Spot.SpawnPoint);
             PlaceCharacter(registeredConnection.Spot.SpawnPoint, registeredConnection.Spot.FacingSign);
-            _preparedEvent.Invoke(this, MV_LevelTrail.FromConnection(registeredConnection));
+            _preparedEvent.Invoke(this, trail);
+            return true;
         }
 
-        public void Prepare(IPortal portal)
+        public bool Prepare(IPortal portal, out MV_LevelTrail trail)
         {
             // It is comming from a portal, so it must find the target portal within the dictionary
             if (!_portals.TryGetValue(portal.TargetIid, out IPortal registeredPortal))
@@ -155,19 +171,24 @@ namespace LDtkVania
                 string message = $"Level {name} could not be prepared because the portal under Iid \"{portal.TargetIid}\"";
                 message += "is not present on the portals registry.";
                 MV_Logger.Error(message, this);
-                return;
+                trail = MV_LevelTrail.Empty;
+                return false;
             }
 
+            trail = MV_LevelTrail.FromPortal(_level.Iid, registeredPortal);
             _preparationStartedEvent.Invoke(this, registeredPortal.Spot.SpawnPoint);
             PlaceCharacter(registeredPortal.Spot.SpawnPoint, registeredPortal.Spot.FacingSign);
-            _preparedEvent.Invoke(this, MV_LevelTrail.FromPortal(registeredPortal));
+            _preparedEvent.Invoke(this, trail);
+            return true;
         }
 
-        public void Prepare(Vector2 spawnPoint, int facingSign)
+        public bool Prepare(Vector2 spawnPoint, int facingSign, out MV_LevelTrail trail)
         {
+            trail = MV_LevelTrail.FromPoint(_level.Iid, spawnPoint, facingSign);
             _preparationStartedEvent.Invoke(this, spawnPoint);
             PlaceCharacter(spawnPoint, facingSign);
-            _preparedEvent.Invoke(this, MV_LevelTrail.FromPoint(spawnPoint));
+            _preparedEvent.Invoke(this, trail);
+            return true;
         }
 
         public void Enter()

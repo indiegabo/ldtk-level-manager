@@ -509,17 +509,9 @@ MonoBehaviour:
   _persistent: 0
   _alertAboutOtherInstances: 0
   _project: {fileID: 11400000, guid: 3ddb9f2cdc92cbb438368720b28ac634, type: 2}
-  _strategy: 0
-  _depth: 2
-  _levelPreparedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  _levelEnteredEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  _levelExitedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+  _loadingStrategy: 0
+  _depth: 1
+  _navigationBridge: {fileID: 11400000, guid: 7222f9fa0bc11e14d955bfd3cabf99c8, type: 2}
 --- !u!4 &1174395036
 Transform:
   m_ObjectHideFlags: 0

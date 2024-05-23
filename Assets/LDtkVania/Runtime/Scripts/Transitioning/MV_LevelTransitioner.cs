@@ -66,12 +66,12 @@ namespace LDtkVania.Transitioning
 
         #region Transition performing
 
-        public void TransitionInto(string levelIid, string spotIid)
+        public void TransitionIntoSpot(string levelIid, string spotIid)
         {
             _ = TransitionIntoAwaitable(levelIid, spotIid);
         }
 
-        public void TransitionInto(string levelIid, IConnection connection)
+        public void TransitionToConnection(string levelIid, IConnection connection)
         {
             _ = TransitionIntoAwaitable(levelIid, connection);
         }
@@ -85,7 +85,7 @@ namespace LDtkVania.Transitioning
         public async Task TransitionIntoAwaitable(string levelIid, string spotIid)
         {
             await BeforePreparationTask();
-            MV_LevelManager.Instance.ExitLevel();
+            MV_LevelManager.Instance.Exit();
             await MV_LevelManager.Instance.LoadLevel(levelIid);
             MV_LevelManager.Instance.Prepare(levelIid, spotIid);
             await AfterPreparationTask();
@@ -94,7 +94,7 @@ namespace LDtkVania.Transitioning
         public async Task TransitionIntoAwaitable(string levelIid, IConnection connection)
         {
             await BeforePreparationTask();
-            MV_LevelManager.Instance.ExitLevel();
+            MV_LevelManager.Instance.Exit();
             await MV_LevelManager.Instance.LoadLevel(levelIid);
             MV_LevelManager.Instance.Prepare(levelIid, connection);
             await AfterPreparationTask();
@@ -106,13 +106,13 @@ namespace LDtkVania.Transitioning
             _transitionStartedEvent.Invoke();
 
             await CloseCurtains();
-            MV_LevelManager.Instance.ExitLevel();
+            MV_LevelManager.Instance.Exit();
 
             await MV_LevelManager.Instance.LoadLevel(levelIid);
             MV_LevelManager.Instance.Prepare(levelIid, portal);
 
             await OpenCurtains();
-            MV_LevelManager.Instance.EnterLevel();
+            MV_LevelManager.Instance.Enter();
 
             _transitioning = false;
             _transitionEndedEvent.Invoke();
@@ -127,7 +127,7 @@ namespace LDtkVania.Transitioning
             await PerformTransitions(LevelTransitionMoment.Close);
 
             // Must be after closing curtains because of camera blend
-            MV_LevelManager.Instance.ExitLevel();
+            MV_LevelManager.Instance.Exit();
         }
 
         private async Task AfterPreparationTask()
@@ -141,7 +141,7 @@ namespace LDtkVania.Transitioning
             }
 
             // "Activating" level
-            MV_LevelManager.Instance.EnterLevel();
+            MV_LevelManager.Instance.Enter();
 
             _transitioning = false;
             _transitionEndedEvent.Invoke();
