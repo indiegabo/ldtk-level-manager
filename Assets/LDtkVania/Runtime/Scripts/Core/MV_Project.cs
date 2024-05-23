@@ -1,29 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 using LDtkUnity;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceLocations;
 using System.Linq;
 using LDtkVania.Utils;
-
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace LDtkVania
 {
     [CreateAssetMenu(fileName = "LDtkVaniaProject", menuName = "LDtkVania/Project", order = 0)]
     public partial class MV_Project : ScriptableObject
     {
-        #region Static
-
-        public static string AddressablesProjectAddress = "LDtkVaniaProject";
-        public static string AddressablesGroupName = "LDtkVania";
-        public static string AddressablesLevelsLabel = "LDtkLevels";
-
-        #endregion
 
         #region Inspector
 
@@ -34,10 +19,7 @@ namespace LDtkVania
         private bool _syncLevelsAtCompile = true;
 
         [SerializeField]
-        private string _connectionsContainerName;
-
-        [SerializeField]
-        private string _checkpointsContainerName;
+        private string _navigationLayer;
 
         [SerializeField]
         private MV_LevelsDictionary _levels = new();
@@ -46,7 +28,7 @@ namespace LDtkVania
         private MV_LevelsDictionary _lostLevels = new();
 
         [SerializeField]
-        private MV_AreasDictionary _areasLevels;
+        private MV_WorldAreasDictionary _worldAreas = new();
 
         #endregion
 
@@ -59,11 +41,14 @@ namespace LDtkVania
         #region Getters
 
         public bool SyncLevelsAtCompile => _syncLevelsAtCompile;
-        public string ConnectionsContainerName => "Connections";
-        public string CheckpointsContainerName => "Checkpoints";
+        public string NavigationLayer => _navigationLayer;
 
+        public bool IsInitialized => _ldtkProjectFile != null;
+        public int LevelsCount => _levels.Count;
+        public LDtkProjectFile LDtkProjectFile => _ldtkProjectFile;
         public LdtkJson LDtkProject => _ldtkProject ??= _ldtkProjectFile.FromJson;
         public int PixelsPerUnit => LDtkProject.DefaultGridSize;
+        public MV_WorldAreasDictionary WorldAreas => _worldAreas;
 
         #endregion
 
@@ -80,224 +65,70 @@ namespace LDtkVania
             return _levels.TryGetValue(iid, out mvLevel);
         }
 
-
         public bool HasLevel(string iid) => _levels.ContainsKey(iid);
 
-        public List<MV_Level> GetLevels()
+        public List<MV_Level> GetAllLevels()
         {
             return _levels.Values.ToList();
         }
 
         #endregion
 
-        public void CreateHashSet()
-        {
-            _areasLevels = new MV_AreasDictionary();
-            List<string> areasNames = new()
-            {
-                "Area 1",
-                "Area 2",
-                "Area 3"
-            };
+        #region World and areas
 
-            foreach (string area in areasNames)
+        public List<MV_Level> GetAllLevelsInWorld(string worldName)
+        {
+            if (!_worldAreas.ContainsKey(worldName)) return null;
+
+            List<MV_Level> levels = new();
+            foreach (MV_Level level in _levels.Values)
             {
-                _areasLevels[area] = new AreaLevelList();
-                for (int i = 0; i < areasNames.Count; i++)
-                {
-                    string levelName = areasNames[i] + "_" + i;
-                    _areasLevels[area].Add(levelName);
-                }
+                if (level.WorldName == worldName) levels.Add(level);
             }
+            return levels;
         }
 
-        public void LogHashSet()
+        public HashSet<string> GetAllLevelsIidsInWorld(string worldName)
         {
-            foreach (var pair in _areasLevels)
+            if (!_worldAreas.ContainsKey(worldName)) return null;
+
+            HashSet<string> iids = new();
+            foreach (MV_Level level in _levels.Values)
             {
-                Debug.Log($"Area: {pair.Key}:");
-                foreach (var levelName in pair.Value.Levels)
-                {
-                    Debug.Log($"Level: {levelName}");
-                }
+                if (level.WorldName == worldName) iids.Add(level.Iid);
             }
+
+            return iids;
         }
 
-        public void DestroyHashSet()
+        public List<MV_WorldAreas> GetAllWorldAreas()
         {
-            _areasLevels.Clear();
+            return _worldAreas.Values.ToList();
         }
 
-        #region Classes
-
-        [System.Serializable]
-        public class MV_LevelsDictionary : SerializedDictionary<string, MV_Level> { }
-
-        [System.Serializable]
-        public class MV_AreasDictionary : SerializedDictionary<string, AreaLevelList> { }
-
-        [System.Serializable]
-        public class AreaLevelList
+        public MV_WorldAreas GetWorldAreas(string worldName)
         {
-            [SerializeField]
-            private List<string> _levels = new();
+            if (!_worldAreas.ContainsKey(worldName)) return null;
+            return _worldAreas[worldName];
+        }
 
-            public List<string> Levels => _levels;
+        public bool TryGetWorldAreas(string worldName, out MV_WorldAreas mvWorldAreas)
+        {
+            return _worldAreas.TryGetValue(worldName, out mvWorldAreas);
+        }
 
-            public void Add(string level)
+        public bool TryGetWorldAreas(MV_Level level, out MV_WorldAreas mvWorldAreas)
+        {
+            if (string.IsNullOrEmpty(level.WorldName))
             {
-                if (_levels.Contains(level)) return;
-                _levels.Add(level);
+                MV_Logger.Warning($"Trying to get world areas for level {level.Name}({level.Iid}) but it has no world name defined.", this);
+                mvWorldAreas = null;
+                return false;
             }
-
-            public void Clear()
-            {
-                _levels.Clear();
-            }
-
-            public void Remove(string level)
-            {
-                _levels.Remove(level);
-            }
+            return _worldAreas.TryGetValue(level.WorldName, out mvWorldAreas);
         }
 
         #endregion
 
-#if UNITY_EDITOR
-        #region Editor Only
-
-        public void SyncLevels()
-        {
-            LdtkJson ldtkProjectJson = _ldtkProjectFile.FromJson;
-
-            HashSet<string> presentLevels = new();
-
-            AsyncOperationHandle handle = Addressables.LoadResourceLocationsAsync(AddressablesLevelsLabel);
-            handle.WaitForCompletion();
-
-            if (handle.Status != AsyncOperationStatus.Succeeded) return;
-
-            IList<IResourceLocation> locations = (IList<IResourceLocation>)handle.Result;
-
-            foreach (IResourceLocation location in locations)
-            {
-                string levelIid = CreateOrUpdateBasedOnLocation(ldtkProjectJson, location);
-                if (string.IsNullOrEmpty(levelIid)) continue;
-
-                presentLevels.Add(levelIid);
-            }
-
-            var levelsToRemove = new List<string>();
-
-            foreach (var pair in _levels)
-            {
-                if (!presentLevels.Contains(pair.Value.Iid))
-                {
-                    levelsToRemove.Add(pair.Value.Iid);
-                }
-            }
-
-            // Removing in a separate step to avoid modifying the collection while iterating
-            foreach (string iid in levelsToRemove)
-            {
-                SoftRemoveLevel(iid);
-            }
-
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-        }
-
-        private string CreateOrUpdateBasedOnLocation(LdtkJson projectJSON, IResourceLocation location)
-        {
-            LDtkComponentLevel componentLevel = AssetDatabase.LoadAssetAtPath<LDtkComponentLevel>(location.InternalId);
-            if (componentLevel == null) return null;
-
-            Object asset = AssetDatabase.LoadAssetAtPath<Object>(location.InternalId);
-            if (asset == null) return null;
-
-            LDtkLevelFile file = AssetDatabase.LoadAssetAtPath<LDtkLevelFile>(location.InternalId);
-            if (file == null) return null;
-
-            Level ldtkLevel = file.FromJson;
-            if (TryGetLevel(ldtkLevel.Iid, out MV_Level level))
-            {
-                level.UpdateInfo(projectJSON, componentLevel, location, asset, file);
-                return level.Iid;
-            }
-
-            level = CreateInstance<MV_Level>();
-            level.name = asset.name;
-            level.Initialize(projectJSON, componentLevel, location, asset, file);
-            AddLevel(level);
-
-            return level.Iid;
-        }
-
-        public void AddLevel(MV_Level level)
-        {
-            if (!_levels.ContainsKey(level.Iid))
-            {
-                _levels.Add(level.Iid, level);
-                AssetDatabase.AddObjectToAsset(level, this);
-            }
-            else
-            {
-                _levels[level.Iid] = level;
-            }
-
-        }
-
-        public void RemoveLevel(MV_Level level)
-        {
-            if (level == null || !_levels.ContainsKey(level.Iid)) return;
-
-            if (level.HasScene)
-            {
-                MV_LevelScene.DestroySceneForLevel(level, false);
-            }
-
-            AssetDatabase.RemoveObjectFromAsset(level);
-
-            if (_levels.ContainsKey(level.Iid))
-            {
-                _levels.Remove(level.Iid);
-            }
-        }
-
-        public void RemoveLevel(string iid)
-        {
-            if (!_levels.ContainsKey(iid)) return;
-            MV_Level level = _levels[iid];
-            RemoveLevel(level);
-        }
-
-        public void SoftRemoveLevel(string iid)
-        {
-            if (!_levels.TryGetValue(iid, out MV_Level level)) return;
-
-            _levels.Remove(iid);
-
-            if (_lostLevels.ContainsKey(iid)) return;
-            _lostLevels.Add(iid, level);
-        }
-
-        public void HardClear()
-        {
-            GetLevels().ForEach(level =>
-            {
-                AssetDatabase.RemoveObjectFromAsset(level);
-            });
-
-            foreach (MV_Level level in _lostLevels.Values)
-            {
-                AssetDatabase.RemoveObjectFromAsset(level);
-            }
-
-            _levels.Clear();
-            _lostLevels.Clear();
-        }
-
-        #endregion
-#endif
     }
 }

@@ -32,7 +32,7 @@ namespace LDtkVania.Utils
             }
         }
 
-        public static bool TrySetAsAddressable(this SceneAsset obj, string address, string groupName, string labelName = null)
+        public static bool TrySetAsAddressable(this Object obj, string address, string groupName, string labelName = null)
         {
             string guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(obj));
 
@@ -62,6 +62,19 @@ namespace LDtkVania.Utils
 
             settings.SetDirty(AddressableAssetSettings.ModificationEvent.EntryMoved, entry, true);
             return true;
+        }
+
+        public static void UnsetAdressable(this Object obj)
+        {
+            string guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(obj));
+            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+            settings.RemoveAssetEntry(guid);
+        }
+
+        public static void UnsetAdressable(string guid)
+        {
+            AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
+            settings.RemoveAssetEntry(guid);
         }
     }
 }

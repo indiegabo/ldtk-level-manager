@@ -11,19 +11,19 @@ namespace LDtkVania
         {
             return new MV_LevelTrail
             {
-                _connectionKey = null,
+                _iid = null,
                 _spawnPosition = point,
                 _facingSign = facingSign,
             };
         }
 
-        public static MV_LevelTrail FromCheckpoint(ILevelAnchor checkpoint)
+        public static MV_LevelTrail FromSpot(IPlacementSpot spot)
         {
             return new MV_LevelTrail
             {
-                _connectionKey = null,
-                _spawnPosition = checkpoint.SpawnPoint,
-                _facingSign = checkpoint.FacingSign
+                _iid = spot.Iid,
+                _spawnPosition = spot.SpawnPoint,
+                _facingSign = spot.FacingSign
             };
         }
 
@@ -31,9 +31,19 @@ namespace LDtkVania
         {
             return new MV_LevelTrail
             {
-                _connectionKey = connection.Key,
-                _spawnPosition = connection.SpawnPoint,
-                _facingSign = connection.FacingSign
+                _iid = connection.Iid,
+                _spawnPosition = connection.Spot.SpawnPoint,
+                _facingSign = connection.Spot.FacingSign
+            };
+        }
+
+        public static MV_LevelTrail FromPortal(IPortal portal)
+        {
+            return new MV_LevelTrail
+            {
+                _iid = portal.Iid,
+                _spawnPosition = portal.Spot.SpawnPoint,
+                _facingSign = portal.Spot.FacingSign
             };
         }
 
@@ -42,7 +52,7 @@ namespace LDtkVania
         #region Fields
 
         [SerializeField]
-        private string _connectionKey;
+        private string _iid;
 
         [SerializeField]
         private Vector2 _spawnPosition;
@@ -55,7 +65,7 @@ namespace LDtkVania
 
         #region Properties
 
-        public string ConnectionKey { readonly get => _connectionKey; set => _connectionKey = value; }
+        public string Iid { readonly get => _iid; set => _iid = value; }
         public Vector2 SpawnPosition { readonly get => _spawnPosition; set => _spawnPosition = value; }
         public int FacingSign { readonly get => _facingSign; set => _facingSign = value; }
 

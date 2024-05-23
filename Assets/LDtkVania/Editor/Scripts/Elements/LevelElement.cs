@@ -17,29 +17,41 @@ namespace LDtkVaniaEditor
 
         private TextField _fieldIid;
 
+        private Button _buttonCompletlyRemove;
         private Button _buttonIidCopy;
         private Button _buttonCreateScene;
         private Button _buttonDestroyScene;
 
+        private VisualElement _containerLeftBehind;
+        private TextField _fieldWorld;
         private TextField _fieldArea;
         private VisualElement _containerSceneElement;
         private PropertyField _fieldAsset;
         private PropertyField _fieldLDtkAsset;
         private TextField _fieldAssetPath;
         private TextField _fieldAddressableKey;
-        private TextField _fieldSceneAddressableKey;
 
         public LevelElement(MV_Level level)
         {
             _level = level;
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
 
+            _containerLeftBehind = _containerMain.Q<VisualElement>("container-left-behind");
+            _containerLeftBehind.style.display = _level.LeftBehind ? DisplayStyle.Flex : DisplayStyle.None;
+
+            _buttonCompletlyRemove = _containerMain.Q<Button>("button-completly-remove");
+            _buttonCompletlyRemove.clicked += OnCompletlyRemove;
+
             _fieldIid = _containerMain.Q<TextField>("field-iid");
             _fieldIid.SetEnabled(false);
 
+            _fieldWorld = _containerMain.Q<TextField>("field-world");
+            _fieldWorld.SetEnabled(false);
+            _fieldWorld.style.display = string.IsNullOrEmpty(_level.WorldName) ? DisplayStyle.None : DisplayStyle.Flex;
+
             _fieldArea = _containerMain.Q<TextField>("field-area");
             _fieldArea.SetEnabled(false);
-            _fieldArea.style.display = string.IsNullOrEmpty(_level.Area) ? DisplayStyle.None : DisplayStyle.Flex;
+            _fieldArea.style.display = string.IsNullOrEmpty(_level.AreaName) ? DisplayStyle.None : DisplayStyle.Flex;
 
             _buttonIidCopy = _containerMain.Q<Button>("button-iid-copy");
             _buttonIidCopy.clicked += () =>
@@ -57,6 +69,7 @@ namespace LDtkVaniaEditor
             }
 
             _buttonCreateScene = _containerMain.Q<Button>("button-create-scene");
+            _buttonCreateScene.SetEnabled(!_level.LeftBehind);
             _buttonCreateScene.clicked += () =>
             {
                 if (MV_LevelScene.CreateSceneForLevel(_level, out MV_LevelScene levelScene))
@@ -70,18 +83,7 @@ namespace LDtkVaniaEditor
             };
 
             _buttonDestroyScene = _containerMain.Q<Button>("button-destroy-scene");
-            _buttonDestroyScene.clicked += () =>
-            {
-                if (MV_LevelScene.DestroySceneForLevel(_level))
-                {
-                    _level.SetScene(null);
-                    _levelSceneElement.LevelScene = null;
-                    EditorUtility.SetDirty(_level);
-                    AssetDatabase.SaveAssetIfDirty(_level);
-                }
-
-                EvaluateSceneDisplay();
-            };
+            _buttonDestroyScene.clicked += DestroyScene;
 
             _fieldAsset = _containerMain.Q<PropertyField>("field-asset");
             _fieldAsset.SetEnabled(false);
@@ -99,10 +101,10 @@ namespace LDtkVaniaEditor
                 _fieldAssetPath.text.CopyToClipboard();
             };
 
-            _fieldAddressableKey = _containerMain.Q<TextField>("field-addressable-key");
+            _fieldAddressableKey = _containerMain.Q<TextField>("field-address");
             _fieldAddressableKey.SetEnabled(false);
 
-            Button buttonAdreesableKeyCopy = _containerMain.Q<Button>("button-addressable-key-copy");
+            Button buttonAdreesableKeyCopy = _containerMain.Q<Button>("button-address-copy");
             buttonAdreesableKeyCopy.clicked += () =>
             {
                 if (string.IsNullOrEmpty(_fieldAddressableKey.text)) return;
@@ -129,6 +131,27 @@ namespace LDtkVaniaEditor
 
                 _buttonCreateScene.style.display = DisplayStyle.Flex;
             }
+        }
+
+        private void OnCompletlyRemove()
+        {
+            _level.Project.RemoveLevel(_level.Iid);
+            EditorUtility.SetDirty(_level.Project);
+            AssetDatabase.SaveAssetIfDirty(_level.Project);
+            AssetDatabase.Refresh();
+        }
+
+        private void DestroyScene()
+        {
+            if (MV_LevelScene.DestroySceneForLevel(_level))
+            {
+                _level.SetScene(null);
+                _levelSceneElement.LevelScene = null;
+                EditorUtility.SetDirty(_level);
+                AssetDatabase.SaveAssetIfDirty(_level);
+            }
+
+            EvaluateSceneDisplay();
         }
     }
 }

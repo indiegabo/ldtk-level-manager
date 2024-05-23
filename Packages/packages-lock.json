@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.cammin.ldtkunity": {
-      "version": "4.2.2",
+      "version": "6.1.4",
       "depth": 0,
       "source": "registry",
       "dependencies": {

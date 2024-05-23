@@ -18,7 +18,6 @@ namespace LDtkVaniaEditor
         private TemplateContainer _containerMain;
         private TabViewElement _tabViewElement;
         private ObjectField _fieldLDtkProject;
-        private LdtkJson _ldtkJson;
 
         private ProgressBar _progressBar;
 
@@ -29,9 +28,7 @@ namespace LDtkVaniaEditor
         public override VisualElement CreateInspectorGUI()
         {
             _project = target as MV_Project;
-            _ldtkJson = _project.LDtkProject;
 
-            Debug.Log($"Creating inspector for project: {_project.name}");
             _progressBar = new ProgressBar
             {
                 title = "Loading project..."
@@ -40,10 +37,15 @@ namespace LDtkVaniaEditor
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
             _fieldLDtkProject = _containerMain.Q<ObjectField>("field-ldtk-project");
             _fieldLDtkProject.objectType = typeof(LDtkProjectFile);
+            _fieldLDtkProject.SetValueWithoutNotify(_project.LDtkProjectFile);
+            _fieldLDtkProject.SetEnabled(!_project.IsInitialized);
 
             _fieldLDtkProject.RegisterCallback<ChangeEvent<Object>>(e =>
             {
-                EvaluateTabViewPresence(e.newValue as LDtkProjectFile);
+                LDtkProjectFile projectFile = e.newValue as LDtkProjectFile;
+                if (projectFile == null) return;
+                _project.Initialize(projectFile);
+                EvaluateTabViewPresence(_project.IsInitialized);
             });
 
             _tabViewElement = new();
@@ -59,38 +61,14 @@ namespace LDtkVaniaEditor
                 _tabViewElement.SelectTab("Main");
             }
 
-            EvaluateTabViewPresence(_fieldLDtkProject.value as LDtkProjectFile);
-
-            Button buttonAction1 = _containerMain.Q<Button>("button-action-1");
-            buttonAction1.clicked += () =>
-            {
-                _project.CreateHashSet();
-                EditorUtility.SetDirty(_project);
-                AssetDatabase.SaveAssetIfDirty(_project);
-            };
-
-            Button buttonAction2 = _containerMain.Q<Button>("button-action-2");
-            buttonAction2.clicked += () =>
-            {
-                _project.LogHashSet();
-                EditorUtility.SetDirty(_project);
-                AssetDatabase.SaveAssetIfDirty(_project);
-            };
-
-            Button buttonAction3 = _containerMain.Q<Button>("button-action-3");
-            buttonAction3.clicked += () =>
-            {
-                _project.DestroyHashSet();
-                EditorUtility.SetDirty(_project);
-                AssetDatabase.SaveAssetIfDirty(_project);
-            };
+            EvaluateTabViewPresence(_project.IsInitialized);
 
             return _containerMain;
         }
 
-        private void EvaluateTabViewPresence(LDtkProjectFile projectFile)
+        private void EvaluateTabViewPresence(bool hasProjectFile)
         {
-            _tabViewElement.style.display = projectFile != null ? DisplayStyle.Flex : DisplayStyle.None;
+            _tabViewElement.style.display = hasProjectFile ? DisplayStyle.Flex : DisplayStyle.None;
         }
     }
 }

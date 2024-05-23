@@ -1,36 +1,26 @@
 using UnityEngine;
-using System.Collections.Generic;
 using UnityEngine.Events;
 using System.Threading.Tasks;
-using LDtkVania.Transitioning;
 using Cinemachine;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UI;
 
-namespace LDtkVania
+namespace LDtkVania.Transitioning
 {
     public class MV_LevelTransitioner : MonoBehaviour
     {
-        #region Static
-
-        private static MV_LevelTransitioner _instance;
-        public static MV_LevelTransitioner Instance => _instance;
-
-        #endregion
-
         #region Inspector        
 
-        [Tooltip("Mark this if you want this object to NOT be destroyed when a new scene is loaded.")]
         [SerializeField]
-        private bool _persistent = true;
+        private Canvas _curtainsCanvas;
 
         [SerializeField]
-        private bool _alertAboutOtherInstances;
+        private Animator _curtainsPrefab;
 
         [SerializeField]
-        private MV_PlayerControlBridge _playerControlBridge;
-
-        [SerializeField]
-        private LevelTransitionsProvider _globalTransitionsProvider;
+        private MV_LevelTransitionBridge _transitionBridge;
 
         [SerializeField]
         private UnityEvent _transitionStartedEvent;
@@ -43,6 +33,7 @@ namespace LDtkVania
         #region Fields
 
         private bool _transitioning = false;
+        private Animator _curtainsAnimator;
         private List<Task> _transitionTasks = new();
 
         #endregion
@@ -59,137 +50,107 @@ namespace LDtkVania
 
         private void Awake()
         {
-            MV_LevelTransitioner currentInstance = Instance;
+            _curtainsAnimator = Instantiate(_curtainsPrefab, _curtainsCanvas.transform);
+            Image curtainsImage = _curtainsAnimator.GetComponent<Image>();
+            curtainsImage.color = new Color(0, 0, 0, 0);
+        }
 
-            if (currentInstance != null && currentInstance != this)
-            {
-                if (_alertAboutOtherInstances)
-                {
-                    MV_Logger.Error($"{name} - Awake interrupted due to other instance being already active.", this);
-                }
+        private void OnEnable()
+        {
+            _transitionBridge.Register(this);
+        }
 
-                Destroy(gameObject);
-
-                return;
-            }
-
-            _instance = this;
-
-            if (_persistent)
-                DontDestroyOnLoad(gameObject);
+        private void OnDisable()
+        {
+            _transitionBridge.ClearRegistry();
         }
 
         #endregion
 
         #region Transition performing
 
-        public async Task TransitionInto(
-            string levelIid,
-            List<string> globalTransitionsTargets = null,
-            List<ITransition> closeTransitions = null,
-            List<ITransition> openTransitions = null
-        )
+        public void TransitionInto(string levelIid, string spotIid)
         {
-            await BeforePreparationTask(globalTransitionsTargets, closeTransitions);
-            MV_LevelManager.Instance.PrepareLevel(levelIid);
-            await AfterPreparationTask(globalTransitionsTargets, openTransitions);
+            _ = TransitionIntoAwaitable(levelIid, spotIid);
         }
 
-        public async Task TransitionInto(
-            IConnection connection,
-            List<string> globalTransitionsTargets = null,
-            List<ITransition> closeTransitions = null,
-            List<ITransition> openTransitions = null
-        )
+        public void TransitionInto(string levelIid, IConnection connection)
         {
-            await BeforePreparationTask(globalTransitionsTargets, closeTransitions);
-            MV_LevelManager.Instance.PrepareLevel(connection);
-            await AfterPreparationTask(globalTransitionsTargets, openTransitions);
+            _ = TransitionIntoAwaitable(levelIid, connection);
         }
 
-        public async Task TransitionInto(
-            ILevelAnchor checkpoint,
-            List<string> globalTransitionsTargets = null,
-            List<ITransition> closeTransitions = null,
-            List<ITransition> openTransitions = null
-        )
+        public void TransitionToPortal(string levelIid, IPortal portal)
         {
-            await BeforePreparationTask(globalTransitionsTargets, closeTransitions);
-            MV_LevelManager.Instance.PrepareLevel(checkpoint);
-            await AfterPreparationTask(globalTransitionsTargets, openTransitions);
+            _ = TransitionToPortalAwaitable(levelIid, portal);
         }
 
-        private async Task BeforePreparationTask(List<string> globalTransitionsTargets = null, List<ITransition> closeTransitions = null)
+
+        public async Task TransitionIntoAwaitable(string levelIid, string spotIid)
+        {
+            await BeforePreparationTask();
+            MV_LevelManager.Instance.PrepareLevel(levelIid, spotIid);
+            await AfterPreparationTask();
+        }
+
+        public async Task TransitionIntoAwaitable(string levelIid, IConnection connection)
+        {
+            await BeforePreparationTask();
+            MV_LevelManager.Instance.PrepareLevel(levelIid, connection);
+            await AfterPreparationTask();
+        }
+
+        public async Task TransitionToPortalAwaitable(string levelIid, IPortal portal)
         {
             _transitioning = true;
             _transitionStartedEvent.Invoke();
 
-            // Removing control from player
-            if (_playerControlBridge != null)
-                _playerControlBridge.RemoveControl();
+            MV_LevelManager.Instance.ExitLevel();
+
+            await CloseCurtains();
+            await MV_LevelManager.Instance.LoadLevelAndNeighbours(levelIid, MV_LevelLoadMode.LoadOnly);
+            MV_LevelManager.Instance.PrepareLevel(levelIid, portal);
+            await OpenCurtains();
+
+            // "Activating" level
+            MV_LevelManager.Instance.EnterLevel();
+
+            _transitioning = false;
+            _transitionEndedEvent.Invoke();
+        }
+
+        private async Task BeforePreparationTask()
+        {
+            _transitioning = true;
+            _transitionStartedEvent.Invoke();
 
             // Closing curtains
-            await PerformTransitions(LevelTransitionMoment.Close, globalTransitionsTargets, closeTransitions);
+            await PerformTransitions(LevelTransitionMoment.Close);
 
             // Must be after closing curtains because of camera blend
             MV_LevelManager.Instance.ExitLevel();
         }
 
-        private async Task AfterPreparationTask(List<string> globalTransitionsTargets = null, List<ITransition> openTransitions = null)
+        private async Task AfterPreparationTask()
         {
             // Opening curtains
-            await PerformTransitions(LevelTransitionMoment.Open, globalTransitionsTargets, openTransitions);
-
-            // "Activating" level
-            MV_LevelManager.Instance.EnterLevel();
+            await PerformTransitions(LevelTransitionMoment.Open);
 
             if (Camera.main.TryGetComponent<CinemachineBrain>(out var cinemachineBrain))
             {
                 await WaitOnCameraBlend(cinemachineBrain);
             }
 
-            // Giving back player control
-            if (_playerControlBridge != null)
-                _playerControlBridge.GiveControl();
+            // "Activating" level
+            MV_LevelManager.Instance.EnterLevel();
 
             _transitioning = false;
             _transitionEndedEvent.Invoke();
         }
 
-        private async Task PerformTransitions(LevelTransitionMoment moment, List<string> transitionTargets, List<ITransition> transitions)
+        private async Task PerformTransitions(LevelTransitionMoment moment)
         {
-            if (transitionTargets == null) return;
-
-            if (_transitionTasks == null)
-            {
-                _transitionTasks = new List<Task>();
-            }
-            else
-            {
-                _transitionTasks.Clear();
-            }
-
-            foreach (string target in transitionTargets)
-            {
-                List<ITransition> globalTransitions = _globalTransitionsProvider.GetTransitions(moment, target);
-
-                if (globalTransitions == null) continue;
-
-                foreach (ITransition transition in globalTransitions)
-                {
-                    _transitionTasks.Add(transition.TransitionInto());
-                }
-            }
-
-            if (transitions != null)
-            {
-                foreach (ITransition transition in transitions)
-                {
-                    _transitionTasks.Add(transition.TransitionInto());
-                }
-            }
-
-            await Task.WhenAll(_transitionTasks);
+            // For now this is just a dummy transition
+            await Task.CompletedTask;
         }
 
         #endregion
@@ -202,6 +163,25 @@ namespace LDtkVania
 
             float delay = blend.Duration > 0.5f ? blend.Duration - 0.5f : 0f;
             await Task.Delay(TimeSpan.FromSeconds(delay));
+        }
+
+        private async Task CloseCurtains()
+        {
+            _curtainsAnimator.Play("CurtainsClose");
+            int length = _curtainsAnimator.GetCurrentAnimatorClipInfo(0).Length;
+            await Task.Delay(TimeSpan.FromSeconds(length));
+        }
+
+        private async Task OpenCurtains()
+        {
+            _curtainsAnimator.Play("CurtainsOpen");
+            int length = _curtainsAnimator.GetCurrentAnimatorClipInfo(0).Length;
+            await Task.Delay(TimeSpan.FromSeconds(length));
+
+            if (Camera.main.TryGetComponent<CinemachineBrain>(out var cinemachineBrain))
+            {
+                await WaitOnCameraBlend(cinemachineBrain);
+            }
         }
     }
 }

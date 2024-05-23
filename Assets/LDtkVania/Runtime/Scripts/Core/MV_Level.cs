@@ -6,17 +6,27 @@ namespace LDtkVania
 {
     public class MV_Level : ScriptableObject
     {
+        #region Static
+
+        public static readonly string AdressableAddressPrexix = "LDtkVaniaLevel";
+        public static readonly string AddressableGroupName = "LDtkVaniaLevels";
+        public static readonly string AddressableLabel = "LDtkVaniaLevel";
+
+        #endregion
+
         #region Inspector
 
+        [SerializeField] private MV_Project _project;
         [SerializeField] private string _iid;
         [SerializeField] private string _displayName;
-        [SerializeField] private string _world;
-        [SerializeField] private string _area;
+        [SerializeField] private string _worldName;
+        [SerializeField] private string _areaName;
         [SerializeField] private Object _asset;
         [SerializeField] private LDtkLevelFile _levelFile;
         [SerializeField] private string _assetPath;
-        [SerializeField] private string _addressableKey;
+        [SerializeField] private string _address;
         [SerializeField] private MV_LevelScene _scene;
+        [SerializeField] private bool _leftBehind;
 
         #endregion
 
@@ -28,16 +38,19 @@ namespace LDtkVania
 
         #region Getters
 
+        public MV_Project Project => _project;
         public string Iid => _iid;
         public string Name => !string.IsNullOrEmpty(_displayName) ? _displayName : name;
-        public string Area => _area;
+        public string WorldName => _worldName;
+        public string AreaName => _areaName;
         public Object Asset => _asset;
+        public bool LeftBehind => _leftBehind;
 
         public bool HasScene => _scene != null && !string.IsNullOrEmpty(_scene.AddressableKey);
         public MV_LevelScene Scene => _scene;
 
         public string AssetPath => _assetPath;
-        public string AddressableKey => _addressableKey;
+        public string Address => _address;
 
         // LDtk
         public LDtkLevelFile LevelFile => _levelFile;
@@ -54,47 +67,46 @@ namespace LDtkVania
 
         #region Constructors
 
-        public void Initialize(LdtkJson projectJSON, LDtkComponentLevel ldtkComponentLevel, IResourceLocation location, Object asset, LDtkLevelFile ldtkFile)
+        public void Initialize(MV_LevelProcessingData data)
         {
-            LDtkIid lDtkIid = ldtkComponentLevel.GetComponent<LDtkIid>();
-            _iid = lDtkIid.Iid;
-
-            UpdateInfo(projectJSON, ldtkComponentLevel, location, asset, ldtkFile);
+            _project = data.project;
+            _iid = data.iid;
+            UpdateInfo(data);
         }
 
         #endregion
 
         #region Gathering info
 
-        public void UpdateInfo(LdtkJson projectJSON, LDtkComponentLevel ldtkComponentLevel, IResourceLocation location = null, Object asset = null, LDtkLevelFile ldtkFile = null)
+        public void UpdateInfo(MV_LevelProcessingData data)
         {
-            LDtkFields fields = ldtkComponentLevel.GetComponent<LDtkFields>();
+            LDtkFields fields = data.ldtkComponentLevel.GetComponent<LDtkFields>();
 
             string displayName = fields.GetString("displayName");
+
             if (!string.IsNullOrEmpty(displayName))
+            {
                 name = displayName;
+            }
+            else
+            {
+                name = data.ldtkFile.name;
+            }
 
             string area = fields.GetValueAsString("ldtkVaniaArea");
             if (!string.IsNullOrEmpty(area))
-                _area = area;
+                _areaName = area;
 
-            if (location != null)
+            _assetPath = data.assetPath;
+            _address = data.address;
+            _asset = data.asset;
+            _levelFile = data.ldtkFile;
+
+            if (data.world != null)
             {
-                _assetPath = location.InternalId;
-                _addressableKey = location.PrimaryKey;
+                _worldName = data.world.Identifier;
             }
 
-            if (asset != null)
-            {
-                _asset = asset;
-            }
-
-            if (ldtkFile != null)
-            {
-                _levelFile = ldtkFile;
-            }
-
-            // Find the world name of this level
         }
 
         #endregion
@@ -104,6 +116,15 @@ namespace LDtkVania
         public void SetScene(MV_LevelScene levelScene)
         {
             _scene = levelScene;
+        }
+
+        #endregion
+
+        #region Leaving Behind
+
+        public void SetLeftBehind(bool leftBehind)
+        {
+            _leftBehind = leftBehind;
         }
 
         #endregion

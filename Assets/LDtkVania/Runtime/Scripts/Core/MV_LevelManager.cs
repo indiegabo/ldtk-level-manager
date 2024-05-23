@@ -7,6 +7,8 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using LDtkUnity;
+using System.Linq;
+using System;
 
 namespace LDtkVania
 {
@@ -33,6 +35,9 @@ namespace LDtkVania
         private MV_Project _project;
 
         [SerializeField]
+        private MV_LevelManagerStrategy _strategy;
+
+        [SerializeField]
         [Min(1)]
         private int _depth = 1;
 
@@ -49,6 +54,7 @@ namespace LDtkVania
 
         #region Fields
 
+        private LdtkJson _ldtkJson;
         private MV_Level _currentLevel;
         private MV_LevelBehaviour _currentBehaviour;
 
@@ -62,8 +68,8 @@ namespace LDtkVania
 
         #region Getters
 
-        public string ConnectionsContainerName => _project.ConnectionsContainerName;
-        public string CheckpointsContainerName => _project.CheckpointsContainerName;
+        public MV_LevelManagerStrategy Strategy => _strategy;
+        public string NavigationLayer => _project.NavigationLayer;
 
         public UnityEvent<MV_Level> LevelPreparedEvent => _levelPreparedEvent;
         public UnityEvent<MV_Level> LevelEnteredEvent => _levelEnteredEvent;
@@ -75,8 +81,6 @@ namespace LDtkVania
 
         public void Awake()
         {
-            LDtkIidBank.CacheIidData(_project.LDtkProject);
-
             MV_LevelManager currentInstance = Instance;
 
             if (currentInstance != null && currentInstance != this)
@@ -95,6 +99,10 @@ namespace LDtkVania
 
             if (_persistent)
                 DontDestroyOnLoad(gameObject);
+
+
+            LDtkIidBank.CacheIidData(_project.LDtkProject);
+            _ldtkJson = _project.LDtkProject;
         }
 
         #endregion
@@ -111,7 +119,7 @@ namespace LDtkVania
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
-        public async Task FullLevelLoad(string iid, MV_LevelLoadMode mode = MV_LevelLoadMode.LoadOnly)
+        public async Task LoadLevelAndNeighbours(string iid, MV_LevelLoadMode mode = MV_LevelLoadMode.LoadOnly, string spotIid = null)
         {
             if (!TryGetLevel(iid, out MV_Level level))
             {
@@ -129,82 +137,111 @@ namespace LDtkVania
 
             await LoadNeighboursAsync(level);
 
-            if (!mode.Equals(MV_LevelLoadMode.LoadAndEnter))
+            if (!mode.Equals(MV_LevelLoadMode.LoadAndEnter) || string.IsNullOrEmpty(spotIid))
             {
                 return;
             };
 
             _currentLevel = level;
             _currentBehaviour = _registeredBehaviours[_currentLevel.Iid];
-            _currentBehaviour.Prepare();
+            _currentBehaviour.Prepare(spotIid);
 
             EnterLevel();
         }
 
-        /// <summary>
-        /// This should be used while transitioning from one level to another.
-        /// Have in mind that the target level should be already registered.
-        /// </summary>
-        /// <param name="level"></param>
-        /// <returns></returns>
-        public void Prepare(MV_Level level)
+        public async Task LoadWorld(string worldName)
         {
-            if (string.IsNullOrEmpty(level.Iid))
+            if (!_strategy.Equals(MV_LevelManagerStrategy.Worlds))
             {
-                MV_Logger.Error($"Null or Empty level Iid.", this);
+                MV_Logger.Error($"LoadWorld method can only be used with when strategy is set to '{MV_LevelManagerStrategy.Worlds}'.", this);
                 return;
             }
 
-            if (!_registeredBehaviours.ContainsKey(level.Iid))
+            HashSet<string> iids = _project.GetAllLevelsIidsInWorld(worldName);
+
+            if (iids == null || iids.Count == 0)
             {
-                MV_Logger.Error($"Trying to prepare a non registered level.", this);
+                MV_Logger.Error($"Trying to load world {worldName} but it has no levels.", this);
                 return;
             }
 
-            _currentLevel = level;
-            _currentBehaviour = _registeredBehaviours[_currentLevel.Iid];
-            _ = LoadNeighboursAsync(_currentLevel);
+            ExitLevel();
 
-            _currentBehaviour.Prepare();
+            await UnloadAllAsync();
+
+            _registeredBehaviours.Clear();
+            _loadedObjects.Clear();
+            _loadedScenes.Clear();
+
+            await LoadMultipleAsync(iids);
         }
 
-        /// <summary>
-        /// This should be used while transitioning from one level to another.
-        /// Have in mind that the target level should be already loaded.
-        /// </summary>
-        /// <param name="level"></param>
-        /// <returns></returns>
         public void PrepareLevel(string iid)
         {
+            // If the level could not be found, do not attempt to prepare it.
             if (!SetLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
             {
                 return;
             }
+
+            // Prepare the level for entering through the spot.
             levelBehaviour.Prepare();
         }
 
         /// <summary>
-        /// This should be used while transitioning from one level to another.
-        /// Have in mind that the target level should be already loaded.
+        /// Prepares the level to be entered through an spot.
         /// </summary>
-        /// <param name="level"></param>
-        /// <returns></returns>
-        public void PrepareLevel(ILevelAnchor checkpoint)
+        /// <param name="spot">The spot to use to enter the level.</param>
+        public void PrepareLevel(string iid, Vector2 position, int facingSign)
         {
-            if (!SetLevelForPreparation(checkpoint.LevelIId, out MV_LevelBehaviour levelBehaviour))
+            // If the level could not be found, do not attempt to prepare it.
+            if (!SetLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
             {
                 return;
             }
-            levelBehaviour.Prepare(checkpoint);
+
+            // Prepare the level for entering through the spot.
+            levelBehaviour.Prepare(position, facingSign);
         }
 
-        public void PrepareLevel(IConnection connection)
+        public void PrepareLevel(string iid, string spotIid)
         {
-            if (!SetLevelForPreparation(connection.TargetLevelIid, out MV_LevelBehaviour levelBehaviour))
+            // If the level could not be found, do not attempt to prepare it.
+            if (!SetLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
             {
                 return;
             }
+
+            // Prepare the level for entering through the spot.
+            levelBehaviour.Prepare(spotIid);
+        }
+
+        /// <summary>
+        /// Prepares the level to be entered through a connection.
+        /// </summary>
+        /// <param name="connection">The connection to use to enter the level.</param>
+        public void PrepareLevel(string iid, IConnection connection)
+        {
+            if (!SetLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
+            {
+                // If the level could not be found, do not attempt to prepare it.
+                return;
+            }
+
+            // Prepare the level for entering through the connection.
             levelBehaviour.Prepare(connection);
+        }
+
+        public void PrepareLevel(string iid, IPortal portal)
+        {
+            if (!SetLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
+            {
+                // If the level could not be found, do not attempt to prepare it.
+                return;
+            }
+
+            // Prepare the level for entering through the portal.
+            levelBehaviour.Prepare(portal);
         }
 
         private bool SetLevelForPreparation(string iid, out MV_LevelBehaviour behaviour)
@@ -222,9 +259,19 @@ namespace LDtkVania
                 return false;
             }
 
-            _currentLevel = level;
-            _currentBehaviour = behaviour;
-            _ = LoadNeighboursAsync(_currentLevel);
+            switch (_strategy)
+            {
+                case MV_LevelManagerStrategy.Worlds:
+                    PrepareLevelInWorld(level, behaviour);
+                    break;
+                case MV_LevelManagerStrategy.Areas:
+                    PrepareLevelInArea(level, behaviour);
+                    break;
+                case MV_LevelManagerStrategy.Neighbours:
+                default:
+                    PrepareNeighbouredLevel(level, behaviour);
+                    break;
+            }
 
             return true;
         }
@@ -252,173 +299,293 @@ namespace LDtkVania
             }
         }
 
+        private void PrepareNeighbouredLevel(MV_Level level, MV_LevelBehaviour behaviour)
+        {
+            _currentLevel = level;
+            _currentBehaviour = behaviour;
+            _ = LoadNeighboursAsync(_currentLevel);
+
+        }
+
+        private void PrepareLevelInWorld(MV_Level level, MV_LevelBehaviour behaviour)
+        {
+            _currentLevel = level;
+            _currentBehaviour = behaviour;
+        }
+
+        private void PrepareLevelInArea(MV_Level level, MV_LevelBehaviour behaviour)
+        {
+            _currentLevel = level;
+            _currentBehaviour = behaviour;
+        }
+
         #endregion
 
         #region Loading Neighbours
 
+        /// <summary>
+        /// This will load all neighbours of the given level up to a certain depth.
+        /// </summary>
+        /// <param name="level">The level to load neighbours from.</param>
+        /// <returns></returns>
         private async Task LoadNeighboursAsync(MV_Level level)
         {
+            // Check if the given level is null
+            if (level == null)
+            {
+                MV_Logger.Error($"Trying to load neighbours for a null level.", this);
+                return;
+            }
+
+            // Check if the given depth is negative
+            if (_depth <= 0)
+            {
+                MV_Logger.Error($"Trying to load neighbours for a level with a negative depth.", this);
+                return;
+            }
+
+            // Create a queue to store the levels to be loaded
+            Queue<(MV_Level, int)> queue = new();
+
+            // Clear the lists of levels to be loaded and unloaded
             _shouldBeLoaded.Clear();
             _shouldBeUnloaded.Clear();
 
-            _shouldBeLoaded.Add(level.Iid); // Must put current level as first of the list
+            // Add the given level to the queue and to the list of levels to be loaded
+            queue.Enqueue((level, 0));
+            _shouldBeLoaded.Add(level.Iid);
 
-            for (int i = 0; i < _depth; i++)
+            // While there are levels in the queue
+            while (queue.Count > 0)
             {
-                HashSet<string> neighbours = new();
+                // Get the next level and its depth
+                (MV_Level currentLevel, int currentDepth) = queue.Dequeue();
 
-                foreach (string neighbourLevelIid in _shouldBeLoaded)
+                // If the current depth is less than the given depth
+                if (currentDepth < _depth)
                 {
-                    AddNeighboursToList(neighbours, neighbourLevelIid);
-                }
+                    // For each neighbour of the current level
+                    foreach (Level neighbour in currentLevel.LDtkLevel.Neighbours)
+                    {
+                        // Try to get the neighbour level
+                        if (!TryGetLevel(neighbour.Iid, out MV_Level mvLevel))
+                        {
+                            // If the neighbour level was not found, log an error
+                            MV_Logger.Error($"{name} could not find neighbour under Iid {neighbour.Iid} for level {currentLevel.Name}", this);
+                            continue;
+                        }
 
-                foreach (string neighbourIid in neighbours)
-                {
-                    if (_shouldBeLoaded.Contains(neighbourIid)) continue;
-                    _shouldBeLoaded.Add(neighbourIid);
+                        // If the neighbour level has not been added to the list of levels to be loaded
+                        if (!_shouldBeLoaded.Contains(mvLevel.Iid))
+                        {
+                            // Add the neighbour level to the queue and to the list of levels to be loaded
+                            queue.Enqueue((mvLevel, currentDepth + 1));
+                            _shouldBeLoaded.Add(mvLevel.Iid);
+                        }
+                    }
                 }
             }
 
-            foreach (var pair in _loadedObjects)
+            // For each level that was previously loaded but is not in the list of levels to be loaded
+            foreach (string iid in _loadedObjects.Keys)
             {
-                if (!_shouldBeLoaded.Contains(pair.Key))
+                if (!_shouldBeLoaded.Contains(iid))
                 {
-                    _shouldBeUnloaded.Add(pair.Key);
+                    // Add the level to the list of levels to be unloaded
+                    _shouldBeUnloaded.Add(iid);
                 }
             }
 
-            foreach (var pair in _loadedScenes)
+            // For each scene that was previously loaded but is not in the list of levels to be loaded
+            foreach (string iid in _loadedScenes.Keys)
             {
-                if (!_shouldBeLoaded.Contains(pair.Key))
+                if (!_shouldBeLoaded.Contains(iid))
                 {
-                    _shouldBeUnloaded.Add(pair.Key);
+                    // Add the scene to the list of levels to be unloaded
+                    _shouldBeUnloaded.Add(iid);
                 }
             }
+
+            // Unload all levels that are in the list of levels to be unloaded
             await UnloadMultipleAsync(_shouldBeUnloaded);
+
+            // Load all levels that are in the list of levels to be loaded
             await LoadMultipleAsync(_shouldBeLoaded);
-        }
-
-        private void AddNeighboursToList(HashSet<string> list, string iid)
-        {
-            if (!TryGetLevel(iid, out MV_Level level)) return;
-            foreach (LDtkUnity.Level neighbour in level.LDtkLevel.Neighbours)
-            {
-                if (!TryGetLevel(neighbour.Iid, out MV_Level mvLevel))
-                {
-                    MV_Logger.Error($"{name} could not find neighbour {neighbour.Iid}", this);
-                    continue;
-                }
-
-                if (list.Contains(mvLevel.Iid)) continue;
-                list.Add(mvLevel.Iid);
-            }
         }
 
         #endregion
 
         #region Loading Levels
 
+        /// <summary>
+        /// This will load multiple levels asynchronously.
+        /// </summary>
+        /// <param name="levelsToLoad">The levels to load.</param>
+        /// <returns></returns>
         private async Task LoadMultipleAsync(HashSet<string> levelsToLoad)
         {
+            // Create a list to store the tasks for loading each level
             List<Task> levelLoadTasks = new();
 
+            // For each level to load
             foreach (string toLoadiid in levelsToLoad)
             {
+                // Add the task for loading the level to the list
                 levelLoadTasks.Add(LoadAsync(toLoadiid));
             }
 
+            // Wait for all the tasks to complete
             await Task.WhenAll(levelLoadTasks);
         }
 
+        /// <summary>
+        /// This will load a level asynchronously.
+        /// </summary>
+        /// <param name="iid">The IID of the level to load.</param>
+        /// <returns></returns>
         private async Task LoadAsync(string iid)
         {
+            // Check if the level exists
             if (!TryGetLevel(iid, out MV_Level level)) return;
 
+            // Check if the level should be loaded as an object or a scene
             if (!level.HasScene)
             {
+                // Check if the level has already been loaded
                 if (_loadedObjects.ContainsKey(iid)) return;
 
-                AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(level.AddressableKey);
+                // Load the level as an object
+                AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(level.Address);
                 await handle.Task;
 
+                // Check if the load operation succeeded
                 if (handle.Status != AsyncOperationStatus.Succeeded)
                 {
                     MV_Logger.Error($"Async operation for level {level.name} as an object failed.", this);
                     return;
                 }
 
+                // Instantiate the loaded object
                 GameObject loadedObject = Instantiate(handle.Result);
+                // Add the loaded object to the list of loaded objects
                 _loadedObjects.Add(iid, loadedObject);
             }
             else
             {
+                // Check if the level has already been loaded
                 if (_loadedScenes.ContainsKey(iid)) return;
+
+                // Load the level as a scene
                 AsyncOperationHandle<SceneInstance> handle = Addressables.LoadSceneAsync(level.Scene.AddressableKey, LoadSceneMode.Additive);
                 await handle.Task;
 
+                // Check if the load operation succeeded
                 if (handle.Status != AsyncOperationStatus.Succeeded)
                 {
                     MV_Logger.Error($"Async operation for loading level {level.name} as a scene failed.", this);
                     return;
                 }
 
+                // Add the loaded scene to the list of loaded scenes
                 _loadedScenes.Add(iid, handle.Result);
             }
         }
 
+        /// <summary>
+        /// Unload a level asynchronously.
+        /// </summary>
+        /// <param name="iid">The IID of the level to unload.</param>
+        /// <returns>An async task that represents the unload operation.</returns>
         private async Task UnloadAsync(string iid)
         {
+            // Check if the level exists
             if (!TryGetLevel(iid, out MV_Level level)) return;
 
+            // Check if the level has been loaded as an object
             if (_loadedObjects.TryGetValue(iid, out GameObject loadedObject))
             {
+                // Remove the level from the list of loaded objects
                 _loadedObjects.Remove(iid);
+
+                // Destroy the loaded object
                 Destroy(loadedObject);
+                return;
             }
 
+            // Check if the level has been loaded as a scene
             if (_loadedScenes.TryGetValue(iid, out SceneInstance sceneInstance))
             {
+                // Start the unload operation
                 AsyncOperationHandle handle = Addressables.UnloadSceneAsync(sceneInstance, false);
+
+                // Wait for the unload operation to finish
                 await handle.Task;
 
+                // Check if the unload operation succeeded
                 if (handle.Status != AsyncOperationStatus.Succeeded)
                 {
+                    // Log an error if the unload operation failed
                     MV_Logger.Error($"Async operation for unloading level {level.name} as a scene failed.", this);
                     MV_Logger.Warning($"Handle status: {handle.Status}");
                     MV_Logger.Warning($"{handle.OperationException?.StackTrace}");
                     return;
                 }
 
+                // Remove the level from the list of loaded scenes
                 _loadedScenes.Remove(iid);
             }
         }
 
+        /// <summary>
+        /// Unload multiple levels asynchronously.
+        /// </summary>
+        /// <param name="levelsToUnload">The set of levels to unload.</param>
+        /// <returns>An async task that represents the unload operation.</returns>
         private async Task UnloadMultipleAsync(HashSet<string> levelsToUnload)
         {
+            // Create a list of unload tasks
             List<Task> unloadTasks = new();
 
+            // Iterate over each level to unload
             foreach (string toUnloadIid in levelsToUnload)
             {
+                // Add the unload task to the list
                 unloadTasks.Add(UnloadAsync(toUnloadIid));
             }
 
+            // Wait for all unload tasks to finish
             await Task.WhenAll(unloadTasks);
         }
 
+        /// <summary>
+        /// Unload all levels that have been loaded by this level manager.
+        /// </summary>
+        /// <returns>An async task that represents the unload operation.</returns>
         private async Task UnloadAllAsync()
         {
+            // Create a list of unload tasks
             List<Task> tasks = new();
 
-            foreach (var pair in _loadedObjects)
+            List<GameObject> objectsToUnload = _loadedObjects.Values.ToList();
+            List<SceneInstance> scenesToUnload = _loadedScenes.Values.ToList();
+            _loadedObjects.Clear();
+            _loadedScenes.Clear();
+
+            // Iterate over each level that has been loaded as an object
+            foreach (GameObject levelObject in objectsToUnload)
             {
-                tasks.Add(UnloadAsync(pair.Key));
+                Destroy(levelObject);
             }
 
-            foreach (var pair in _loadedScenes)
+            // Iterate over each level that has been loaded as a scene
+            foreach (SceneInstance sceneInstance in scenesToUnload)
             {
-                tasks.Add(UnloadAsync(pair.Key));
+                // Start the unload operation
+                AsyncOperationHandle handle = Addressables.UnloadSceneAsync(sceneInstance, false);
+                tasks.Add(handle.Task);
             }
 
+            // Wait for all unload tasks to finish
             await Task.WhenAll(tasks);
         }
 
@@ -426,6 +593,11 @@ namespace LDtkVania
 
         #region Registering Behaviours
 
+        /// <summary>
+        /// Registers a level behaviour to be used when transitioning to the level with the given Iid.
+        /// </summary>
+        /// <param name="iid">The Iid of the level to register the behaviour for.</param>
+        /// <param name="behaviour">The behaviour to register.</param>
         public void RegisterAsBehaviour(string iid, MV_LevelBehaviour behaviour)
         {
             if (!TryGetLevel(iid, out MV_Level level))
@@ -436,21 +608,29 @@ namespace LDtkVania
 
             if (_registeredBehaviours.ContainsKey(iid))
             {
-                MV_Logger.Warning($"Level {level.name}({level.Iid}) already registered as behaviour but is trying to be registered again", this);
+                // If the level is already registered as a behaviour, do not register it again.
+                MV_Logger.Warning($"Level {level.Name}({level.Iid}) already registered as behaviour but is trying to be registered again", this);
                 return;
             }
 
+            // Add the behaviour to the list of registered behaviours.
             _registeredBehaviours.Add(iid, behaviour);
         }
 
+        /// <summary>
+        /// Unregisters a level behaviour from being used when transitioning to the level with the given Iid.
+        /// </summary>
+        /// <param name="iid">The Iid of the level to unregister the behaviour for.</param>
         public void UnregisterAsBehaviour(string iid)
         {
             if (!TryGetLevel(iid, out MV_Level level))
             {
+                // If the level is not found, log an error.
                 MV_Logger.Error($"Level under LDtk Iid {iid} not found for unregistering as behaviour", this);
                 return;
             }
 
+            // Remove the behaviour from the list of registered behaviours.
             _registeredBehaviours.Remove(iid);
         }
 
@@ -458,13 +638,26 @@ namespace LDtkVania
 
         #region Providing Levels
 
+        /// <summary>
+        /// Attempts to retrieve a level by its Iid.
+        /// </summary>
+        /// <param name="iid">The Iid of the level to retrieve.</param>
+        /// <param name="level">The retrieved level if successful, or null if not.</param>
+        /// <returns>true if the level was successfully retrieved, false otherwise.</returns>
         public bool TryGetLevel(string iid, out MV_Level level)
         {
+            // Try to get the level from the project.
             return _project.TryGetLevel(iid, out level);
         }
 
+        /// <summary>
+        /// Retrieves a level by its Iid.
+        /// </summary>
+        /// <param name="iid">The Iid of the level to retrieve.</param>
+        /// <returns>The retrieved level if successful, or null if not.</returns>
         public MV_Level GetLevel(string iid)
         {
+            // Attempt to get the level from the project.
             return _project.GetLevel(iid);
         }
 

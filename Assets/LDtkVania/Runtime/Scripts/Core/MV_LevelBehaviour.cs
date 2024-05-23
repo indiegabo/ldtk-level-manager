@@ -3,6 +3,7 @@ using LDtkUnity;
 using LDtkVania.Utils;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Linq;
 
 namespace LDtkVania
 {
@@ -30,12 +31,12 @@ namespace LDtkVania
         #region Fields
 
         private LDtkIid _ldtkIid;
+        private LDtkComponentLevel _ldtkComponentLevel;
         private MV_Level _mvLevel;
 
-        private MV_LevelDefaultSpawnPoint _defaultSpawnPoint;
-
         private Dictionary<string, IConnection> _connections;
-        private Dictionary<string, ILevelAnchor> _checkpoints;
+        private Dictionary<string, IPlacementSpot> _spots;
+        private Dictionary<string, IPortal> _portals;
 
         #endregion
 
@@ -54,22 +55,36 @@ namespace LDtkVania
         {
             if (!TryGetComponent(out _ldtkIid))
             {
-                MV_Logger.Error($"{name} has no LDtkIid component", this);
+                MV_Logger.Error($"Level {name} has no {nameof(LDtkIid)} component", this);
+                return;
+            }
+
+            if (!TryGetComponent(out _ldtkComponentLevel))
+            {
+                MV_Logger.Error($"Level {name} has no {nameof(LDtkComponentLevel)} component", this);
                 return;
             }
 
             if (!MV_LevelManager.Instance.TryGetLevel(_ldtkIid.Iid, out _mvLevel))
             {
-                MV_Logger.Error($"{name} could not be activated because {_ldtkIid.Iid} is not present on dictionary", this);
+                MV_Logger.Error($"Level {name} could not be activated because {_ldtkIid.Iid} is not present on dictionary", this);
                 return;
             }
 
-            BroadcastMessage("OnLevelAwake", this, SendMessageOptions.DontRequireReceiver);
+            name = _mvLevel.Name;
 
-            InitializeConnections();
-            EvaluateCheckpoints();
+            LDtkComponentLayer componentLayer = _ldtkComponentLevel.LayerInstances.FirstOrDefault(
+                l => l != null && l.Identifier == MV_LevelManager.Instance.NavigationLayer
+            );
+
+            Transform navigationContainer = componentLayer != null ? componentLayer.transform : transform;
+
+            EvaluateSpots(navigationContainer);
+            EvaluateConnections(navigationContainer);
+            EvaluatePortals(navigationContainer);
 
             MV_LevelManager.Instance.RegisterAsBehaviour(_ldtkIid.Iid, this);
+            BroadcastMessage("OnLevelAwake", this, SendMessageOptions.DontRequireReceiver);
         }
 
         private void OnDestroy()
@@ -83,130 +98,184 @@ namespace LDtkVania
 
         public void Prepare()
         {
-            if (_defaultSpawnPoint == null)
+            if (_spots.Count == 0)
             {
-                MV_Logger.Error($"{name} has no default spawn point", this);
+                MV_Logger.Error($"Level {name} could not be prepared because there are no spots", this);
                 return;
             }
 
-            Vector2 point = _defaultSpawnPoint.transform.position;
-            _preparationStartedEvent.Invoke(this, point);
-            SpawnCharacter(point, _defaultSpawnPoint.DirectionSign);
-            _preparedEvent.Invoke(this, MV_LevelTrail.FromPoint(point));
+            IPlacementSpot mainSpot = _spots.Values.FirstOrDefault(x => x.Main);
+            if (mainSpot == null)
+            {
+                string message = $"Level {name} is trying to prepare with a main spot but there is no spot set as \"Main\" in the registry.";
+                message += $"Using the first available spot.";
+                MV_Logger.Warning(message, this);
+                mainSpot = _spots.Values.FirstOrDefault();
+            }
+
+            _preparationStartedEvent.Invoke(this, mainSpot.SpawnPoint);
+            PlaceCharacter(mainSpot.SpawnPoint, mainSpot.FacingSign);
+            _preparedEvent.Invoke(this, MV_LevelTrail.FromPoint(mainSpot.SpawnPoint));
         }
 
-        public void Prepare(ILevelAnchor checkpoint)
+        public void Prepare(string spotIid)
         {
-            if (!_checkpoints.TryGetValue(checkpoint.AnchorIid, out ILevelAnchor registeredCheckpoint))
+            if (!_spots.TryGetValue(spotIid, out IPlacementSpot registeredSpot))
             {
-                MV_Logger.Error($"{name} could not be prepared because {checkpoint.AnchorIid} is not present on dictionary", this);
+                MV_Logger.Error($"Level {name} could not be prepared because there is no spot by Iid \"{spotIid}\" present on the spots registry.", this);
                 return;
             }
 
-            _preparationStartedEvent.Invoke(this, registeredCheckpoint.SpawnPoint);
-            SpawnCharacter(registeredCheckpoint.SpawnPoint, registeredCheckpoint.FacingSign);
-            _preparedEvent.Invoke(this, MV_LevelTrail.FromCheckpoint(checkpoint));
+            _preparationStartedEvent.Invoke(this, registeredSpot.SpawnPoint);
+            PlaceCharacter(registeredSpot.SpawnPoint, registeredSpot.FacingSign);
+            _preparedEvent.Invoke(this, MV_LevelTrail.FromSpot(registeredSpot));
         }
 
         public void Prepare(IConnection connection)
         {
-            if (!_connections.TryGetValue(connection.Key, out IConnection registeredConnection))
+            // It is comming from a connection, so it must find the target connection within the dictionary
+            if (!_connections.TryGetValue(connection.TargetIid, out IConnection registeredConnection))
             {
-                MV_Logger.Error($"{name} could not be prepared because the connection key \"{connection.Key}\" is not present on dictionary", this);
+                string message = $"Level {name} could not be prepared because the connection Iid \"{connection.TargetIid}\"";
+                message += "is not present on the connections registry.";
+                MV_Logger.Error(message, this);
                 return;
             }
 
-            _preparationStartedEvent.Invoke(this, registeredConnection.SpawnPoint);
-            SpawnCharacter(registeredConnection.SpawnPoint, registeredConnection.FacingSign);
+            _preparationStartedEvent.Invoke(this, registeredConnection.Spot.SpawnPoint);
+            PlaceCharacter(registeredConnection.Spot.SpawnPoint, registeredConnection.Spot.FacingSign);
             _preparedEvent.Invoke(this, MV_LevelTrail.FromConnection(registeredConnection));
+        }
+
+        public void Prepare(IPortal portal)
+        {
+            // It is comming from a portal, so it must find the target portal within the dictionary
+            if (!_portals.TryGetValue(portal.TargetIid, out IPortal registeredPortal))
+            {
+                string message = $"Level {name} could not be prepared because the portal under Iid \"{portal.TargetIid}\"";
+                message += "is not present on the portals registry.";
+                MV_Logger.Error(message, this);
+                return;
+            }
+
+            _preparationStartedEvent.Invoke(this, registeredPortal.Spot.SpawnPoint);
+            PlaceCharacter(registeredPortal.Spot.SpawnPoint, registeredPortal.Spot.FacingSign);
+            _preparedEvent.Invoke(this, MV_LevelTrail.FromPortal(registeredPortal));
+        }
+
+        public void Prepare(Vector2 spawnPoint, int facingSign)
+        {
+            _preparationStartedEvent.Invoke(this, spawnPoint);
+            PlaceCharacter(spawnPoint, facingSign);
+            _preparedEvent.Invoke(this, MV_LevelTrail.FromPoint(spawnPoint));
         }
 
         public void Enter()
         {
             EnableConnections();
+
+            if (!_mainCharacterProvider.TryGetComponent(out ICharacterLevelFlowSubject levelFlowSubject))
+            {
+                MV_Logger.Error($"Level {name} could not find an ({nameof(ICharacterLevelFlowSubject)}) to call {nameof(ICharacterLevelFlowSubject.OnLevelEnter)}", this);
+                return;
+            }
+
+            levelFlowSubject.OnLevelEnter();
             _enteredEvent.Invoke(this);
         }
 
         public void Exit()
         {
-            DisableConnections();
+            DisableNavigators();
+
+            if (!_mainCharacterProvider.TryGetComponent(out ICharacterLevelFlowSubject levelFlowSubject))
+            {
+                MV_Logger.Error($"Level {name} could not find an ({nameof(ICharacterLevelFlowSubject)}) to call {nameof(ICharacterLevelFlowSubject.OnLevelExit)}", this);
+                return;
+            }
+
+            levelFlowSubject.OnLevelExit();
             _exitedEvent.Invoke(this);
         }
 
         #endregion
 
-        #region Connections
+        #region Navigation
 
-        private void InitializeConnections()
+        private void EvaluateSpots(Transform navigationContainer)
+        {
+            _spots = new Dictionary<string, IPlacementSpot>();
+
+            IPlacementSpot[] spotComponents = navigationContainer.GetComponentsInChildren<IPlacementSpot>();
+
+            foreach (IPlacementSpot spot in spotComponents)
+            {
+                if (_spots.ContainsKey(spot.Iid))
+                {
+                    MV_Logger.Warning($"Level {name} has more than one spots with the same Iid: {spot.Iid}. Using the first found", this);
+                }
+
+                _spots.Add(spot.Iid, spot);
+            }
+        }
+
+        private void EvaluateConnections(Transform navigationContainer)
         {
             _connections = new Dictionary<string, IConnection>();
 
-            string connectionsContainerName = MV_LevelManager.Instance.ConnectionsContainerName;
-
-            Transform connectionsContainer = !string.IsNullOrEmpty(connectionsContainerName)
-                ? transform.Find(connectionsContainerName)
-                : transform;
-
-            if (connectionsContainer == null) return;
-
-            _defaultSpawnPoint = connectionsContainer.GetComponentInChildren<MV_LevelDefaultSpawnPoint>();
-
-            IConnection[] connectionsComponents = connectionsContainer.GetComponentsInChildren<IConnection>();
+            IConnection[] connectionsComponents = navigationContainer.GetComponentsInChildren<IConnection>();
 
             foreach (IConnection connection in connectionsComponents)
             {
-                connection.Initialize();
-                if (_connections.ContainsKey(connection.Key))
+                if (_connections.ContainsKey(connection.Iid))
                 {
-                    MV_Logger.Warning($"{name} has more than one connection with the same key: {connection.Key}. Using the first found", this);
+                    MV_Logger.Warning($"Level {name} has more than one connection with the same Iid: {connection.Iid}. Using the first found.", this);
                 }
-                _connections.Add(connection.Key, connection);
-                connection.Deactivate();
+                _connections.Add(connection.Iid, connection);
+                connection.Initialize();
+                connection.SetActive(false);
             }
         }
 
         private void EnableConnections()
         {
-            if (_connections == null) return;
-
             foreach (IConnection connection in _connections.Values)
             {
-                connection.Activate();
+                connection.SetActive(true);
+            }
+
+            foreach (IPortal portal in _portals.Values)
+            {
+                portal.SetActive(true);
             }
         }
 
-        private void DisableConnections()
+        private void DisableNavigators()
         {
-            if (_connections == null) return;
-
             foreach (IConnection connection in _connections.Values)
             {
-                connection.Deactivate();
+                connection.SetActive(false);
+            }
+
+            foreach (IPortal portal in _portals.Values)
+            {
+                portal.SetActive(false);
             }
         }
 
-        #endregion
-
-        #region Checkpoints
-
-        private void EvaluateCheckpoints()
+        private void EvaluatePortals(Transform navigationContainer)
         {
-            _checkpoints = new Dictionary<string, ILevelAnchor>();
+            _portals = new Dictionary<string, IPortal>();
 
-            Transform checkpointsContainer = transform.Find(MV_LevelManager.Instance.CheckpointsContainerName);
+            IPortal[] portalComponents = navigationContainer.GetComponentsInChildren<IPortal>();
 
-            if (checkpointsContainer == null) return;
-
-            ILevelAnchor[] checkpointsComponents = checkpointsContainer.GetComponentsInChildren<ILevelAnchor>();
-
-            foreach (ILevelAnchor checkpoint in checkpointsComponents)
+            foreach (IPortal portal in portalComponents)
             {
-                if (_checkpoints.ContainsKey(checkpoint.AnchorIid))
+                if (_portals.ContainsKey(portal.Iid))
                 {
-                    MV_Logger.Warning($"{name} has more than one checkpoint with the same key: {checkpoint.AnchorIid}. Using the first found", this);
+                    MV_Logger.Warning($"Level {name} has more than one portal with the same Iid: {portal.Iid}. Using the first found.", this);
                 }
-
-                _checkpoints.Add(checkpoint.AnchorIid, checkpoint);
+                _portals.Add(portal.Iid, portal);
             }
         }
 
@@ -214,15 +283,15 @@ namespace LDtkVania
 
         #region Main Character
 
-        private void SpawnCharacter(Vector2 position, int directionSign)
+        private void PlaceCharacter(Vector2 position, int directionSign)
         {
-            if (!_mainCharacterProvider.TryGetComponent(out ILevelSpawnSubject spawnSubject))
+            if (!_mainCharacterProvider.TryGetComponent(out ICharacterLevelFlowSubject levelFlowSubject))
             {
-                MV_Logger.Error($"{name} could not find an ({nameof(ILevelSpawnSubject)}) to spawn", this);
+                MV_Logger.Error($"Level {name} could not find an ({nameof(ICharacterLevelFlowSubject)}) to place the character into", this);
                 return;
             }
 
-            spawnSubject.Spawn(position, directionSign);
+            levelFlowSubject.PlaceInLevel(position, directionSign);
         }
 
         #endregion

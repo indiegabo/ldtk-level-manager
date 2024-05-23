@@ -1,0 +1,6 @@
+.paginator-button {
+    padding-top: 3px;
+    padding-right: 6px;
+    padding-bottom: 3px;
+    padding-left: 3px;
+}
