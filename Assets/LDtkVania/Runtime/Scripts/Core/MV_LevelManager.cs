@@ -54,7 +54,6 @@ namespace LDtkVania
 
         #region Fields
 
-        private LdtkJson _ldtkJson;
         private MV_Level _currentLevel;
         private MV_LevelBehaviour _currentBehaviour;
 
@@ -70,6 +69,9 @@ namespace LDtkVania
 
         public MV_LevelManagerStrategy Strategy => _strategy;
         public string NavigationLayer => _project.NavigationLayer;
+
+        public MV_Level CurrentLevel => _currentLevel;
+        public MV_LevelBehaviour CurrentBehaviour => _currentBehaviour;
 
         public UnityEvent<MV_Level> LevelPreparedEvent => _levelPreparedEvent;
         public UnityEvent<MV_Level> LevelEnteredEvent => _levelEnteredEvent;
@@ -100,26 +102,14 @@ namespace LDtkVania
             if (_persistent)
                 DontDestroyOnLoad(gameObject);
 
-
             LDtkIidBank.CacheIidData(_project.LDtkProject);
-            _ldtkJson = _project.LDtkProject;
         }
 
         #endregion
 
         #region Entering Levels
 
-        /// <summary>
-        /// This should be used when the target level has no neighbours already loaded 
-        /// and therefore needs to await all of them being loaded before 
-        /// activating the current level.
-        /// 
-        /// This also unloads all loaded levels before loading the target level and 
-        /// its neighbours
-        /// </summary>
-        /// <param name="level"></param>
-        /// <returns></returns>
-        public async Task LoadLevelAndNeighbours(string iid, MV_LevelLoadMode mode = MV_LevelLoadMode.LoadOnly, string spotIid = null)
+        public async Task LoadLevel(string iid)
         {
             if (!TryGetLevel(iid, out MV_Level level))
             {
@@ -127,26 +117,24 @@ namespace LDtkVania
                 return;
             }
 
-            ExitLevel();
-
-            await UnloadAllAsync();
-
-            _registeredBehaviours.Clear();
-            _loadedObjects.Clear();
-            _loadedScenes.Clear();
-
-            await LoadNeighboursAsync(level);
-
-            if (!mode.Equals(MV_LevelLoadMode.LoadAndEnter) || string.IsNullOrEmpty(spotIid))
+            switch (_strategy)
             {
-                return;
-            };
-
-            _currentLevel = level;
-            _currentBehaviour = _registeredBehaviours[_currentLevel.Iid];
-            _currentBehaviour.Prepare(spotIid);
-
-            EnterLevel();
+                case MV_LevelManagerStrategy.Neighbours:
+                    await LoadNeighboursAsync(level);
+                    break;
+                case MV_LevelManagerStrategy.Worlds:
+                    if (_currentLevel == null || _currentLevel.WorldName != level.WorldName)
+                    {
+                        await LoadWorld(level.WorldName);
+                    }
+                    break;
+                case MV_LevelManagerStrategy.Areas:
+                    if (_currentLevel == null || _currentLevel.AreaName != level.AreaName)
+                    {
+                        await LoadArea(level.AreaName);
+                    }
+                    break;
+            }
         }
 
         public async Task LoadWorld(string worldName)
@@ -176,10 +164,37 @@ namespace LDtkVania
             await LoadMultipleAsync(iids);
         }
 
-        public void PrepareLevel(string iid)
+        public async Task LoadArea(string areaName)
+        {
+            if (!_strategy.Equals(MV_LevelManagerStrategy.Areas))
+            {
+                MV_Logger.Error($"LoadArea method can only be used with when strategy is set to '{MV_LevelManagerStrategy.Areas}'.", this);
+                return;
+            }
+
+            HashSet<string> iids = _project.GetAllLevelsIidsInArea(areaName);
+
+            if (iids == null || iids.Count == 0)
+            {
+                MV_Logger.Error($"Trying to load area {areaName} but it has no levels.", this);
+                return;
+            }
+
+            ExitLevel();
+
+            await UnloadAllAsync();
+
+            _registeredBehaviours.Clear();
+            _loadedObjects.Clear();
+            _loadedScenes.Clear();
+
+            await LoadMultipleAsync(iids);
+        }
+
+        public void Prepare(string iid)
         {
             // If the level could not be found, do not attempt to prepare it.
-            if (!SetLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
+            if (!PerformPreparation(iid, out MV_LevelBehaviour levelBehaviour))
             {
                 return;
             }
@@ -192,10 +207,10 @@ namespace LDtkVania
         /// Prepares the level to be entered through an spot.
         /// </summary>
         /// <param name="spot">The spot to use to enter the level.</param>
-        public void PrepareLevel(string iid, Vector2 position, int facingSign)
+        public void Prepare(string iid, Vector2 position, int facingSign)
         {
             // If the level could not be found, do not attempt to prepare it.
-            if (!SetLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
+            if (!PerformPreparation(iid, out MV_LevelBehaviour levelBehaviour))
             {
                 return;
             }
@@ -204,10 +219,10 @@ namespace LDtkVania
             levelBehaviour.Prepare(position, facingSign);
         }
 
-        public void PrepareLevel(string iid, string spotIid)
+        public void Prepare(string iid, string spotIid)
         {
             // If the level could not be found, do not attempt to prepare it.
-            if (!SetLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
+            if (!PerformPreparation(iid, out MV_LevelBehaviour levelBehaviour))
             {
                 return;
             }
@@ -220,9 +235,9 @@ namespace LDtkVania
         /// Prepares the level to be entered through a connection.
         /// </summary>
         /// <param name="connection">The connection to use to enter the level.</param>
-        public void PrepareLevel(string iid, IConnection connection)
+        public void Prepare(string iid, IConnection connection)
         {
-            if (!SetLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
+            if (!PerformPreparation(iid, out MV_LevelBehaviour levelBehaviour))
             {
                 // If the level could not be found, do not attempt to prepare it.
                 return;
@@ -232,9 +247,9 @@ namespace LDtkVania
             levelBehaviour.Prepare(connection);
         }
 
-        public void PrepareLevel(string iid, IPortal portal)
+        public void Prepare(string iid, IPortal portal)
         {
-            if (!SetLevelForPreparation(iid, out MV_LevelBehaviour levelBehaviour))
+            if (!PerformPreparation(iid, out MV_LevelBehaviour levelBehaviour))
             {
                 // If the level could not be found, do not attempt to prepare it.
                 return;
@@ -244,7 +259,7 @@ namespace LDtkVania
             levelBehaviour.Prepare(portal);
         }
 
-        private bool SetLevelForPreparation(string iid, out MV_LevelBehaviour behaviour)
+        private bool PerformPreparation(string iid, out MV_LevelBehaviour behaviour)
         {
             if (!TryGetLevel(iid, out MV_Level level))
             {

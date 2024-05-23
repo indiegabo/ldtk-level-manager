@@ -3,8 +3,6 @@ using UnityEngine.Events;
 using System.Threading.Tasks;
 using Cinemachine;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.UI;
 
 namespace LDtkVania.Transitioning
@@ -34,7 +32,6 @@ namespace LDtkVania.Transitioning
 
         private bool _transitioning = false;
         private Animator _curtainsAnimator;
-        private List<Task> _transitionTasks = new();
 
         #endregion
 
@@ -88,14 +85,18 @@ namespace LDtkVania.Transitioning
         public async Task TransitionIntoAwaitable(string levelIid, string spotIid)
         {
             await BeforePreparationTask();
-            MV_LevelManager.Instance.PrepareLevel(levelIid, spotIid);
+            MV_LevelManager.Instance.ExitLevel();
+            await MV_LevelManager.Instance.LoadLevel(levelIid);
+            MV_LevelManager.Instance.Prepare(levelIid, spotIid);
             await AfterPreparationTask();
         }
 
         public async Task TransitionIntoAwaitable(string levelIid, IConnection connection)
         {
             await BeforePreparationTask();
-            MV_LevelManager.Instance.PrepareLevel(levelIid, connection);
+            MV_LevelManager.Instance.ExitLevel();
+            await MV_LevelManager.Instance.LoadLevel(levelIid);
+            MV_LevelManager.Instance.Prepare(levelIid, connection);
             await AfterPreparationTask();
         }
 
@@ -104,14 +105,13 @@ namespace LDtkVania.Transitioning
             _transitioning = true;
             _transitionStartedEvent.Invoke();
 
+            await CloseCurtains();
             MV_LevelManager.Instance.ExitLevel();
 
-            await CloseCurtains();
-            await MV_LevelManager.Instance.LoadLevelAndNeighbours(levelIid, MV_LevelLoadMode.LoadOnly);
-            MV_LevelManager.Instance.PrepareLevel(levelIid, portal);
-            await OpenCurtains();
+            await MV_LevelManager.Instance.LoadLevel(levelIid);
+            MV_LevelManager.Instance.Prepare(levelIid, portal);
 
-            // "Activating" level
+            await OpenCurtains();
             MV_LevelManager.Instance.EnterLevel();
 
             _transitioning = false;

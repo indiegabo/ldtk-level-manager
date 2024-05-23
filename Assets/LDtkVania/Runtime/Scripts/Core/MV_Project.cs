@@ -101,6 +101,17 @@ namespace LDtkVania
             return iids;
         }
 
+        public HashSet<string> GetAllLevelsIidsInArea(string areaName)
+        {
+            HashSet<string> iids = new();
+            foreach (MV_Level level in _levels.Values)
+            {
+                if (level.AreaName == areaName) iids.Add(level.Iid);
+            }
+
+            return iids;
+        }
+
         public List<MV_WorldAreas> GetAllWorldAreas()
         {
             return _worldAreas.Values.ToList();
