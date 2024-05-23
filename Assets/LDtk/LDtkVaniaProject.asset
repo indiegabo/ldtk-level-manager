@@ -97,8 +97,8 @@ MonoBehaviour:
   _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_2.ldtkl
   _address: LDtkVaniaLevel_5a000e40-7820-11ed-9426-6583193f320d
   _scene:
-    _assetGuid: 
-    _addressableKey: 
+    _assetGuid: b5728edb542a72e4ea6bacac4368fbf0
+    _addressableKey: LDtkVaniaScene_5a000e40-7820-11ed-9426-6583193f320d
   _leftBehind: 0
 --- !u!114 &-209952499073579342
 MonoBehaviour:
@@ -289,8 +289,8 @@ MonoBehaviour:
   _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_5.ldtkl
   _address: LDtkVaniaLevel_53fb5a10-fec0-11ee-9039-81cd82f7857a
   _scene:
-    _assetGuid: 
-    _addressableKey: 
+    _assetGuid: b4e91df35bc37a84a9e86369911f3019
+    _addressableKey: LDtkVaniaScene_53fb5a10-fec0-11ee-9039-81cd82f7857a
   _leftBehind: 0
 --- !u!114 &8356636896864274669
 MonoBehaviour:
