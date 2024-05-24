@@ -388,7 +388,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: -18, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -664,7 +664,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _project: {fileID: 11400000, guid: 3ddb9f2cdc92cbb438368720b28ac634, type: 2}
   _pixelsPerUnit: 16
-  _scaleFactor: 0.1
+  _scaleFactor: 0.05
 --- !u!4 &1430962054
 Transform:
   m_ObjectHideFlags: 0
@@ -693,6 +693,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mapLevelDrawerPrefab: {fileID: 3699539540056231848, guid: 6e9d37d2ee8759944b5fc55c1dea3634, type: 3}
+  _characterTransform: {fileID: 1592937324}
+  _characterPinPrefab: {fileID: 1272885266166806041, guid: 5aa8764179b79694c909f943ef5a5e44, type: 3}
+--- !u!4 &1592937324 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1544650614272011795, guid: 741f2c91d30a20b4f8f525e268b112dd, type: 3}
+  m_PrefabInstance: {fileID: 385928457}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1805706592
 GameObject:
   m_ObjectHideFlags: 0

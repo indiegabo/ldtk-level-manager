@@ -133,6 +133,7 @@ namespace LDtkVania.Transitioning
         private async Task AfterPreparationTask()
         {
             // Opening curtains
+            await Task.Delay(TimeSpan.FromSeconds(0.1f));
             await PerformTransitions(LevelTransitionMoment.Open);
 
             if (Camera.main.TryGetComponent<CinemachineBrain>(out var cinemachineBrain))

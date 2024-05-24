@@ -45,7 +45,7 @@ namespace LDtkVania
                 new(0, 0),
                 new(size.x, 0)
             };
-            _virtualCamera.enabled = false;
+            _virtualCamera.gameObject.SetActive(false);
         }
 
         private void OnEnable()
@@ -59,31 +59,25 @@ namespace LDtkVania
             _levelBehaviour.ExitedEvent.RemoveListener(OnLevelExited);
             _levelBehaviour.PreparationStartedEvent.RemoveListener(OnLevelPreparationStarted);
         }
-
         private void Start()
         {
-            _mainCharacterProvider.TryGet(out GameObject characterObj);
-
-            if (characterObj != null)
-            {
-                _virtualCamera.Follow = characterObj.transform;
-            }
-            else
-            {
-                MV_Logger.Error("Main character not found", this);
-            }
         }
 
         #endregion
 
         private void OnLevelExited(MV_LevelBehaviour arg0)
         {
-            _virtualCamera.enabled = false;
+            _virtualCamera.Follow = null;
+            _virtualCamera.gameObject.SetActive(false);
         }
 
         private void OnLevelPreparationStarted(MV_LevelBehaviour arg0, Vector2 arg1)
         {
-            _virtualCamera.enabled = true;
+            if (_mainCharacterProvider.TryGet(out GameObject characterObj))
+            {
+                _virtualCamera.Follow = characterObj.transform;
+            }
+            _virtualCamera.gameObject.SetActive(true);
         }
     }
 }

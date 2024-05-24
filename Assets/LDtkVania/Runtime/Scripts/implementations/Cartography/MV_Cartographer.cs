@@ -26,6 +26,13 @@ namespace LDtkVania.Cartography
 
         #endregion
 
+        #region Getters
+
+        public int PixelsPerUnit => _pixelsPerUnit;
+        public float ScaleFactor => _scaleFactor;
+
+        #endregion
+
         #region Behaviour
 
         private void Awake()
