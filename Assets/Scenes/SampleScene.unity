@@ -360,7 +360,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 300
   field of view: 34
   orthographic: 1
   orthographic size: 6.75
@@ -388,7 +388,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -18, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -642,6 +642,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1430962054}
   - component: {fileID: 1430962053}
+  - component: {fileID: 1430962055}
   m_Layer: 0
   m_Name: Cartographer
   m_TagString: Untagged
@@ -663,7 +664,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _project: {fileID: 11400000, guid: 3ddb9f2cdc92cbb438368720b28ac634, type: 2}
   _pixelsPerUnit: 16
-  _scaleFactor: 0.25
+  _scaleFactor: 0.1
 --- !u!4 &1430962054
 Transform:
   m_ObjectHideFlags: 0
@@ -673,12 +674,25 @@ Transform:
   m_GameObject: {fileID: 1430962052}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.4625258, y: 14.688281, z: 0.23641281}
+  m_LocalPosition: {x: 0, y: 0, z: 500}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1430962055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430962052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 472a09bdb45b70946be08e95bc1fdc44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mapLevelDrawerPrefab: {fileID: 3699539540056231848, guid: 6e9d37d2ee8759944b5fc55c1dea3634, type: 3}
 --- !u!1 &1805706592
 GameObject:
   m_ObjectHideFlags: 0

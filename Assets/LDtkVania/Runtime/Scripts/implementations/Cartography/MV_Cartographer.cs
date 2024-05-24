@@ -31,7 +31,6 @@ namespace LDtkVania.Cartography
         private void Awake()
         {
             GenerateCartography();
-            // LogWorlds();
         }
 
         #endregion
@@ -102,8 +101,6 @@ namespace LDtkVania.Cartography
                 MV_WorldCartography worldCartography = new(worldArea.worldName, cartographyAreas.Values.ToList());
                 _worlds.Add(worldArea.worldName, worldCartography);
             }
-
-            LogWorlds();
         }
 
         #endregion

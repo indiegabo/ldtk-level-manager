@@ -146,7 +146,7 @@ MonoBehaviour:
     FieldOfView: 34
     OrthographicSize: 6.75
     NearClipPlane: 0.3
-    FarClipPlane: 1000
+    FarClipPlane: 300
     Dutch: 0
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
