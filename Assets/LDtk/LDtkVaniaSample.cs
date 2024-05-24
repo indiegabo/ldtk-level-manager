@@ -13,7 +13,7 @@ namespace LDtkVania
     /// <summary>
     /// LDtk Enum for LDtkVaniaSample
     /// </summary>
-    public enum LDtkVaniAreas
+    public enum LDtkVaniaAreas
     {
         Factory,
         Mall,

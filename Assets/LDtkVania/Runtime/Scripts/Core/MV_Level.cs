@@ -74,10 +74,6 @@ namespace LDtkVania
             UpdateInfo(data);
         }
 
-        #endregion
-
-        #region Gathering info
-
         public void UpdateInfo(MV_LevelProcessingData data)
         {
             LDtkFields fields = data.ldtkComponentLevel.GetComponent<LDtkFields>();
@@ -106,7 +102,6 @@ namespace LDtkVania
             {
                 _worldName = data.world.Identifier;
             }
-
         }
 
         #endregion

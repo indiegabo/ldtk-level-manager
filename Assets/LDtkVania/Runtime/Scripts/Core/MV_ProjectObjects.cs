@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using LDtkVania.Utils;
+using UnityEngine;
+using LDtkUnity;
 
 namespace LDtkVania
 {
@@ -29,7 +31,6 @@ namespace LDtkVania
         public string worldName;
         public List<string> areas;
     }
-
 
     [System.Serializable]
     public class MV_LevelsDictionary : SerializedDictionary<string, MV_Level> { }
