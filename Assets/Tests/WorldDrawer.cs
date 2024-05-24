@@ -62,7 +62,7 @@ namespace Tests
         private void Update()
         {
             Vector2 newPos = _cartographer.CalculateScaledPosition(_characterTransform.position);
-            _characterPinTransform.position = new Vector3(newPos.x, newPos.y + _scaledOffsetY, _characterPinTransform.position.z);
+            _characterPinTransform.position = new Vector3(newPos.x, newPos.y + _scaledOffsetY, transform.position.z);
         }
 
         #endregion
