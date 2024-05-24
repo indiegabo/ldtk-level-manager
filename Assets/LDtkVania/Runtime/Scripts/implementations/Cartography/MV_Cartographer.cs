@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace LDtkVania.Cartography
 {
-    public class Cartographer : MonoBehaviour
+    public class MV_Cartographer : MonoBehaviour
     {
         #region Inspector
 
@@ -102,6 +102,8 @@ namespace LDtkVania.Cartography
                 MV_WorldCartography worldCartography = new(worldArea.worldName, cartographyAreas.Values.ToList());
                 _worlds.Add(worldArea.worldName, worldCartography);
             }
+
+            LogWorlds();
         }
 
         #endregion
@@ -115,8 +117,8 @@ namespace LDtkVania.Cartography
 
         public MV_WorldCartography GetWorld(string worldName)
         {
-            if (!_worlds.ContainsKey(worldName)) return null;
-            return _worlds[worldName];
+            if (!_worlds.TryGetValue(worldName, out MV_WorldCartography worldCartography)) return null;
+            return worldCartography;
         }
 
         public bool TryGetWorld(string worldName, out MV_WorldCartography worldCartography)
@@ -165,19 +167,19 @@ namespace LDtkVania.Cartography
             foreach (MV_WorldCartography world in _worlds.Values)
             {
                 Debug.Log($"===== World: {world.WorldName} =====");
-                Debug.Log($"Size: {world.Rect.size}");
-                Debug.Log($"Scaled Size: {world.ScaledRect.size}");
+                Debug.Log($"Size: {world.Bounds.Size}");
+                Debug.Log($"Scaled Size: {world.Bounds.ScaledSize}");
                 foreach (MV_AreaCartography area in world.GetAllAreas())
                 {
                     Debug.Log($"=== Area: {area.AreaName} ===");
-                    Debug.Log($"Size: {area.Rect.size}");
-                    Debug.Log($"Scaled Size: {area.ScaledRect.size}");
+                    Debug.Log($"Size: {area.Bounds.Size}");
+                    Debug.Log($"Scaled Size: {area.Bounds.ScaledSize}");
                     foreach (MV_LevelCartography level in area.GetAllLevels())
                     {
                         Debug.Log($"- Level: {level.Level.Name} -");
-                        Debug.Log($"Size: {level.Size} - Scaled Size: {level.ScaledSize}");
-                        Debug.Log($"Min: {level.Min} - Max: {level.Max}");
-                        Debug.Log($"Scaled Min: {level.ScaledMin} - Max: {level.ScaledMax}");
+                        Debug.Log($"Size: {level.Bounds.Size} - Scaled Size: {level.Bounds.ScaledSize}");
+                        Debug.Log($"Min: {level.Bounds.Min} - Max: {level.Bounds.Max}");
+                        Debug.Log($"Scaled Min: {level.Bounds.ScaledMin} - Max: {level.Bounds.ScaledMax}");
                     }
                 }
             }
