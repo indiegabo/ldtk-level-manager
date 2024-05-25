@@ -84,18 +84,35 @@ namespace LDtkVania.Transitioning
 
         public async Task TransitionIntoAwaitable(string levelIid, string spotIid)
         {
-            await BeforePreparationTask();
             MV_LevelManager.Instance.Exit();
+            await BeforePreparationTask();
+            CinemachineVirtualCamera camera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera as CinemachineVirtualCamera;
+
             await MV_LevelManager.Instance.LoadLevel(levelIid);
+
+            if (camera != null)
+            {
+                camera.Follow = null;
+                camera.gameObject.SetActive(false);
+            }
+
             MV_LevelManager.Instance.Prepare(levelIid, spotIid);
             await AfterPreparationTask();
         }
 
         public async Task TransitionIntoAwaitable(string levelIid, IConnection connection)
         {
-            await BeforePreparationTask();
             MV_LevelManager.Instance.Exit();
+            await BeforePreparationTask();
+            CinemachineVirtualCamera camera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera as CinemachineVirtualCamera;
             await MV_LevelManager.Instance.LoadLevel(levelIid);
+
+            if (camera != null)
+            {
+                camera.Follow = null;
+                camera.gameObject.SetActive(false);
+            }
+
             MV_LevelManager.Instance.Prepare(levelIid, connection);
             await AfterPreparationTask();
         }
@@ -105,8 +122,8 @@ namespace LDtkVania.Transitioning
             _transitioning = true;
             _transitionStartedEvent.Invoke();
 
-            await CloseCurtains();
             MV_LevelManager.Instance.Exit();
+            await CloseCurtains();
 
             await MV_LevelManager.Instance.LoadLevel(levelIid);
             MV_LevelManager.Instance.Prepare(levelIid, portal);

@@ -73,7 +73,7 @@ namespace LDtkVania
 
         void IPortal.SetActive(bool isActive)
         {
-            gameObject.SetActive(isActive);
+            // gameObject.SetActive(isActive);
         }
 
         #endregion

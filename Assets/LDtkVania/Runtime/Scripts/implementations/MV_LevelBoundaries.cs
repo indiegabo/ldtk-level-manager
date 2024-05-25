@@ -67,8 +67,6 @@ namespace LDtkVania
 
         private void OnLevelExited(MV_LevelBehaviour arg0)
         {
-            _virtualCamera.Follow = null;
-            _virtualCamera.gameObject.SetActive(false);
         }
 
         private void OnLevelPreparationStarted(MV_LevelBehaviour arg0, Vector2 arg1)
