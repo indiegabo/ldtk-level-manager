@@ -30,6 +30,14 @@ namespace LDtkVania
                 return;
             }
 
+            // Only needed if the level has a scene. This solution is focused
+            // on levels pre instantiated in scenes.
+            if (!_mvLevel.HasScene)
+            {
+                Destroy(this);
+                return;
+            }
+
             HandleLevelGeometry(_mvLevel);
         }
 
@@ -39,10 +47,6 @@ namespace LDtkVania
 
         private void HandleLevelGeometry(MV_Level level)
         {
-            // Only needed if the level has a scene. This solution is focused
-            // on levels pre instantiated in scenes.
-            if (!level.HasScene) return;
-
             var colliders = GetComponentsInChildren<CompositeCollider2D>();
 
             foreach (var collider in colliders)
