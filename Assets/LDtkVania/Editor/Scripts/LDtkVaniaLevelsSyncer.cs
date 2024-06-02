@@ -31,6 +31,7 @@ namespace LDtkVaniaEditor
         {
             if (!HasProjectToProcess) return;
             LDtkIid projectIid = AssetDatabase.LoadAssetAtPath<LDtkIid>(_projectToProcessPath);
+            if (projectIid == null) return;
             Dictionary<string, MV_Project> projects = GenerateProjectsDictionary();
             if (!projects.TryGetValue(projectIid.Iid, out MV_Project project))
             {
