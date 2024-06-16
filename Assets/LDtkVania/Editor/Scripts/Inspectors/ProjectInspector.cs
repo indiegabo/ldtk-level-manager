@@ -52,9 +52,11 @@ namespace LDtkVaniaEditor
             _containerMain.Add(_tabViewElement);
             ProjectMainViewElement mainViewElement = new(_project);
             ProjectLevelsViewElement levelsViewElement = new(_project);
+            ProjectSettingsViewElement settingsViewElement = new(_project);
 
             _tabViewElement.AddTab("Main", mainViewElement);
             _tabViewElement.AddTab("Levels", levelsViewElement);
+            _tabViewElement.AddTab("Settings", settingsViewElement);
 
             if (string.IsNullOrEmpty(TabViewElement.LastUsedTab))
             {

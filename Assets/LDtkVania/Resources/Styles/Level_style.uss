@@ -1,7 +1,7 @@
 .level-field > Label {
-    min-width: 140px;
-    width: 140px;
-    max-width: 140px;
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
 }
 
 .level-field {

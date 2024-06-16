@@ -1,0 +1,33 @@
+{
+  "Rects": null,
+  "Def": {
+    "__cHei": 8,
+    "__cWid": 16,
+    "cachedPixelData": {
+      "opaqueTiles": "11111111111100001111101111110000111110111110000011111011111000001111000000000000000000000000000000000000000000000000000000000000",
+      "averageColors": "faaafaaafaaaf999faaaf999fbbbfbbbfbbbfbbbfbbbfbbb0000000000000000faaafbbbfaaaf999f9990000fbbbfbbbfbbbfbbbfbbbfbbb0000000000000000faaafaaafaaafbbbfaaa0000fbbbfbbbfbbbfbbbfbbb00000000000037773777fbbbfbbbfaaafaaaf9990000fbbbfbbbfbbbfbbbfbbb0000000000008bbb8bbbfbbbfbbbfaaafaaa000000004999499937778bbbdbbbdbbb8bbb3777dbbbdbbb8aaa8aaa4999cbbbcbbb4999cbbbcbbb37778bbbdbbbdbbb8bbb3777dbbbdbbb8aaa8aaa4999cbbbcbbb4999cbbbcbbb0000000000000000000000008bbb8bbb17c43d4400000000000000004999499900000000000000000000000037773777"
+    },
+    "customData": [
+
+    ],
+    "embedAtlas": null,
+    "enumTags": [
+
+    ],
+    "identifier": "Template",
+    "padding": 0,
+    "pxHei": 128,
+    "pxWid": 256,
+    "relPath": "tileset_template.png",
+    "savedSelections": [
+
+    ],
+    "spacing": 0,
+    "tags": [
+
+    ],
+    "tagsSourceEnumUid": null,
+    "tileGridSize": 16,
+    "uid": 411
+  }
+}
