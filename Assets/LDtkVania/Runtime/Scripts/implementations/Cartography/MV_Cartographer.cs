@@ -78,9 +78,9 @@ namespace LDtkVania.Cartography
             }
 
             // Get all the world areas from the project.
-            List<MV_WorldAreas> worldAreas = _project.GetAllWorldAreas();
+            List<MV_World> worldAreas = _project.GetAllWorldAreas();
 
-            foreach (MV_WorldAreas worldArea in worldAreas)
+            foreach (MV_World worldArea in worldAreas)
             {
                 if (worldArea.areas.Count == 0) continue;
 

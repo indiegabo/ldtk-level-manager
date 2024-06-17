@@ -19,6 +19,22 @@ namespace LDtkVania
 
         #endregion
 
+
+        // Settings
+
+        [SerializeField]
+        private SceneAsset _mapEditorScene;
+
+        public SceneAsset MapEditorScene
+        {
+            get => _mapEditorScene;
+            set
+            {
+                _mapEditorScene = value;
+                EditorUtility.SetDirty(this);
+            }
+        }
+
         public void ClearBeforeDeletion()
         {
             IEnumerable<MV_Level> levels = _levels.Values.Concat(_lostLevels.Values);
@@ -329,7 +345,7 @@ namespace LDtkVania
 
             foreach (World world in ldtkJson.Worlds)
             {
-                _worldAreas.Add(world.Identifier, new MV_WorldAreas()
+                _worldAreas.Add(world.Identifier, new MV_World()
                 {
                     worldIid = world.Iid,
                     worldName = world.Identifier,
@@ -340,7 +356,7 @@ namespace LDtkVania
             foreach (MV_Level level in _levels.Values)
             {
                 if (string.IsNullOrEmpty(level.WorldName) || string.IsNullOrEmpty(level.AreaName)) continue;
-                if (!_worldAreas.TryGetValue(level.WorldName, out MV_WorldAreas worldAreas)) continue;
+                if (!_worldAreas.TryGetValue(level.WorldName, out MV_World worldAreas)) continue;
                 if (worldAreas.areas.Contains(level.AreaName)) continue;
                 worldAreas.areas.Add(level.AreaName);
             }

@@ -1,8 +1,7 @@
-
-using System.Collections.Generic;
-using System.Linq;
 using LDtkUnity;
 using LDtkVania;
+using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -18,6 +17,7 @@ namespace LDtkVaniaEditor
         private LdtkJson _ldtkJson;
 
         private TemplateContainer _containerMain;
+        private ObjectField _fieldMapEditorScene;
 
         #endregion
 
@@ -29,6 +29,10 @@ namespace LDtkVaniaEditor
             _ldtkJson = _project.LDtkProject;
 
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
+            _fieldMapEditorScene = _containerMain.Q<ObjectField>("field-map-editor-scene");
+            _fieldMapEditorScene.SetValueWithoutNotify(_project.MapEditorScene);
+            _fieldMapEditorScene.RegisterValueChangedCallback(x => _project.MapEditorScene = x.newValue as SceneAsset);
+
 
             Add(_containerMain);
         }

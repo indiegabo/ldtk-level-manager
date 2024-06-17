@@ -25,7 +25,7 @@ namespace LDtkVania
     }
 
     [System.Serializable]
-    public class MV_WorldAreas
+    public class MV_World
     {
         public string worldIid;
         public string worldName;
@@ -36,5 +36,5 @@ namespace LDtkVania
     public class MV_LevelsDictionary : SerializedDictionary<string, MV_Level> { }
 
     [System.Serializable]
-    public class MV_WorldAreasDictionary : SerializedDictionary<string, MV_WorldAreas> { }
+    public class MV_WorldAreasDictionary : SerializedDictionary<string, MV_World> { }
 }

@@ -51,7 +51,7 @@ namespace LDtkVaniaEditor
                 "None",
             };
 
-            foreach (MV_WorldAreas worldAreas in _project.GetAllWorldAreas())
+            foreach (MV_World worldAreas in _project.GetAllWorldAreas())
             {
                 worldChoices.Add(worldAreas.worldName);
             }
@@ -135,7 +135,7 @@ namespace LDtkVaniaEditor
                 ClearAreaFilter();
                 return;
             }
-            _project.WorldAreas.TryGetValue(selectedWorld, out MV_WorldAreas worldAreas);
+            _project.WorldAreas.TryGetValue(selectedWorld, out MV_World worldAreas);
 
             if (worldAreas.areas.Count == 0)
             {

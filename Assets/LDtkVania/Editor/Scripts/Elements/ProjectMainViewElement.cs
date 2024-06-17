@@ -23,7 +23,7 @@ namespace LDtkVaniaEditor
         private DropdownField _dropdownNavigationLayer;
         private ListView _listWorlds;
 
-        private List<MV_WorldAreas> _worldAreas;
+        private List<MV_World> _worldAreas;
         private List<string> _layers;
 
         #endregion
@@ -65,7 +65,7 @@ namespace LDtkVaniaEditor
         {
             // (element, i) => (element as Label).text = _worldAreas[i].worldName
             element.Clear();
-            MV_WorldAreas worldAreas = _worldAreas[index];
+            MV_World worldAreas = _worldAreas[index];
             if (worldAreas.areas.Count == 0)
             {
                 element.Add(new Label(worldAreas.worldName));

@@ -61,7 +61,7 @@ namespace LDtkVania
 #if UNITY_EDITOR
                 return _levelFile.FromJson;
 #else
-                return _ldtkLevel ?? = _levelFile.FromJson;
+                return _ldtkLevel ??= _levelFile.FromJson;
 #endif
             }
         }

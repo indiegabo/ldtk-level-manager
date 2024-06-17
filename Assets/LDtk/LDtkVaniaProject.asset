@@ -196,6 +196,7 @@ MonoBehaviour:
       worldName: World2
       areas:
       - World_2_Area
+  _mapEditorScene: {fileID: 102900000, guid: 65d280354f005064c94aa2b51308e65f, type: 3}
 --- !u!114 &1019849792975982639
 MonoBehaviour:
   m_ObjectHideFlags: 0

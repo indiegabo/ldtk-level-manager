@@ -10,7 +10,7 @@ namespace LDtkVania
     public partial class MV_Project : ScriptableObject
     {
 
-        #region Inspector
+        #region Serializing
 
         [SerializeField]
         private LDtkProjectFile _ldtkProjectFile;
@@ -112,23 +112,23 @@ namespace LDtkVania
             return iids;
         }
 
-        public List<MV_WorldAreas> GetAllWorldAreas()
+        public List<MV_World> GetAllWorldAreas()
         {
             return _worldAreas.Values.ToList();
         }
 
-        public MV_WorldAreas GetWorldAreas(string worldName)
+        public MV_World GetWorldAreas(string worldName)
         {
             if (!_worldAreas.ContainsKey(worldName)) return null;
             return _worldAreas[worldName];
         }
 
-        public bool TryGetWorldAreas(string worldName, out MV_WorldAreas mvWorldAreas)
+        public bool TryGetWorldAreas(string worldName, out MV_World mvWorldAreas)
         {
             return _worldAreas.TryGetValue(worldName, out mvWorldAreas);
         }
 
-        public bool TryGetWorldAreas(MV_Level level, out MV_WorldAreas mvWorldAreas)
+        public bool TryGetWorldAreas(MV_Level level, out MV_World mvWorldAreas)
         {
             if (string.IsNullOrEmpty(level.WorldName))
             {
