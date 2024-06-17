@@ -7,6 +7,7 @@ using System.Linq;
 using UnityEditor.SceneManagement;
 using LDtkUnity;
 using UnityEngine.SceneManagement;
+using UnityEditor.Experimental.GraphView;
 
 namespace LDtkVaniaEditor
 {
@@ -61,7 +62,6 @@ namespace LDtkVaniaEditor
 
         private Dictionary<string, GameObject> _loadedObjects;
         private Dictionary<string, Scene> _loadedScenes;
-        private List<VisualElement> _levelImages;
 
         private TemplateContainer _containerMain;
 
@@ -69,7 +69,9 @@ namespace LDtkVaniaEditor
         private DropdownField _dropdownWorld;
         private Button _buttonOpenScene;
         private Button _buttonClear;
-        private VisualElement _containerMapView;
+        private MapView _mapView;
+
+        private Editor _editor;
 
         #endregion
 
@@ -81,11 +83,11 @@ namespace LDtkVaniaEditor
             _selectedProjectWorlds = new();
             _loadedObjects = new();
             _loadedScenes = new();
-            _levelImages = new();
 
             VisualElement root = rootVisualElement;
 
-            _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
+            _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").CloneTree();
+            _containerMain.style.flexGrow = 1;
             _dropdownProject = _containerMain.Q<DropdownField>("dropdown-project");
             _dropdownWorld = _containerMain.Q<DropdownField>("dropdown-world");
 
@@ -95,18 +97,31 @@ namespace LDtkVaniaEditor
             _buttonClear = _containerMain.Q<Button>("button-clear");
             _buttonClear.clicked += () => ClearLevels();
 
-            _containerMapView = _containerMain.Q<VisualElement>("container-map-view");
+            _mapView = _containerMain.Q<MapView>("map-view");
+            _mapView.SetSelectionAnalysisCallback(OnLevelSelectionChanged);
 
             InitializeProjectsDropdown();
 
             root.Add(_containerMain);
+        }
 
-            Debug.Log("Map editor window created");
+        private void OnEnable()
+        {
+        }
+
+        private void OnDisable()
+        {
         }
 
         private void OnDestroy()
         {
             // ClearLevels();
+        }
+
+
+        private void OnSelectionChanged()
+        {
+            // Debug.Log(Selection.activeContext);
         }
 
         #endregion
@@ -170,8 +185,7 @@ namespace LDtkVaniaEditor
         private void SelectWorld(string worldName)
         {
             ClearLevels();
-            _levelImages.Clear();
-            _containerMapView.Clear();
+            _mapView.ClearLevels();
 
             _selectedWorld = _selectedProjectWorlds[worldName];
 
@@ -185,30 +199,20 @@ namespace LDtkVaniaEditor
             {
                 _selectedProject.TryGetLevel(level.Iid, out MV_Level mvLevel);
 
-                VisualElement levelImage = new();
+                _mapView.AddLevel(level);
 
-                levelImage.style.position = Position.Absolute;
-                levelImage.style.width = level.UnityWorldRect.width * 0.1f;
-                levelImage.style.height = level.UnityWorldRect.height * 0.1f;
-                levelImage.style.left = level.UnityWorldRect.x * 0.1f;
-                levelImage.style.bottom = level.UnityWorldRect.y * 0.1f;
-                levelImage.style.backgroundImage = Resources.Load<Sprite>("world-tile").texture;
-
-                _containerMapView.Add(levelImage);
-                _levelImages.Add(levelImage);
-
-                if (mvLevel.HasScene && !_loadedScenes.ContainsKey(mvLevel.Iid))
-                {
-                    string path = AssetDatabase.GUIDToAssetPath(mvLevel.Scene.AssetGuid);
-                    Scene scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
-                    _loadedScenes.Add(mvLevel.Iid, scene);
-                }
-                else if (!_loadedObjects.ContainsKey(mvLevel.Iid))
-                {
-                    GameObject obj = Instantiate(mvLevel.Asset) as GameObject;
-                    obj.name = mvLevel.Name;
-                    _loadedObjects.Add(mvLevel.Iid, obj);
-                }
+                // if (mvLevel.HasScene && !_loadedScenes.ContainsKey(mvLevel.Iid))
+                // {
+                //     string path = AssetDatabase.GUIDToAssetPath(mvLevel.Scene.AssetGuid);
+                //     Scene scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
+                //     _loadedScenes.Add(mvLevel.Iid, scene);
+                // }
+                // else if (!_loadedObjects.ContainsKey(mvLevel.Iid))
+                // {
+                //     GameObject obj = Instantiate(mvLevel.Asset) as GameObject;
+                //     obj.name = mvLevel.Name;
+                //     _loadedObjects.Add(mvLevel.Iid, obj);
+                // }
             }
         }
 
@@ -235,6 +239,25 @@ namespace LDtkVaniaEditor
 
             _loadedObjects.Clear();
             _loadedScenes.Clear();
+        }
+
+
+        private void OnLevelSelectionChanged(List<ISelectable> selectables)
+        {
+            if (selectables.Count == 0)
+            {
+                Debug.Log("No level selected.");
+                return;
+            }
+
+            if (selectables.Count == 1)
+            {
+                MapLevelElement mapLevelElement = selectables[0] as MapLevelElement;
+                Debug.Log($"Selected {mapLevelElement.Level.Identifier}");
+                return;
+            }
+
+            Debug.Log($"Selected {selectables.Count} levels.");
         }
 
         #endregion

@@ -1,8 +1,16 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Assets/LDtkVania/Resources/Styles/MapEditor_style.uss?fileID=7433441132597879392&amp;guid=1ab9ee8df067fd542bfd83a33d454394&amp;type=3#MapEditor_style" />
-    <ui:DropdownField label="Project" name="dropdown-project" />
-    <ui:DropdownField label="World" name="dropdown-world" />
-    <ui:Button text="Open Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-open-scene" />
-    <ui:Button text="Clear" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-clear" />
-    <ui:VisualElement name="container-map-view" style="flex-grow: 1; width: auto; overflow: visible; background-color: rgb(19, 6, 36); height: 200px; max-height: 200px; align-items: auto; flex-basis: 0; min-height: 200px;" />
+    <LDtkVaniaEditor.SliptView fixed-pane-initial-dimension="230" name="container-main">
+        <ui:VisualElement name="container-left" style="flex-grow: 1;">
+            <ui:DropdownField label="Project" name="dropdown-project" />
+            <ui:DropdownField label="World" name="dropdown-world" />
+            <ui:Button text="Open Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-open-scene" />
+            <ui:Button text="Clear" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-clear" />
+            <ui:VisualElement style="flex-grow: 1; background-image: resource(&apos;world-tile&apos;); -unity-background-image-tint-color: rgb(255, 255, 255); visibility: hidden;" />
+        </ui:VisualElement>
+        <LDtkVaniaEditor.SliptView name="slipt-view-map" fixed-pane-index="1" fixed-pane-initial-dimension="200" orientation="Vertical">
+            <LDtkVaniaEditor.MapView name="map-view" focusable="true" style="flex-grow: 1;" />
+            <ui:VisualElement name="container-selected" style="flex-grow: 1;" />
+        </LDtkVaniaEditor.SliptView>
+    </LDtkVaniaEditor.SliptView>
 </ui:UXML>
