@@ -17,6 +17,24 @@ namespace LDtkVania
         public static string AddressablesGroupName = "LDtkVania";
         public static string AddressablesLevelsLabel = "LDtkLevels";
 
+        public static List<MV_Project> FindAllProjects()
+        {
+            string[] guids = AssetDatabase.FindAssets($"t:{nameof(MV_Project)}");
+
+            List<MV_Project> projects = new();
+            foreach (string guid in guids)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                MV_Project project = AssetDatabase.LoadAssetAtPath<MV_Project>(path);
+                if (project != null)
+                {
+                    projects.Add(project);
+                }
+            }
+
+            return projects;
+        }
+
         #endregion
 
 

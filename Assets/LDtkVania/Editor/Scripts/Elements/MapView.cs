@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LDtkUnity;
+using LDtkVania;
+using LDtkVania.Utils;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -12,13 +14,14 @@ namespace LDtkVaniaEditor
     {
         private Action<List<ISelectable>> _selectionAnalysisAction;
         private List<MapLevelElement> _levelElements = new();
-        private Node _node;
+        private Rect _worldRect;
 
         public new class UxmlFactory : UxmlFactory<MapView, GraphView.UxmlTraits> { }
 
 
         public MapView()
         {
+            _worldRect = new Rect(0, 0, 0, 0);
             Insert(0, new GridBackground()
             {
                 name = "grid-background",
@@ -40,9 +43,52 @@ namespace LDtkVaniaEditor
             _selectionAnalysisAction = selectionAnalysisAction;
         }
 
-        public void AddLevel(Level level)
+        public void InitializeWorld(MV_Project project, World world)
         {
-            MapLevelElement levelElement = new(level, this);
+            ClearLevels();
+
+            if (world.WorldLayout != WorldLayout.GridVania)
+            {
+                Debug.LogWarning("Only grid-based worlds are supported.");
+                return;
+            }
+
+            _worldRect = new Rect(0, 0, 0, 0);
+
+            foreach (Level level in world.Levels)
+            {
+                project.TryGetLevel(level.Iid, out MV_Level mvLevel);
+
+                Rect levelRect = new()
+                {
+                    width = level.UnityWorldRect.width * 0.25f,
+                    height = level.UnityWorldRect.height * 0.25f,
+                    x = level.UnityWorldRect.x * 0.25f,
+                    y = level.UnityWorldRect.y * 0.25f
+                };
+
+                _worldRect.Expand(levelRect);
+
+                AddLevel(level, mvLevel, levelRect);
+
+                // if (mvLevel.HasScene && !_loadedScenes.ContainsKey(mvLevel.Iid))
+                // {
+                //     string path = AssetDatabase.GUIDToAssetPath(mvLevel.Scene.AssetGuid);
+                //     Scene scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
+                //     _loadedScenes.Add(mvLevel.Iid, scene);
+                // }
+                // else if (!_loadedObjects.ContainsKey(mvLevel.Iid))
+                // {
+                //     GameObject obj = Instantiate(mvLevel.Asset) as GameObject;
+                //     obj.name = mvLevel.Name;
+                //     _loadedObjects.Add(mvLevel.Iid, obj);
+                // }
+            }
+        }
+
+        public void AddLevel(Level level, MV_Level mvLevel, Rect rect)
+        {
+            MapLevelElement levelElement = new(this, level, mvLevel, rect);
             _levelElements.Add(levelElement);
             AddElement(levelElement);
         }

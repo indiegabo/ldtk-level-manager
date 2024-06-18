@@ -59,6 +59,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - LDtkVaniaLevel
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0ba71b46e23a5314286762c6323aaaf0
+    m_Address: LDtkVaniaLevel_f2fdcce0-fec0-11ee-bdc7-bf4f9736dab7
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - LDtkVaniaLevel
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e507eb0c3834580408aff2e7ccb1da95
     m_Address: LDtkVaniaLevel_44d1b760-c640-11ed-8852-abb8aafd2434
     m_ReadOnly: 0
@@ -85,12 +91,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4bd683881bd98e24d8d832a7cd12ca0f
     m_Address: LDtkVaniaLevel_e4e69a60-ed50-11ed-a82b-27cab0fad380
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - LDtkVaniaLevel
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 0ba71b46e23a5314286762c6323aaaf0
-    m_Address: LDtkVaniaLevel_f2fdcce0-fec0-11ee-bdc7-bf4f9736dab7
     m_ReadOnly: 0
     m_SerializedLabels:
     - LDtkVaniaLevel

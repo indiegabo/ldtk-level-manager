@@ -33,24 +33,6 @@ namespace LDtkVaniaEditor
             }
         }
 
-        private static List<MV_Project> GetProjects()
-        {
-            string[] guids = AssetDatabase.FindAssets($"t:{nameof(MV_Project)}");
-
-            List<MV_Project> projects = new();
-            foreach (string guid in guids)
-            {
-                string path = AssetDatabase.GUIDToAssetPath(guid);
-                MV_Project project = AssetDatabase.LoadAssetAtPath<MV_Project>(path);
-                if (project != null)
-                {
-                    projects.Add(project);
-                }
-            }
-
-            return projects;
-        }
-
         #endregion
 
         #region Fields
@@ -130,7 +112,7 @@ namespace LDtkVaniaEditor
 
         private void InitializeProjectsDropdown()
         {
-            List<MV_Project> projects = GetProjects();
+            List<MV_Project> projects = MV_Project.FindAllProjects();
 
             foreach (MV_Project project in projects)
             {
@@ -185,35 +167,8 @@ namespace LDtkVaniaEditor
         private void SelectWorld(string worldName)
         {
             ClearLevels();
-            _mapView.ClearLevels();
-
             _selectedWorld = _selectedProjectWorlds[worldName];
-
-            if (_selectedWorld.WorldLayout != WorldLayout.GridVania)
-            {
-                Debug.LogWarning("Only grid-based worlds are supported.");
-                return;
-            }
-
-            foreach (Level level in _selectedWorld.Levels)
-            {
-                _selectedProject.TryGetLevel(level.Iid, out MV_Level mvLevel);
-
-                _mapView.AddLevel(level);
-
-                // if (mvLevel.HasScene && !_loadedScenes.ContainsKey(mvLevel.Iid))
-                // {
-                //     string path = AssetDatabase.GUIDToAssetPath(mvLevel.Scene.AssetGuid);
-                //     Scene scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
-                //     _loadedScenes.Add(mvLevel.Iid, scene);
-                // }
-                // else if (!_loadedObjects.ContainsKey(mvLevel.Iid))
-                // {
-                //     GameObject obj = Instantiate(mvLevel.Asset) as GameObject;
-                //     obj.name = mvLevel.Name;
-                //     _loadedObjects.Add(mvLevel.Iid, obj);
-                // }
-            }
+            _mapView.InitializeWorld(_selectedProject, _selectedWorld);
         }
 
         #endregion

@@ -1,42 +1,39 @@
 using System;
 using System.Collections.Generic;
 using LDtkUnity;
+using LDtkVania;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace LDtkVaniaEditor
 {
-    public class MapLevelElement : GraphElement, ICollectibleElement
+    public class MapLevelElement : GraphElement
     {
+        private MV_Level _mvLevel;
         private Level _level;
         private bool _pointerIsOver = false;
         private MapView _mapView;
 
+        public MV_Level MVLevel => _mvLevel;
         public Level Level => _level;
 
-        public MapLevelElement(Level level, MapView mapView)
+        public MapLevelElement(MapView mapView, Level level, MV_Level mvLevel, Rect levelRect)
         {
             base.capabilities |= Capabilities.Selectable | Capabilities.Groupable;
 
-            _level = level;
             _mapView = mapView;
+            _level = level;
+            _mvLevel = mvLevel;
+
             Sprite sprite = Resources.Load<Sprite>("world-tile");
 
             style.backgroundImage = Background.FromSprite(sprite);
             style.unityBackgroundImageTintColor = new StyleColor(new Color(1, 1, 1, 0.5f));
 
-            Rect rect = new()
-            {
-                width = level.UnityWorldRect.width * 0.25f,
-                height = level.UnityWorldRect.height * 0.25f,
-                x = level.UnityWorldRect.x * 0.25f,
-                y = level.UnityWorldRect.y * 0.25f
-            };
-
             this.AddManipulator(new MapLevelMouseManipulator(this));
 
-            SetPosition(rect);
+            SetPosition(levelRect);
         }
 
         public override void OnSelected()
@@ -65,11 +62,6 @@ namespace LDtkVaniaEditor
             {
                 style.unityBackgroundImageTintColor = new StyleColor(new Color(1, 1, 1, 0.5f));
             }
-        }
-
-        public void CollectElements(HashSet<GraphElement> collectedElementSet, Func<GraphElement, bool> conditionFunc)
-        {
-            throw new NotImplementedException();
         }
     }
 

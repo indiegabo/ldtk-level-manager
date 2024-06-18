@@ -6,7 +6,6 @@ using LDtkVania.Utils;
 
 namespace LDtkVania
 {
-    [CreateAssetMenu(fileName = "LDtkVaniaProject", menuName = "LDtkVania/Project", order = 0)]
     public partial class MV_Project : ScriptableObject
     {
 
