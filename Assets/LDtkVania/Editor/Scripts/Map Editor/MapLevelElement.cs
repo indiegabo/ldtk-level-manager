@@ -77,19 +77,13 @@ namespace LDtkVaniaEditor
 
         private void EvaluateState()
         {
-            if (_pointerIsOver)
-            {
-                style.unityBackgroundImageTintColor = _highlightedColor;
-                return;
-            }
-
             if (Loaded)
             {
                 style.unityBackgroundImageTintColor = _loadedColor;
                 return;
             }
 
-            if (selected)
+            if (_pointerIsOver || selected)
             {
                 style.unityBackgroundImageTintColor = _highlightedColor;
                 return;
