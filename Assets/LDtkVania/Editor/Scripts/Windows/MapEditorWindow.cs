@@ -9,6 +9,7 @@ using LDtkUnity;
 using UnityEngine.SceneManagement;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
+using System;
 
 namespace LDtkVaniaEditor
 {
@@ -97,6 +98,7 @@ namespace LDtkVaniaEditor
 
             _mapView = _containerMain.Q<MapView>("map-view");
             _mapView.SetSelectionAnalysisCallback(OnLevelSelectionChanged);
+            _mapView.SetLevelLoadRequestCallback(OnLevelLoadRequest);
 
             if (Settings.HasMapScene && Settings.HasCurrentProject && _projects.ContainsKey(Settings.CurrentProject.name))
             {
@@ -249,21 +251,62 @@ namespace LDtkVaniaEditor
 
         #region Loading Levels
 
-        private void LoadLevel(string iid)
+        private void OnLevelLoadRequest(MapLevelElement element)
         {
+            if (!IsMapSceneOpen()) { return; }
 
-            // if (mvLevel.HasScene && !_loadedScenes.ContainsKey(mvLevel.Iid))
-            // {
-            //     string path = AssetDatabase.GUIDToAssetPath(mvLevel.Scene.AssetGuid);
-            //     Scene scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
-            //     _loadedScenes.Add(mvLevel.Iid, scene);
-            // }
-            // else if (!_loadedObjects.ContainsKey(mvLevel.Iid))
-            // {
-            //     GameObject obj = Instantiate(mvLevel.Asset) as GameObject;
-            //     obj.name = mvLevel.Name;
-            //     _loadedObjects.Add(mvLevel.Iid, obj);
-            // }
+            if (!Settings.IsLevelLoaded(element.MVLevel))
+            {
+                LoadLevel(element);
+            }
+            else
+            {
+                UnloadLevel(element);
+            }
+        }
+
+        private void LoadLevel(MapLevelElement element)
+        {
+            MV_Level mvLevel = element.MVLevel;
+            if (mvLevel.HasScene)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(mvLevel.Scene.AssetGuid);
+                Scene scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
+                Settings.RegisterLoadedLevel(mvLevel.Iid, scene);
+            }
+            else
+            {
+                GameObject obj = Instantiate(mvLevel.Asset) as GameObject;
+                obj.name = mvLevel.Name;
+                Settings.RegisterLoadedLevel(mvLevel.Iid, obj);
+            }
+            element.Loaded = true;
+        }
+
+        private void UnloadLevel(MapLevelElement element)
+        {
+            MV_Level mvLevel = element.MVLevel;
+
+            if (mvLevel.HasScene)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(mvLevel.Scene.AssetGuid);
+                SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
+                Scene scene = EditorSceneManager.GetSceneByName(sceneAsset.name);
+                if (scene != null && scene.isLoaded)
+                {
+                    EditorSceneManager.CloseScene(scene, true);
+                }
+            }
+            else
+            {
+                if (Settings.TryGetLevelObject(mvLevel.Iid, out GameObject obj))
+                {
+                    DestroyImmediate(obj);
+                }
+            }
+
+            element.Loaded = false;
+            Settings.UnregisterLoadedLevel(element.MVLevel.Iid);
         }
 
         private void ClearLevels()

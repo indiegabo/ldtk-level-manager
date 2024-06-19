@@ -2,6 +2,7 @@ using LDtkUnity;
 using LDtkVania;
 using LDtkVania.Utils;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -67,6 +68,50 @@ namespace LDtkVaniaEditor
             Save(true);
         }
 
+        public bool TryGetLevelObject(string iid, out GameObject gameObject)
+        {
+            if (_loadedObjects.ContainsKey(iid))
+            {
+                gameObject = _loadedObjects[iid];
+                return true;
+            }
+            else
+            {
+                gameObject = null;
+                return false;
+            }
+        }
+
+        public void RegisterLoadedLevel(string iid, GameObject gameObject)
+        {
+            if (_loadedObjects.ContainsKey(iid))
+            {
+                _loadedObjects[iid] = gameObject;
+            }
+            else
+            {
+                _loadedObjects.Add(iid, gameObject);
+            }
+        }
+
+        public void RegisterLoadedLevel(string iid, Scene scene)
+        {
+            if (_loadedScenes.ContainsKey(iid))
+            {
+                _loadedScenes[iid] = scene.name;
+            }
+            else
+            {
+                _loadedScenes.Add(iid, scene.name);
+            }
+        }
+
+        public void UnregisterLoadedLevel(string iid)
+        {
+            _loadedObjects.Remove(iid);
+            _loadedScenes.Remove(iid);
+        }
+
         public void ReleaseLevels(bool save = true)
         {
             _loadedObjects.Clear();
@@ -78,11 +123,66 @@ namespace LDtkVaniaEditor
             }
         }
 
-        [System.Serializable]
-        private class ObjectsDictionary : SerializedDictionary<string, Object> { }
+        public bool IsLevelLoaded(MV_Level mvLevel)
+        {
+            if (!mvLevel.HasScene)
+            {
+                return IsLevelObjectLoaded(mvLevel);
+            }
+            else
+            {
+                return IsLevelSceneLoaded(mvLevel);
+            }
+        }
+
+        private bool IsLevelSceneLoaded(MV_Level mvLevel)
+        {
+            if (_loadedScenes.ContainsKey(mvLevel.Iid))
+            {
+                if (IsSceneOpen(_loadedScenes[mvLevel.Iid]))
+                {
+                    return true;
+                }
+                else
+                {
+                    _loadedScenes.Remove(mvLevel.Iid);
+                    return false;
+                }
+            }
+
+            return false;
+        }
+
+        private bool IsLevelObjectLoaded(MV_Level mvLevel)
+        {
+            if (_loadedObjects.ContainsKey(mvLevel.Iid))
+            {
+                if (_loadedObjects[mvLevel.Iid] != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    _loadedObjects.Remove(mvLevel.Iid);
+                    return false;
+                }
+            }
+
+            return false;
+        }
+
+        private bool IsSceneOpen(string sceneName)
+        {
+            Scene sceneToCheck = EditorSceneManager.GetSceneByName(sceneName);
+            if (sceneToCheck == null) return false;
+            return sceneToCheck.isLoaded;
+        }
 
         [System.Serializable]
-        private class ScenesDictionary : SerializedDictionary<string, Scene> { }
+        private class ObjectsDictionary : SerializedDictionary<string, GameObject> { }
+
+        [System.Serializable]
+        private class ScenesDictionary : SerializedDictionary<string, string> { }
     }
 }
 

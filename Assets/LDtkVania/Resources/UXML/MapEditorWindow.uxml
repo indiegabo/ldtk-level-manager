@@ -6,7 +6,7 @@
             <uie:ObjectField label="Map Editor Scene" name="field-map-editor-scene" type="UnityEditor.SceneAsset, UnityEditor.CoreModule" />
             <ui:Button text="Open Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-open-scene" />
             <ui:Button text="Clear" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-clear" />
-            <ui:VisualElement style="flex-grow: 1; background-image: resource(&apos;world-tile&apos;); -unity-background-image-tint-color: rgb(255, 255, 255); visibility: hidden;" />
+            <ui:VisualElement style="flex-grow: 1; background-image: resource(&apos;map-level-tile&apos;); -unity-background-image-tint-color: rgb(209, 74, 214); visibility: visible; background-color: rgba(0, 0, 0, 0); display: none;" />
         </ui:VisualElement>
         <LDtkVaniaEditor.SliptView name="slipt-view-map" fixed-pane-index="1" fixed-pane-initial-dimension="200" orientation="Vertical">
             <LDtkVaniaEditor.MapView name="map-view" focusable="true" style="flex-grow: 1;">

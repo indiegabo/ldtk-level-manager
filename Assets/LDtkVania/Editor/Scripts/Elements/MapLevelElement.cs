@@ -1,3 +1,4 @@
+using System;
 using LDtkUnity;
 using LDtkVania;
 using UnityEditor.Experimental.GraphView;
@@ -8,11 +9,17 @@ namespace LDtkVaniaEditor
 {
     public class MapLevelElement : GraphElement
     {
+        private Action<MapLevelElement> _levelLoadRequestAction;
+
         private MV_Level _mvLevel;
         private Level _level;
         private bool _pointerIsOver = false;
         private MapView _mapView;
         private bool _loaded = false;
+
+        private StyleColor _normalColor = new(new Color(1, 1, 1, 0.5f));
+        private StyleColor _highlightedColor = new(new Color(1, 1, 1, 1f));
+        private StyleColor _loadedColor = new(new Color(0.82f, 0.29f, 0.84f, 1f));
 
         public MV_Level MVLevel => _mvLevel;
         public Level Level => _level;
@@ -35,12 +42,25 @@ namespace LDtkVaniaEditor
             _level = level;
             _mvLevel = mvLevel;
 
-            Sprite sprite = Resources.Load<Sprite>("world-tile");
+            Sprite sprite = Resources.Load<Sprite>("map-level-tile");
             style.backgroundImage = Background.FromSprite(sprite);
             style.unityBackgroundImageTintColor = new StyleColor(new Color(1, 1, 1, 0.5f));
 
             this.AddManipulator(new MapLevelMouseManipulator(this));
             SetPosition(levelRect);
+
+            _loaded = MapEditorSettings.instance.IsLevelLoaded(mvLevel);
+            EvaluateState();
+        }
+
+        public void SetLevelLoadRequestCallback(Action<MapLevelElement> levelLoadRequestAction)
+        {
+            _levelLoadRequestAction = levelLoadRequestAction;
+        }
+
+        public void RequesLoad()
+        {
+            _levelLoadRequestAction?.Invoke(this);
         }
 
         public override void OnSelected()
@@ -61,14 +81,25 @@ namespace LDtkVaniaEditor
 
         private void EvaluateState()
         {
-            if (_pointerIsOver || selected)
+            if (_pointerIsOver)
             {
-                style.unityBackgroundImageTintColor = new StyleColor(new Color(1, 1, 1, 1));
+                style.unityBackgroundImageTintColor = _highlightedColor;
+                return;
             }
-            else
+
+            if (_loaded)
             {
-                style.unityBackgroundImageTintColor = new StyleColor(new Color(1, 1, 1, 0.5f));
+                style.unityBackgroundImageTintColor = _loadedColor;
+                return;
             }
+
+            if (selected)
+            {
+                style.unityBackgroundImageTintColor = _highlightedColor;
+                return;
+            }
+
+            style.unityBackgroundImageTintColor = _normalColor;
         }
     }
 
@@ -107,6 +138,7 @@ namespace LDtkVaniaEditor
                 case 1: // Right Mouse Button
                     break;
                 case 2: // Middle Mouse Button
+                    _levelElement.RequesLoad();
                     break;
             }
         }

@@ -13,6 +13,7 @@ namespace LDtkVaniaEditor
     public class MapView : GraphView
     {
         private Action<List<ISelectable>> _selectionAnalysisAction;
+        private Action<MapLevelElement> _levelLoadRequestAction;
         private List<MapLevelElement> _levelElements = new();
         private Rect _worldRect;
 
@@ -40,6 +41,11 @@ namespace LDtkVaniaEditor
         public void SetSelectionAnalysisCallback(Action<List<ISelectable>> selectionAnalysisAction)
         {
             _selectionAnalysisAction = selectionAnalysisAction;
+        }
+
+        public void SetLevelLoadRequestCallback(Action<MapLevelElement> levelLoadRequestAction)
+        {
+            _levelLoadRequestAction = levelLoadRequestAction;
         }
 
         public void InitializeWorld(MV_Project project, World world)
@@ -73,6 +79,7 @@ namespace LDtkVaniaEditor
         public void AddLevel(Level level, MV_Level mvLevel, Rect rect)
         {
             MapLevelElement levelElement = new(this, level, mvLevel, rect);
+            levelElement.SetLevelLoadRequestCallback(_levelLoadRequestAction);
             _levelElements.Add(levelElement);
             AddElement(levelElement);
         }
