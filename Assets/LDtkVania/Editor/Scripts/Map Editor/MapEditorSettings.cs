@@ -13,6 +13,7 @@ namespace LDtkVaniaEditor
     public class MapEditorSettings : ScriptableSingleton<MapEditorSettings>
     {
         [SerializeField] private SceneAsset _mapScene;
+        [SerializeField] private SceneAsset _universeScene;
         [SerializeField] private MV_Project _currentProject;
         [SerializeField] private string _currentWorldName;
         [SerializeField] private LoadedLevelsRegistry _loadedLevelsRegistry = new();
@@ -25,6 +26,17 @@ namespace LDtkVaniaEditor
             set
             {
                 _mapScene = value;
+                Save(true);
+            }
+        }
+
+        public bool HasUniverseScene => _universeScene != null;
+        public SceneAsset UniverseScene
+        {
+            get => _universeScene;
+            set
+            {
+                _universeScene = value;
                 Save(true);
             }
         }

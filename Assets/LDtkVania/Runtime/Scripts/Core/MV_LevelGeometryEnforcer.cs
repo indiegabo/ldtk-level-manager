@@ -38,14 +38,14 @@ namespace LDtkVania
                 return;
             }
 
-            HandleLevelGeometry(_mvLevel);
+            Enforce();
         }
 
         #endregion
 
         #region Geometry
 
-        private void HandleLevelGeometry(MV_Level level)
+        public void Enforce()
         {
             var colliders = GetComponentsInChildren<CompositeCollider2D>();
 

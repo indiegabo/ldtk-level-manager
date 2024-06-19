@@ -9,6 +9,7 @@ using LDtkUnity;
 using UnityEngine.SceneManagement;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
+using System;
 
 namespace LDtkVaniaEditor
 {
@@ -45,10 +46,13 @@ namespace LDtkVaniaEditor
         private TemplateContainer _containerMain;
 
         private ObjectField _fieldMapEditorScene;
+        private ObjectField _fieldUniverseScene;
         private DropdownField _dropdownProject;
         private DropdownField _dropdownWorld;
-        private Button _buttonOpenScene;
-        private Button _buttonClear;
+        private Button _buttonOpenMapEditorScene;
+        private Button _buttonOpenUniverseScene;
+        private Button _buttonUnloadAll;
+        private Button _buttonLoadWorld;
         private MapView _mapView;
 
         private event ProjectSelected _projectSelected;
@@ -89,11 +93,21 @@ namespace LDtkVaniaEditor
             _fieldMapEditorScene.SetValueWithoutNotify(Settings.MapScene);
             _fieldMapEditorScene.RegisterValueChangedCallback(x => Settings.MapScene = x.newValue as SceneAsset);
 
-            _buttonOpenScene = _containerMain.Q<Button>("button-open-scene");
-            _buttonOpenScene.clicked += OpenMapEditorScene;
+            _buttonOpenMapEditorScene = _containerMain.Q<Button>("button-open-map-editor-scene");
+            _buttonOpenMapEditorScene.clicked += OpenMapEditorScene;
 
-            _buttonClear = _containerMain.Q<Button>("button-clear");
-            _buttonClear.clicked += ClearLoadedLevels;
+            _fieldUniverseScene = _containerMain.Q<ObjectField>("field-universe-scene");
+            _fieldUniverseScene.SetValueWithoutNotify(Settings.UniverseScene);
+            _fieldUniverseScene.RegisterValueChangedCallback(x => Settings.UniverseScene = x.newValue as SceneAsset);
+
+            _buttonOpenUniverseScene = _containerMain.Q<Button>("button-open-universe-scene");
+            _buttonOpenUniverseScene.clicked += OpenUniverseScene;
+
+            _buttonUnloadAll = _containerMain.Q<Button>("button-unload-all");
+            _buttonUnloadAll.clicked += OnLoadAllLevels;
+
+            _buttonLoadWorld = _containerMain.Q<Button>("button-load-world");
+            _buttonLoadWorld.clicked += LoadAllCurrentWorldLevels;
 
             _mapView = _containerMain.Q<MapView>("map-view");
             _mapView.SetSelectionAnalysisCallback(OnLevelSelectionChanged);
@@ -176,7 +190,6 @@ namespace LDtkVaniaEditor
 
             void LoadWorldSilently(string worldName)
             {
-                ClearLoadedLevels();
                 Settings.InitializedWorldName = worldName;
                 World world = _selectedProjectWorlds[worldName];
                 _mapView.InitializeWorld(Settings.CurrentProject, world, Settings.MapViewTransform);
@@ -248,6 +261,20 @@ namespace LDtkVaniaEditor
             rootVisualElement.schedule.Execute(() => _mapView.InitializeWorld(Settings.CurrentProject, world));
         }
 
+        private void LoadAllCurrentWorldLevels()
+        {
+            if (!Settings.HasCurrentProject) return;
+            if (!Settings.HasInitializedWorldName) return;
+
+            ClearLoadedLevels();
+
+            foreach (MapLevelElement element in _mapView.LevelElements)
+            {
+                LoadedLevelEntry entry = LoadLevel(element.MVLevel, false);
+                element.RegisterLoadedEntry(entry);
+            }
+        }
+
         #endregion
 
         #region Loading Levels
@@ -267,7 +294,7 @@ namespace LDtkVaniaEditor
             }
         }
 
-        private LoadedLevelEntry LoadLevel(MV_Level mvLevel)
+        private LoadedLevelEntry LoadLevel(MV_Level mvLevel, bool frameAfterLoad = true)
         {
             LoadedLevelEntry entry;
             if (mvLevel.HasScene)
@@ -275,12 +302,30 @@ namespace LDtkVaniaEditor
                 string path = AssetDatabase.GUIDToAssetPath(mvLevel.Scene.AssetGuid);
                 Scene scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
                 entry = Settings.RegisterLoadedLevel(mvLevel, scene);
+
+                if (frameAfterLoad)
+                {
+                    foreach (GameObject obj in scene.GetRootGameObjects())
+                    {
+                        if (obj.TryGetComponent(out LDtkComponentLevel ldtkComponentLevel))
+                        {
+                            PrepareLevel(obj);
+                            FrameLevel(obj);
+                            break;
+                        }
+                    }
+                }
             }
             else
             {
                 GameObject obj = Instantiate(mvLevel.Asset) as GameObject;
                 obj.name = mvLevel.Name;
                 entry = Settings.RegisterLoadedLevel(mvLevel, obj);
+                if (frameAfterLoad)
+                {
+                    PrepareLevel(obj);
+                    FrameLevel(obj);
+                }
             }
             return entry;
         }
@@ -320,18 +365,45 @@ namespace LDtkVaniaEditor
         {
             if (selectables.Count == 0)
             {
-                Debug.Log("No level selected.");
+                // Debug.Log("No level selected.");
                 return;
             }
 
             if (selectables.Count == 1)
             {
                 MapLevelElement mapLevelElement = selectables[0] as MapLevelElement;
-                Debug.Log($"Selected {mapLevelElement.Level.Identifier}");
+                // Debug.Log($"Selected {mapLevelElement.Level.Identifier}");
                 return;
             }
 
-            Debug.Log($"Selected {selectables.Count} levels.");
+            // Debug.Log($"Selected {selectables.Count} levels.");
+        }
+
+        private void PrepareLevel(GameObject obj)
+        {
+            if (obj.TryGetComponent(out MV_LevelGeometryEnforcer geometryEnforcer))
+            {
+                geometryEnforcer.Enforce();
+            }
+        }
+
+        private void FrameLevel(GameObject obj)
+        {
+            Selection.activeGameObject = obj;
+            SceneView.lastActiveSceneView.FrameSelected();
+        }
+
+        private void OnLoadAllLevels()
+        {
+            ClearLoadedLevels();
+
+            // Centering Scene view
+            SceneView sceneView = SceneView.lastActiveSceneView;
+            if (sceneView == null) return;
+
+            Vector3 targetPosition = new(0, 0, -10);
+            Quaternion targetRotation = Quaternion.Euler(90, 0, 0);
+            sceneView.LookAtDirect(targetPosition, targetRotation);
         }
 
         #endregion
@@ -361,6 +433,29 @@ namespace LDtkVaniaEditor
             }
         }
 
+        private void OpenUniverseScene()
+        {
+            if (!Settings.HasUniverseScene) return;
+
+            if (IsUniverseSceneOpen())
+            {
+                return;
+            }
+
+            try
+            {
+                string path = AssetDatabase.GetAssetPath(Settings.UniverseScene);
+                if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+                {
+                    EditorSceneManager.OpenScene(path);
+                }
+            }
+            catch (System.Exception e)
+            {
+                MV_Logger.Exception(e);
+            }
+        }
+
         private bool IsMapSceneOpen()
         {
             if (!Settings.HasMapScene)
@@ -378,6 +473,15 @@ namespace LDtkVaniaEditor
                 Settings.ReleaseLevels();
             }
 
+            return isOpen;
+        }
+
+        private bool IsUniverseSceneOpen()
+        {
+            if (!Settings.HasUniverseScene) { return false; }
+
+            Scene activeScene = EditorSceneManager.GetActiveScene();
+            bool isOpen = activeScene.name == Settings.UniverseScene.name;
             return isOpen;
         }
 

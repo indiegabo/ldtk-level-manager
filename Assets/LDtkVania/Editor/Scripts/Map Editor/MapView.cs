@@ -16,6 +16,8 @@ namespace LDtkVaniaEditor
         private List<MapLevelElement> _levelElements = new();
         private Rect _worldRect;
 
+        public List<MapLevelElement> LevelElements => _levelElements;
+
         public new class UxmlFactory : UxmlFactory<MapView, GraphView.UxmlTraits> { }
 
         public MapView()

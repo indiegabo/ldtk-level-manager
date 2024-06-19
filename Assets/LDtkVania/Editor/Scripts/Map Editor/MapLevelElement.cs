@@ -138,9 +138,9 @@ namespace LDtkVaniaEditor
                 case 0: // Left Mouse Button
                     break;
                 case 1: // Right Mouse Button
+                    _levelElement.RequesLoad();
                     break;
                 case 2: // Middle Mouse Button
-                    _levelElement.RequesLoad();
                     break;
             }
         }

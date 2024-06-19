@@ -6,14 +6,16 @@ using UnityEditor;
 
 namespace LDtkVaniaEditor
 {
+    public delegate void SceneCreatedEvent();
+    public delegate void SceneDestroyedEvent();
     public class LevelElement : VisualElement
     {
         private const string TemplateName = "LevelInspector";
 
         private MV_Level _level;
 
-        TemplateContainer _containerMain;
-        LevelSceneElement _levelSceneElement;
+        private TemplateContainer _containerMain;
+        private LevelSceneElement _levelSceneElement;
 
         private TextField _fieldIid;
 
@@ -30,6 +32,9 @@ namespace LDtkVaniaEditor
         private PropertyField _fieldLDtkAsset;
         private TextField _fieldAssetPath;
         private TextField _fieldAddressableKey;
+
+        public event SceneCreatedEvent SceneCreated;
+        public event SceneDestroyedEvent SceneDestroyed;
 
         public LevelElement(MV_Level level)
         {
@@ -70,17 +75,7 @@ namespace LDtkVaniaEditor
 
             _buttonCreateScene = _containerMain.Q<Button>("button-create-scene");
             _buttonCreateScene.SetEnabled(!_level.LeftBehind);
-            _buttonCreateScene.clicked += () =>
-            {
-                if (MV_LevelScene.CreateSceneForLevel(_level, out MV_LevelScene levelScene))
-                {
-                    _level.SetScene(levelScene);
-                    _levelSceneElement.LevelScene = levelScene;
-                    EditorUtility.SetDirty(_level);
-                    AssetDatabase.SaveAssetIfDirty(_level);
-                }
-                EvaluateSceneDisplay();
-            };
+            _buttonCreateScene.clicked += CreateSceneForLevel;
 
             _buttonDestroyScene = _containerMain.Q<Button>("button-destroy-scene");
             _buttonDestroyScene.clicked += DestroyScene;
@@ -141,6 +136,19 @@ namespace LDtkVaniaEditor
             AssetDatabase.Refresh();
         }
 
+        private void CreateSceneForLevel()
+        {
+            if (MV_LevelScene.CreateSceneForLevel(_level, out MV_LevelScene levelScene))
+            {
+                _level.SetScene(levelScene);
+                _levelSceneElement.LevelScene = levelScene;
+                EditorUtility.SetDirty(_level);
+                AssetDatabase.SaveAssetIfDirty(_level);
+                SceneCreated?.Invoke();
+            }
+            EvaluateSceneDisplay();
+        }
+
         private void DestroyScene()
         {
             if (MV_LevelScene.DestroySceneForLevel(_level))
@@ -149,6 +157,7 @@ namespace LDtkVaniaEditor
                 _levelSceneElement.LevelScene = null;
                 EditorUtility.SetDirty(_level);
                 AssetDatabase.SaveAssetIfDirty(_level);
+                SceneDestroyed?.Invoke();
             }
 
             EvaluateSceneDisplay();
