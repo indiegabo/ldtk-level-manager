@@ -15,7 +15,7 @@ namespace LDtkVaniaEditor
         private Level _level;
         private bool _pointerIsOver = false;
         private MapView _mapView;
-        private bool _loaded = false;
+        private LoadedLevelEntry _loadedLevelEntry;
 
         private StyleColor _normalColor = new(new Color(1, 1, 1, 0.5f));
         private StyleColor _highlightedColor = new(new Color(1, 1, 1, 1f));
@@ -24,15 +24,7 @@ namespace LDtkVaniaEditor
         public MV_Level MVLevel => _mvLevel;
         public Level Level => _level;
 
-        public bool Loaded
-        {
-            get => _loaded;
-            set
-            {
-                _loaded = value;
-                EvaluateState();
-            }
-        }
+        public bool Loaded => _loadedLevelEntry != null;
 
         public MapLevelElement(MapView mapView, Level level, MV_Level mvLevel, Rect levelRect)
         {
@@ -49,7 +41,11 @@ namespace LDtkVaniaEditor
             this.AddManipulator(new MapLevelMouseManipulator(this));
             SetPosition(levelRect);
 
-            _loaded = MapEditorSettings.instance.IsLevelLoaded(mvLevel);
+            if (MapEditorSettings.instance.TryGetLoadedLevel(_mvLevel.Iid, out LoadedLevelEntry entry))
+            {
+                RegisterLoadedEntry(entry);
+            }
+
             EvaluateState();
         }
 
@@ -87,7 +83,7 @@ namespace LDtkVaniaEditor
                 return;
             }
 
-            if (_loaded)
+            if (Loaded)
             {
                 style.unityBackgroundImageTintColor = _loadedColor;
                 return;
@@ -100,6 +96,18 @@ namespace LDtkVaniaEditor
             }
 
             style.unityBackgroundImageTintColor = _normalColor;
+        }
+
+        public void RegisterLoadedEntry(LoadedLevelEntry entry)
+        {
+            _loadedLevelEntry = entry;
+            EvaluateState();
+
+            entry.Unloaded += () =>
+            {
+                _loadedLevelEntry = null;
+                EvaluateState();
+            };
         }
     }
 

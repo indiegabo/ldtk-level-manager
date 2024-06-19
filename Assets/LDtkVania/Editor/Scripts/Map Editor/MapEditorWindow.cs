@@ -9,7 +9,6 @@ using LDtkUnity;
 using UnityEngine.SceneManagement;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
-using System;
 
 namespace LDtkVaniaEditor
 {
@@ -94,7 +93,7 @@ namespace LDtkVaniaEditor
             _buttonOpenScene.clicked += OpenMapEditorScene;
 
             _buttonClear = _containerMain.Q<Button>("button-clear");
-            _buttonClear.clicked += ClearLevels;
+            _buttonClear.clicked += ClearLoadedLevels;
 
             _mapView = _containerMain.Q<MapView>("map-view");
             _mapView.SetSelectionAnalysisCallback(OnLevelSelectionChanged);
@@ -130,6 +129,7 @@ namespace LDtkVaniaEditor
         {
             if (!Settings.HasMapScene)
             {
+                ClearLoadedLevels();
                 Settings.ResetState();
                 return;
             }
@@ -138,6 +138,7 @@ namespace LDtkVaniaEditor
 
             if (!isMapSceneOpen)
             {
+                ClearLoadedLevels();
                 Settings.ReleaseLevels();
                 return;
             }
@@ -175,7 +176,7 @@ namespace LDtkVaniaEditor
 
             void LoadWorldSilently(string worldName)
             {
-                ClearLevels();
+                ClearLoadedLevels();
                 Settings.InitializedWorldName = worldName;
                 World world = _selectedProjectWorlds[worldName];
                 _mapView.InitializeWorld(Settings.CurrentProject, world, Settings.MapViewTransform);
@@ -241,7 +242,7 @@ namespace LDtkVaniaEditor
 
         private void SelectWorld(string worldName)
         {
-            ClearLevels();
+            ClearLoadedLevels();
             Settings.InitializedWorldName = worldName;
             World world = _selectedProjectWorlds[worldName];
             rootVisualElement.schedule.Execute(() => _mapView.InitializeWorld(Settings.CurrentProject, world));
@@ -257,35 +258,38 @@ namespace LDtkVaniaEditor
 
             if (!Settings.IsLevelLoaded(element.MVLevel))
             {
-                LoadLevel(element);
+                LoadedLevelEntry entry = LoadLevel(element.MVLevel);
+                element.RegisterLoadedEntry(entry);
             }
             else
             {
-                UnloadLevel(element);
+                UnloadLevel(element.MVLevel);
             }
         }
 
-        private void LoadLevel(MapLevelElement element)
+        private LoadedLevelEntry LoadLevel(MV_Level mvLevel)
         {
-            MV_Level mvLevel = element.MVLevel;
+            LoadedLevelEntry entry;
             if (mvLevel.HasScene)
             {
                 string path = AssetDatabase.GUIDToAssetPath(mvLevel.Scene.AssetGuid);
                 Scene scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
-                Settings.RegisterLoadedLevel(mvLevel.Iid, scene);
+                entry = Settings.RegisterLoadedLevel(mvLevel, scene);
             }
             else
             {
                 GameObject obj = Instantiate(mvLevel.Asset) as GameObject;
                 obj.name = mvLevel.Name;
-                Settings.RegisterLoadedLevel(mvLevel.Iid, obj);
+                entry = Settings.RegisterLoadedLevel(mvLevel, obj);
             }
-            element.Loaded = true;
+            return entry;
         }
 
-        private void UnloadLevel(MapLevelElement element)
+        private void UnloadLevel(MV_Level mvLevel)
         {
-            MV_Level mvLevel = element.MVLevel;
+            if (!Settings.TryGetLoadedLevel(mvLevel.Iid, out LoadedLevelEntry loadedLevelEntry)) return;
+
+            Settings.UnregisterLoadedLevel(mvLevel.Iid);
 
             if (mvLevel.HasScene)
             {
@@ -299,19 +303,17 @@ namespace LDtkVaniaEditor
             }
             else
             {
-                if (Settings.TryGetLevelObject(mvLevel.Iid, out GameObject obj))
-                {
-                    DestroyImmediate(obj);
-                }
+                DestroyImmediate(loadedLevelEntry.LoadedObject);
             }
-
-            element.Loaded = false;
-            Settings.UnregisterLoadedLevel(element.MVLevel.Iid);
         }
 
-        private void ClearLevels()
+        private void ClearLoadedLevels()
         {
-
+            List<LoadedLevelEntry> entries = Settings.GetLoadedLevels();
+            foreach (LoadedLevelEntry entry in entries)
+            {
+                UnloadLevel(entry.MVLevel);
+            }
         }
 
         private void OnLevelSelectionChanged(List<ISelectable> selectables)
@@ -372,7 +374,8 @@ namespace LDtkVaniaEditor
 
             if (!isOpen)
             {
-                Settings.ResetState();
+                ClearLoadedLevels();
+                Settings.ReleaseLevels();
             }
 
             return isOpen;
