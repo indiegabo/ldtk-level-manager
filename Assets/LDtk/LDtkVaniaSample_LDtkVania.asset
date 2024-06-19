@@ -194,7 +194,6 @@ MonoBehaviour:
       worldName: World2
       areas:
       - World_2_Area
-  _mapEditorScene: {fileID: 102900000, guid: 65d280354f005064c94aa2b51308e65f, type: 3}
 --- !u!114 &861571106279095823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,8 +216,8 @@ MonoBehaviour:
   _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_1.ldtkl
   _address: LDtkVaniaLevel_363b42a0-7820-11ed-a571-2bca691f63e1
   _scene:
-    _assetGuid: 
-    _addressableKey: 
+    _assetGuid: 3618a1f5674030a4482049bcd354617e
+    _addressableKey: LDtkVaniaScene_363b42a0-7820-11ed-a571-2bca691f63e1
   _leftBehind: 0
 --- !u!114 &1117852631154285963
 MonoBehaviour:

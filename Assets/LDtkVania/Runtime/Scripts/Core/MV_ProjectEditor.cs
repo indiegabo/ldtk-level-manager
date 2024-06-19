@@ -39,20 +39,6 @@ namespace LDtkVania
 
 
         // Settings
-
-        [SerializeField]
-        private SceneAsset _mapEditorScene;
-
-        public SceneAsset MapEditorScene
-        {
-            get => _mapEditorScene;
-            set
-            {
-                _mapEditorScene = value;
-                EditorUtility.SetDirty(this);
-            }
-        }
-
         public void ClearBeforeDeletion()
         {
             IEnumerable<MV_Level> levels = _levels.Values.Concat(_lostLevels.Values);

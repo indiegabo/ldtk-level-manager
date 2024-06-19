@@ -8,9 +8,11 @@ using UnityEditor.SceneManagement;
 using LDtkUnity;
 using UnityEngine.SceneManagement;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 
 namespace LDtkVaniaEditor
 {
+    public delegate void ProjectSelected(MV_Project project);
     public class MapEditorWindow : EditorWindow
     {
         #region Static
@@ -38,72 +40,105 @@ namespace LDtkVaniaEditor
         #region Fields
 
         private Dictionary<string, MV_Project> _projects;
-        private MV_Project _selectedProject;
         private Dictionary<string, World> _selectedProjectWorlds;
-        private World _selectedWorld;
-
-        private Dictionary<string, GameObject> _loadedObjects;
-        private Dictionary<string, Scene> _loadedScenes;
 
         private TemplateContainer _containerMain;
 
+        private ObjectField _fieldMapEditorScene;
         private DropdownField _dropdownProject;
         private DropdownField _dropdownWorld;
         private Button _buttonOpenScene;
         private Button _buttonClear;
         private MapView _mapView;
 
-        private Editor _editor;
+        private event ProjectSelected _projectSelected;
 
         #endregion
 
-        #region GUI
+        #region Properties
+
+        protected MapEditorSettings Settings => MapEditorSettings.instance;
+
+        #endregion
+
+        #region Life Cycle
 
         public void CreateGUI()
         {
             _projects = new();
             _selectedProjectWorlds = new();
-            _loadedObjects = new();
-            _loadedScenes = new();
+
+            List<MV_Project> projects = MV_Project.FindAllProjects();
+
+            foreach (MV_Project project in projects)
+            {
+                _projects.Add(project.name, project);
+            }
 
             VisualElement root = rootVisualElement;
 
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").CloneTree();
             _containerMain.style.flexGrow = 1;
+
             _dropdownProject = _containerMain.Q<DropdownField>("dropdown-project");
+            InitializeProjectsDropdown();
+
             _dropdownWorld = _containerMain.Q<DropdownField>("dropdown-world");
 
+            _fieldMapEditorScene = _containerMain.Q<ObjectField>("field-map-editor-scene");
+            _fieldMapEditorScene.SetValueWithoutNotify(Settings.MapScene);
+            _fieldMapEditorScene.RegisterValueChangedCallback(x => Settings.MapScene = x.newValue as SceneAsset);
+
             _buttonOpenScene = _containerMain.Q<Button>("button-open-scene");
-            _buttonOpenScene.clicked += () => OpenMapEditorScene();
+            _buttonOpenScene.clicked += OpenMapEditorScene;
 
             _buttonClear = _containerMain.Q<Button>("button-clear");
-            _buttonClear.clicked += () => ClearLevels();
+            _buttonClear.clicked += ClearLevels;
 
             _mapView = _containerMain.Q<MapView>("map-view");
             _mapView.SetSelectionAnalysisCallback(OnLevelSelectionChanged);
 
-            InitializeProjectsDropdown();
+            if (Settings.HasMapScene && Settings.HasCurrentProject && _projects.ContainsKey(Settings.CurrentProject.name))
+            {
+                RebuildCurrentState();
+            }
+            else
+            {
+                Settings.CurrentProject = null;
+                Settings.ResetState();
+                EvaluateProjectSelection();
+            }
 
             root.Add(_containerMain);
         }
 
         private void OnEnable()
         {
+            EditorSceneManager.sceneOpened += OnSceneOpened;
+            _projectSelected += OnProjectSelected;
         }
 
         private void OnDisable()
         {
+            EditorSceneManager.sceneOpened -= OnSceneOpened;
+            _projectSelected -= OnProjectSelected;
         }
 
-        private void OnDestroy()
+        private void OnSceneOpened(Scene scene, OpenSceneMode mode)
         {
-            // ClearLevels();
-        }
+            if (!Settings.HasMapScene)
+            {
+                Settings.ResetState();
+                return;
+            }
 
+            bool isMapSceneOpen = IsMapSceneOpen();
 
-        private void OnSelectionChanged()
-        {
-            // Debug.Log(Selection.activeContext);
+            if (!isMapSceneOpen)
+            {
+                Settings.ReleaseLevels();
+                return;
+            }
         }
 
         #endregion
@@ -112,20 +147,47 @@ namespace LDtkVaniaEditor
 
         private void InitializeProjectsDropdown()
         {
-            List<MV_Project> projects = MV_Project.FindAllProjects();
+            _dropdownProject.choices = _projects.Values.Select(x => x.name).ToList();
+            _dropdownProject.RegisterValueChangedCallback(x => SelectProject(x.newValue));
+        }
 
-            foreach (MV_Project project in projects)
+        private void RebuildCurrentState()
+        {
+            _dropdownProject.SetValueWithoutNotify(Settings.CurrentProject.name);
+            InitializeWorldsDropdown(Settings.CurrentProject);
+
+            if (Settings.HasInitializedWorldName && CurrentProjectContainsWorld(Settings.InitializedWorldName))
             {
-                _projects.Add(project.name, project);
+                _dropdownWorld.SetValueWithoutNotify(Settings.InitializedWorldName);
+                LoadWorldSilently(Settings.InitializedWorldName);
+                return;
             }
 
-            _dropdownProject.choices = projects.Select(x => x.name).ToList();
-            _dropdownProject.RegisterValueChangedCallback(x => SelectProject(x.newValue));
+            if (_selectedProjectWorlds.Count > 0)
+            {
+                string worldName = _selectedProjectWorlds.First().Value.Identifier;
+                _dropdownWorld.SetValueWithoutNotify(worldName);
+                SelectWorld(worldName);
+                return;
+            }
 
+            void LoadWorldSilently(string worldName)
+            {
+                ClearLevels();
+                Settings.InitializedWorldName = worldName;
+                World world = _selectedProjectWorlds[worldName];
+                _mapView.InitializeWorld(Settings.CurrentProject, world, Settings.MapViewTransform);
+            }
+        }
+
+        private void EvaluateProjectSelection()
+        {
             if (_projects.Count > 0)
             {
-                _dropdownProject.value = projects[0].name;
+                string projectName = _projects.First().Value.name;
+                _dropdownProject.SetValueWithoutNotify(projectName);
                 SelectProject(_dropdownProject.value);
+                return;
             }
         }
 
@@ -136,8 +198,25 @@ namespace LDtkVaniaEditor
 
         private void SelectProject(MV_Project project)
         {
-            _selectedProject = project;
-            InitializeWorldsDropdown(_selectedProject);
+            Settings.CurrentProject = project;
+            _projectSelected?.Invoke(project);
+        }
+
+        private void OnProjectSelected(MV_Project project)
+        {
+            InitializeWorldsDropdown(Settings.CurrentProject);
+
+            if (_selectedProjectWorlds.Count > 0)
+            {
+                string worldName = _selectedProjectWorlds.Values.First().Identifier;
+                _dropdownWorld.SetValueWithoutNotify(worldName);
+                SelectWorld(worldName);
+            }
+        }
+
+        private bool CurrentProjectContainsWorld(string worldName)
+        {
+            return _selectedProjectWorlds.ContainsKey(worldName);
         }
 
         #endregion
@@ -156,19 +235,14 @@ namespace LDtkVaniaEditor
 
             _dropdownWorld.choices = worlds.Select(x => x.Identifier).ToList();
             _dropdownWorld.RegisterValueChangedCallback(x => SelectWorld(x.newValue));
-
-            if (_selectedProjectWorlds.Count > 0)
-            {
-                _dropdownWorld.value = worlds[0].Identifier;
-                SelectWorld(_dropdownWorld.value);
-            }
         }
 
         private void SelectWorld(string worldName)
         {
             ClearLevels();
-            _selectedWorld = _selectedProjectWorlds[worldName];
-            _mapView.InitializeWorld(_selectedProject, _selectedWorld);
+            Settings.InitializedWorldName = worldName;
+            World world = _selectedProjectWorlds[worldName];
+            rootVisualElement.schedule.Execute(() => _mapView.InitializeWorld(Settings.CurrentProject, world));
         }
 
         #endregion
@@ -178,24 +252,24 @@ namespace LDtkVaniaEditor
         private void LoadLevel(string iid)
         {
 
+            // if (mvLevel.HasScene && !_loadedScenes.ContainsKey(mvLevel.Iid))
+            // {
+            //     string path = AssetDatabase.GUIDToAssetPath(mvLevel.Scene.AssetGuid);
+            //     Scene scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
+            //     _loadedScenes.Add(mvLevel.Iid, scene);
+            // }
+            // else if (!_loadedObjects.ContainsKey(mvLevel.Iid))
+            // {
+            //     GameObject obj = Instantiate(mvLevel.Asset) as GameObject;
+            //     obj.name = mvLevel.Name;
+            //     _loadedObjects.Add(mvLevel.Iid, obj);
+            // }
         }
 
         private void ClearLevels()
         {
-            foreach (GameObject obj in _loadedObjects.Values)
-            {
-                DestroyImmediate(obj);
-            }
 
-            foreach (Scene scene in _loadedScenes.Values)
-            {
-                EditorSceneManager.CloseScene(scene, true);
-            }
-
-            _loadedObjects.Clear();
-            _loadedScenes.Clear();
         }
-
 
         private void OnLevelSelectionChanged(List<ISelectable> selectables)
         {
@@ -219,21 +293,46 @@ namespace LDtkVaniaEditor
 
         #region Editor Scene
 
-        private bool OpenMapEditorScene()
+        private void OpenMapEditorScene()
         {
-            if (!_selectedProject || _selectedProject.MapEditorScene == null) return false;
+            if (!Settings.HasMapScene) return;
+
+            if (IsMapSceneOpen())
+            {
+                return;
+            }
 
             try
             {
-                string path = AssetDatabase.GetAssetPath(_selectedProject.MapEditorScene);
-                EditorSceneManager.OpenScene(path);
-                return true;
+                string path = AssetDatabase.GetAssetPath(Settings.MapScene);
+                if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+                {
+                    EditorSceneManager.OpenScene(path);
+                }
             }
             catch (System.Exception e)
             {
-                Debug.LogException(e);
+                MV_Logger.Exception(e);
+            }
+        }
+
+        private bool IsMapSceneOpen()
+        {
+            if (!Settings.HasMapScene)
+            {
+                Settings.ResetState();
                 return false;
             }
+
+            Scene activeScene = EditorSceneManager.GetActiveScene();
+            bool isOpen = activeScene.name == Settings.MapScene.name;
+
+            if (!isOpen)
+            {
+                Settings.ResetState();
+            }
+
+            return isOpen;
         }
 
         #endregion

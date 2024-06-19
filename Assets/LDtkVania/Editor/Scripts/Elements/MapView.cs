@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using LDtkUnity;
 using LDtkVania;
 using LDtkVania.Utils;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -17,7 +17,6 @@ namespace LDtkVaniaEditor
         private Rect _worldRect;
 
         public new class UxmlFactory : UxmlFactory<MapView, GraphView.UxmlTraits> { }
-
 
         public MapView()
         {
@@ -49,10 +48,43 @@ namespace LDtkVaniaEditor
 
             if (world.WorldLayout != WorldLayout.GridVania)
             {
-                Debug.LogWarning("Only grid-based worlds are supported.");
+                Debug.LogWarning("Only grid-based worlds are supported for now.");
                 return;
             }
 
+            LoadLevels(project, world);
+            schedule.Execute(() => FrameWorld());
+        }
+
+        public void InitializeWorld(MV_Project project, World world, MapViewTransform existingTransform)
+        {
+            ClearLevels();
+
+            if (world.WorldLayout != WorldLayout.GridVania)
+            {
+                Debug.LogWarning("Only grid-based worlds are supported for now.");
+                return;
+            }
+
+            LoadLevels(project, world);
+            UpdateViewTransform(existingTransform.position, existingTransform.scale);
+        }
+
+        public void AddLevel(Level level, MV_Level mvLevel, Rect rect)
+        {
+            MapLevelElement levelElement = new(this, level, mvLevel, rect);
+            _levelElements.Add(levelElement);
+            AddElement(levelElement);
+        }
+
+        public void ClearLevels()
+        {
+            _levelElements.ForEach(levelElement => RemoveElement(levelElement));
+            _levelElements.Clear();
+        }
+
+        private void LoadLevels(MV_Project project, World world)
+        {
             _worldRect = new Rect(0, 0, 0, 0);
 
             foreach (Level level in world.Levels)
@@ -70,57 +102,24 @@ namespace LDtkVaniaEditor
                 _worldRect.Expand(levelRect);
 
                 AddLevel(level, mvLevel, levelRect);
-
-                // if (mvLevel.HasScene && !_loadedScenes.ContainsKey(mvLevel.Iid))
-                // {
-                //     string path = AssetDatabase.GUIDToAssetPath(mvLevel.Scene.AssetGuid);
-                //     Scene scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
-                //     _loadedScenes.Add(mvLevel.Iid, scene);
-                // }
-                // else if (!_loadedObjects.ContainsKey(mvLevel.Iid))
-                // {
-                //     GameObject obj = Instantiate(mvLevel.Asset) as GameObject;
-                //     obj.name = mvLevel.Name;
-                //     _loadedObjects.Add(mvLevel.Iid, obj);
-                // }
             }
-        }
-
-        public void AddLevel(Level level, MV_Level mvLevel, Rect rect)
-        {
-            MapLevelElement levelElement = new(this, level, mvLevel, rect);
-            _levelElements.Add(levelElement);
-            AddElement(levelElement);
-        }
-
-        public void ClearLevels()
-        {
-            _levelElements.ForEach(levelElement => RemoveElement(levelElement));
-            _levelElements.Clear();
         }
 
         private void OnViewTransformChanged(GraphView graphView)
         {
-            // foreach (var element in graphView.graphElements) // Update all elements
-            // {
-            //     if (element is TestElement myElement)
-            //     {
-            //         Debug.Log(element);
-            //         // Calculate the desired position (e.g., center of the graph)
-            //         Vector2 desiredWorldPosition = graphView.contentViewContainer.WorldToLocal(graphView.viewTransform.position);
-
-            //         // Convert to viewport-relative coordinates
-            //         Vector2 viewportPosition = graphView.viewTransform.matrix.inverse.MultiplyPoint(desiredWorldPosition);
-
-            //         // Update the element's position
-            //         myElement.SetPosition(new Rect(viewportPosition, myElement.layout.size));
-            //     }
-            // }
+            MapEditorSettings.instance.MapViewTransform = MapViewTransform.From(viewTransform);
         }
 
         public void TriggerSelectionAnalysis()
         {
             _selectionAnalysisAction?.Invoke(selection);
+        }
+
+        private void FrameWorld()
+        {
+            FrameAll();
+            MapViewTransform transform = MapViewTransform.From(viewTransform);
+            MapEditorSettings.instance.MapViewTransform = transform;
         }
     }
     public class MapViewRectangleSelector : RectangleSelector
@@ -148,6 +147,24 @@ namespace LDtkVaniaEditor
         {
             if (e.button != (int)MouseButton.LeftMouse) return;
             _mapView.TriggerSelectionAnalysis();
+        }
+    }
+
+    [System.Serializable]
+    public struct MapViewTransform
+    {
+        public Vector3 position;
+        public Quaternion rotation;
+        public Vector3 scale;
+
+        public static MapViewTransform From(ITransform iTransform)
+        {
+            return new MapViewTransform
+            {
+                position = iTransform.position,
+                rotation = iTransform.rotation,
+                scale = iTransform.scale
+            };
         }
     }
 }

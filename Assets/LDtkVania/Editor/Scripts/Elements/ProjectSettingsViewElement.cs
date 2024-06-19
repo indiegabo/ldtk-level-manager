@@ -29,9 +29,6 @@ namespace LDtkVaniaEditor
             _ldtkJson = _project.LDtkProject;
 
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
-            _fieldMapEditorScene = _containerMain.Q<ObjectField>("field-map-editor-scene");
-            _fieldMapEditorScene.SetValueWithoutNotify(_project.MapEditorScene);
-            _fieldMapEditorScene.RegisterValueChangedCallback(x => _project.MapEditorScene = x.newValue as SceneAsset);
 
 
             Add(_containerMain);

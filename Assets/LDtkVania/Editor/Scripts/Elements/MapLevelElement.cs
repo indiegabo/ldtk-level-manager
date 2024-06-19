@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using LDtkUnity;
 using LDtkVania;
 using UnityEditor.Experimental.GraphView;
@@ -14,9 +12,20 @@ namespace LDtkVaniaEditor
         private Level _level;
         private bool _pointerIsOver = false;
         private MapView _mapView;
+        private bool _loaded = false;
 
         public MV_Level MVLevel => _mvLevel;
         public Level Level => _level;
+
+        public bool Loaded
+        {
+            get => _loaded;
+            set
+            {
+                _loaded = value;
+                EvaluateState();
+            }
+        }
 
         public MapLevelElement(MapView mapView, Level level, MV_Level mvLevel, Rect levelRect)
         {
@@ -27,12 +36,10 @@ namespace LDtkVaniaEditor
             _mvLevel = mvLevel;
 
             Sprite sprite = Resources.Load<Sprite>("world-tile");
-
             style.backgroundImage = Background.FromSprite(sprite);
             style.unityBackgroundImageTintColor = new StyleColor(new Color(1, 1, 1, 0.5f));
 
             this.AddManipulator(new MapLevelMouseManipulator(this));
-
             SetPosition(levelRect);
         }
 

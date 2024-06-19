@@ -3,13 +3,19 @@
     <LDtkVaniaEditor.SliptView fixed-pane-initial-dimension="230" name="container-main">
         <ui:VisualElement name="container-left" style="flex-grow: 1;">
             <ui:DropdownField label="Project" name="dropdown-project" />
-            <ui:DropdownField label="World" name="dropdown-world" />
+            <uie:ObjectField label="Map Editor Scene" name="field-map-editor-scene" type="UnityEditor.SceneAsset, UnityEditor.CoreModule" />
             <ui:Button text="Open Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-open-scene" />
             <ui:Button text="Clear" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-clear" />
             <ui:VisualElement style="flex-grow: 1; background-image: resource(&apos;world-tile&apos;); -unity-background-image-tint-color: rgb(255, 255, 255); visibility: hidden;" />
         </ui:VisualElement>
         <LDtkVaniaEditor.SliptView name="slipt-view-map" fixed-pane-index="1" fixed-pane-initial-dimension="200" orientation="Vertical">
-            <LDtkVaniaEditor.MapView name="map-view" focusable="true" style="flex-grow: 1;" />
+            <LDtkVaniaEditor.MapView name="map-view" focusable="true" style="flex-grow: 1;">
+                <uie:Toolbar>
+                    <uie:ToolbarToggle label="Toggle" />
+                    <ui:VisualElement style="flex-grow: 1;" />
+                    <ui:DropdownField label="World" name="dropdown-world" />
+                </uie:Toolbar>
+            </LDtkVaniaEditor.MapView>
             <ui:VisualElement name="container-selected" style="flex-grow: 1;" />
         </LDtkVaniaEditor.SliptView>
     </LDtkVaniaEditor.SliptView>
