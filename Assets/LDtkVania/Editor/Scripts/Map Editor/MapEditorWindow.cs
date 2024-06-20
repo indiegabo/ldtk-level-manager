@@ -118,7 +118,7 @@ namespace LDtkVaniaEditor
             _scrollViewSelectedLevel = _containerMain.Q<ScrollView>("scroll-view-selected-level");
 
             _buttonUnloadAll = _containerMain.Q<Button>("button-unload-all");
-            _buttonUnloadAll.clicked += OnLoadAllLevels;
+            _buttonUnloadAll.clicked += UnloadAllLevels;
 
             _buttonLoadWorld = _containerMain.Q<Button>("button-load-world");
             _buttonLoadWorld.clicked += LoadAllCurrentWorldLevels;
@@ -288,11 +288,18 @@ namespace LDtkVaniaEditor
 
             ClearLoadedLevels();
 
+            Bounds bounds = new(Vector2.zero, Vector2.zero);
+
             foreach (MapLevelElement element in _mapView.LevelElements)
             {
                 LoadedLevelEntry entry = LoadLevel(element.MVLevel, false);
                 element.RegisterLoadedEntry(entry);
+
+                bounds.Encapsulate(element.LevelRect.min);
+                bounds.Encapsulate(element.LevelRect.max);
             }
+
+            SceneView.lastActiveSceneView.Frame(bounds);
         }
 
         #endregion
@@ -470,7 +477,7 @@ namespace LDtkVaniaEditor
             SceneView.lastActiveSceneView.FrameSelected();
         }
 
-        private void OnLoadAllLevels()
+        private void UnloadAllLevels()
         {
             ClearLoadedLevels();
 

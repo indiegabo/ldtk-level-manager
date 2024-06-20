@@ -15,7 +15,7 @@ MonoBehaviour:
   _project: {fileID: 11400000}
   _iid: 44d1b760-c640-11ed-8852-abb8aafd2434
   _displayName: 
-  _worldName: Detached_Levels
+  _worldName: Horizontal_World
   _areaName: 
   _asset: {fileID: -1846213612326926914, guid: e507eb0c3834580408aff2e7ccb1da95, type: 3}
   _levelFile: {fileID: -8655009601392300639, guid: e507eb0c3834580408aff2e7ccb1da95, type: 3}
@@ -72,8 +72,8 @@ MonoBehaviour:
   _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_2.ldtkl
   _address: LDtkVaniaLevel_5a000e40-7820-11ed-9426-6583193f320d
   _scene:
-    _assetGuid: 43f8e2f51beb01f47ba253a0141843bc
-    _addressableKey: LDtkVaniaScene_5a000e40-7820-11ed-9426-6583193f320d
+    _assetGuid: 
+    _addressableKey: 
   _leftBehind: 0
 --- !u!114 &-1462678714931912811
 MonoBehaviour:
@@ -155,6 +155,8 @@ MonoBehaviour:
     - fce2b020-c640-11ed-8852-5d77cfb88076
     - b8abf8a0-ed50-11ed-a82b-5f61164d4b1d
     - e4e69a60-ed50-11ed-a82b-27cab0fad380
+    - c78ca470-25d0-11ef-b9ac-cb41f09aefa0
+    - cc428b60-25d0-11ef-b9ac-9f703a597d6d
     _listValues:
     - {fileID: 861571106279095823}
     - {fileID: -5206742957286363144}
@@ -169,14 +171,16 @@ MonoBehaviour:
     - {fileID: 4521855694702176199}
     - {fileID: 8301431432563639596}
     - {fileID: -6322558053007414748}
+    - {fileID: 6406710436276318498}
+    - {fileID: 5741631923320338002}
   _lostLevels:
     _listKeys: []
     _listValues: []
   _worldAreas:
     _listKeys:
     - City
-    - Detached_Levels
-    - No_Scene_Levels_asdas
+    - Horizontal_World
+    - Vertical_World
     - World2
     _listValues:
     - worldIid: 7f865a90-c640-11ed-a835-078936813e60
@@ -185,10 +189,10 @@ MonoBehaviour:
       - Factory
       - Mall
     - worldIid: 78079cf0-c640-11ed-bdac-f1f4e542fc31
-      worldName: Detached_Levels
+      worldName: Horizontal_World
       areas: []
     - worldIid: fce28910-c640-11ed-8852-37bccc8dfb69
-      worldName: No_Scene_Levels_asdas
+      worldName: Vertical_World
       areas: []
     - worldIid: b8abd190-ed50-11ed-a82b-63bae5b82235
       worldName: World2
@@ -241,8 +245,8 @@ MonoBehaviour:
   _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_4.ldtkl
   _address: LDtkVaniaLevel_49e346a0-fec0-11ee-9039-5b61900789be
   _scene:
-    _assetGuid: 5b09dd6140434474f9e8f931670f51da
-    _addressableKey: LDtkVaniaScene_49e346a0-fec0-11ee-9039-5b61900789be
+    _assetGuid: 
+    _addressableKey: 
   _leftBehind: 0
 --- !u!114 &1991603685113182602
 MonoBehaviour:
@@ -259,7 +263,7 @@ MonoBehaviour:
   _project: {fileID: 11400000}
   _iid: 601a6d50-c640-11ed-8852-c79dd4f3aa7c
   _displayName: 
-  _worldName: Detached_Levels
+  _worldName: Horizontal_World
   _areaName: 
   _asset: {fileID: -1512926545102477460, guid: 06f65a889db371949af7b7151b1e66f4, type: 3}
   _levelFile: {fileID: -8655009601392300639, guid: 06f65a889db371949af7b7151b1e66f4, type: 3}
@@ -291,8 +295,8 @@ MonoBehaviour:
   _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_5.ldtkl
   _address: LDtkVaniaLevel_53fb5a10-fec0-11ee-9039-81cd82f7857a
   _scene:
-    _assetGuid: 5422fa417857304489f55efea48fcda5
-    _addressableKey: LDtkVaniaScene_53fb5a10-fec0-11ee-9039-81cd82f7857a
+    _assetGuid: 
+    _addressableKey: 
   _leftBehind: 0
 --- !u!114 &3157840756055984363
 MonoBehaviour:
@@ -334,12 +338,62 @@ MonoBehaviour:
   _project: {fileID: 11400000}
   _iid: fce2b020-c640-11ed-8852-5d77cfb88076
   _displayName: 
-  _worldName: No_Scene_Levels_asdas
+  _worldName: Vertical_World
   _areaName: 
   _asset: {fileID: -9136270700084939448, guid: bfebf7a8930b1ac4c9ee82c8beb86fd4, type: 3}
   _levelFile: {fileID: -8655009601392300639, guid: bfebf7a8930b1ac4c9ee82c8beb86fd4, type: 3}
   _assetPath: Assets/LDtk/LDtkVaniaSample/NS_Test.ldtkl
   _address: LDtkVaniaLevel_fce2b020-c640-11ed-8852-5d77cfb88076
+  _scene:
+    _assetGuid: 
+    _addressableKey: 
+  _leftBehind: 0
+--- !u!114 &5741631923320338002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76238ae897cf99441a858f74751e647c, type: 3}
+  m_Name: Vertical_World_Level_2_Json
+  m_EditorClassIdentifier: 
+  _project: {fileID: 11400000}
+  _iid: cc428b60-25d0-11ef-b9ac-9f703a597d6d
+  _displayName: 
+  _worldName: Vertical_World
+  _areaName: 
+  _asset: {fileID: 574586885102853893, guid: 40f1885c056bb764aba6798f655a8140, type: 3}
+  _levelFile: {fileID: -8655009601392300639, guid: 40f1885c056bb764aba6798f655a8140, type: 3}
+  _assetPath: Assets/LDtk/LDtkVaniaSample/Vertical_World_Level_2.ldtkl
+  _address: LDtkVaniaLevel_cc428b60-25d0-11ef-b9ac-9f703a597d6d
+  _scene:
+    _assetGuid: 
+    _addressableKey: 
+  _leftBehind: 0
+--- !u!114 &6406710436276318498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76238ae897cf99441a858f74751e647c, type: 3}
+  m_Name: Vertical_World_Level_0_Json
+  m_EditorClassIdentifier: 
+  _project: {fileID: 11400000}
+  _iid: c78ca470-25d0-11ef-b9ac-cb41f09aefa0
+  _displayName: 
+  _worldName: Vertical_World
+  _areaName: 
+  _asset: {fileID: -3099744130577588883, guid: 852556d742ba1db4fa5ddcb260a28922, type: 3}
+  _levelFile: {fileID: -8655009601392300639, guid: 852556d742ba1db4fa5ddcb260a28922, type: 3}
+  _assetPath: Assets/LDtk/LDtkVaniaSample/Vertical_World_Level_0.ldtkl
+  _address: LDtkVaniaLevel_c78ca470-25d0-11ef-b9ac-cb41f09aefa0
   _scene:
     _assetGuid: 
     _addressableKey: 

@@ -17,6 +17,7 @@ namespace LDtkVaniaEditor
         private bool _pointerIsOver = false;
         private MapView _mapView;
         private LoadedLevelEntry _loadedLevelEntry;
+        private Rect _levelRect;
 
         private StyleColor _normalColor = new(new Color(1, 1, 1, 0.5f));
         private StyleColor _highlightedColor = new(new Color(1, 1, 1, 1f));
@@ -24,6 +25,7 @@ namespace LDtkVaniaEditor
 
         public MV_Level MVLevel => _mvLevel;
         public Level Level => _level;
+        public Rect LevelRect => _levelRect;
 
         public bool Loaded => _loadedLevelEntry != null;
 
@@ -36,6 +38,7 @@ namespace LDtkVaniaEditor
             _mapView = mapView;
             _level = level;
             _mvLevel = mvLevel;
+            _levelRect = levelRect;
 
             Sprite sprite = Resources.Load<Sprite>("map-level-tile");
             style.backgroundImage = Background.FromSprite(sprite);

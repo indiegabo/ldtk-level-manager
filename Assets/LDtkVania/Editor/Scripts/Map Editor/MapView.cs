@@ -81,13 +81,15 @@ namespace LDtkVaniaEditor
         {
             switch (world.WorldLayout)
             {
-                case WorldLayout.GridVania:
-                    LoadGridVaniaLevels(project, world);
-                    break;
                 case WorldLayout.LinearHorizontal:
                     LoadHorizontalLevels(project, world);
                     break;
                 case WorldLayout.LinearVertical:
+                    LoadVerticalLevels(project, world);
+                    break;
+                case WorldLayout.Free:
+                case WorldLayout.GridVania:
+                    LoadGridVaniaLevels(project, world);
                     break;
             }
         }
@@ -117,7 +119,7 @@ namespace LDtkVaniaEditor
         private void LoadHorizontalLevels(MV_Project project, World world)
         {
             _worldRect = new Rect(0, 0, 0, 0);
-            float startingPos = 0;
+            float currentPos = 0;
 
             foreach (Level level in world.Levels)
             {
@@ -128,13 +130,37 @@ namespace LDtkVaniaEditor
                 {
                     width = level.UnityWorldRect.width * 0.25f,
                     height = level.UnityWorldRect.height * 0.25f,
-                    x = startingPos,
+                    x = currentPos,
                     y = 0
                 };
 
                 _worldRect.Expand(levelRect);
                 AddLevel(level, mvLevel, levelRect);
-                startingPos = startingPos + levelRect.width + 25f;
+                currentPos = currentPos + levelRect.width + 25f;
+            }
+        }
+
+        private void LoadVerticalLevels(MV_Project project, World world)
+        {
+            _worldRect = new Rect(0, 0, 0, 0);
+            float currentPos = 0;
+
+            foreach (Level level in world.Levels)
+            {
+
+                project.TryGetLevel(level.Iid, out MV_Level mvLevel);
+
+                Rect levelRect = new()
+                {
+                    width = level.UnityWorldRect.width * 0.25f,
+                    height = level.UnityWorldRect.height * 0.25f,
+                    x = 0,
+                    y = currentPos
+                };
+
+                _worldRect.Expand(levelRect);
+                AddLevel(level, mvLevel, levelRect);
+                currentPos = currentPos + levelRect.height + 25f;
             }
         }
 
