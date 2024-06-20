@@ -10,9 +10,9 @@ namespace LDtkLevelManager
     {
         #region Static
 
-        public static readonly string AdressableAddressPrexix = "LDtkLevelManagerLevel";
-        public static readonly string AddressableGroupName = "LDtkLevelManagerLevels";
-        public static readonly string AddressableLabel = "LDtkLevelManagerLevel";
+        public static readonly string AdressableAddressPrexix = "LM_";
+        public static readonly string AddressableGroupName = "LM_Levels";
+        public static readonly string AddressableLabel = "LM_Level";
 
         #endregion
 
