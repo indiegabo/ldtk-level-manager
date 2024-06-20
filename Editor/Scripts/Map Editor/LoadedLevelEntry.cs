@@ -1,9 +1,9 @@
-using LDtkVania;
+using LDtkLevelManager;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
     public delegate void UnloadEvent();
     [System.Serializable]

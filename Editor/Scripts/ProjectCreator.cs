@@ -2,14 +2,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using LDtkUnity;
-using LDtkVania;
+using LDtkLevelManager;
 using UnityEditor;
 using UnityEngine;
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
     public static class ProjectCreator
     {
-        [MenuItem("Assets/Create LDtkVania Project", true, priority = 80)] // Enable validation
+        [MenuItem("Assets/Create LDtkLevelManager Project", true, priority = 80)] // Enable validation
         private static bool ValidateCreationMenuItem()
         {
             // Check if any assets are selected
@@ -25,7 +25,7 @@ namespace LDtkVaniaEditor
             return projectFile != null;
         }
 
-        [MenuItem("Assets/Create LDtkVania Project", false, priority = 80)]
+        [MenuItem("Assets/Create LDtkLevelManager Project", false, priority = 80)]
         private static void RequestProjectCreation()
         {
             string guid = Selection.assetGUIDs[0];
@@ -34,20 +34,20 @@ namespace LDtkVaniaEditor
 
             if (projectFile == null)
             {
-                LDtkVania.Logger.Error($"Could not load project file at {assetPath}");
+                LDtkLevelManager.Logger.Error($"Could not load project file at {assetPath}");
                 return;
             }
 
             if (ProjectAlreadyExists(projectFile, out string existingProjectPath))
             {
-                LDtkVania.Logger.Error($"Project already exists at {existingProjectPath}");
+                LDtkLevelManager.Logger.Error($"Project already exists at {existingProjectPath}");
                 return;
             }
 
             string fileNameToRemove = assetPath.Split("/").Last();
             string fileNameWithoutExtension = fileNameToRemove.Split(".").First();
             string directoryPath = assetPath.Replace(fileNameToRemove, string.Empty);
-            string projectPath = Path.Combine(directoryPath, fileNameWithoutExtension + "_LDtkVania.asset");
+            string projectPath = Path.Combine(directoryPath, fileNameWithoutExtension + "_LDtkLevelManager.asset");
 
             Project project = ScriptableObject.CreateInstance<Project>();
 

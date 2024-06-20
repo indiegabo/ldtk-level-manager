@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using LDtkVania;
+using LDtkLevelManager;
 using UnityEditor.UIElements;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
     public delegate void DestroyRequestedEvent();
     public class LevelSceneElement : VisualElement

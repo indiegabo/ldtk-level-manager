@@ -4,17 +4,17 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 using LDtkUnity;
-using LDtkVania.Utils;
+using LDtkLevelManager.Utils;
 using System.Linq;
 
-namespace LDtkVania
+namespace LDtkLevelManager
 {
     public partial class Project : ScriptableObject
     {
         #region Static
 
-        public static string AddressablesProjectAddress = "LDtkVaniaProject";
-        public static string AddressablesGroupName = "LDtkVania";
+        public static string AddressablesProjectAddress = "LDtkLevelManagerProject";
+        public static string AddressablesGroupName = "LDtkLevelManager";
         public static string AddressablesLevelsLabel = "LDtkLevels";
 
         public static List<Project> FindAllProjects()

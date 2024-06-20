@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
-using LDtkVania.Utils;
+using LDtkLevelManager.Utils;
 
-namespace LDtkVania.Transitioning
+namespace LDtkLevelManager.Transitioning
 {
     [CreateAssetMenu(fileName = "Level Transitions Provider", menuName = "Poputara/Gameplay/Levels/Transitions Provider")]
     public class LevelTransitionsProvider : ScriptableObject

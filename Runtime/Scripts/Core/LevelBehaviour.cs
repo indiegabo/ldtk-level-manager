@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using LDtkUnity;
-using LDtkVania.Utils;
+using LDtkLevelManager.Utils;
 using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
 
-namespace LDtkVania
+namespace LDtkLevelManager
 {
     public class LevelBehaviour : MonoBehaviour
     {
@@ -43,7 +43,7 @@ namespace LDtkVania
         #region Getters
 
         /// <summary>
-        /// The <see cref="LDtkVania.LevelInfo"/> associated with this <see cref="LevelBehaviour"/>.
+        /// The <see cref="LDtkLevelManager.LevelInfo"/> associated with this <see cref="LevelBehaviour"/>.
         /// </summary>
         public LevelInfo Info => _info;
 

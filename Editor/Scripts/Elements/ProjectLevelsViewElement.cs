@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using LDtkVania;
+using LDtkLevelManager;
 using UnityEditor.UIElements;
 using LDtkUnity;
 using UnityEditor;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
     public class ProjectLevelsViewElement : VisualElement
     {
@@ -16,8 +16,8 @@ namespace LDtkVaniaEditor
         private const string TemplateName = "ProjectInspector_LevelsView";
 
         private Project _project;
-        private List<LDtkVania.LevelInfo> _leftBehind;
-        private List<LDtkVania.LevelInfo> _searchableLevels = new();
+        private List<LDtkLevelManager.LevelInfo> _leftBehind;
+        private List<LDtkLevelManager.LevelInfo> _searchableLevels = new();
 
         private TemplateContainer _containerMain;
         private ListView _listLevels;
@@ -120,7 +120,7 @@ namespace LDtkVaniaEditor
 
             PaginationInfo pagination = _paginatorElement.Pagination;
 
-            PaginatedResponse<LDtkVania.LevelInfo> response = _project.GetPaginatedLevels(filters, pagination);
+            PaginatedResponse<LDtkLevelManager.LevelInfo> response = _project.GetPaginatedLevels(filters, pagination);
             _paginatorElement.TotalOfItems = response.TotalCount;
             _searchableLevels = response.Items;
             _listLevels.itemsSource = _searchableLevels;

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
-using LDtkVania;
+using LDtkLevelManager;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.SceneManagement;
@@ -11,7 +11,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
 using System;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
     public delegate void ProjectSelected(Project project);
     public class MapEditorWindow : EditorWindow
@@ -28,7 +28,7 @@ namespace LDtkVaniaEditor
             if (_window == null)
             {
                 _window = GetWindow<MapEditorWindow>();
-                _window.titleContent = new GUIContent("LDtkVania - Map Editor");
+                _window.titleContent = new GUIContent("LDtkLevelManager - Map Editor");
             }
             else
             {
@@ -321,7 +321,7 @@ namespace LDtkVaniaEditor
             }
         }
 
-        private LoadedLevelEntry LoadLevel(LDtkVania.LevelInfo levelInfo, bool frameAfterLoad = true)
+        private LoadedLevelEntry LoadLevel(LDtkLevelManager.LevelInfo levelInfo, bool frameAfterLoad = true)
         {
             LoadedLevelEntry entry;
             if (levelInfo.HasScene)
@@ -357,7 +357,7 @@ namespace LDtkVaniaEditor
             return entry;
         }
 
-        private void UnloadLevel(LDtkVania.LevelInfo levelInfo)
+        private void UnloadLevel(LDtkLevelManager.LevelInfo levelInfo)
         {
             if (!Settings.TryGetLoadedLevel(levelInfo.Iid, out LoadedLevelEntry loadedLevelEntry)) return;
 
@@ -513,7 +513,7 @@ namespace LDtkVaniaEditor
             }
             catch (System.Exception e)
             {
-                LDtkVania.Logger.Exception(e);
+                LDtkLevelManager.Logger.Exception(e);
             }
         }
 
@@ -536,7 +536,7 @@ namespace LDtkVaniaEditor
             }
             catch (System.Exception e)
             {
-                LDtkVania.Logger.Exception(e);
+                LDtkLevelManager.Logger.Exception(e);
             }
         }
 

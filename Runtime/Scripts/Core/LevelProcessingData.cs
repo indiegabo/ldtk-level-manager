@@ -1,7 +1,7 @@
 using LDtkUnity;
 using UnityEngine;
 
-namespace LDtkVania
+namespace LDtkLevelManager
 {
     public class LevelProcessingData
     {

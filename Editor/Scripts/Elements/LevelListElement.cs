@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using LDtkVania;
+using LDtkLevelManager;
 using UnityEditor.UIElements;
 using UnityEditor;
 using System.Collections.Generic;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
     public class LevelsListElement : VisualElement
     {

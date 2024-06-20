@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LDtkVania.Utils
+namespace LDtkLevelManager.Utils
 {
     [System.Serializable]
     public class SerializableHashSet<TValue> : HashSet<TValue>, ISerializationCallbackReceiver

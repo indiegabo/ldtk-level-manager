@@ -1,4 +1,4 @@
-namespace LDtkVania.Transitioning
+namespace LDtkLevelManager.Transitioning
 {
     public enum LevelTransitionMoment
     {

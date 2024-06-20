@@ -1,9 +1,9 @@
 using LDtkUnity;
-using LDtkVania.Transitioning;
+using LDtkLevelManager.Transitioning;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace LDtkVania
+namespace LDtkLevelManager
 {
     public class LevelConnection : MonoBehaviour, IConnection
     {

@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using LDtkVania;
+using LDtkLevelManager;
 using UnityEditor.UIElements;
 using UnityEditor;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
     public delegate void SceneCreatedEvent();
     public delegate void SceneDestroyedEvent();

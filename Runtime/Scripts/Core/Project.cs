@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using LDtkUnity;
 using System.Linq;
 
-namespace LDtkVania
+namespace LDtkLevelManager
 {
     public partial class Project : ScriptableObject
     {

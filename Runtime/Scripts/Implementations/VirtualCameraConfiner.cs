@@ -2,7 +2,7 @@ using System;
 using Cinemachine;
 using UnityEngine;
 
-namespace LDtkVania
+namespace LDtkLevelManager
 {
     [RequireComponent(typeof(CinemachineVirtualCamera))]
     public class VirtualCameraConfiner : MonoBehaviour

@@ -1,7 +1,7 @@
-using LDtkVania;
+using LDtkLevelManager;
 using UnityEngine;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
     public static class ClipboardExtension
     {
@@ -11,7 +11,7 @@ namespace LDtkVaniaEditor
         public static void CopyToClipboard(this string str)
         {
             GUIUtility.systemCopyBuffer = str;
-            LDtkVania.Logger.Message($"Copied: {str} to clipboard.");
+            LDtkLevelManager.Logger.Message($"Copied: {str} to clipboard.");
         }
     }
 }

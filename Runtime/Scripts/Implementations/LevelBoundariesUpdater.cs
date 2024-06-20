@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace LDtkVania
+namespace LDtkLevelManager
 {
-    [CreateAssetMenu(fileName = "Level Boundaries Updater", menuName = "LDtkVania/Levels/Boundaries Updater", order = 0)]
+    [CreateAssetMenu(fileName = "Level Boundaries Updater", menuName = "LDtkLevelManager/Levels/Boundaries Updater", order = 0)]
     public class LevelBoundariesUpdater : ScriptableObject
     {
         #region Inspector

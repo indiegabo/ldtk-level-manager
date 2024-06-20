@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
 
-namespace LDtkVania
+namespace LDtkLevelManager
 {
         public static class Logger
         {
-                private static string Prefix => $"<color=#FFFFFF>[LDtkVania]</color>";
+                private static string Prefix => $"<color=#FFFFFF>[LDtkLevelManager]</color>";
 
                 /// <summary>
                 /// Logs a message.

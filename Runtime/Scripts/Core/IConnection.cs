@@ -1,4 +1,4 @@
-namespace LDtkVania
+namespace LDtkLevelManager
 {
     public interface IConnection
     {

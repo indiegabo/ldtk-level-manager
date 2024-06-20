@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace LDtkVania.Utils
+namespace LDtkLevelManager.Utils
 {
-    [CreateAssetMenu(fileName = "GameObjectProvider", menuName = "LDtkVania/Providers/GameObjectProvider")]
+    [CreateAssetMenu(fileName = "GameObjectProvider", menuName = "LDtkLevelManager/Providers/GameObjectProvider")]
     public class GameObjectProvider : ScriptableObject
     {
         #region Inspector

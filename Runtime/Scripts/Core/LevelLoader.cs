@@ -9,7 +9,7 @@ using UnityEngine.ResourceManagement.ResourceProviders;
 using System.Linq;
 using LDtkUnity;
 
-namespace LDtkVania
+namespace LDtkLevelManager
 {
     [DefaultExecutionOrder(-1000000)]
     public class LevelLoader : MonoBehaviour

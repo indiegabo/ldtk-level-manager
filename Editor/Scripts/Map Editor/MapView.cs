@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using LDtkUnity;
-using LDtkVania;
-using LDtkVania.Utils;
+using LDtkLevelManager;
+using LDtkLevelManager.Utils;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
     public class MapView : GraphView
     {
@@ -63,7 +63,7 @@ namespace LDtkVaniaEditor
             UpdateViewTransform(existingTransform.position, existingTransform.scale);
         }
 
-        public void AddLevel(LDtkUnity.Level level, LDtkVania.LevelInfo levelInfo, Rect rect)
+        public void AddLevel(LDtkUnity.Level level, LDtkLevelManager.LevelInfo levelInfo, Rect rect)
         {
             MapLevelElement levelElement = new(this, level, levelInfo, rect);
             levelElement.SetLevelLoadToggleRequestCallback(_levelLoadToggleRequestAction);
@@ -100,7 +100,7 @@ namespace LDtkVaniaEditor
 
             foreach (LDtkUnity.Level level in world.Levels)
             {
-                project.TryGetLevel(level.Iid, out LDtkVania.LevelInfo levelInfo);
+                project.TryGetLevel(level.Iid, out LDtkLevelManager.LevelInfo levelInfo);
 
                 Rect levelRect = new()
                 {
@@ -124,7 +124,7 @@ namespace LDtkVaniaEditor
             foreach (LDtkUnity.Level level in world.Levels)
             {
 
-                project.TryGetLevel(level.Iid, out LDtkVania.LevelInfo levelInfo);
+                project.TryGetLevel(level.Iid, out LDtkLevelManager.LevelInfo levelInfo);
 
                 Rect levelRect = new()
                 {
@@ -148,7 +148,7 @@ namespace LDtkVaniaEditor
             foreach (LDtkUnity.Level level in world.Levels)
             {
 
-                project.TryGetLevel(level.Iid, out LDtkVania.LevelInfo levelInfo);
+                project.TryGetLevel(level.Iid, out LDtkLevelManager.LevelInfo levelInfo);
 
                 Rect levelRect = new()
                 {

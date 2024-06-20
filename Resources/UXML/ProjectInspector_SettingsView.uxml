@@ -1,4 +1,4 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Assets/LDtkVania/Resources/Styles/ProjectMainView_style.uss?fileID=7433441132597879392&amp;guid=f2a2b7edccabd9b4b9af38f2c37f6ce3&amp;type=3#ProjectMainView_style" />
+    <Style src="project://database/Assets/LDtkLevelManager/Resources/Styles/ProjectMainView_style.uss?fileID=7433441132597879392&amp;guid=f2a2b7edccabd9b4b9af38f2c37f6ce3&amp;type=3#ProjectMainView_style" />
     <uie:ObjectField label="Map Editor Scene" name="field-map-editor-scene" type="UnityEditor.SceneAsset, UnityEditor.CoreModule" />
 </ui:UXML>

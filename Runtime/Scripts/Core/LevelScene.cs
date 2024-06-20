@@ -2,14 +2,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Linq;
-using LDtkVania.Utils;
+using LDtkLevelManager.Utils;
 
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
 
-namespace LDtkVania
+namespace LDtkLevelManager
 {
     [System.Serializable]
     public class LevelScene
@@ -26,9 +26,9 @@ namespace LDtkVania
 
         #region  Unity Editor
 #if UNITY_EDITOR
-        public static readonly string AddressableGroupName = "LDtkVaniaScenes";
-        public static readonly string AddressableSceneLabel = "LDtkVaniaScene";
-        public static readonly string SceneLabelName = "LDtkVaniaScene";
+        public static readonly string AddressableGroupName = "LDtkLevelManagerScenes";
+        public static readonly string AddressableSceneLabel = "LDtkLevelManagerScene";
+        public static readonly string SceneLabelName = "LDtkLevelManagerScene";
 
         public static bool CreateSceneForLevel(LevelInfo level, out LevelScene levelScene)
         {
@@ -78,7 +78,7 @@ namespace LDtkVania
 
             if (!TryScenePath(level.Scene.AssetGuid, out string scenePath))
             {
-                Logger.Error($"Could not find scene for level <color=#FFFFFF>{level.name}</color> . Did you create the scene through a LDtkVaniaProject inspector?", level);
+                Logger.Error($"Could not find scene for level <color=#FFFFFF>{level.name}</color> . Did you create the scene through a LDtkLevelManagerProject inspector?", level);
                 return false;
             }
 

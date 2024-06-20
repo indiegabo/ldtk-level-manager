@@ -1,11 +1,11 @@
 using System;
 using LDtkUnity;
-using LDtkVania;
+using LDtkLevelManager;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
     public class SelectedLevelElement : VisualElement
     {
@@ -13,7 +13,7 @@ namespace LDtkVaniaEditor
 
         private MapLevelElement _mapLevelElement;
         private LDtkUnity.Level _level;
-        private LDtkVania.LevelInfo _levelInfo;
+        private LDtkLevelManager.LevelInfo _levelInfo;
 
         private TemplateContainer _containerMain;
 
