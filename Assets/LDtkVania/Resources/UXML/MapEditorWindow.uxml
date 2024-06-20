@@ -20,7 +20,10 @@
                     <ui:Button text="Open" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-open-universe-scene" />
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="scroll-view-loaded-levels" style="flex-grow: 1;" />
+            <ui:VisualElement name="container-selected-levels" class="container-left-bar" style="flex-grow: 1;">
+                <ui:Label tabindex="-1" text="Selected Levels" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-selected-levels" class="label-left-bar" />
+                <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="scroll-view-selected-levels" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.32);" />
+            </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="container-right" style="flex-grow: 1;">
             <uie:Toolbar name="toolbar-right">

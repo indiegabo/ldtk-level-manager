@@ -7,9 +7,10 @@ using UnityEngine.UIElements;
 
 namespace LDtkVaniaEditor
 {
+    public delegate void LoadedStatusChangedEvent(bool isLoaded);
     public class MapLevelElement : GraphElement
     {
-        private Action<MapLevelElement> _levelLoadRequestAction;
+        private Action<MapLevelElement> _levelLoadToggleRequestAction;
 
         private MV_Level _mvLevel;
         private Level _level;
@@ -25,6 +26,8 @@ namespace LDtkVaniaEditor
         public Level Level => _level;
 
         public bool Loaded => _loadedLevelEntry != null;
+
+        public event LoadedStatusChangedEvent LoadedStatusChanged;
 
         public MapLevelElement(MapView mapView, Level level, MV_Level mvLevel, Rect levelRect)
         {
@@ -49,14 +52,14 @@ namespace LDtkVaniaEditor
             EvaluateState();
         }
 
-        public void SetLevelLoadRequestCallback(Action<MapLevelElement> levelLoadRequestAction)
+        public void SetLevelLoadToggleRequestCallback(Action<MapLevelElement> action)
         {
-            _levelLoadRequestAction = levelLoadRequestAction;
+            _levelLoadToggleRequestAction = action;
         }
 
-        public void RequesLoad()
+        public void ToggleLoaded()
         {
-            _levelLoadRequestAction?.Invoke(this);
+            _levelLoadToggleRequestAction?.Invoke(this);
         }
 
         public override void OnSelected()
@@ -96,11 +99,13 @@ namespace LDtkVaniaEditor
         {
             _loadedLevelEntry = entry;
             EvaluateState();
+            LoadedStatusChanged?.Invoke(true);
 
             entry.Unloaded += () =>
             {
                 _loadedLevelEntry = null;
                 EvaluateState();
+                LoadedStatusChanged?.Invoke(false);
             };
         }
     }
@@ -138,7 +143,7 @@ namespace LDtkVaniaEditor
                 case 0: // Left Mouse Button
                     break;
                 case 1: // Right Mouse Button
-                    _levelElement.RequesLoad();
+                    _levelElement.ToggleLoaded();
                     break;
                 case 2: // Middle Mouse Button
                     break;

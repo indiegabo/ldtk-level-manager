@@ -54,6 +54,7 @@ namespace LDtkVaniaEditor
         private Button _buttonUnloadAll;
         private Button _buttonLoadWorld;
         private MapView _mapView;
+        private ScrollView _scrollViewSelectedLevels;
 
         private event ProjectSelected _projectSelected;
 
@@ -109,9 +110,11 @@ namespace LDtkVaniaEditor
             _buttonLoadWorld = _containerMain.Q<Button>("button-load-world");
             _buttonLoadWorld.clicked += LoadAllCurrentWorldLevels;
 
+            _scrollViewSelectedLevels = _containerMain.Q<ScrollView>("scroll-view-selected-levels");
+
             _mapView = _containerMain.Q<MapView>("map-view");
             _mapView.SetSelectionAnalysisCallback(OnLevelSelectionChanged);
-            _mapView.SetLevelLoadRequestCallback(OnLevelLoadRequest);
+            _mapView.SetLevelLoadToggleRequestCallback(OnLevelLoadToggleRequest);
 
             if (Settings.HasMapScene && Settings.HasCurrentProject && _projects.ContainsKey(Settings.CurrentProject.name))
             {
@@ -279,7 +282,7 @@ namespace LDtkVaniaEditor
 
         #region Loading Levels
 
-        private void OnLevelLoadRequest(MapLevelElement element)
+        private void OnLevelLoadToggleRequest(MapLevelElement element)
         {
             if (!IsMapSceneOpen()) { return; }
 
@@ -363,20 +366,23 @@ namespace LDtkVaniaEditor
 
         private void OnLevelSelectionChanged(List<ISelectable> selectables)
         {
-            if (selectables.Count == 0)
+            _scrollViewSelectedLevels.Clear();
+
+            List<SelectedLevelElement> selectedLevelElements = _scrollViewSelectedLevels.Query<SelectedLevelElement>().ToList();
+
+            foreach (SelectedLevelElement element in selectedLevelElements)
             {
-                // Debug.Log("No level selected.");
-                return;
+                element.Dismiss();
             }
 
-            if (selectables.Count == 1)
+            foreach (ISelectable selectable in selectables)
             {
-                MapLevelElement mapLevelElement = selectables[0] as MapLevelElement;
-                // Debug.Log($"Selected {mapLevelElement.Level.Identifier}");
-                return;
+                if (selectable is MapLevelElement MapElement)
+                {
+                    SelectedLevelElement selectedLevelElement = new(MapElement);
+                    _scrollViewSelectedLevels.Add(selectedLevelElement);
+                }
             }
-
-            // Debug.Log($"Selected {selectables.Count} levels.");
         }
 
         private void PrepareLevel(GameObject obj)

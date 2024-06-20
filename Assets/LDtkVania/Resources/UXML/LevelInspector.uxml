@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Assets/LDtkVania/Resources/Styles/Level_style.uss?fileID=7433441132597879392&amp;guid=29cac97f9a0a8214e911f21f7fa01b2d&amp;type=3#Level_style" />
-    <ui:VisualElement name="container-left-behind" style="flex-grow: 1;">
+    <ui:VisualElement name="container-left-behind" style="flex-grow: 0;">
         <ui:Label tabindex="-1" text="Left Behind" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-left-behind" />
         <ui:Button text="Completly Remove" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-completly-remove" style="background-color: rgb(99, 12, 12);" />
     </ui:VisualElement>
@@ -8,9 +8,9 @@
         <ui:TextField picking-mode="Ignore" label="Iid" binding-path="_iid" name="field-iid" readonly="true" class="level-field" />
         <ui:Button text="Copy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-iid-copy" style="width: 40px;" />
     </ui:VisualElement>
-    <ui:TextField picking-mode="Ignore" label="World" name="field-world" binding-path="_worldName" class="level-field" />
-    <ui:TextField picking-mode="Ignore" label="Area" name="field-area" binding-path="_areaName" class="level-field" />
-    <ui:VisualElement name="container-wrapping" style="flex-grow: 1;">
+    <ui:TextField picking-mode="Ignore" label="World" name="field-world" binding-path="_worldName" class="level-field" style="flex-grow: 0;" />
+    <ui:TextField picking-mode="Ignore" label="Area" name="field-area" binding-path="_areaName" class="level-field" style="flex-grow: 0;" />
+    <ui:VisualElement name="container-wrapping" style="flex-grow: 0;">
         <ui:Label tabindex="-1" text="Wrapping" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-wrapping" />
         <ui:VisualElement name="container-wrapping-content" style="flex-grow: 1; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;">
             <ui:VisualElement name="container-scene-element" style="flex-grow: 0; margin-bottom: 5px;" />
