@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5834b5087d578d24c926ce20cd31e6d6, type: 3}
-  m_Name: LDtkVaniaLevels_ContentUpdateGroupSchema
+  m_Name: LM_Scenes_ContentUpdateGroupSchema
   m_EditorClassIdentifier: 
-  m_Group: {fileID: 11400000, guid: d9466f94e1a1a1b4980bc1dfc2a7e0ab, type: 2}
+  m_Group: {fileID: 11400000, guid: 6e40047e2cc6cae4eb50029edc0e41e3, type: 2}
   m_StaticContent: 0

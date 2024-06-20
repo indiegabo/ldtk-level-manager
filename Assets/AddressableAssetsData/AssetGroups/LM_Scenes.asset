@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: LDtkVaniaScenes
+  m_Name: LM_Scenes
   m_EditorClassIdentifier: 
-  m_GroupName: LDtkVaniaScenes
+  m_GroupName: LM_Scenes
   m_Data:
     m_SerializedData: []
-  m_GUID: 2f69e7d10b9e98d4aaf4aaca130a7e8b
+  m_GUID: e4803c279cc8eb441b4533426deb91d6
   m_SerializeEntries:
   - m_GUID: 3618a1f5674030a4482049bcd354617e
-    m_Address: LDtkVaniaScene_363b42a0-7820-11ed-a571-2bca691f63e1
+    m_Address: LM_Scene_363b42a0-7820-11ed-a571-2bca691f63e1
     m_ReadOnly: 0
     m_SerializedLabels:
-    - LDtkVaniaScene
+    - LM_Scene
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 1ba21a4611ac85b4f95e8eab66dc3553, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: eea0aca5b321e5b4e94255b5fb6afd20, type: 2}
-    - {fileID: 11400000, guid: 7c7ba90d623b3b543a87876c30e20376, type: 2}
+    - {fileID: 11400000, guid: b943774b2c01d2143b0a2ee369776325, type: 2}
+    - {fileID: 11400000, guid: b0bda41dddc733644aa1020cfdeabfd4, type: 2}

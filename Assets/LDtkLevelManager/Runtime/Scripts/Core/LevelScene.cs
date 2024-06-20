@@ -26,9 +26,9 @@ namespace LDtkLevelManager
 
         #region  Unity Editor
 #if UNITY_EDITOR
-        public static readonly string AddressableGroupName = "LDtkLevelManagerScenes";
-        public static readonly string AddressableSceneLabel = "LDtkLevelManagerScene";
-        public static readonly string SceneLabelName = "LDtkLevelManagerScene";
+        public static readonly string AddressableGroupName = "LM_Scenes";
+        public static readonly string AddressableSceneLabel = "LM_Scene";
+        public static readonly string SceneLabelName = "LM_Scene";
 
         public static bool CreateSceneForLevel(LevelInfo level, out LevelScene levelScene)
         {
