@@ -37,14 +37,7 @@ namespace LDtkVania
         private void Awake()
         {
             _levelBehaviour = GetComponent<MV_LevelBehaviour>();
-            _ldtkComponentLevel = GetComponent<LDtkComponentLevel>();
-            Vector2 size = _ldtkComponentLevel.Size;
-            _boundaries.points = new Vector2[] {
-                new(size.x, size.y),
-                new(0, size.y),
-                new(0, 0),
-                new(size.x, 0)
-            };
+            Compose();
             _virtualCamera.gameObject.SetActive(false);
         }
 
@@ -61,6 +54,22 @@ namespace LDtkVania
         }
         private void Start()
         {
+        }
+
+        #endregion
+
+        #region Preparing
+
+        public void Compose()
+        {
+            _ldtkComponentLevel = GetComponent<LDtkComponentLevel>();
+            Vector2 size = _ldtkComponentLevel.Size;
+            _boundaries.points = new Vector2[] {
+                new(size.x, size.y),
+                new(0, size.y),
+                new(0, 0),
+                new(size.x, 0)
+            };
         }
 
         #endregion

@@ -456,6 +456,11 @@ namespace LDtkVaniaEditor
             {
                 geometryEnforcer.Enforce();
             }
+
+            if (obj.TryGetComponent(out MV_LevelBoundaries boundaries))
+            {
+                boundaries.Compose();
+            }
         }
 
         private void FrameLevel(GameObject obj)
