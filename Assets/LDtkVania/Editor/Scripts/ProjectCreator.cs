@@ -34,13 +34,13 @@ namespace LDtkVaniaEditor
 
             if (projectFile == null)
             {
-                MV_Logger.Error($"Could not load project file at {assetPath}");
+                LDtkVania.Logger.Error($"Could not load project file at {assetPath}");
                 return;
             }
 
             if (ProjectAlreadyExists(projectFile, out string existingProjectPath))
             {
-                MV_Logger.Error($"Project already exists at {existingProjectPath}");
+                LDtkVania.Logger.Error($"Project already exists at {existingProjectPath}");
                 return;
             }
 
@@ -49,7 +49,7 @@ namespace LDtkVaniaEditor
             string directoryPath = assetPath.Replace(fileNameToRemove, string.Empty);
             string projectPath = Path.Combine(directoryPath, fileNameWithoutExtension + "_LDtkVania.asset");
 
-            MV_Project project = ScriptableObject.CreateInstance<MV_Project>();
+            Project project = ScriptableObject.CreateInstance<Project>();
 
             AssetDatabase.CreateAsset(project, projectPath);
             AssetDatabase.SaveAssets();
@@ -64,7 +64,7 @@ namespace LDtkVaniaEditor
         private static bool ProjectAlreadyExists(LDtkProjectFile projectFile, out string existingProjectPath)
         {
             existingProjectPath = string.Empty;
-            List<MV_Project> existingProjects = MV_Project.FindAllProjects();
+            List<Project> existingProjects = Project.FindAllProjects();
             int index = existingProjects.FindIndex(p => p.LDtkProjectFile == projectFile);
 
             if (index >= 0)

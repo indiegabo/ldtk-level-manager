@@ -5,12 +5,12 @@ using System.Linq;
 namespace LDtkVania
 {
     [Tooltip("Enforces the geometry of the level. Only needed if the level has a scene. This solution is focused on levels wrapped in scenes.")]
-    public class MV_LevelGeometryEnforcer : MonoBehaviour
+    public class GeometryEnforcer : MonoBehaviour
     {
         #region Fields
 
         private LDtkIid _ldtkIid;
-        private MV_Level _mvLevel;
+        private LevelInfo _levelInfo;
 
         #endregion
 
@@ -20,19 +20,19 @@ namespace LDtkVania
         {
             if (!TryGetComponent(out _ldtkIid))
             {
-                MV_Logger.Error($"{name} has no LDtkIid component", this);
+                Logger.Error($"{name} has no LDtkIid component", this);
                 return;
             }
 
-            if (!MV_LevelManager.Instance.TryGetLevel(_ldtkIid.Iid, out _mvLevel))
+            if (!LevelLoader.Instance.TryGetLevel(_ldtkIid.Iid, out _levelInfo))
             {
-                MV_Logger.Error($"{name} could not have its geometry enforced because there was no level found under the LDtk Iid {_ldtkIid.Iid}", this);
+                Logger.Error($"{name} could not have its geometry enforced because there was no level found under the LDtk Iid {_ldtkIid.Iid}", this);
                 return;
             }
 
             // Only needed if the level has a scene. This solution is focused
             // on levels pre instantiated in scenes.
-            if (!_mvLevel.HasScene)
+            if (!_levelInfo.HasScene)
             {
                 Destroy(this);
                 return;

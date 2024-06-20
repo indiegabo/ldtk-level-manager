@@ -18,7 +18,7 @@ namespace LDtkVaniaEditor
 
         #region Fields
 
-        private MV_Level _level;
+        private LDtkVania.LevelInfo _level;
 
         LevelElement _levelElement;
         SerializedObject _serialized;
@@ -28,7 +28,7 @@ namespace LDtkVaniaEditor
 
         #region Properties
 
-        public MV_Level Level
+        public LDtkVania.LevelInfo Level
         {
             get => _level;
             set
@@ -62,7 +62,7 @@ namespace LDtkVaniaEditor
 
         #region Define level
 
-        private void SetLevel(MV_Level level)
+        private void SetLevel(LDtkVania.LevelInfo level)
         {
             if (_levelElement != null)
             {

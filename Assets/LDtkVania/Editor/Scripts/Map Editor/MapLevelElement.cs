@@ -12,8 +12,8 @@ namespace LDtkVaniaEditor
     {
         private Action<MapLevelElement> _levelLoadToggleRequestAction;
 
-        private MV_Level _mvLevel;
-        private Level _level;
+        private LDtkVania.LevelInfo _levelInfo;
+        private LDtkUnity.Level _level;
         private bool _pointerIsOver = false;
         private MapView _mapView;
         private LoadedLevelEntry _loadedLevelEntry;
@@ -23,21 +23,21 @@ namespace LDtkVaniaEditor
         private StyleColor _highlightedColor = new(new Color(1, 1, 1, 1f));
         private StyleColor _loadedColor = new(new Color(0.82f, 0.29f, 0.84f, 1f));
 
-        public MV_Level MVLevel => _mvLevel;
-        public Level Level => _level;
+        public LDtkVania.LevelInfo Info => _levelInfo;
+        public LDtkUnity.Level Level => _level;
         public Rect LevelRect => _levelRect;
 
         public bool Loaded => _loadedLevelEntry != null;
 
         public event LoadedStatusChangedEvent LoadedStatusChanged;
 
-        public MapLevelElement(MapView mapView, Level level, MV_Level mvLevel, Rect levelRect)
+        public MapLevelElement(MapView mapView, LDtkUnity.Level level, LDtkVania.LevelInfo levelInfo, Rect levelRect)
         {
             base.capabilities |= Capabilities.Selectable | Capabilities.Groupable;
 
             _mapView = mapView;
             _level = level;
-            _mvLevel = mvLevel;
+            _levelInfo = levelInfo;
             _levelRect = levelRect;
 
             Sprite sprite = Resources.Load<Sprite>("map-level-tile");
@@ -47,7 +47,7 @@ namespace LDtkVaniaEditor
             this.AddManipulator(new MapLevelMouseManipulator(this));
             SetPosition(levelRect);
 
-            if (MapEditorSettings.instance.TryGetLoadedLevel(_mvLevel.Iid, out LoadedLevelEntry entry))
+            if (MapEditorSettings.instance.TryGetLoadedLevel(_levelInfo.Iid, out LoadedLevelEntry entry))
             {
                 RegisterLoadedEntry(entry);
             }
@@ -84,7 +84,7 @@ namespace LDtkVaniaEditor
 
         private void AddLevelNameLabel(Vector2 levelSize)
         {
-            string name = _mvLevel.Name;
+            string name = _levelInfo.Name;
 
             if (levelSize.x < 120)
             {

@@ -15,9 +15,9 @@ namespace LDtkVaniaEditor
 
         private const string TemplateName = "ProjectInspector_LevelsView";
 
-        private MV_Project _project;
-        private List<MV_Level> _leftBehind;
-        private List<MV_Level> _searchableLevels = new();
+        private Project _project;
+        private List<LDtkVania.LevelInfo> _leftBehind;
+        private List<LDtkVania.LevelInfo> _searchableLevels = new();
 
         private TemplateContainer _containerMain;
         private ListView _listLevels;
@@ -38,7 +38,7 @@ namespace LDtkVaniaEditor
 
         #region Constructors
 
-        public ProjectLevelsViewElement(MV_Project project)
+        public ProjectLevelsViewElement(Project project)
         {
             _project = project;
             _leftBehind = _project.GetAllLeftBehind();
@@ -51,7 +51,7 @@ namespace LDtkVaniaEditor
                 "None",
             };
 
-            foreach (MV_World worldAreas in _project.GetAllWorldAreas())
+            foreach (WorldInfo worldAreas in _project.GetAllWorldAreas())
             {
                 worldChoices.Add(worldAreas.worldName);
             }
@@ -111,16 +111,16 @@ namespace LDtkVaniaEditor
 
         private void Paginate()
         {
-            MV_LevelListFilters filters = new()
+            LevelListFilters filters = new()
             {
                 world = _fieldFilterWorld.value == "None" ? null : _fieldFilterWorld.value,
                 area = _fieldFilterArea.value == "None" ? null : _fieldFilterArea.value,
                 levelName = _fieldFilterName.value.ToLower(),
             };
 
-            MV_PaginationInfo pagination = _paginatorElement.Pagination;
+            PaginationInfo pagination = _paginatorElement.Pagination;
 
-            MV_PaginatedResponse<MV_Level> response = _project.GetPaginatedLevels(filters, pagination);
+            PaginatedResponse<LDtkVania.LevelInfo> response = _project.GetPaginatedLevels(filters, pagination);
             _paginatorElement.TotalOfItems = response.TotalCount;
             _searchableLevels = response.Items;
             _listLevels.itemsSource = _searchableLevels;
@@ -135,7 +135,7 @@ namespace LDtkVaniaEditor
                 ClearAreaFilter();
                 return;
             }
-            _project.WorldAreas.TryGetValue(selectedWorld, out MV_World worldAreas);
+            _project.WorldAreas.TryGetValue(selectedWorld, out WorldInfo worldAreas);
 
             if (worldAreas.areas.Count == 0)
             {

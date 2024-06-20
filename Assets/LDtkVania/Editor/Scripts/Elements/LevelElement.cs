@@ -12,7 +12,7 @@ namespace LDtkVaniaEditor
     {
         private const string TemplateName = "LevelInspector";
 
-        private MV_Level _level;
+        private LevelInfo _level;
 
         private TemplateContainer _containerMain;
         private LevelSceneElement _levelSceneElement;
@@ -36,7 +36,7 @@ namespace LDtkVaniaEditor
         public event SceneCreatedEvent SceneCreated;
         public event SceneDestroyedEvent SceneDestroyed;
 
-        public LevelElement(MV_Level level)
+        public LevelElement(LevelInfo level)
         {
             _level = level;
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
@@ -139,7 +139,7 @@ namespace LDtkVaniaEditor
 
         private void CreateSceneForLevel()
         {
-            if (MV_LevelScene.CreateSceneForLevel(_level, out MV_LevelScene levelScene))
+            if (LevelScene.CreateSceneForLevel(_level, out LevelScene levelScene))
             {
                 _level.SetScene(levelScene);
                 _levelSceneElement.LevelScene = levelScene;
@@ -152,7 +152,7 @@ namespace LDtkVaniaEditor
 
         private void DestroyScene()
         {
-            if (MV_LevelScene.DestroySceneForLevel(_level))
+            if (LevelScene.DestroySceneForLevel(_level))
             {
                 _level.SetScene(null);
                 _levelSceneElement.LevelScene = null;

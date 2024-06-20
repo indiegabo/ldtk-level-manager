@@ -11,10 +11,10 @@ namespace LDtkVaniaEditor
     {
         private const string TemplateName = "LevelsListInspector";
 
-        private MV_Project _project;
-        private List<MV_Level> _levels;
+        private Project _project;
+        private List<LevelInfo> _levels;
 
-        public LevelsListElement(MV_Project project, List<MV_Level> levels)
+        public LevelsListElement(Project project, List<LevelInfo> levels)
         {
             _project = project;
             _levels = levels;

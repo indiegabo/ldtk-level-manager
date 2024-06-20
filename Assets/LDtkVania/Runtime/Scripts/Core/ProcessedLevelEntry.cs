@@ -4,7 +4,7 @@ using UnityEngine;
 namespace LDtkVania
 {
     [System.Serializable]
-    public class MV_ProcessedLevelEntry
+    public class ProcessedLevelEntry
     {
         public string levelAssetPath;
         public string projectIid;

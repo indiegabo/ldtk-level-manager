@@ -13,7 +13,7 @@ using System;
 
 namespace LDtkVaniaEditor
 {
-    public delegate void ProjectSelected(MV_Project project);
+    public delegate void ProjectSelected(Project project);
     public class MapEditorWindow : EditorWindow
     {
         #region Static
@@ -40,7 +40,7 @@ namespace LDtkVaniaEditor
 
         #region Fields
 
-        private Dictionary<string, MV_Project> _projects;
+        private Dictionary<string, Project> _projects;
         private Dictionary<string, World> _selectedProjectWorlds;
 
         private TemplateContainer _containerMain;
@@ -80,9 +80,9 @@ namespace LDtkVaniaEditor
             _selectedProjectWorlds = new();
             _currentlySelectedLevels = new();
 
-            List<MV_Project> projects = MV_Project.FindAllProjects();
+            List<Project> projects = Project.FindAllProjects();
 
-            foreach (MV_Project project in projects)
+            foreach (Project project in projects)
             {
                 _projects.Add(project.name, project);
             }
@@ -231,13 +231,13 @@ namespace LDtkVaniaEditor
             SelectProject(_projects[projectName]);
         }
 
-        private void SelectProject(MV_Project project)
+        private void SelectProject(Project project)
         {
             Settings.CurrentProject = project;
             _projectSelected?.Invoke(project);
         }
 
-        private void OnProjectSelected(MV_Project project)
+        private void OnProjectSelected(Project project)
         {
             InitializeWorldsDropdown(Settings.CurrentProject);
 
@@ -258,7 +258,7 @@ namespace LDtkVaniaEditor
 
         #region Worlds
 
-        private void InitializeWorldsDropdown(MV_Project project)
+        private void InitializeWorldsDropdown(Project project)
         {
             List<World> worlds = project.LDtkProject.Worlds.ToList();
             _selectedProjectWorlds.Clear();
@@ -292,7 +292,7 @@ namespace LDtkVaniaEditor
 
             foreach (MapLevelElement element in _mapView.LevelElements)
             {
-                LoadedLevelEntry entry = LoadLevel(element.MVLevel, false);
+                LoadedLevelEntry entry = LoadLevel(element.Info, false);
                 element.RegisterLoadedEntry(entry);
 
                 bounds.Encapsulate(element.LevelRect.min);
@@ -310,25 +310,25 @@ namespace LDtkVaniaEditor
         {
             if (!IsMapSceneOpen()) { return; }
 
-            if (!Settings.IsLevelLoaded(element.MVLevel))
+            if (!Settings.IsLevelLoaded(element.Info))
             {
-                LoadedLevelEntry entry = LoadLevel(element.MVLevel);
+                LoadedLevelEntry entry = LoadLevel(element.Info);
                 element.RegisterLoadedEntry(entry);
             }
             else
             {
-                UnloadLevel(element.MVLevel);
+                UnloadLevel(element.Info);
             }
         }
 
-        private LoadedLevelEntry LoadLevel(MV_Level mvLevel, bool frameAfterLoad = true)
+        private LoadedLevelEntry LoadLevel(LDtkVania.LevelInfo levelInfo, bool frameAfterLoad = true)
         {
             LoadedLevelEntry entry;
-            if (mvLevel.HasScene)
+            if (levelInfo.HasScene)
             {
-                string path = AssetDatabase.GUIDToAssetPath(mvLevel.Scene.AssetGuid);
+                string path = AssetDatabase.GUIDToAssetPath(levelInfo.Scene.AssetGuid);
                 Scene scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
-                entry = Settings.RegisterLoadedLevel(mvLevel, scene);
+                entry = Settings.RegisterLoadedLevel(levelInfo, scene);
 
                 if (frameAfterLoad)
                 {
@@ -345,9 +345,9 @@ namespace LDtkVaniaEditor
             }
             else
             {
-                GameObject obj = Instantiate(mvLevel.Asset) as GameObject;
-                obj.name = mvLevel.Name;
-                entry = Settings.RegisterLoadedLevel(mvLevel, obj);
+                GameObject obj = Instantiate(levelInfo.Asset) as GameObject;
+                obj.name = levelInfo.Name;
+                entry = Settings.RegisterLoadedLevel(levelInfo, obj);
                 if (frameAfterLoad)
                 {
                     PrepareLevel(obj);
@@ -357,15 +357,15 @@ namespace LDtkVaniaEditor
             return entry;
         }
 
-        private void UnloadLevel(MV_Level mvLevel)
+        private void UnloadLevel(LDtkVania.LevelInfo levelInfo)
         {
-            if (!Settings.TryGetLoadedLevel(mvLevel.Iid, out LoadedLevelEntry loadedLevelEntry)) return;
+            if (!Settings.TryGetLoadedLevel(levelInfo.Iid, out LoadedLevelEntry loadedLevelEntry)) return;
 
-            Settings.UnregisterLoadedLevel(mvLevel.Iid);
+            Settings.UnregisterLoadedLevel(levelInfo.Iid);
 
-            if (mvLevel.HasScene)
+            if (levelInfo.HasScene)
             {
-                string path = AssetDatabase.GUIDToAssetPath(mvLevel.Scene.AssetGuid);
+                string path = AssetDatabase.GUIDToAssetPath(levelInfo.Scene.AssetGuid);
                 SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
                 Scene scene = EditorSceneManager.GetSceneByName(sceneAsset.name);
                 if (scene != null && scene.isLoaded)
@@ -384,7 +384,7 @@ namespace LDtkVaniaEditor
             List<LoadedLevelEntry> entries = Settings.GetLoadedLevels();
             foreach (LoadedLevelEntry entry in entries)
             {
-                UnloadLevel(entry.MVLevel);
+                UnloadLevel(entry.Info);
             }
         }
 
@@ -408,8 +408,8 @@ namespace LDtkVaniaEditor
                     SelectedLevelElement selectedLevelElement = new(mapElement);
                     _scrollViewSelectedLevels.Add(selectedLevelElement);
 
-                    LevelElement levelElement = new(mapElement.MVLevel);
-                    _labelSelectedLevel.text = mapElement.MVLevel.Name;
+                    LevelElement levelElement = new(mapElement.Info);
+                    _labelSelectedLevel.text = mapElement.Info.Name;
                     _scrollViewSelectedLevel.Add(levelElement);
                 }
 
@@ -452,7 +452,7 @@ namespace LDtkVaniaEditor
             {
                 if (selectable is MapLevelElement mapElement)
                 {
-                    LoadedLevelEntry entry = LoadLevel(mapElement.MVLevel, false);
+                    LoadedLevelEntry entry = LoadLevel(mapElement.Info, false);
                     mapElement.RegisterLoadedEntry(entry);
                 }
             }
@@ -460,12 +460,12 @@ namespace LDtkVaniaEditor
 
         private void PrepareLevel(GameObject obj)
         {
-            if (obj.TryGetComponent(out MV_LevelGeometryEnforcer geometryEnforcer))
+            if (obj.TryGetComponent(out GeometryEnforcer geometryEnforcer))
             {
                 geometryEnforcer.Enforce();
             }
 
-            if (obj.TryGetComponent(out MV_LevelBoundaries boundaries))
+            if (obj.TryGetComponent(out LevelBoundaries boundaries))
             {
                 boundaries.Compose();
             }
@@ -513,7 +513,7 @@ namespace LDtkVaniaEditor
             }
             catch (System.Exception e)
             {
-                MV_Logger.Exception(e);
+                LDtkVania.Logger.Exception(e);
             }
         }
 
@@ -536,7 +536,7 @@ namespace LDtkVaniaEditor
             }
             catch (System.Exception e)
             {
-                MV_Logger.Exception(e);
+                LDtkVania.Logger.Exception(e);
             }
         }
 

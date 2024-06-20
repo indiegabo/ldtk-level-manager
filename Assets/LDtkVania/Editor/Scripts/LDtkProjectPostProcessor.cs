@@ -16,7 +16,7 @@ namespace LDtkVaniaEditor
 
         protected override void OnPostprocessLevel(GameObject root, LdtkJson projectJson)
         {
-            LDtkVaniaLevelsSyncer.AddProcessSubjecLevel(new MV_ProcessedLevelEntry
+            LDtkVaniaLevelsSyncer.AddProcessSubjecLevel(new ProcessedLevelEntry
             {
                 levelAssetPath = ImportContext.assetPath,
                 projectIid = projectJson.Iid

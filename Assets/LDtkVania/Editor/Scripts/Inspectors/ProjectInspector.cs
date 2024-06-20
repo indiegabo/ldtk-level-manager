@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 namespace LDtkVaniaEditor
 {
-    [CustomEditor(typeof(MV_Project))]
+    [CustomEditor(typeof(Project))]
     public class ProjectInspector : Editor
     {
         #region Fields
@@ -23,11 +23,11 @@ namespace LDtkVaniaEditor
 
         #endregion
 
-        private MV_Project _project;
+        private Project _project;
 
         public override VisualElement CreateInspectorGUI()
         {
-            _project = target as MV_Project;
+            _project = target as Project;
 
             _progressBar = new ProgressBar
             {

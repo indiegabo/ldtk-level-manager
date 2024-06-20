@@ -12,8 +12,8 @@ namespace LDtkVaniaEditor
         private const string TemplateName = "SelectedLevel";
 
         private MapLevelElement _mapLevelElement;
-        private Level _level;
-        private MV_Level _mvLevel;
+        private LDtkUnity.Level _level;
+        private LDtkVania.LevelInfo _levelInfo;
 
         private TemplateContainer _containerMain;
 
@@ -25,12 +25,12 @@ namespace LDtkVaniaEditor
         {
             _mapLevelElement = mapLevelElement;
             _level = _mapLevelElement.Level;
-            _mvLevel = _mapLevelElement.MVLevel;
+            _levelInfo = _mapLevelElement.Info;
 
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
 
             _labelName = _containerMain.Q<Label>("label-name");
-            _labelName.text = _mvLevel.Name;
+            _labelName.text = _levelInfo.Name;
 
             _buttonLoad = _containerMain.Q<Button>("button-load");
             _buttonLoad.clicked += ToggleLevel;

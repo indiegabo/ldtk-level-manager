@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace LDtkVania
 {
-    public partial class MV_Project : ScriptableObject
+    public partial class Project : ScriptableObject
     {
         #region Static
 
@@ -17,15 +17,15 @@ namespace LDtkVania
         public static string AddressablesGroupName = "LDtkVania";
         public static string AddressablesLevelsLabel = "LDtkLevels";
 
-        public static List<MV_Project> FindAllProjects()
+        public static List<Project> FindAllProjects()
         {
-            string[] guids = AssetDatabase.FindAssets($"t:{nameof(MV_Project)}");
+            string[] guids = AssetDatabase.FindAssets($"t:{nameof(Project)}");
 
-            List<MV_Project> projects = new();
+            List<Project> projects = new();
             foreach (string guid in guids)
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
-                MV_Project project = AssetDatabase.LoadAssetAtPath<MV_Project>(path);
+                Project project = AssetDatabase.LoadAssetAtPath<Project>(path);
                 if (project != null)
                 {
                     projects.Add(project);
@@ -41,14 +41,14 @@ namespace LDtkVania
         // Settings
         public void ClearBeforeDeletion()
         {
-            IEnumerable<MV_Level> levels = _levels.Values.Concat(_lostLevels.Values);
-            foreach (MV_Level mvLevel in levels)
+            IEnumerable<LevelInfo> levels = _levels.Values.Concat(_lostLevels.Values);
+            foreach (LevelInfo levelInfo in levels)
             {
-                mvLevel.LevelFile.UnsetAdressable();
+                levelInfo.LevelFile.UnsetAdressable();
 
-                if (!mvLevel.LeftBehind) continue;
+                if (!levelInfo.LeftBehind) continue;
 
-                string path = AssetDatabase.GUIDToAssetPath(mvLevel.Scene.AssetGuid);
+                string path = AssetDatabase.GUIDToAssetPath(levelInfo.Scene.AssetGuid);
                 SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
                 if (sceneAsset != null)
                 {
@@ -78,7 +78,7 @@ namespace LDtkVania
 
             foreach (World world in ldtkJson.Worlds)
             {
-                foreach (Level level in world.Levels)
+                foreach (LDtkUnity.Level level in world.Levels)
                 {
                     if (!ldtkFiles.TryGetValue(level.Iid, out LDtkLevelFile levelFile)) continue;
 
@@ -141,16 +141,16 @@ namespace LDtkVania
 
             LDtkIid ldtkIid = componentLevel.GetComponent<LDtkIid>();
 
-            string address = $"{MV_Level.AdressableAddressPrexix}_{ldtkIid.Iid}";
-            string groupName = MV_Level.AddressableGroupName;
-            string label = MV_Level.AddressableLabel;
+            string address = $"{LevelInfo.AdressableAddressPrexix}_{ldtkIid.Iid}";
+            string groupName = LevelInfo.AddressableGroupName;
+            string label = LevelInfo.AddressableLabel;
 
             if (!levelFile.TrySetAsAddressable(address, groupName, label))
             {
-                MV_Logger.Error($"Could not set level <color=#FFFFFF>{levelFile.name}</color> as addressable. Please check the console for errors.", levelFile);
+                Logger.Error($"Could not set level <color=#FFFFFF>{levelFile.name}</color> as addressable. Please check the console for errors.", levelFile);
             }
 
-            MV_LevelProcessingData processingData = new()
+            LevelProcessingData processingData = new()
             {
                 project = this,
                 iid = ldtkIid.Iid,
@@ -162,20 +162,20 @@ namespace LDtkVania
                 world = world
             };
 
-            if (TryGetLevel(ldtkIid.Iid, out MV_Level level))
+            if (TryGetLevel(ldtkIid.Iid, out LevelInfo level))
             {
                 level.UpdateInfo(processingData);
                 return ldtkIid.Iid;
             }
 
-            if (_lostLevels.TryGetValue(ldtkIid.Iid, out MV_Level lostLevel))
+            if (_lostLevels.TryGetValue(ldtkIid.Iid, out LevelInfo lostLevel))
             {
                 lostLevel.UpdateInfo(processingData);
                 AddLevel(lostLevel);
                 return lostLevel.Iid;
             }
 
-            level = CreateInstance<MV_Level>();
+            level = CreateInstance<LevelInfo>();
             level.name = asset.name;
             level.Initialize(processingData);
             AddLevel(level);
@@ -183,7 +183,7 @@ namespace LDtkVania
             return ldtkIid.Iid;
         }
 
-        public void AddLevel(MV_Level level)
+        public void AddLevel(LevelInfo level)
         {
             if (!_levels.ContainsKey(level.Iid))
             {
@@ -204,11 +204,11 @@ namespace LDtkVania
 
         public void RemoveLevel(string iid)
         {
-            if (_levels.TryGetValue(iid, out MV_Level level))
+            if (_levels.TryGetValue(iid, out LevelInfo level))
             {
                 if (level.HasScene)
                 {
-                    MV_LevelScene.DestroySceneForLevel(level, false);
+                    LevelScene.DestroySceneForLevel(level, false);
                 }
 
                 AssetDatabase.RemoveObjectFromAsset(level);
@@ -219,11 +219,11 @@ namespace LDtkVania
                 }
             }
 
-            if (_lostLevels.TryGetValue(iid, out MV_Level lostLevel))
+            if (_lostLevels.TryGetValue(iid, out LevelInfo lostLevel))
             {
                 if (lostLevel.HasScene)
                 {
-                    MV_LevelScene.DestroySceneForLevel(lostLevel, false);
+                    LevelScene.DestroySceneForLevel(lostLevel, false);
                 }
 
                 AssetDatabase.RemoveObjectFromAsset(lostLevel);
@@ -234,7 +234,7 @@ namespace LDtkVania
 
         public void SoftRemoveLevel(string iid)
         {
-            if (!_levels.TryGetValue(iid, out MV_Level level)) return;
+            if (!_levels.TryGetValue(iid, out LevelInfo level)) return;
 
             _levels.Remove(iid);
 
@@ -251,7 +251,7 @@ namespace LDtkVania
                 AssetDatabase.RemoveObjectFromAsset(level);
             });
 
-            foreach (MV_Level level in _lostLevels.Values)
+            foreach (LevelInfo level in _lostLevels.Values)
             {
                 if (level == null) return;
                 AssetDatabase.RemoveObjectFromAsset(level);
@@ -268,7 +268,7 @@ namespace LDtkVania
             Debug.Log($"Lost levels: {_lostLevels.Count}");
         }
 
-        public List<MV_Level> GetAllLeftBehind()
+        public List<LevelInfo> GetAllLeftBehind()
         {
             return _lostLevels.Values.ToList();
         }
@@ -279,7 +279,7 @@ namespace LDtkVania
         /// <param name="filters">The filters to apply</param>
         /// <param name="pagination">The pagination info</param>
         /// <returns>A paginated list of levels</returns>
-        public MV_PaginatedResponse<MV_Level> GetPaginatedLevels(MV_LevelListFilters filters, MV_PaginationInfo pagination)
+        public PaginatedResponse<LevelInfo> GetPaginatedLevels(LevelListFilters filters, PaginationInfo pagination)
         {
             // Normalize the input filter values to lower case
             if (!string.IsNullOrEmpty(filters.world))
@@ -292,7 +292,7 @@ namespace LDtkVania
                 filters.levelName = filters.levelName.ToLower();
 
             // Get all levels
-            List<MV_Level> filteredLevels = _levels.Values.ToList();
+            List<LevelInfo> filteredLevels = _levels.Values.ToList();
 
             // Apply world and area filters
             if (!string.IsNullOrEmpty(filters.world) && !string.IsNullOrEmpty(filters.area))
@@ -331,7 +331,7 @@ namespace LDtkVania
                 .ToList();
 
             // Create the paginated response
-            MV_PaginatedResponse<MV_Level> response = new()
+            PaginatedResponse<LevelInfo> response = new()
             {
                 TotalCount = total,
                 Items = result,
@@ -340,7 +340,7 @@ namespace LDtkVania
             return response;
         }
 
-        public MV_WorldAreasDictionary EvaluateWorldAreas()
+        public WorldInfoDictionary EvaluateWorldAreas()
         {
             if (_ldtkProjectFile == null) return default;
 
@@ -349,7 +349,7 @@ namespace LDtkVania
 
             foreach (World world in ldtkJson.Worlds)
             {
-                _worldAreas.Add(world.Identifier, new MV_World()
+                _worldAreas.Add(world.Identifier, new WorldInfo()
                 {
                     worldIid = world.Iid,
                     worldName = world.Identifier,
@@ -357,10 +357,10 @@ namespace LDtkVania
                 });
             }
 
-            foreach (MV_Level level in _levels.Values)
+            foreach (LevelInfo level in _levels.Values)
             {
                 if (string.IsNullOrEmpty(level.WorldName) || string.IsNullOrEmpty(level.AreaName)) continue;
-                if (!_worldAreas.TryGetValue(level.WorldName, out MV_World worldAreas)) continue;
+                if (!_worldAreas.TryGetValue(level.WorldName, out WorldInfo worldAreas)) continue;
                 if (worldAreas.areas.Contains(level.AreaName)) continue;
                 worldAreas.areas.Add(level.AreaName);
             }

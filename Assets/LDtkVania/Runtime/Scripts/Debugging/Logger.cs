@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LDtkVania
 {
-        public static class MV_Logger
+        public static class Logger
         {
                 private static string Prefix => $"<color=#FFFFFF>[LDtkVania]</color>";
 

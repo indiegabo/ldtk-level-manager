@@ -2,11 +2,10 @@ using UnityEngine;
 using System.Collections.Generic;
 using LDtkUnity;
 using System.Linq;
-using LDtkVania.Utils;
 
 namespace LDtkVania
 {
-    public partial class MV_Project : ScriptableObject
+    public partial class Project : ScriptableObject
     {
 
         #region Serializing
@@ -21,13 +20,13 @@ namespace LDtkVania
         private string _navigationLayer;
 
         [SerializeField]
-        private MV_LevelsDictionary _levels = new();
+        private InfoDictionary _levels = new();
 
         [SerializeField]
-        private MV_LevelsDictionary _lostLevels = new();
+        private InfoDictionary _lostLevels = new();
 
         [SerializeField]
-        private MV_WorldAreasDictionary _worldAreas = new();
+        private WorldInfoDictionary _worldAreas = new();
 
         #endregion
 
@@ -47,26 +46,26 @@ namespace LDtkVania
         public LDtkProjectFile LDtkProjectFile => _ldtkProjectFile;
         public LdtkJson LDtkProject => _ldtkProject ??= _ldtkProjectFile.FromJson;
         public int PixelsPerUnit => LDtkProject.DefaultGridSize;
-        public MV_WorldAreasDictionary WorldAreas => _worldAreas;
+        public WorldInfoDictionary WorldAreas => _worldAreas;
 
         #endregion
 
         #region Providing Levels
 
-        public MV_Level GetLevel(string iid)
+        public LevelInfo GetLevel(string iid)
         {
             if (!_levels.ContainsKey(iid)) return null;
             return _levels[iid];
         }
 
-        public bool TryGetLevel(string iid, out MV_Level mvLevel)
+        public bool TryGetLevel(string iid, out LevelInfo levelInfo)
         {
-            return _levels.TryGetValue(iid, out mvLevel);
+            return _levels.TryGetValue(iid, out levelInfo);
         }
 
         public bool HasLevel(string iid) => _levels.ContainsKey(iid);
 
-        public List<MV_Level> GetAllLevels()
+        public List<LevelInfo> GetAllLevels()
         {
             return _levels.Values.ToList();
         }
@@ -75,12 +74,12 @@ namespace LDtkVania
 
         #region World and areas
 
-        public List<MV_Level> GetAllLevelsInWorld(string worldName)
+        public List<LevelInfo> GetAllLevelsInWorld(string worldName)
         {
             if (!_worldAreas.ContainsKey(worldName)) return null;
 
-            List<MV_Level> levels = new();
-            foreach (MV_Level level in _levels.Values)
+            List<LevelInfo> levels = new();
+            foreach (LevelInfo level in _levels.Values)
             {
                 if (level.WorldName == worldName) levels.Add(level);
             }
@@ -92,7 +91,7 @@ namespace LDtkVania
             if (!_worldAreas.ContainsKey(worldName)) return null;
 
             HashSet<string> iids = new();
-            foreach (MV_Level level in _levels.Values)
+            foreach (LevelInfo level in _levels.Values)
             {
                 if (level.WorldName == worldName) iids.Add(level.Iid);
             }
@@ -103,7 +102,7 @@ namespace LDtkVania
         public HashSet<string> GetAllLevelsIidsInArea(string areaName)
         {
             HashSet<string> iids = new();
-            foreach (MV_Level level in _levels.Values)
+            foreach (LevelInfo level in _levels.Values)
             {
                 if (level.AreaName == areaName) iids.Add(level.Iid);
             }
@@ -111,27 +110,27 @@ namespace LDtkVania
             return iids;
         }
 
-        public List<MV_World> GetAllWorldAreas()
+        public List<WorldInfo> GetAllWorldAreas()
         {
             return _worldAreas.Values.ToList();
         }
 
-        public MV_World GetWorldAreas(string worldName)
+        public WorldInfo GetWorldAreas(string worldName)
         {
             if (!_worldAreas.ContainsKey(worldName)) return null;
             return _worldAreas[worldName];
         }
 
-        public bool TryGetWorldAreas(string worldName, out MV_World mvWorldAreas)
+        public bool TryGetWorldAreas(string worldName, out WorldInfo mvWorldAreas)
         {
             return _worldAreas.TryGetValue(worldName, out mvWorldAreas);
         }
 
-        public bool TryGetWorldAreas(MV_Level level, out MV_World mvWorldAreas)
+        public bool TryGetWorldAreas(LevelInfo level, out WorldInfo mvWorldAreas)
         {
             if (string.IsNullOrEmpty(level.WorldName))
             {
-                MV_Logger.Warning($"Trying to get world areas for level {level.Name}({level.Iid}) but it has no world name defined.", this);
+                Logger.Warning($"Trying to get world areas for level {level.Name}({level.Iid}) but it has no world name defined.", this);
                 mvWorldAreas = null;
                 return false;
             }

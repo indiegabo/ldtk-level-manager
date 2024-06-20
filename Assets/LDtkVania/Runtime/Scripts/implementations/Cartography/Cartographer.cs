@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace LDtkVania.Cartography
 {
-    public class MV_Cartographer : MonoBehaviour
+    public class Cartographer : MonoBehaviour
     {
         #region Inspector
 
         [SerializeField]
-        private MV_Project _project;
+        private Project _project;
 
         [SerializeField]
         private int _pixelsPerUnit = 16;
@@ -21,8 +21,8 @@ namespace LDtkVania.Cartography
 
         #region Fields
 
-        private Dictionary<string, MV_LevelCartography> _levels;
-        private Dictionary<string, MV_WorldCartography> _worlds;
+        private Dictionary<string, LevelCartography> _levels;
+        private Dictionary<string, WorldCartography> _worlds;
 
         #endregion
 
@@ -49,15 +49,15 @@ namespace LDtkVania.Cartography
         /// </summary>
         private void GenerateCartography()
         {
-            _levels = new Dictionary<string, MV_LevelCartography>();
-            _worlds = new Dictionary<string, MV_WorldCartography>();
-            List<MV_Level> levels = _project.GetAllLevels();
+            _levels = new Dictionary<string, LevelCartography>();
+            _worlds = new Dictionary<string, WorldCartography>();
+            List<LevelInfo> levels = _project.GetAllLevels();
 
             // Build a dictionary with a key that combines the world and area names,
             // and the value is a list of level cartographies that belong to that world and area.
-            Dictionary<string, List<MV_LevelCartography>> levelsByWorldAndArea = new();
+            Dictionary<string, List<LevelCartography>> levelsByWorldAndArea = new();
 
-            foreach (MV_Level level in levels)
+            foreach (LevelInfo level in levels)
             {
                 if (string.IsNullOrEmpty(level.WorldName) || string.IsNullOrEmpty(level.AreaName)) continue;
 
@@ -67,26 +67,26 @@ namespace LDtkVania.Cartography
                 // If the key doesn't already exist, add it to the dictionary.
                 if (!levelsByWorldAndArea.ContainsKey(key))
                 {
-                    levelsByWorldAndArea.Add(key, new List<MV_LevelCartography>());
+                    levelsByWorldAndArea.Add(key, new List<LevelCartography>());
                 }
 
                 // Add the level cartography to the list for the key.
-                List<MV_LevelCartography> levelsList = levelsByWorldAndArea[key];
-                MV_LevelCartography levelCartography = new(level, _pixelsPerUnit, _scaleFactor);
+                List<LevelCartography> levelsList = levelsByWorldAndArea[key];
+                LevelCartography levelCartography = new(level, _pixelsPerUnit, _scaleFactor);
                 levelsList.Add(levelCartography);
                 _levels.Add(level.Iid, levelCartography);
             }
 
             // Get all the world areas from the project.
-            List<MV_World> worldAreas = _project.GetAllWorldAreas();
+            List<WorldInfo> worldAreas = _project.GetAllWorldAreas();
 
-            foreach (MV_World worldArea in worldAreas)
+            foreach (WorldInfo worldArea in worldAreas)
             {
                 if (worldArea.areas.Count == 0) continue;
 
                 // Create a dictionary with a key that is the area name,
                 // and the value is the area cartography.
-                Dictionary<string, MV_AreaCartography> cartographyAreas = new();
+                Dictionary<string, AreaCartography> cartographyAreas = new();
 
                 foreach (string area in worldArea.areas)
                 {
@@ -97,15 +97,15 @@ namespace LDtkVania.Cartography
                     string key = worldArea.worldName + "_" + area;
 
                     // Get the list of level cartographies for the world and area.
-                    List<MV_LevelCartography> levelsList = levelsByWorldAndArea[key];
+                    List<LevelCartography> levelsList = levelsByWorldAndArea[key];
 
                     // Create the area cartography and add it to the dictionary.
-                    MV_AreaCartography areaCartography = new(area, worldArea.worldName, levelsList);
+                    AreaCartography areaCartography = new(area, worldArea.worldName, levelsList);
                     cartographyAreas.Add(key, areaCartography);
                 }
 
                 // Create a world cartography object with its area cartographies and add it to the list.
-                MV_WorldCartography worldCartography = new(worldArea.worldName, cartographyAreas.Values.ToList());
+                WorldCartography worldCartography = new(worldArea.worldName, cartographyAreas.Values.ToList());
                 _worlds.Add(worldArea.worldName, worldCartography);
             }
         }
@@ -114,31 +114,31 @@ namespace LDtkVania.Cartography
 
         #region Providers
 
-        public List<MV_WorldCartography> GetAllWorlds()
+        public List<WorldCartography> GetAllWorlds()
         {
             return _worlds.Values.ToList();
         }
 
-        public MV_WorldCartography GetWorld(string worldName)
+        public WorldCartography GetWorld(string worldName)
         {
-            if (!_worlds.TryGetValue(worldName, out MV_WorldCartography worldCartography)) return null;
+            if (!_worlds.TryGetValue(worldName, out WorldCartography worldCartography)) return null;
             return worldCartography;
         }
 
-        public bool TryGetWorld(string worldName, out MV_WorldCartography worldCartography)
+        public bool TryGetWorld(string worldName, out WorldCartography worldCartography)
         {
             return _worlds.TryGetValue(worldName, out worldCartography);
         }
 
-        public MV_AreaCartography GetArea(string worldName, string areaName)
+        public AreaCartography GetArea(string worldName, string areaName)
         {
-            if (!_worlds.TryGetValue(worldName, out MV_WorldCartography worldCartography)) return null;
+            if (!_worlds.TryGetValue(worldName, out WorldCartography worldCartography)) return null;
             return worldCartography.GetArea(areaName);
         }
 
-        public bool TryGetArea(string worldName, string areaName, out MV_AreaCartography areaCartography)
+        public bool TryGetArea(string worldName, string areaName, out AreaCartography areaCartography)
         {
-            if (!_worlds.TryGetValue(worldName, out MV_WorldCartography worldCartography))
+            if (!_worlds.TryGetValue(worldName, out WorldCartography worldCartography))
             {
                 areaCartography = null;
                 return false;
@@ -146,13 +146,13 @@ namespace LDtkVania.Cartography
             return worldCartography.TryGetArea(areaName, out areaCartography);
         }
 
-        public MV_LevelCartography GetLevel(string levelIid)
+        public LevelCartography GetLevel(string levelIid)
         {
-            if (!_levels.TryGetValue(levelIid, out MV_LevelCartography mvLevelCartography)) return null;
-            return mvLevelCartography;
+            if (!_levels.TryGetValue(levelIid, out LevelCartography levelInfoCartography)) return null;
+            return levelInfoCartography;
         }
 
-        public bool TryGetLevel(string levelIid, out MV_LevelCartography levelCartography)
+        public bool TryGetLevel(string levelIid, out LevelCartography levelCartography)
         {
             return _levels.TryGetValue(levelIid, out levelCartography);
         }
@@ -168,19 +168,19 @@ namespace LDtkVania.Cartography
 
         private void LogWorlds()
         {
-            foreach (MV_WorldCartography world in _worlds.Values)
+            foreach (WorldCartography world in _worlds.Values)
             {
                 Debug.Log($"===== World: {world.WorldName} =====");
                 Debug.Log($"Size: {world.Bounds.Size}");
                 Debug.Log($"Scaled Size: {world.Bounds.ScaledSize}");
-                foreach (MV_AreaCartography area in world.GetAllAreas())
+                foreach (AreaCartography area in world.GetAllAreas())
                 {
                     Debug.Log($"=== Area: {area.AreaName} ===");
                     Debug.Log($"Size: {area.Bounds.Size}");
                     Debug.Log($"Scaled Size: {area.Bounds.ScaledSize}");
-                    foreach (MV_LevelCartography level in area.GetAllLevels())
+                    foreach (LevelCartography level in area.GetAllLevels())
                     {
-                        Debug.Log($"- Level: {level.Level.Name} -");
+                        Debug.Log($"- Level: {level.Info.Name} -");
                         Debug.Log($"Size: {level.Bounds.Size} - Scaled Size: {level.Bounds.ScaledSize}");
                         Debug.Log($"Min: {level.Bounds.Min} - Max: {level.Bounds.Max}");
                         Debug.Log($"Scaled Min: {level.Bounds.ScaledMin} - Max: {level.Bounds.ScaledMax}");

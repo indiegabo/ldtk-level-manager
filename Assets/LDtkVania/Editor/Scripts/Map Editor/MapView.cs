@@ -49,23 +49,23 @@ namespace LDtkVaniaEditor
             _levelLoadToggleRequestAction = action;
         }
 
-        public void InitializeWorld(MV_Project project, World world)
+        public void InitializeWorld(Project project, World world)
         {
             ClearLevels();
             LoadLevels(project, world);
             schedule.Execute(() => FrameWorld());
         }
 
-        public void InitializeWorld(MV_Project project, World world, MapViewTransform existingTransform)
+        public void InitializeWorld(Project project, World world, MapViewTransform existingTransform)
         {
             ClearLevels();
             LoadLevels(project, world);
             UpdateViewTransform(existingTransform.position, existingTransform.scale);
         }
 
-        public void AddLevel(Level level, MV_Level mvLevel, Rect rect)
+        public void AddLevel(LDtkUnity.Level level, LDtkVania.LevelInfo levelInfo, Rect rect)
         {
-            MapLevelElement levelElement = new(this, level, mvLevel, rect);
+            MapLevelElement levelElement = new(this, level, levelInfo, rect);
             levelElement.SetLevelLoadToggleRequestCallback(_levelLoadToggleRequestAction);
             _levelElements.Add(levelElement);
             AddElement(levelElement);
@@ -77,7 +77,7 @@ namespace LDtkVaniaEditor
             _levelElements.Clear();
         }
 
-        private void LoadLevels(MV_Project project, World world)
+        private void LoadLevels(Project project, World world)
         {
             switch (world.WorldLayout)
             {
@@ -94,13 +94,13 @@ namespace LDtkVaniaEditor
             }
         }
 
-        private void LoadGridVaniaLevels(MV_Project project, World world)
+        private void LoadGridVaniaLevels(Project project, World world)
         {
             _worldRect = new Rect(0, 0, 0, 0);
 
-            foreach (Level level in world.Levels)
+            foreach (LDtkUnity.Level level in world.Levels)
             {
-                project.TryGetLevel(level.Iid, out MV_Level mvLevel);
+                project.TryGetLevel(level.Iid, out LDtkVania.LevelInfo levelInfo);
 
                 Rect levelRect = new()
                 {
@@ -112,19 +112,19 @@ namespace LDtkVaniaEditor
 
                 _worldRect.Expand(levelRect);
 
-                AddLevel(level, mvLevel, levelRect);
+                AddLevel(level, levelInfo, levelRect);
             }
         }
 
-        private void LoadHorizontalLevels(MV_Project project, World world)
+        private void LoadHorizontalLevels(Project project, World world)
         {
             _worldRect = new Rect(0, 0, 0, 0);
             float currentPos = 0;
 
-            foreach (Level level in world.Levels)
+            foreach (LDtkUnity.Level level in world.Levels)
             {
 
-                project.TryGetLevel(level.Iid, out MV_Level mvLevel);
+                project.TryGetLevel(level.Iid, out LDtkVania.LevelInfo levelInfo);
 
                 Rect levelRect = new()
                 {
@@ -135,20 +135,20 @@ namespace LDtkVaniaEditor
                 };
 
                 _worldRect.Expand(levelRect);
-                AddLevel(level, mvLevel, levelRect);
+                AddLevel(level, levelInfo, levelRect);
                 currentPos = currentPos + levelRect.width + 25f;
             }
         }
 
-        private void LoadVerticalLevels(MV_Project project, World world)
+        private void LoadVerticalLevels(Project project, World world)
         {
             _worldRect = new Rect(0, 0, 0, 0);
             float currentPos = 0;
 
-            foreach (Level level in world.Levels)
+            foreach (LDtkUnity.Level level in world.Levels)
             {
 
-                project.TryGetLevel(level.Iid, out MV_Level mvLevel);
+                project.TryGetLevel(level.Iid, out LDtkVania.LevelInfo levelInfo);
 
                 Rect levelRect = new()
                 {
@@ -159,7 +159,7 @@ namespace LDtkVaniaEditor
                 };
 
                 _worldRect.Expand(levelRect);
-                AddLevel(level, mvLevel, levelRect);
+                AddLevel(level, levelInfo, levelRect);
                 currentPos = currentPos + levelRect.height + 25f;
             }
         }

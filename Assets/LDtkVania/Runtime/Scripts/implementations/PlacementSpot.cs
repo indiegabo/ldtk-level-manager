@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LDtkVania
 {
-    public class MV_PlacementSpot : MonoBehaviour, IPlacementSpot
+    public class PlacementSpot : MonoBehaviour, IPlacementSpot
     {
         private LDtkIid _ldtkIid;
         private LDtkFields _fields;

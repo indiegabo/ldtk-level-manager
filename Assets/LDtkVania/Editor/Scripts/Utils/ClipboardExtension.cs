@@ -11,7 +11,7 @@ namespace LDtkVaniaEditor
         public static void CopyToClipboard(this string str)
         {
             GUIUtility.systemCopyBuffer = str;
-            MV_Logger.Message($"Copied: {str} to clipboard.");
+            LDtkVania.Logger.Message($"Copied: {str} to clipboard.");
         }
     }
 }

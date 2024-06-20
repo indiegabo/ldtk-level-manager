@@ -13,7 +13,7 @@ namespace LDtkVaniaEditor
 
         private const string TemplateName = "ProjectInspector_SettingsView";
 
-        private MV_Project _project;
+        private Project _project;
         private LdtkJson _ldtkJson;
 
         private TemplateContainer _containerMain;
@@ -23,7 +23,7 @@ namespace LDtkVaniaEditor
 
         #region Constructors
 
-        public ProjectSettingsViewElement(MV_Project project)
+        public ProjectSettingsViewElement(Project project)
         {
             _project = project;
             _ldtkJson = _project.LDtkProject;

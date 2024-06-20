@@ -4,7 +4,7 @@ using UnityEngine.Events;
 namespace LDtkVania
 {
     [CreateAssetMenu(fileName = "Level Boundaries Updater", menuName = "LDtkVania/Levels/Boundaries Updater", order = 0)]
-    public class MV_LevelBoundariesUpdater : ScriptableObject
+    public class LevelBoundariesUpdater : ScriptableObject
     {
         #region Inspector
 

@@ -21,7 +21,7 @@ namespace Tests
 
         #region Initializing
 
-        public void Initialize(MV_LevelCartography levelCartography, float zDepth)
+        public void Initialize(LevelCartography levelCartography, float zDepth)
         {
             _renderer = GetComponent<SpriteRenderer>();
             name = $"{levelCartography.Name}";

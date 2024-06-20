@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace LDtkVaniaEditor
 {
-    [CustomEditor(typeof(MV_LevelScene))]
+    [CustomEditor(typeof(LevelScene))]
     public class LevelSceneInspector : Editor
     {
         public const string TemplateName = "LevelSceneInspector";

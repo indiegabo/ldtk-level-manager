@@ -14,7 +14,7 @@ namespace LDtkVaniaEditor
     {
         [SerializeField] private SceneAsset _mapScene;
         [SerializeField] private SceneAsset _universeScene;
-        [SerializeField] private MV_Project _currentProject;
+        [SerializeField] private Project _currentProject;
         [SerializeField] private string _currentWorldName;
         [SerializeField] private LoadedLevelsRegistry _loadedLevelsRegistry = new();
         [SerializeField] private MapViewTransform _mapViewTransform;
@@ -42,7 +42,7 @@ namespace LDtkVaniaEditor
         }
 
         public bool HasCurrentProject => _currentProject != null;
-        public MV_Project CurrentProject
+        public Project CurrentProject
         {
             get => _currentProject;
             set
@@ -105,19 +105,19 @@ namespace LDtkVaniaEditor
             }
         }
 
-        public LoadedLevelEntry RegisterLoadedLevel(MV_Level mvLevel, GameObject loadedObject)
+        public LoadedLevelEntry RegisterLoadedLevel(LDtkVania.LevelInfo levelInfo, GameObject loadedObject)
         {
-            _loadedLevelsRegistry.Remove(mvLevel.Iid);
-            LoadedLevelEntry entry = new(mvLevel, loadedObject);
-            _loadedLevelsRegistry.Add(mvLevel.Iid, entry);
+            _loadedLevelsRegistry.Remove(levelInfo.Iid);
+            LoadedLevelEntry entry = new(levelInfo, loadedObject);
+            _loadedLevelsRegistry.Add(levelInfo.Iid, entry);
             return entry;
         }
 
-        public LoadedLevelEntry RegisterLoadedLevel(MV_Level mvLevel, Scene scene)
+        public LoadedLevelEntry RegisterLoadedLevel(LDtkVania.LevelInfo levelInfo, Scene scene)
         {
-            _loadedLevelsRegistry.Remove(mvLevel.Iid);
-            LoadedLevelEntry entry = new(mvLevel, scene);
-            _loadedLevelsRegistry.Add(mvLevel.Iid, entry);
+            _loadedLevelsRegistry.Remove(levelInfo.Iid);
+            LoadedLevelEntry entry = new(levelInfo, scene);
+            _loadedLevelsRegistry.Add(levelInfo.Iid, entry);
             return entry;
         }
 
@@ -147,14 +147,14 @@ namespace LDtkVaniaEditor
 
         }
 
-        public bool IsLevelLoaded(MV_Level mvLevel)
+        public bool IsLevelLoaded(LDtkVania.LevelInfo levelInfo)
         {
-            if (_loadedLevelsRegistry.TryGetValue(mvLevel.Iid, out LoadedLevelEntry entry))
+            if (_loadedLevelsRegistry.TryGetValue(levelInfo.Iid, out LoadedLevelEntry entry))
             {
                 bool isLoaded = entry.IsLoaded();
                 if (!isLoaded)
                 {
-                    _loadedLevelsRegistry.Remove(mvLevel.Iid);
+                    _loadedLevelsRegistry.Remove(levelInfo.Iid);
                 }
                 return isLoaded;
             }

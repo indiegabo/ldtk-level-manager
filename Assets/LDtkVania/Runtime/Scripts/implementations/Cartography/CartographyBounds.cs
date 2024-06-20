@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LDtkVania.Cartography
 {
-    public struct MV_CartographyBounds
+    public struct CartographyBounds
     {
         private Rect _rect;
         private Rect _scaledRect;
@@ -20,7 +20,7 @@ namespace LDtkVania.Cartography
         public Vector2 ScaledMin => _scaledRect.min;
         public Vector2 ScaledMax => _scaledRect.max;
 
-        public MV_CartographyBounds(MV_CartographyBounds original)
+        public CartographyBounds(CartographyBounds original)
         {
             _rect = new Rect()
             {
@@ -38,7 +38,7 @@ namespace LDtkVania.Cartography
             };
         }
 
-        public MV_CartographyBounds(Rect original, float scaleFactor)
+        public CartographyBounds(Rect original, float scaleFactor)
         {
             _rect = original;
             _scaledRect = new Rect()
@@ -50,7 +50,7 @@ namespace LDtkVania.Cartography
             };
         }
 
-        public void Expand(MV_CartographyBounds containedBounds)
+        public void Expand(CartographyBounds containedBounds)
         {
             _rect.xMin = Mathf.Min(_rect.min.x, containedBounds.Rect.min.x);
             _rect.yMin = Mathf.Min(_rect.min.y, containedBounds.Rect.min.y);

@@ -5,12 +5,12 @@ using UnityEngine;
 namespace LDtkVania
 {
     [RequireComponent(typeof(CinemachineVirtualCamera))]
-    public class MV_VirtualCameraConfiner : MonoBehaviour
+    public class VirtualCameraConfiner : MonoBehaviour
     {
         #region Inspector
 
         [SerializeField]
-        private MV_LevelBoundariesUpdater _boundariesUpdater;
+        private LevelBoundariesUpdater _boundariesUpdater;
 
         #endregion
 

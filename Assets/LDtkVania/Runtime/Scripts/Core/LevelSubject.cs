@@ -3,44 +3,44 @@ using UnityEngine.Events;
 
 namespace LDtkVania
 {
-    public class MV_LevelSubject : MonoBehaviour
+    public class LevelSubject : MonoBehaviour
     {
         #region Inspector
 
         [SerializeField]
-        private UnityEvent<MV_LevelBehaviour> _levelSet;
+        private UnityEvent<LevelBehaviour> _levelSet;
 
         [SerializeField]
-        private UnityEvent<MV_LevelBehaviour> _exited;
+        private UnityEvent<LevelBehaviour> _exited;
 
         [SerializeField]
-        private UnityEvent<MV_LevelBehaviour, Vector2> _preparationStarted;
+        private UnityEvent<LevelBehaviour, Vector2> _preparationStarted;
 
         [SerializeField]
-        private UnityEvent<MV_LevelBehaviour, MV_LevelTrail> _prepared;
+        private UnityEvent<LevelBehaviour, LevelTrail> _prepared;
 
         [SerializeField]
-        private UnityEvent<MV_LevelBehaviour> _entered;
+        private UnityEvent<LevelBehaviour> _entered;
 
 
         #endregion
 
         #region Fields
 
-        private MV_LevelBehaviour _levelBehaviour;
+        private LevelBehaviour _levelBehaviour;
 
         #endregion
 
         #region Getters
 
         public bool HasBehaviour => _levelBehaviour != null;
-        private MV_LevelBehaviour LevelBehaviour => _levelBehaviour;
-        public UnityEvent<MV_LevelBehaviour> LevelSet => _levelSet;
+        private LevelBehaviour LevelBehaviour => _levelBehaviour;
+        public UnityEvent<LevelBehaviour> LevelSet => _levelSet;
 
-        public UnityEvent<MV_LevelBehaviour> Exited => _exited;
-        public UnityEvent<MV_LevelBehaviour, Vector2> PreparationStarted => _preparationStarted;
-        public UnityEvent<MV_LevelBehaviour, MV_LevelTrail> Prepared => _prepared;
-        public UnityEvent<MV_LevelBehaviour> Entered => _entered;
+        public UnityEvent<LevelBehaviour> Exited => _exited;
+        public UnityEvent<LevelBehaviour, Vector2> PreparationStarted => _preparationStarted;
+        public UnityEvent<LevelBehaviour, LevelTrail> Prepared => _prepared;
+        public UnityEvent<LevelBehaviour> Entered => _entered;
 
         #endregion
 
@@ -60,7 +60,7 @@ namespace LDtkVania
 
         #region Metroidvania level
 
-        private void OnLevelAwake(MV_LevelBehaviour levelBehaviour)
+        private void OnLevelAwake(LevelBehaviour levelBehaviour)
         {
             _levelBehaviour = levelBehaviour;
             _levelSet.Invoke(_levelBehaviour);
@@ -71,22 +71,22 @@ namespace LDtkVania
 
         #region Level Callbacks
 
-        private void OnLevelExited(MV_LevelBehaviour behaviour)
+        private void OnLevelExited(LevelBehaviour behaviour)
         {
             _exited.Invoke(behaviour);
         }
 
-        private void OnLevelPreparationStarted(MV_LevelBehaviour behaviour, Vector2 point)
+        private void OnLevelPreparationStarted(LevelBehaviour behaviour, Vector2 point)
         {
             _preparationStarted.Invoke(behaviour, point);
         }
 
-        private void OnLevelPrepared(MV_LevelBehaviour behaviour, MV_LevelTrail trail)
+        private void OnLevelPrepared(LevelBehaviour behaviour, LevelTrail trail)
         {
             _prepared.Invoke(behaviour, trail);
         }
 
-        private void OnLevelEntered(MV_LevelBehaviour behaviour)
+        private void OnLevelEntered(LevelBehaviour behaviour)
         {
             _entered.Invoke(behaviour);
         }
@@ -95,7 +95,7 @@ namespace LDtkVania
 
         #region Events
 
-        private void RegisterEvents(MV_LevelBehaviour behaviour)
+        private void RegisterEvents(LevelBehaviour behaviour)
         {
             if (behaviour == null) return;
 
@@ -105,7 +105,7 @@ namespace LDtkVania
             _levelBehaviour.EnteredEvent.AddListener(OnLevelEntered);
         }
 
-        private void UnregisterEvents(MV_LevelBehaviour behaviour)
+        private void UnregisterEvents(LevelBehaviour behaviour)
         {
             if (behaviour == null) return;
 

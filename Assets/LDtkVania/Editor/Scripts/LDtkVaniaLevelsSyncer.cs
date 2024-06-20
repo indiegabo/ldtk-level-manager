@@ -9,7 +9,7 @@ namespace LDtkVaniaEditor
     class LDtkVaniaLevelsSyncer : AssetPostprocessor
     {
         private static string _projectToProcessPath;
-        private static List<MV_ProcessedLevelEntry> _processingSubjectLevels = new();
+        private static List<ProcessedLevelEntry> _processingSubjectLevels = new();
 
 
         public static bool HasProjectToProcess => !string.IsNullOrEmpty(_projectToProcessPath);
@@ -17,8 +17,8 @@ namespace LDtkVaniaEditor
         public static void ClearProjectToProcess() => _projectToProcessPath = null;
 
         public static bool HasLevelsToProcess => _processingSubjectLevels.Count > 0;
-        public static List<MV_ProcessedLevelEntry> ProcessingSubjectLevels => _processingSubjectLevels;
-        public static void AddProcessSubjecLevel(MV_ProcessedLevelEntry entry) => _processingSubjectLevels.Add(entry);
+        public static List<ProcessedLevelEntry> ProcessingSubjectLevels => _processingSubjectLevels;
+        public static void AddProcessSubjecLevel(ProcessedLevelEntry entry) => _processingSubjectLevels.Add(entry);
         public static void ClearProcessSubjectLevels() => _processingSubjectLevels.Clear();
 
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths, bool didDomainReload)
@@ -31,8 +31,8 @@ namespace LDtkVaniaEditor
         {
             if (!HasProjectToProcess) return;
             LDtkIid projectIid = AssetDatabase.LoadAssetAtPath<LDtkIid>(_projectToProcessPath);
-            Dictionary<string, MV_Project> projects = GenerateProjectsDictionary();
-            if (!projects.TryGetValue(projectIid.Iid, out MV_Project project))
+            Dictionary<string, Project> projects = GenerateProjectsDictionary();
+            if (!projects.TryGetValue(projectIid.Iid, out Project project))
             {
                 Debug.LogWarning($"Project not found: {projectIid.Iid}");
                 return;
@@ -52,11 +52,11 @@ namespace LDtkVaniaEditor
         {
             if (!HasLevelsToProcess) return;
 
-            Dictionary<string, MV_Project> projects = GenerateProjectsDictionary();
+            Dictionary<string, Project> projects = GenerateProjectsDictionary();
 
-            foreach (MV_ProcessedLevelEntry entry in ProcessingSubjectLevels)
+            foreach (ProcessedLevelEntry entry in ProcessingSubjectLevels)
             {
-                if (!projects.TryGetValue(entry.projectIid, out MV_Project project))
+                if (!projects.TryGetValue(entry.projectIid, out Project project))
                 {
                     continue;
                 }
@@ -67,7 +67,7 @@ namespace LDtkVaniaEditor
                 project.ProcessLevelFile(entry.levelAssetPath, levelFile);
             }
 
-            foreach (MV_Project project in projects.Values)
+            foreach (Project project in projects.Values)
             {
                 project.EvaluateWorldAreas();
                 EditorUtility.SetDirty(project);
@@ -78,15 +78,15 @@ namespace LDtkVaniaEditor
 
         }
 
-        private static Dictionary<string, MV_Project> GenerateProjectsDictionary()
+        private static Dictionary<string, Project> GenerateProjectsDictionary()
         {
-            Dictionary<string, MV_Project> projects = new();
-            string[] guids = AssetDatabase.FindAssets($"t:{nameof(MV_Project)}");
+            Dictionary<string, Project> projects = new();
+            string[] guids = AssetDatabase.FindAssets($"t:{nameof(Project)}");
             for (int i = 0; i < guids.Length; i++)
             {
                 string guid = guids[i];
                 string path = AssetDatabase.GUIDToAssetPath(guid);
-                MV_Project project = AssetDatabase.LoadAssetAtPath<MV_Project>(path);
+                Project project = AssetDatabase.LoadAssetAtPath<Project>(path);
                 if (project == null || !project.IsInitialized)
                 {
                     continue;

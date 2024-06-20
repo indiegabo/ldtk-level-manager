@@ -11,28 +11,28 @@ namespace LDtkVaniaEditor
     {
         [SerializeField] private GameObject _loadedObject;
         [SerializeField] private string _loadedSceneName;
-        [SerializeField] private MV_Level _mvLevel;
+        [SerializeField] private LevelInfo _levelInfo;
 
         public GameObject LoadedObject => _loadedObject;
         public string LoadedSceneName => _loadedSceneName;
-        public MV_Level MVLevel => _mvLevel;
+        public LevelInfo Info => _levelInfo;
         public UnloadEvent Unloaded;
 
-        public LoadedLevelEntry(MV_Level mvLevel, GameObject loadedObject)
+        public LoadedLevelEntry(LevelInfo levelInfo, GameObject loadedObject)
         {
-            _mvLevel = mvLevel;
+            _levelInfo = levelInfo;
             _loadedObject = loadedObject;
         }
 
-        public LoadedLevelEntry(MV_Level mvLevel, Scene scene)
+        public LoadedLevelEntry(LevelInfo levelInfo, Scene scene)
         {
-            _mvLevel = mvLevel;
+            _levelInfo = levelInfo;
             _loadedSceneName = scene.name;
         }
 
         public bool IsLoaded()
         {
-            if (!_mvLevel.HasScene)
+            if (!_levelInfo.HasScene)
             {
                 return _loadedObject != null;
             }

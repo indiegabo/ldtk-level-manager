@@ -3,13 +3,13 @@ using UnityEngine;
 namespace LDtkVania
 {
     [System.Serializable]
-    public struct MV_LevelTrail
+    public struct LevelTrail
     {
         #region Static
 
-        public static MV_LevelTrail FromPoint(string levelIid, Vector2 point, int facingSign = 1)
+        public static LevelTrail FromPoint(string levelIid, Vector2 point, int facingSign = 1)
         {
-            return new MV_LevelTrail
+            return new LevelTrail
             {
                 _levelIid = levelIid,
                 _spawnPosition = point,
@@ -17,9 +17,9 @@ namespace LDtkVania
             };
         }
 
-        public static MV_LevelTrail FromSpot(string levelIid, IPlacementSpot spot)
+        public static LevelTrail FromSpot(string levelIid, IPlacementSpot spot)
         {
-            return new MV_LevelTrail
+            return new LevelTrail
             {
                 _levelIid = levelIid,
                 _spawnPosition = spot.SpawnPoint,
@@ -27,9 +27,9 @@ namespace LDtkVania
             };
         }
 
-        public static MV_LevelTrail FromConnection(string levelIid, IConnection connection)
+        public static LevelTrail FromConnection(string levelIid, IConnection connection)
         {
-            return new MV_LevelTrail
+            return new LevelTrail
             {
                 _levelIid = levelIid,
                 _spawnPosition = connection.Spot.SpawnPoint,
@@ -37,9 +37,9 @@ namespace LDtkVania
             };
         }
 
-        public static MV_LevelTrail FromPortal(string levelIid, IPortal portal)
+        public static LevelTrail FromPortal(string levelIid, IPortal portal)
         {
-            return new MV_LevelTrail
+            return new LevelTrail
             {
                 _levelIid = levelIid,
                 _spawnPosition = portal.Spot.SpawnPoint,
@@ -47,7 +47,7 @@ namespace LDtkVania
             };
         }
 
-        public static MV_LevelTrail Empty => new()
+        public static LevelTrail Empty => new()
         {
             _levelIid = string.Empty,
             _spawnPosition = Vector2.zero,
@@ -81,7 +81,7 @@ namespace LDtkVania
         #region Getters
 
         /// <summary>
-        /// Checks if the trail (<see cref="MV_LevelTrail"/>) is valid. <br />
+        /// Checks if the trail (<see cref="LevelTrail"/>) is valid. <br />
         /// A trail is valid if the level Iid is not empty.
         /// </summary>
         public readonly bool IsValid => string.IsNullOrEmpty(_levelIid);

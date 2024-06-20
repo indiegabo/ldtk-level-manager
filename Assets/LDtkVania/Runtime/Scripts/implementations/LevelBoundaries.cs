@@ -6,8 +6,8 @@ using UnityEngine;
 
 namespace LDtkVania
 {
-    [RequireComponent(typeof(MV_LevelBehaviour))]
-    public class MV_LevelBoundaries : MonoBehaviour
+    [RequireComponent(typeof(LevelBehaviour))]
+    public class LevelBoundaries : MonoBehaviour
     {
         #region Inspector
 
@@ -18,7 +18,7 @@ namespace LDtkVania
         private CinemachineVirtualCamera _virtualCamera;
 
         [SerializeField]
-        private MV_LevelBoundariesUpdater _boundariesUpdater;
+        private LevelBoundariesUpdater _boundariesUpdater;
 
         [SerializeField]
         private GameObjectProvider _mainCharacterProvider;
@@ -27,7 +27,7 @@ namespace LDtkVania
 
         #region Fields
 
-        private MV_LevelBehaviour _levelBehaviour;
+        private LevelBehaviour _levelBehaviour;
         private LDtkComponentLevel _ldtkComponentLevel;
 
         #endregion
@@ -36,7 +36,7 @@ namespace LDtkVania
 
         private void Awake()
         {
-            _levelBehaviour = GetComponent<MV_LevelBehaviour>();
+            _levelBehaviour = GetComponent<LevelBehaviour>();
             Compose();
             _virtualCamera.gameObject.SetActive(false);
         }
@@ -74,11 +74,11 @@ namespace LDtkVania
 
         #endregion
 
-        private void OnLevelExited(MV_LevelBehaviour arg0)
+        private void OnLevelExited(LevelBehaviour arg0)
         {
         }
 
-        private void OnLevelPreparationStarted(MV_LevelBehaviour arg0, Vector2 arg1)
+        private void OnLevelPreparationStarted(LevelBehaviour arg0, Vector2 arg1)
         {
             if (_mainCharacterProvider.TryGet(out GameObject characterObj))
             {

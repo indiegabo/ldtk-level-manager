@@ -5,12 +5,12 @@ using UnityEngine.Events;
 
 namespace LDtkVania
 {
-    public class MV_LevelConnection : MonoBehaviour, IConnection
+    public class LevelConnection : MonoBehaviour, IConnection
     {
         #region Inspector
 
         [SerializeField]
-        private MV_LevelTransitionBridge _transitionBridge;
+        private LevelTransitionBridge _transitionBridge;
 
         [SerializeField]
         private string _playerTag;
@@ -24,7 +24,7 @@ namespace LDtkVania
 
         private LDtkIid _ldtkIid;
         private LDtkFields _fields;
-        private MV_PlacementSpot _spot;
+        private PlacementSpot _spot;
         private BoxCollider2D _collider2D;
 
         private bool _active;
@@ -73,7 +73,7 @@ namespace LDtkVania
                 if (_spot == null)
                 {
                     LDtkReferenceToAnEntityInstance spotRef = _fields.GetEntityReference("Spot");
-                    _spot = spotRef.GetEntity().GetComponent<MV_PlacementSpot>();
+                    _spot = spotRef.GetEntity().GetComponent<PlacementSpot>();
                 }
                 return _spot;
             }

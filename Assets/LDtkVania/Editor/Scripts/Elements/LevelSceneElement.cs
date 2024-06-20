@@ -12,12 +12,12 @@ namespace LDtkVaniaEditor
     {
         private const string TemplateName = "LevelSceneInspector";
 
-        private MV_LevelScene _levelScene;
+        private LevelScene _levelScene;
 
         private ObjectField _fieldAsset;
         private Button _buttonOpenScene;
 
-        public MV_LevelScene LevelScene
+        public LevelScene LevelScene
         {
             get => _levelScene;
             set

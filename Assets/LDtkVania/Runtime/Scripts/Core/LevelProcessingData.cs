@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace LDtkVania
 {
-    public class MV_LevelProcessingData
+    public class LevelProcessingData
     {
-        public MV_Project project;
+        public Project project;
         public string iid;
         public string assetPath;
         public string address;

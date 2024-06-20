@@ -4,17 +4,17 @@ using UnityEngine;
 
 namespace LDtkVania
 {
-    public class MV_Portal : MonoBehaviour, IPortal
+    public class Portal : MonoBehaviour, IPortal
     {
         [SerializeField]
-        private MV_LevelTransitionBridge _transitionBridge;
+        private LevelTransitionBridge _transitionBridge;
 
         [SerializeField]
         private string _playerTag;
 
         private LDtkIid _ldtkIid;
         private LDtkFields _fields;
-        private MV_PlacementSpot _spot;
+        private PlacementSpot _spot;
 
         private string _targetLevelIid;
         private string _targetPortalIid;
@@ -65,7 +65,7 @@ namespace LDtkVania
                 if (_spot == null)
                 {
                     LDtkReferenceToAnEntityInstance spotRef = _fields.GetEntityReference("Spot");
-                    _spot = spotRef.GetEntity().GetComponent<MV_PlacementSpot>();
+                    _spot = spotRef.GetEntity().GetComponent<PlacementSpot>();
                 }
                 return _spot;
             }

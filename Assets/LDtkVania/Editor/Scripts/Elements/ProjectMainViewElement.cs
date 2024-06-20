@@ -14,7 +14,7 @@ namespace LDtkVaniaEditor
 
         private const string TemplateName = "ProjectInspector_MainView";
 
-        private MV_Project _project;
+        private Project _project;
         private LdtkJson _ldtkJson;
 
         private TemplateContainer _containerMain;
@@ -23,14 +23,14 @@ namespace LDtkVaniaEditor
         private DropdownField _dropdownNavigationLayer;
         private ListView _listWorlds;
 
-        private List<MV_World> _worldAreas;
+        private List<WorldInfo> _worldAreas;
         private List<string> _layers;
 
         #endregion
 
         #region Constructors
 
-        public ProjectMainViewElement(MV_Project project)
+        public ProjectMainViewElement(Project project)
         {
             _project = project;
             _ldtkJson = _project.LDtkProject;
@@ -65,7 +65,7 @@ namespace LDtkVaniaEditor
         {
             // (element, i) => (element as Label).text = _worldAreas[i].worldName
             element.Clear();
-            MV_World worldAreas = _worldAreas[index];
+            WorldInfo worldAreas = _worldAreas[index];
             if (worldAreas.areas.Count == 0)
             {
                 element.Add(new Label(worldAreas.worldName));

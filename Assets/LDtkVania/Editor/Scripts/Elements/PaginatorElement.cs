@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace LDtkVaniaEditor
 {
-    public delegate void PaginationChangedEvent(MV_PaginationInfo pagination);
+    public delegate void PaginationChangedEvent(PaginationInfo pagination);
     public class PaginatorElement : VisualElement
     {
         private const string TemplateName = "PaginatorInspector";
@@ -19,10 +19,10 @@ namespace LDtkVaniaEditor
         private Button _buttonLast;
         private Label _labelTotal;
 
-        private MV_PaginationInfo _pagination;
+        private PaginationInfo _pagination;
         private int _totalOfItems;
 
-        public MV_PaginationInfo Pagination => _pagination;
+        public PaginationInfo Pagination => _pagination;
         public int TotalOfItems
         {
             get => _totalOfItems;

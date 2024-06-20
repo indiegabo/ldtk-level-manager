@@ -12,7 +12,7 @@ using UnityEditor.SceneManagement;
 namespace LDtkVania
 {
     [System.Serializable]
-    public class MV_LevelScene
+    public class LevelScene
     {
         #region Inspector
 
@@ -30,11 +30,11 @@ namespace LDtkVania
         public static readonly string AddressableSceneLabel = "LDtkVaniaScene";
         public static readonly string SceneLabelName = "LDtkVaniaScene";
 
-        public static bool CreateSceneForLevel(MV_Level level, out MV_LevelScene levelScene)
+        public static bool CreateSceneForLevel(LevelInfo level, out LevelScene levelScene)
         {
             if (level.HasScene && TryScenePath(level.Scene.AssetGuid, out string existentScenePath))
             {
-                MV_Logger.Error($"A scene for level <color=#FFFFFF>{level.name}</color> already exists. It can be found at <color=#FFFFFF>{existentScenePath}</color> .", level);
+                Logger.Error($"A scene for level <color=#FFFFFF>{level.name}</color> already exists. It can be found at <color=#FFFFFF>{existentScenePath}</color> .", level);
                 levelScene = null;
                 return false;
             }
@@ -56,10 +56,10 @@ namespace LDtkVania
             string addressableAddress = $"{AddressableSceneLabel}_{level.Iid}";
             if (!sceneAsset.TrySetAsAddressable(addressableAddress, AddressableGroupName, AddressableSceneLabel))
             {
-                MV_Logger.Error($"Could not set scene for level <color=#FFFFFF>{level.name}</color> as addressable. Please check the console for errors.", level);
+                Logger.Error($"Could not set scene for level <color=#FFFFFF>{level.name}</color> as addressable. Please check the console for errors.", level);
             }
 
-            levelScene = new MV_LevelScene()
+            levelScene = new LevelScene()
             {
                 AssetGuid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(sceneAsset)),
                 AddressableKey = addressableAddress
@@ -72,13 +72,13 @@ namespace LDtkVania
             return true;
         }
 
-        public static bool DestroySceneForLevel(MV_Level level, bool requestConfirmation = true)
+        public static bool DestroySceneForLevel(LevelInfo level, bool requestConfirmation = true)
         {
             if (!level.HasScene) return true;
 
             if (!TryScenePath(level.Scene.AssetGuid, out string scenePath))
             {
-                MV_Logger.Error($"Could not find scene for level <color=#FFFFFF>{level.name}</color> . Did you create the scene through a LDtkVaniaProject inspector?", level);
+                Logger.Error($"Could not find scene for level <color=#FFFFFF>{level.name}</color> . Did you create the scene through a LDtkVaniaProject inspector?", level);
                 return false;
             }
 
@@ -106,7 +106,7 @@ namespace LDtkVania
 
             if (!AssetDatabase.DeleteAsset(scenePath))
             {
-                MV_Logger.Error($"Could not delete scene for level <color=#FFFFFF>{level.name}</color> . Please check the console for errors.", level);
+                Logger.Error($"Could not delete scene for level <color=#FFFFFF>{level.name}</color> . Please check the console for errors.", level);
                 return false;
             }
 
@@ -132,7 +132,7 @@ namespace LDtkVania
 
             if (!chosenPath.StartsWith(Application.dataPath))
             {
-                MV_Logger.Error($"Scene path <color=#FFFFFF>{chosenPath}</color> is not in the project <color=#FFFFFF>{Application.dataPath}</color>.");
+                Logger.Error($"Scene path <color=#FFFFFF>{chosenPath}</color> is not in the project <color=#FFFFFF>{Application.dataPath}</color>.");
                 scenePath = null;
                 return false;
             }

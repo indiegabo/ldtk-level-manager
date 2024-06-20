@@ -14,9 +14,9 @@ namespace LDtkVaniaEditor
 
             var labelList = AssetDatabase.GetLabels(asset);
 
-            if (labelList.Contains(MV_LevelScene.SceneLabelName))
+            if (labelList.Contains(LevelScene.SceneLabelName))
             {
-                MV_Logger.Error($"Scene Level wrappers should only be deleted using the <color=#FFFFFF>LDtkVania Level Inspector</color> tool.", asset);
+                Logger.Error($"Scene Level wrappers should only be deleted using the <color=#FFFFFF>LDtkVania Level Inspector</color> tool.", asset);
                 return AssetDeleteResult.FailedDelete;
             }
 

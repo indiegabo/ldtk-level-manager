@@ -1,10 +1,12 @@
 using LDtkUnity;
 using UnityEngine;
-using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace LDtkVania
 {
-    public class MV_Level : ScriptableObject
+    /// <summary>
+    /// Represents all the information the project needs to know about a level.
+    /// </summary>
+    public class LevelInfo : ScriptableObject
     {
         #region Static
 
@@ -16,7 +18,7 @@ namespace LDtkVania
 
         #region Inspector
 
-        [SerializeField] private MV_Project _project;
+        [SerializeField] private Project _project;
         [SerializeField] private string _iid;
         [SerializeField] private string _displayName;
         [SerializeField] private string _worldName;
@@ -25,20 +27,18 @@ namespace LDtkVania
         [SerializeField] private LDtkLevelFile _levelFile;
         [SerializeField] private string _assetPath;
         [SerializeField] private string _address;
-        [SerializeField] private MV_LevelScene _scene;
+        [SerializeField] private LevelScene _scene;
         [SerializeField] private bool _leftBehind;
 
         #endregion
 
-        #region Field
-
-        private Level _ldtkLevel;
+        #region Fields
 
         #endregion
 
         #region Getters
 
-        public MV_Project Project => _project;
+        public Project Project => _project;
         public string Iid => _iid;
         public string Name => !string.IsNullOrEmpty(_displayName) ? _displayName : name;
         public string WorldName => _worldName;
@@ -47,7 +47,7 @@ namespace LDtkVania
         public bool LeftBehind => _leftBehind;
 
         public bool HasScene => _scene != null && !string.IsNullOrEmpty(_scene.AddressableKey);
-        public MV_LevelScene Scene => _scene;
+        public LevelScene Scene => _scene;
 
         public string AssetPath => _assetPath;
         public string Address => _address;
@@ -70,14 +70,14 @@ namespace LDtkVania
 
         #region Constructors
 
-        public void Initialize(MV_LevelProcessingData data)
+        public void Initialize(LevelProcessingData data)
         {
             _project = data.project;
             _iid = data.iid;
             UpdateInfo(data);
         }
 
-        public void UpdateInfo(MV_LevelProcessingData data)
+        public void UpdateInfo(LevelProcessingData data)
         {
             LDtkFields fields = data.ldtkComponentLevel.GetComponent<LDtkFields>();
 
@@ -111,7 +111,7 @@ namespace LDtkVania
 
         #region Scene
 
-        public void SetScene(MV_LevelScene levelScene)
+        public void SetScene(LevelScene levelScene)
         {
             _scene = levelScene;
         }

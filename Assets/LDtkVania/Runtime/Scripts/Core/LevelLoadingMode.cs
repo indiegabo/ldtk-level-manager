@@ -1,6 +1,6 @@
 namespace LDtkVania
 {
-    public enum MV_LevelLoadMode
+    public enum LevelLoadingMode
     {
         LoadOnly,
         LoadAndEnter

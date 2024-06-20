@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace LDtkVania.Transitioning
 {
-    public class MV_LevelTransitioner : MonoBehaviour
+    public class LevelTransitioner : MonoBehaviour
     {
         #region Inspector        
 
@@ -18,7 +18,7 @@ namespace LDtkVania.Transitioning
         private Animator _curtainsPrefab;
 
         [SerializeField]
-        private MV_LevelTransitionBridge _transitionBridge;
+        private LevelTransitionBridge _transitionBridge;
 
         [SerializeField]
         private UnityEvent _transitionStartedEvent;
@@ -84,11 +84,11 @@ namespace LDtkVania.Transitioning
 
         public async Task TransitionIntoAwaitable(string levelIid, string spotIid)
         {
-            MV_LevelManager.Instance.Exit();
+            LevelLoader.Instance.Exit();
             await BeforePreparationTask();
             CinemachineVirtualCamera camera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera as CinemachineVirtualCamera;
 
-            await MV_LevelManager.Instance.LoadLevel(levelIid);
+            await LevelLoader.Instance.LoadLevel(levelIid);
 
             if (camera != null)
             {
@@ -96,16 +96,16 @@ namespace LDtkVania.Transitioning
                 camera.gameObject.SetActive(false);
             }
 
-            MV_LevelManager.Instance.Prepare(levelIid, spotIid);
+            LevelLoader.Instance.Prepare(levelIid, spotIid);
             await AfterPreparationTask();
         }
 
         public async Task TransitionIntoAwaitable(string levelIid, IConnection connection)
         {
-            MV_LevelManager.Instance.Exit();
+            LevelLoader.Instance.Exit();
             await BeforePreparationTask();
             CinemachineVirtualCamera camera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera as CinemachineVirtualCamera;
-            await MV_LevelManager.Instance.LoadLevel(levelIid);
+            await LevelLoader.Instance.LoadLevel(levelIid);
 
             if (camera != null)
             {
@@ -113,7 +113,7 @@ namespace LDtkVania.Transitioning
                 camera.gameObject.SetActive(false);
             }
 
-            MV_LevelManager.Instance.Prepare(levelIid, connection);
+            LevelLoader.Instance.Prepare(levelIid, connection);
             await AfterPreparationTask();
         }
 
@@ -122,14 +122,14 @@ namespace LDtkVania.Transitioning
             _transitioning = true;
             _transitionStartedEvent.Invoke();
 
-            MV_LevelManager.Instance.Exit();
+            LevelLoader.Instance.Exit();
             await CloseCurtains();
 
-            await MV_LevelManager.Instance.LoadLevel(levelIid);
-            MV_LevelManager.Instance.Prepare(levelIid, portal);
+            await LevelLoader.Instance.LoadLevel(levelIid);
+            LevelLoader.Instance.Prepare(levelIid, portal);
 
             await OpenCurtains();
-            MV_LevelManager.Instance.Enter();
+            LevelLoader.Instance.Enter();
 
             _transitioning = false;
             _transitionEndedEvent.Invoke();
@@ -144,7 +144,7 @@ namespace LDtkVania.Transitioning
             await PerformTransitions(LevelTransitionMoment.Close);
 
             // Must be after closing curtains because of camera blend
-            MV_LevelManager.Instance.Exit();
+            LevelLoader.Instance.Exit();
         }
 
         private async Task AfterPreparationTask()
@@ -159,7 +159,7 @@ namespace LDtkVania.Transitioning
             }
 
             // "Activating" level
-            MV_LevelManager.Instance.Enter();
+            LevelLoader.Instance.Enter();
 
             _transitioning = false;
             _transitionEndedEvent.Invoke();

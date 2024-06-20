@@ -9,7 +9,7 @@ namespace LDtkVaniaEditor
     {
         public static AssetDeleteResult OnWillDeleteAsset(string path, RemoveAssetOptions options)
         {
-            MV_Project project = AssetDatabase.LoadAssetAtPath<MV_Project>(path);
+            Project project = AssetDatabase.LoadAssetAtPath<Project>(path);
             if (project == null) return AssetDeleteResult.DidNotDelete;
 
             project.ClearBeforeDeletion();
