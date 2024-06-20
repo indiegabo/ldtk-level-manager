@@ -32,7 +32,7 @@ namespace LDtkVania
 
         private LDtkIid _ldtkIid;
         private LDtkComponentLevel _ldtkComponentLevel;
-        private LevelInfo _level;
+        private LevelInfo _info;
 
         private Dictionary<string, IConnection> _connections;
         private Dictionary<string, IPlacementSpot> _spots;
@@ -45,7 +45,7 @@ namespace LDtkVania
         /// <summary>
         /// The <see cref="LDtkVania.LevelInfo"/> associated with this <see cref="LevelBehaviour"/>.
         /// </summary>
-        public LevelInfo Level => _level;
+        public LevelInfo Info => _info;
 
         public UnityEvent<LevelBehaviour> ExitedEvent => _exitedEvent;
         public UnityEvent<LevelBehaviour, Vector2> PreparationStartedEvent => _preparationStartedEvent;
@@ -70,13 +70,13 @@ namespace LDtkVania
                 return;
             }
 
-            if (!LevelLoader.Instance.TryGetLevel(_ldtkIid.Iid, out _level))
+            if (!LevelLoader.Instance.TryGetLevel(_ldtkIid.Iid, out _info))
             {
                 Logger.Error($"Level {name} could not be activated because {_ldtkIid.Iid} is not present on dictionary", this);
                 return;
             }
 
-            name = _level.Name;
+            name = _info.Name;
 
             LDtkComponentLayer componentLayer = _ldtkComponentLevel.LayerInstances.FirstOrDefault(
                 l => l != null && l.Identifier == LevelLoader.Instance.NavigationLayer
@@ -120,7 +120,7 @@ namespace LDtkVania
                 mainSpot = _spots.Values.FirstOrDefault();
             }
 
-            trail = LevelTrail.FromSpot(_level.Iid, mainSpot);
+            trail = LevelTrail.FromSpot(_info.Iid, mainSpot);
             _preparationStartedEvent.Invoke(this, mainSpot.SpawnPoint);
             PlaceCharacter(mainSpot.SpawnPoint, mainSpot.FacingSign);
             _preparedEvent.Invoke(this, trail);
@@ -137,7 +137,7 @@ namespace LDtkVania
                 return false;
             }
 
-            trail = LevelTrail.FromSpot(_level.Iid, registeredSpot);
+            trail = LevelTrail.FromSpot(_info.Iid, registeredSpot);
             _preparationStartedEvent.Invoke(this, registeredSpot.SpawnPoint);
             PlaceCharacter(registeredSpot.SpawnPoint, registeredSpot.FacingSign);
             _preparedEvent.Invoke(this, trail);
@@ -156,7 +156,7 @@ namespace LDtkVania
                 return false;
             }
 
-            trail = LevelTrail.FromConnection(_level.Iid, registeredConnection);
+            trail = LevelTrail.FromConnection(_info.Iid, registeredConnection);
             _preparationStartedEvent.Invoke(this, registeredConnection.Spot.SpawnPoint);
             PlaceCharacter(registeredConnection.Spot.SpawnPoint, registeredConnection.Spot.FacingSign);
             _preparedEvent.Invoke(this, trail);
@@ -175,7 +175,7 @@ namespace LDtkVania
                 return false;
             }
 
-            trail = LevelTrail.FromPortal(_level.Iid, registeredPortal);
+            trail = LevelTrail.FromPortal(_info.Iid, registeredPortal);
             _preparationStartedEvent.Invoke(this, registeredPortal.Spot.SpawnPoint);
             PlaceCharacter(registeredPortal.Spot.SpawnPoint, registeredPortal.Spot.FacingSign);
             _preparedEvent.Invoke(this, trail);
@@ -184,7 +184,7 @@ namespace LDtkVania
 
         public bool Prepare(Vector2 spawnPoint, int facingSign, out LevelTrail trail)
         {
-            trail = LevelTrail.FromPoint(_level.Iid, spawnPoint, facingSign);
+            trail = LevelTrail.FromPoint(_info.Iid, spawnPoint, facingSign);
             _preparationStartedEvent.Invoke(this, spawnPoint);
             PlaceCharacter(spawnPoint, facingSign);
             _preparedEvent.Invoke(this, trail);

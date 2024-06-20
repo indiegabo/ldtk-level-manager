@@ -1,5 +1,5 @@
 {
-    "name": "LDtkVania.Runtime",
+    "name": "LDtkLevelManager.Runtime",
     "rootNamespace": "",
     "references": [
         "LDtkUnity.Runtime",

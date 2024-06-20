@@ -1,4 +1,4 @@
-# LDtk Vania
+# LDtk Level Manager
 
 A solution for running metroidvania levels in Unity with LDtk.
 

@@ -10,7 +10,7 @@ namespace LDtkVania
         #region Fields
 
         private LDtkIid _ldtkIid;
-        private LevelInfo _levelInfo;
+        private LevelInfo _info;
 
         #endregion
 
@@ -24,7 +24,7 @@ namespace LDtkVania
                 return;
             }
 
-            if (!LevelLoader.Instance.TryGetLevel(_ldtkIid.Iid, out _levelInfo))
+            if (!LevelLoader.Instance.TryGetLevel(_ldtkIid.Iid, out _info))
             {
                 Logger.Error($"{name} could not have its geometry enforced because there was no level found under the LDtk Iid {_ldtkIid.Iid}", this);
                 return;
@@ -32,7 +32,7 @@ namespace LDtkVania
 
             // Only needed if the level has a scene. This solution is focused
             // on levels pre instantiated in scenes.
-            if (!_levelInfo.HasScene)
+            if (!_info.HasScene)
             {
                 Destroy(this);
                 return;
