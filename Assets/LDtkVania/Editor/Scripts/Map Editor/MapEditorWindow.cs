@@ -49,12 +49,18 @@ namespace LDtkVaniaEditor
         private ObjectField _fieldUniverseScene;
         private DropdownField _dropdownProject;
         private DropdownField _dropdownWorld;
+        private VisualElement _containerSelectedLevel;
+        private Label _labelSelectedLevel;
+        private ScrollView _scrollViewSelectedLevel;
         private Button _buttonOpenMapEditorScene;
         private Button _buttonOpenUniverseScene;
         private Button _buttonUnloadAll;
         private Button _buttonLoadWorld;
+        private Button _buttonLoadSelection;
         private MapView _mapView;
         private ScrollView _scrollViewSelectedLevels;
+
+        private List<ISelectable> _currentlySelectedLevels;
 
         private event ProjectSelected _projectSelected;
 
@@ -72,6 +78,7 @@ namespace LDtkVaniaEditor
         {
             _projects = new();
             _selectedProjectWorlds = new();
+            _currentlySelectedLevels = new();
 
             List<MV_Project> projects = MV_Project.FindAllProjects();
 
@@ -104,11 +111,20 @@ namespace LDtkVaniaEditor
             _buttonOpenUniverseScene = _containerMain.Q<Button>("button-open-universe-scene");
             _buttonOpenUniverseScene.clicked += OpenUniverseScene;
 
+            _containerSelectedLevel = _containerMain.Q<VisualElement>("container-selected-level");
+            _containerSelectedLevel.style.display = DisplayStyle.None;
+
+            _labelSelectedLevel = _containerMain.Q<Label>("label-selected-level");
+            _scrollViewSelectedLevel = _containerMain.Q<ScrollView>("scroll-view-selected-level");
+
             _buttonUnloadAll = _containerMain.Q<Button>("button-unload-all");
             _buttonUnloadAll.clicked += OnLoadAllLevels;
 
             _buttonLoadWorld = _containerMain.Q<Button>("button-load-world");
             _buttonLoadWorld.clicked += LoadAllCurrentWorldLevels;
+
+            _buttonLoadSelection = _containerMain.Q<Button>("button-load-selection");
+            _buttonLoadSelection.clicked += LoadCurrentSelection;
 
             _scrollViewSelectedLevels = _containerMain.Q<ScrollView>("scroll-view-selected-levels");
 
@@ -258,6 +274,7 @@ namespace LDtkVaniaEditor
 
         private void SelectWorld(string worldName)
         {
+            ClearSelectedLevels();
             ClearLoadedLevels();
             Settings.InitializedWorldName = worldName;
             World world = _selectedProjectWorlds[worldName];
@@ -366,7 +383,32 @@ namespace LDtkVaniaEditor
 
         private void OnLevelSelectionChanged(List<ISelectable> selectables)
         {
-            _scrollViewSelectedLevels.Clear();
+            ClearSelectedLevels();
+
+            _currentlySelectedLevels = selectables;
+            int totalSelected = _currentlySelectedLevels.Count;
+
+            if (totalSelected == 0)
+            {
+                _containerSelectedLevel.style.display = DisplayStyle.None;
+                return;
+            }
+
+            if (totalSelected == 1)
+            {
+                if (selectables[0] is MapLevelElement mapElement)
+                {
+                    SelectedLevelElement selectedLevelElement = new(mapElement);
+                    _scrollViewSelectedLevels.Add(selectedLevelElement);
+
+                    LevelElement levelElement = new(mapElement.MVLevel);
+                    _labelSelectedLevel.text = mapElement.MVLevel.Name;
+                    _scrollViewSelectedLevel.Add(levelElement);
+                }
+
+                _containerSelectedLevel.style.display = DisplayStyle.Flex;
+                return;
+            }
 
             List<SelectedLevelElement> selectedLevelElements = _scrollViewSelectedLevels.Query<SelectedLevelElement>().ToList();
 
@@ -381,6 +423,29 @@ namespace LDtkVaniaEditor
                 {
                     SelectedLevelElement selectedLevelElement = new(MapElement);
                     _scrollViewSelectedLevels.Add(selectedLevelElement);
+                }
+            }
+
+            _containerSelectedLevel.style.display = DisplayStyle.None;
+            _buttonLoadSelection.style.display = DisplayStyle.Flex;
+        }
+
+        private void ClearSelectedLevels()
+        {
+            _scrollViewSelectedLevel.Clear();
+            _scrollViewSelectedLevels.Clear();
+            _containerSelectedLevel.style.display = DisplayStyle.None;
+            _buttonLoadSelection.style.display = DisplayStyle.None;
+        }
+
+        private void LoadCurrentSelection()
+        {
+            foreach (ISelectable selectable in _currentlySelectedLevels)
+            {
+                if (selectable is MapLevelElement mapElement)
+                {
+                    LoadedLevelEntry entry = LoadLevel(mapElement.MVLevel, false);
+                    mapElement.RegisterLoadedEntry(entry);
                 }
             }
         }

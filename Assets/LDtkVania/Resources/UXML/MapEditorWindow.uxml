@@ -20,9 +20,9 @@
                     <ui:Button text="Open" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-open-universe-scene" />
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement name="container-selected-levels" class="container-left-bar" style="flex-grow: 1;">
-                <ui:Label tabindex="-1" text="Selected Levels" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-selected-levels" class="label-left-bar" />
-                <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="scroll-view-selected-levels" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.32);" />
+            <ui:VisualElement name="container-selected-level" class="container-left-bar" style="flex-grow: 1;">
+                <ui:Label tabindex="-1" text="Selected Level" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-selected-level" class="label-left-bar" />
+                <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="scroll-view-selected-level" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.45); padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;" />
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="container-right" style="flex-grow: 1;">
@@ -30,11 +30,15 @@
                 <ui:DropdownField label="World" name="dropdown-world" class="toolbar-element" />
                 <uie:ToolbarButton text="Load World" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-load-world" />
                 <uie:ToolbarSpacer style="flex-grow: 1;" />
+                <uie:ToolbarButton text="Load Selection" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-load-selection" />
+                <uie:ToolbarSpacer style="flex-grow: 1;" />
                 <uie:ToolbarButton text="Unload All" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-unload-all" />
             </uie:Toolbar>
             <ui:VisualElement name="container-map-and-bar" style="flex-grow: 1; flex-direction: row;">
                 <ui:VisualElement name="container-map-view" style="flex-grow: 1;">
-                    <LDtkVaniaEditor.MapView name="map-view" focusable="true" style="flex-grow: 1;" />
+                    <LDtkVaniaEditor.MapView name="map-view" focusable="true" style="flex-grow: 1;">
+                        <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="scroll-view-selected-levels" style="flex-grow: 1; position: absolute; right: 2px; top: 2px; min-width: 100px;" />
+                    </LDtkVaniaEditor.MapView>
                 </ui:VisualElement>
                 <ui:VisualElement name="sidebar-map" style="flex-grow: 0; width: 25px; background-color: rgb(56, 56, 56);" />
             </ui:VisualElement>

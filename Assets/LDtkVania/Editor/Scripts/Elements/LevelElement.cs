@@ -40,6 +40,7 @@ namespace LDtkVaniaEditor
         {
             _level = level;
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
+            _containerMain.Bind(new SerializedObject(_level));
 
             _containerLeftBehind = _containerMain.Q<VisualElement>("container-left-behind");
             _containerLeftBehind.style.display = _level.LeftBehind ? DisplayStyle.Flex : DisplayStyle.None;
