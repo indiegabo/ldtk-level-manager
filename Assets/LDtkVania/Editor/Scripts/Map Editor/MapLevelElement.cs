@@ -1,7 +1,6 @@
 using System;
 using LDtkUnity;
 using LDtkVania;
-using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -82,20 +81,30 @@ namespace LDtkVaniaEditor
 
         private void AddLevelNameLabel(Vector2 levelSize)
         {
+            string name = _mvLevel.Name;
+
+            if (levelSize.x < 120)
+            {
+                name = name[..5] + "...";
+            }
+
             VisualElement container = new();
             container.style.position = Position.Absolute;
             container.style.alignSelf = Align.Center;
             container.style.top = levelSize.y / 2;
+            container.style.textOverflow = TextOverflow.Ellipsis;
 
             Label label = new()
             {
-                text = _mvLevel.Name,
+                text = name,
             };
 
             label.style.height = 0; // This is somewhat a hack so the level element doesn't get blocked by the label upon clicking in it
             label.style.width = levelSize.x;
             label.style.unityTextAlign = TextAnchor.MiddleCenter;
-            label.style.fontSize = 20;
+            float maxLabelWidth = levelSize.x * 0.8f; // 80% of level's width
+            int fontSize = Mathf.RoundToInt(label.text.Length / maxLabelWidth * 100);
+            label.style.fontSize = Mathf.Clamp(fontSize, 12, 30);
             label.style.textOverflow = TextOverflow.Ellipsis;
             label.style.color = Color.white;
 

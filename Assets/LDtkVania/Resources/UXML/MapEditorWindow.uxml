@@ -38,11 +38,6 @@
                 <ui:VisualElement name="container-map-view" style="flex-grow: 1;">
                     <LDtkVaniaEditor.MapView name="map-view" focusable="true" style="flex-grow: 1;">
                         <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="scroll-view-selected-levels" style="flex-grow: 1; position: absolute; right: 2px; top: 2px; min-width: 100px;" />
-                        <ui:VisualElement style="flex-grow: 1; background-image: resource(&apos;map-level-tile&apos;);">
-                            <ui:VisualElement name="container-name" style="flex-grow: 0; align-self: center; flex-shrink: 0; position: absolute; top: 47%;">
-                                <ui:Label tabindex="-1" text="dasdasdasdasddasdasdasdadsas&#10;asdasdasdasdasdasdas&#10;&#10;dasdasdasadadsadasdas&#10;dasdasdasdasdsadas&#10;" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Label" style="align-self: center; -unity-text-align: middle-center;" />
-                            </ui:VisualElement>
-                        </ui:VisualElement>
                     </LDtkVaniaEditor.MapView>
                 </ui:VisualElement>
                 <ui:VisualElement name="sidebar-map" style="flex-grow: 0; width: 25px; background-color: rgb(56, 56, 56);" />

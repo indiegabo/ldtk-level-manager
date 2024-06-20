@@ -241,8 +241,8 @@ MonoBehaviour:
   _assetPath: Assets/LDtk/LDtkVaniaSample/Factory_4.ldtkl
   _address: LDtkVaniaLevel_49e346a0-fec0-11ee-9039-5b61900789be
   _scene:
-    _assetGuid: 
-    _addressableKey: 
+    _assetGuid: 5b09dd6140434474f9e8f931670f51da
+    _addressableKey: LDtkVaniaScene_49e346a0-fec0-11ee-9039-5b61900789be
   _leftBehind: 0
 --- !u!114 &1991603685113182602
 MonoBehaviour:

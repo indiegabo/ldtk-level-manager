@@ -35,6 +35,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - LDtkVaniaScene
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5b09dd6140434474f9e8f931670f51da
+    m_Address: LDtkVaniaScene_49e346a0-fec0-11ee-9039-5b61900789be
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - LDtkVaniaScene
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 1ba21a4611ac85b4f95e8eab66dc3553, type: 2}
   m_SchemaSet:

@@ -52,13 +52,6 @@ namespace LDtkVaniaEditor
         public void InitializeWorld(MV_Project project, World world)
         {
             ClearLevels();
-
-            if (world.WorldLayout != WorldLayout.GridVania)
-            {
-                Debug.LogWarning("Only grid-based worlds are supported for now.");
-                return;
-            }
-
             LoadLevels(project, world);
             schedule.Execute(() => FrameWorld());
         }
@@ -66,13 +59,6 @@ namespace LDtkVaniaEditor
         public void InitializeWorld(MV_Project project, World world, MapViewTransform existingTransform)
         {
             ClearLevels();
-
-            if (world.WorldLayout != WorldLayout.GridVania)
-            {
-                Debug.LogWarning("Only grid-based worlds are supported for now.");
-                return;
-            }
-
             LoadLevels(project, world);
             UpdateViewTransform(existingTransform.position, existingTransform.scale);
         }
@@ -93,6 +79,21 @@ namespace LDtkVaniaEditor
 
         private void LoadLevels(MV_Project project, World world)
         {
+            switch (world.WorldLayout)
+            {
+                case WorldLayout.GridVania:
+                    LoadGridVaniaLevels(project, world);
+                    break;
+                case WorldLayout.LinearHorizontal:
+                    LoadHorizontalLevels(project, world);
+                    break;
+                case WorldLayout.LinearVertical:
+                    break;
+            }
+        }
+
+        private void LoadGridVaniaLevels(MV_Project project, World world)
+        {
             _worldRect = new Rect(0, 0, 0, 0);
 
             foreach (Level level in world.Levels)
@@ -110,6 +111,30 @@ namespace LDtkVaniaEditor
                 _worldRect.Expand(levelRect);
 
                 AddLevel(level, mvLevel, levelRect);
+            }
+        }
+
+        private void LoadHorizontalLevels(MV_Project project, World world)
+        {
+            _worldRect = new Rect(0, 0, 0, 0);
+            float startingPos = 0;
+
+            foreach (Level level in world.Levels)
+            {
+
+                project.TryGetLevel(level.Iid, out MV_Level mvLevel);
+
+                Rect levelRect = new()
+                {
+                    width = level.UnityWorldRect.width * 0.25f,
+                    height = level.UnityWorldRect.height * 0.25f,
+                    x = startingPos,
+                    y = 0
+                };
+
+                _worldRect.Expand(levelRect);
+                AddLevel(level, mvLevel, levelRect);
+                startingPos = startingPos + levelRect.width + 25f;
             }
         }
 
