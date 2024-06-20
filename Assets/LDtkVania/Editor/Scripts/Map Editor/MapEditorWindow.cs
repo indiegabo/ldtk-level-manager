@@ -410,13 +410,6 @@ namespace LDtkVaniaEditor
                 return;
             }
 
-            List<SelectedLevelElement> selectedLevelElements = _scrollViewSelectedLevels.Query<SelectedLevelElement>().ToList();
-
-            foreach (SelectedLevelElement element in selectedLevelElements)
-            {
-                element.Dismiss();
-            }
-
             foreach (ISelectable selectable in selectables)
             {
                 if (selectable is MapLevelElement MapElement)
@@ -432,8 +425,16 @@ namespace LDtkVaniaEditor
 
         private void ClearSelectedLevels()
         {
-            _scrollViewSelectedLevel.Clear();
+            List<SelectedLevelElement> selectedLevelElements = _scrollViewSelectedLevels.Query<SelectedLevelElement>().ToList();
+
+            foreach (SelectedLevelElement element in selectedLevelElements)
+            {
+                element.Dismiss();
+            }
+
             _scrollViewSelectedLevels.Clear();
+            _scrollViewSelectedLevel.Clear();
+
             _containerSelectedLevel.style.display = DisplayStyle.None;
             _buttonLoadSelection.style.display = DisplayStyle.None;
         }
