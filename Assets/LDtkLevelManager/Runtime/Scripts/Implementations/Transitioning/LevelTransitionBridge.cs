@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace LDtkVania.Transitioning
+namespace LDtkLevelManager.Transitioning
 {
-    [CreateAssetMenu(fileName = "Level Transition Bridge", menuName = "LDtkVania/Transitioning/Transition Bridge", order = 0)]
+    [CreateAssetMenu(fileName = "Level Transition Bridge", menuName = "LDtkLevelManager/Transitioning/Transition Bridge", order = 0)]
     public class LevelTransitionBridge : ScriptableObject
     {
         #region Fields

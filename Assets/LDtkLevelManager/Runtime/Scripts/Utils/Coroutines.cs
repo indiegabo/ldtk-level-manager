@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LDtkVania.Utils
+namespace LDtkLevelManager.Utils
 {
     public static class Coroutines
     {

@@ -5,7 +5,7 @@ using Cinemachine;
 using System;
 using UnityEngine.UI;
 
-namespace LDtkVania.Transitioning
+namespace LDtkLevelManager.Transitioning
 {
     public class LevelTransitioner : MonoBehaviour
     {

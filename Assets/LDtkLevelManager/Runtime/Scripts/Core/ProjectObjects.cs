@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using LDtkVania.Utils;
+using LDtkLevelManager.Utils;
 using UnityEngine;
 using LDtkUnity;
 
-namespace LDtkVania
+namespace LDtkLevelManager
 {
     public class PaginatedResponse<T>
     {

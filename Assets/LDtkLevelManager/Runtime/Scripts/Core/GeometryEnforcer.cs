@@ -2,7 +2,7 @@ using LDtkUnity;
 using UnityEngine;
 using System.Linq;
 
-namespace LDtkVania
+namespace LDtkLevelManager
 {
     [Tooltip("Enforces the geometry of the level. Only needed if the level has a scene. This solution is focused on levels wrapped in scenes.")]
     public class GeometryEnforcer : MonoBehaviour

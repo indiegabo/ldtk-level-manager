@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
-using LDtkVania;
+using LDtkLevelManager;
 using UnityEditor;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
     public class ProjectDeletionProcessor : AssetModificationProcessor
     {

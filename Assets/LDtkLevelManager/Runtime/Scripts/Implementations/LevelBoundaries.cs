@@ -1,10 +1,10 @@
 using System;
 using Cinemachine;
 using LDtkUnity;
-using LDtkVania.Utils;
+using LDtkLevelManager.Utils;
 using UnityEngine;
 
-namespace LDtkVania
+namespace LDtkLevelManager
 {
     [RequireComponent(typeof(LevelBehaviour))]
     public class LevelBoundaries : MonoBehaviour

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace LDtkVania.Utils
+namespace LDtkLevelManager.Utils
 {
     public class SingletonScriptable<T> : ScriptableObject where T : SingletonScriptable<T>
     {

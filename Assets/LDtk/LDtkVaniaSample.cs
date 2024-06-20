@@ -8,12 +8,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LDtkVania
+namespace LDtkLevelManagerSample
 {
     /// <summary>
     /// LDtk Enum for LDtkVaniaSample
     /// </summary>
-    public enum LDtkVaniaAreas
+    public enum LDtkLevelManagerAreas
     {
         Factory,
         Mall,

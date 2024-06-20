@@ -1,18 +1,18 @@
 using System;
 using LDtkUnity;
-using LDtkVania;
+using LDtkLevelManager;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
     public delegate void LoadedStatusChangedEvent(bool isLoaded);
     public class MapLevelElement : GraphElement
     {
         private Action<MapLevelElement> _levelLoadToggleRequestAction;
 
-        private LDtkVania.LevelInfo _levelInfo;
+        private LDtkLevelManager.LevelInfo _levelInfo;
         private LDtkUnity.Level _level;
         private bool _pointerIsOver = false;
         private MapView _mapView;
@@ -23,7 +23,7 @@ namespace LDtkVaniaEditor
         private StyleColor _highlightedColor = new(new Color(1, 1, 1, 1f));
         private StyleColor _loadedColor = new(new Color(0.82f, 0.29f, 0.84f, 1f));
 
-        public LDtkVania.LevelInfo Info => _levelInfo;
+        public LDtkLevelManager.LevelInfo Info => _levelInfo;
         public LDtkUnity.Level Level => _level;
         public Rect LevelRect => _levelRect;
 
@@ -31,7 +31,7 @@ namespace LDtkVaniaEditor
 
         public event LoadedStatusChangedEvent LoadedStatusChanged;
 
-        public MapLevelElement(MapView mapView, LDtkUnity.Level level, LDtkVania.LevelInfo levelInfo, Rect levelRect)
+        public MapLevelElement(MapView mapView, LDtkUnity.Level level, LDtkLevelManager.LevelInfo levelInfo, Rect levelRect)
         {
             base.capabilities |= Capabilities.Selectable | Capabilities.Groupable;
 

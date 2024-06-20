@@ -1,7 +1,7 @@
 using LDtkUnity;
 using UnityEngine;
 
-namespace LDtkVania
+namespace LDtkLevelManager
 {
     /// <summary>
     /// Represents all the information the project needs to know about a level.
@@ -10,9 +10,9 @@ namespace LDtkVania
     {
         #region Static
 
-        public static readonly string AdressableAddressPrexix = "LDtkVaniaLevel";
-        public static readonly string AddressableGroupName = "LDtkVaniaLevels";
-        public static readonly string AddressableLabel = "LDtkVaniaLevel";
+        public static readonly string AdressableAddressPrexix = "LDtkLevelManagerLevel";
+        public static readonly string AddressableGroupName = "LDtkLevelManagerLevels";
+        public static readonly string AddressableLabel = "LDtkLevelManagerLevel";
 
         #endregion
 

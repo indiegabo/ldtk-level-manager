@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace LDtkVania
+namespace LDtkLevelManager
 {
-    [CreateAssetMenu(fileName = "Player Control Bridge", menuName = "LDtkVania/Player Control/Bridge")]
+    [CreateAssetMenu(fileName = "Player Control Bridge", menuName = "LDtkLevelManager/Player Control/Bridge")]
     public class PlayerControlBridge : ScriptableObject
     {
         #region Inspector     

@@ -1,5 +1,5 @@
 using UnityEngine;
-using LDtkVania.Cartography;
+using LDtkLevelManager.Cartography;
 using System.Collections.Generic;
 
 namespace Tests

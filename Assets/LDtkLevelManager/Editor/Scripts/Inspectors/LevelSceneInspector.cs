@@ -1,9 +1,9 @@
-using LDtkVania;
+using LDtkLevelManager;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
     [CustomEditor(typeof(LevelScene))]
     public class LevelSceneInspector : Editor

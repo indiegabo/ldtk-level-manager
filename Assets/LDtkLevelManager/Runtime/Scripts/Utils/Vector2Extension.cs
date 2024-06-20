@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace LDtkVania.Utils
+namespace LDtkLevelManager.Utils
 {
     public static class Vector2Extension
     {

@@ -7,7 +7,7 @@ using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace LDtkVania.Utils
+namespace LDtkLevelManager.Utils
 {
     public static class AddressableExtensions
     {

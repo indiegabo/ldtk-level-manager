@@ -1,12 +1,12 @@
 using UnityEditor;
-using LDtkVania;
+using LDtkLevelManager;
 using UnityEngine;
 using LDtkUnity;
 using System.Collections.Generic;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
-    class LDtkVaniaLevelsSyncer : AssetPostprocessor
+    class LDtkLevelManagerLevelsSyncer : AssetPostprocessor
     {
         private static string _projectToProcessPath;
         private static List<ProcessedLevelEntry> _processingSubjectLevels = new();

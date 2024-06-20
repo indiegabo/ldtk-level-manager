@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using LDtkUnity;
-using LDtkVania;
+using LDtkLevelManager;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
     public class ProjectMainViewElement : VisualElement
     {

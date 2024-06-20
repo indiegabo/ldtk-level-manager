@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
-using LDtkVania;
+using LDtkLevelManager;
 using UnityEditor;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
     public class SceneDeletionProcessor : AssetModificationProcessor
     {
@@ -16,7 +16,7 @@ namespace LDtkVaniaEditor
 
             if (labelList.Contains(LevelScene.SceneLabelName))
             {
-                Logger.Error($"Scene Level wrappers should only be deleted using the <color=#FFFFFF>LDtkVania Level Inspector</color> tool.", asset);
+                Logger.Error($"Scene Level wrappers should only be deleted using the <color=#FFFFFF>LDtkLevelManager Level Inspector</color> tool.", asset);
                 return AssetDeleteResult.FailedDelete;
             }
 

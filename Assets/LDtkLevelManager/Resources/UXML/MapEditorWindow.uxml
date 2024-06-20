@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Assets/LDtkVania/Resources/Styles/MapEditor_style.uss?fileID=7433441132597879392&amp;guid=1ab9ee8df067fd542bfd83a33d454394&amp;type=3#MapEditor_style" />
-    <LDtkVaniaEditor.SliptView fixed-pane-initial-dimension="260" name="container-main">
+    <Style src="project://database/Assets/LDtkLevelManager/Resources/Styles/MapEditor_style.uss?fileID=7433441132597879392&amp;guid=1ab9ee8df067fd542bfd83a33d454394&amp;type=3#MapEditor_style" />
+    <LDtkLevelManagerEditor.SliptView fixed-pane-initial-dimension="260" name="container-main">
         <ui:VisualElement name="container-left" style="flex-grow: 1;">
             <ui:VisualElement name="container-project-dropdown" class="container-left-bar" style="flex-grow: 0;">
                 <ui:Label tabindex="-1" text="Project" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-project" class="label-left-bar" />
@@ -36,12 +36,12 @@
             </uie:Toolbar>
             <ui:VisualElement name="container-map-and-bar" style="flex-grow: 1; flex-direction: row;">
                 <ui:VisualElement name="container-map-view" style="flex-grow: 1;">
-                    <LDtkVaniaEditor.MapView name="map-view" focusable="true" style="flex-grow: 1;">
+                    <LDtkLevelManagerEditor.MapView name="map-view" focusable="true" style="flex-grow: 1;">
                         <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="scroll-view-selected-levels" style="flex-grow: 1; position: absolute; right: 2px; top: 2px; min-width: 100px;" />
-                    </LDtkVaniaEditor.MapView>
+                    </LDtkLevelManagerEditor.MapView>
                 </ui:VisualElement>
                 <ui:VisualElement name="sidebar-map" style="flex-grow: 0; width: 25px; background-color: rgb(56, 56, 56);" />
             </ui:VisualElement>
         </ui:VisualElement>
-    </LDtkVaniaEditor.SliptView>
+    </LDtkLevelManagerEditor.SliptView>
 </ui:UXML>

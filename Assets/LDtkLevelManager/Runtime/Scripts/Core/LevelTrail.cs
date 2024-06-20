@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace LDtkVania
+namespace LDtkLevelManager
 {
     [System.Serializable]
     public struct LevelTrail

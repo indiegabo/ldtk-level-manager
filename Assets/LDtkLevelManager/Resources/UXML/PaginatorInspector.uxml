@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Assets/LDtkVania/Resources/Styles/Paginator_style.uss?fileID=7433441132597879392&amp;guid=5ea6bf7f4a1e253478634ef9f9ce99dc&amp;type=3#Paginator_style" />
+    <Style src="project://database/Assets/LDtkLevelManager/Resources/Styles/Paginator_style.uss?fileID=7433441132597879392&amp;guid=5ea6bf7f4a1e253478634ef9f9ce99dc&amp;type=3#Paginator_style" />
     <ui:VisualElement name="container-main" style="flex-grow: 1; flex-direction: row; flex-wrap: nowrap; align-items: center;">
         <ui:VisualElement name="container-pusher" style="flex-grow: 1; flex-shrink: 0;" />
         <ui:DropdownField name="field-items-per-page" />

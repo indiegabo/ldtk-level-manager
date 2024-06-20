@@ -1,7 +1,7 @@
 using LDtkUnity;
 using UnityEngine;
 
-namespace LDtkVania
+namespace LDtkLevelManager
 {
     [System.Serializable]
     public class ProcessedLevelEntry

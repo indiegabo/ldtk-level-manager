@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace LDtkVania
+namespace LDtkLevelManager
 {
     public class LevelSubject : MonoBehaviour
     {

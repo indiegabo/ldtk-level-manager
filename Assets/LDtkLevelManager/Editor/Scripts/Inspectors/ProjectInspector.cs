@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using LDtkUnity;
-using LDtkVania;
+using LDtkLevelManager;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
     [CustomEditor(typeof(Project))]
     public class ProjectInspector : Editor

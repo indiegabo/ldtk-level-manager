@@ -1,8 +1,8 @@
 using LDtkUnity;
-using LDtkVania.Transitioning;
+using LDtkLevelManager.Transitioning;
 using UnityEngine;
 
-namespace LDtkVania
+namespace LDtkLevelManager
 {
     public class Portal : MonoBehaviour, IPortal
     {

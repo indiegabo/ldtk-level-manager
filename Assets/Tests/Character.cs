@@ -1,7 +1,5 @@
-using LDtkVania;
-using LDtkVania.Cartography;
-using LDtkVania.Utils;
-using Sirenix.OdinInspector;
+using LDtkLevelManager;
+using LDtkLevelManager.Utils;
 using TarodevController;
 using UnityEngine;
 

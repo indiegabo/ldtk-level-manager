@@ -1,7 +1,7 @@
 
 using UnityEngine;
 
-namespace LDtkVania.Cartography
+namespace LDtkLevelManager.Cartography
 {
     public struct CartographyBounds
     {

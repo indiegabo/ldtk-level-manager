@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using LDtkUnity;
-using LDtkVania;
-using LDtkVania.Utils;
+using LDtkLevelManager;
+using LDtkLevelManager.Utils;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
-    [FilePath("LDtkVania/MapEditorSettings", FilePathAttribute.Location.PreferencesFolder)]
+    [FilePath("LDtkLevelManager/MapEditorSettings", FilePathAttribute.Location.PreferencesFolder)]
     public class MapEditorSettings : ScriptableSingleton<MapEditorSettings>
     {
         [SerializeField] private SceneAsset _mapScene;
@@ -105,7 +105,7 @@ namespace LDtkVaniaEditor
             }
         }
 
-        public LoadedLevelEntry RegisterLoadedLevel(LDtkVania.LevelInfo levelInfo, GameObject loadedObject)
+        public LoadedLevelEntry RegisterLoadedLevel(LDtkLevelManager.LevelInfo levelInfo, GameObject loadedObject)
         {
             _loadedLevelsRegistry.Remove(levelInfo.Iid);
             LoadedLevelEntry entry = new(levelInfo, loadedObject);
@@ -113,7 +113,7 @@ namespace LDtkVaniaEditor
             return entry;
         }
 
-        public LoadedLevelEntry RegisterLoadedLevel(LDtkVania.LevelInfo levelInfo, Scene scene)
+        public LoadedLevelEntry RegisterLoadedLevel(LDtkLevelManager.LevelInfo levelInfo, Scene scene)
         {
             _loadedLevelsRegistry.Remove(levelInfo.Iid);
             LoadedLevelEntry entry = new(levelInfo, scene);
@@ -147,7 +147,7 @@ namespace LDtkVaniaEditor
 
         }
 
-        public bool IsLevelLoaded(LDtkVania.LevelInfo levelInfo)
+        public bool IsLevelLoaded(LDtkLevelManager.LevelInfo levelInfo)
         {
             if (_loadedLevelsRegistry.TryGetValue(levelInfo.Iid, out LoadedLevelEntry entry))
             {

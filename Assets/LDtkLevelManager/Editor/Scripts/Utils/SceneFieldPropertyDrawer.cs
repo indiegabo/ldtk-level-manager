@@ -1,10 +1,10 @@
 using System;
 using UnityEngine;
 using UnityEditor;
-using LDtkVania;
-using LDtkVania.Utils;
+using LDtkLevelManager;
+using LDtkLevelManager.Utils;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
     [CustomPropertyDrawer(typeof(SceneField))]
     public class SceneFieldPropertyDrawer : PropertyDrawer

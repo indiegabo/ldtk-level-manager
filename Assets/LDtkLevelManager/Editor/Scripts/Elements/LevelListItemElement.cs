@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using LDtkVania;
+using LDtkLevelManager;
 using UnityEditor.UIElements;
 using LDtkUnity;
 using UnityEditor;
 using System.Collections.Generic;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
     public class LevelListItemElement : VisualElement
     {
@@ -18,7 +18,7 @@ namespace LDtkVaniaEditor
 
         #region Fields
 
-        private LDtkVania.LevelInfo _level;
+        private LDtkLevelManager.LevelInfo _level;
 
         LevelElement _levelElement;
         SerializedObject _serialized;
@@ -28,7 +28,7 @@ namespace LDtkVaniaEditor
 
         #region Properties
 
-        public LDtkVania.LevelInfo Level
+        public LDtkLevelManager.LevelInfo Level
         {
             get => _level;
             set
@@ -62,7 +62,7 @@ namespace LDtkVaniaEditor
 
         #region Define level
 
-        private void SetLevel(LDtkVania.LevelInfo level)
+        private void SetLevel(LDtkLevelManager.LevelInfo level)
         {
             if (_levelElement != null)
             {

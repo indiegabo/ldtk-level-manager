@@ -3,7 +3,7 @@ using System.Linq;
 using LDtkUnity;
 using UnityEngine;
 
-namespace LDtkVania.Cartography
+namespace LDtkLevelManager.Cartography
 {
     public class WorldCartography
     {

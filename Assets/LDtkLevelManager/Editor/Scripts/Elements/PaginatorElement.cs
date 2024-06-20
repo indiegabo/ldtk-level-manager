@@ -1,8 +1,8 @@
-using LDtkVania;
+using LDtkLevelManager;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace LDtkVaniaEditor
+namespace LDtkLevelManagerEditor
 {
     public delegate void PaginationChangedEvent(PaginationInfo pagination);
     public class PaginatorElement : VisualElement

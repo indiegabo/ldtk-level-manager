@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using LDtkUnity;
-using LDtkVania;
+using LDtkLevelManager;
 using UnityEngine;
 
 public class Starter : MonoBehaviour
@@ -8,7 +8,7 @@ public class Starter : MonoBehaviour
     #region Inspector
 
     [SerializeField] private LevelLoader _levelManager;
-    [SerializeField] private LDtkVania.LevelInfo _level;
+    [SerializeField] private LDtkLevelManager.LevelInfo _level;
     [SerializeField] private Strategy _strategy;
     [SerializeField] private string _worldName;
     [SerializeField] private string _areaName;
@@ -45,14 +45,14 @@ public class Starter : MonoBehaviour
         _levelManager.Enter();
     }
 
-    private async Task LoadWorld(string worldName, LDtkVania.LevelInfo level)
+    private async Task LoadWorld(string worldName, LDtkLevelManager.LevelInfo level)
     {
         await _levelManager.LoadWorld(worldName);
         _levelManager.Prepare(level.Iid, _spawnPoint.position, 1);
         _levelManager.Enter();
     }
 
-    private async Task LoadArea(string areaName, LDtkVania.LevelInfo level)
+    private async Task LoadArea(string areaName, LDtkLevelManager.LevelInfo level)
     {
         await Task.CompletedTask;
         // await _levelManager.LoadWorld(worldName);
