@@ -1,0 +1,19 @@
+.level-field > Label {
+    width: 80px;
+    max-width: 80px;
+    min-width: 80px;
+}
+
+.level-field {
+    flex-shrink: 1;
+    flex-grow: 1;
+    margin-right: 5px;
+}
+
+.filter-field {
+}
+
+.filter-field > Label {
+    max-width: 60px;
+    min-width: 60px;
+}

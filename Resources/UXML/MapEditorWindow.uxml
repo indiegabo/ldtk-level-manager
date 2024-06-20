@@ -1,0 +1,47 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/LDtkVania/Resources/Styles/MapEditor_style.uss?fileID=7433441132597879392&amp;guid=1ab9ee8df067fd542bfd83a33d454394&amp;type=3#MapEditor_style" />
+    <LDtkVaniaEditor.SliptView fixed-pane-initial-dimension="260" name="container-main">
+        <ui:VisualElement name="container-left" style="flex-grow: 1;">
+            <ui:VisualElement name="container-project-dropdown" class="container-left-bar" style="flex-grow: 0;">
+                <ui:Label tabindex="-1" text="Project" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-project" class="label-left-bar" />
+                <ui:DropdownField name="dropdown-project" />
+            </ui:VisualElement>
+            <ui:VisualElement name="container-map-scene" class="container-left-bar" style="flex-direction: column; width: 100%;">
+                <ui:Label tabindex="-1" text="Map Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-map-scene" class="label-left-bar" />
+                <ui:VisualElement name="container" style="flex-grow: 1; flex-direction: row; width: 100%;">
+                    <uie:ObjectField name="field-map-editor-scene" type="UnityEditor.SceneAsset, UnityEditor.CoreModule" style="flex-grow: 1;" />
+                    <ui:Button text="Open" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-open-map-editor-scene" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="container-universe-scene" class="container-left-bar" style="flex-direction: column; width: 100%;">
+                <ui:Label tabindex="-1" text="Universe Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-universe-scene" class="label-left-bar" />
+                <ui:VisualElement name="container" style="flex-grow: 1; flex-direction: row; width: 100%;">
+                    <uie:ObjectField name="field-universe-scene" type="UnityEditor.SceneAsset, UnityEditor.CoreModule" style="flex-grow: 1;" />
+                    <ui:Button text="Open" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-open-universe-scene" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="container-selected-level" class="container-left-bar" style="flex-grow: 1;">
+                <ui:Label tabindex="-1" text="Selected Level" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-selected-level" class="label-left-bar" />
+                <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="scroll-view-selected-level" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.45); padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="container-right" style="flex-grow: 1;">
+            <uie:Toolbar name="toolbar-right">
+                <ui:DropdownField label="World" name="dropdown-world" class="toolbar-element" />
+                <uie:ToolbarButton text="Load World" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-load-world" />
+                <uie:ToolbarSpacer style="flex-grow: 1;" />
+                <uie:ToolbarButton text="Load Selection" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-load-selection" />
+                <uie:ToolbarSpacer style="flex-grow: 1;" />
+                <uie:ToolbarButton text="Unload All" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-unload-all" />
+            </uie:Toolbar>
+            <ui:VisualElement name="container-map-and-bar" style="flex-grow: 1; flex-direction: row;">
+                <ui:VisualElement name="container-map-view" style="flex-grow: 1;">
+                    <LDtkVaniaEditor.MapView name="map-view" focusable="true" style="flex-grow: 1;">
+                        <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="scroll-view-selected-levels" style="flex-grow: 1; position: absolute; right: 2px; top: 2px; min-width: 100px;" />
+                    </LDtkVaniaEditor.MapView>
+                </ui:VisualElement>
+                <ui:VisualElement name="sidebar-map" style="flex-grow: 0; width: 25px; background-color: rgb(56, 56, 56);" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </LDtkVaniaEditor.SliptView>
+</ui:UXML>

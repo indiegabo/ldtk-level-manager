@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <uie:ObjectField label="LDtk Project JSON" name="field-ldtk-project" binding-path="_ldtkProjectFile" type="LDtkUnity.LDtkProjectFile, LDtkUnity.Runtime" />
+    <ui:Button text="Sync Worlds" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-sync" />
+    <ui:VisualElement name="container-main-view" style="flex-grow: 1;">
+        <ui:VisualElement name="container-worlds" style="flex-grow: 1; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; background-color: rgb(32, 32, 32); border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;">
+            <ui:ListView name="list-worlds" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

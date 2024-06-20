@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 1b9e5a57a1cddf444a25b13a8bc502f2
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _tabViewUXML: {instanceID: 0}
+  - _mainViewUXML: {fileID: 9197481963319205126, guid: eca0e09fd68f73448aeb0ffcf4fe412b, type: 3}
+  - _leveslUXML: {fileID: 9197481963319205126, guid: 85cb87fe76237ec459957da663588899, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,25 @@
+.label-left-bar {
+    -unity-font-style: bold;
+    margin-bottom: 2px;
+}
+
+.container-left-bar {
+    padding-top: 4px;
+    padding-right: 4px;
+    padding-bottom: 4px;
+    padding-left: 4px;
+    overflow: hidden;
+}
+
+.toolbar-element {
+}
+
+#dropdown-world {
+    min-width: 50px;
+    max-width: 400px;
+}
+
+#dropdown-world > Label {
+    max-width: 50px;
+    min-width: 50px;
+}

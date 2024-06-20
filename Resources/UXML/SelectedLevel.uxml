@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/LDtkVania/Resources/Styles/Level_style.uss?fileID=7433441132597879392&amp;guid=29cac97f9a0a8214e911f21f7fa01b2d&amp;type=3#Level_style" />
+    <ui:VisualElement name="header" style="flex-grow: 0; flex-direction: row; align-items: center; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; background-color: rgba(0, 0, 0, 0.65); border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;">
+        <ui:Label tabindex="-1" text="Area 51" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-name" style="-unity-font-style: bold; font-size: 12px;" />
+        <ui:VisualElement name="separator" style="flex-grow: 1;" />
+        <ui:Button text="Load" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-load" style="color: rgb(255, 255, 255); background-color: rgb(105, 8, 108);" />
+        <ui:Button text="Unload" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-unload" style="background-color: rgb(48, 37, 37);" />
+    </ui:VisualElement>
+</ui:UXML>
