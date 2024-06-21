@@ -28,8 +28,8 @@ namespace LDtkLevelManagerEditor
         private TextField _fieldWorld;
         private TextField _fieldArea;
         private VisualElement _containerSceneElement;
-        private PropertyField _fieldAsset;
-        private PropertyField _fieldLDtkAsset;
+        private ObjectField _fieldAsset;
+        private ObjectField _fieldLDtkAsset;
         private TextField _fieldAssetPath;
         private TextField _fieldAddressableKey;
 
@@ -81,10 +81,10 @@ namespace LDtkLevelManagerEditor
             _buttonDestroyScene = _containerMain.Q<Button>("button-destroy-scene");
             _buttonDestroyScene.clicked += DestroyScene;
 
-            _fieldAsset = _containerMain.Q<PropertyField>("field-asset");
+            _fieldAsset = _containerMain.Q<ObjectField>("field-asset");
             _fieldAsset.SetEnabled(false);
 
-            _fieldLDtkAsset = _containerMain.Q<PropertyField>("field-ldtk-asset");
+            _fieldLDtkAsset = _containerMain.Q<ObjectField>("field-ldtk-asset");
             _fieldLDtkAsset.SetEnabled(false);
 
             _fieldAssetPath = _containerMain.Q<TextField>("field-asset-path");

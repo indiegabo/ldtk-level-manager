@@ -730,7 +730,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelManager: {fileID: 1174395035}
-  _level: {fileID: 861571106279095823, guid: f9e5250bdfa417a4f886ad3554ffc9fd, type: 2}
+  _level: {fileID: 4788386891125223701, guid: f9e5250bdfa417a4f886ad3554ffc9fd, type: 2}
   _strategy: 0
   _worldName: 
   _areaName: 
