@@ -47,7 +47,7 @@ namespace LDtkLevelManagerEditor
             this.AddManipulator(new MapLevelMouseManipulator(this));
             SetPosition(levelRect);
 
-            if (MapEditorSettings.instance.TryGetLoadedLevel(_levelInfo.Iid, out LoadedLevelEntry entry))
+            if (LevelEditorSettings.instance.TryGetLoadedLevel(_levelInfo.Iid, out LoadedLevelEntry entry))
             {
                 RegisterLoadedEntry(entry);
             }

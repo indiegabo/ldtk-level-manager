@@ -166,7 +166,7 @@ namespace LDtkLevelManagerEditor
 
         private void OnViewTransformChanged(GraphView graphView)
         {
-            MapEditorSettings.instance.MapViewTransform = MapViewTransform.From(viewTransform);
+            LevelEditorSettings.instance.MapViewTransform = MapViewTransform.From(viewTransform);
         }
 
         public void TriggerSelectionAnalysis()
@@ -178,7 +178,7 @@ namespace LDtkLevelManagerEditor
         {
             FrameAll();
             MapViewTransform transform = MapViewTransform.From(viewTransform);
-            MapEditorSettings.instance.MapViewTransform = transform;
+            LevelEditorSettings.instance.MapViewTransform = transform;
         }
     }
     public class MapViewRectangleSelector : RectangleSelector
