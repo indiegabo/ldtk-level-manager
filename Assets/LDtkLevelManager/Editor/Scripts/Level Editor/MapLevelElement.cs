@@ -1,6 +1,6 @@
 using System;
-using LDtkUnity;
 using LDtkLevelManager;
+using LDtkUnity;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -12,8 +12,8 @@ namespace LDtkLevelManagerEditor
     {
         private Action<MapLevelElement> _levelLoadToggleRequestAction;
 
-        private LDtkLevelManager.LevelInfo _levelInfo;
-        private LDtkUnity.Level _level;
+        private LevelInfo _levelInfo;
+        private Level _level;
         private bool _pointerIsOver = false;
         private MapView _mapView;
         private LoadedLevelEntry _loadedLevelEntry;
