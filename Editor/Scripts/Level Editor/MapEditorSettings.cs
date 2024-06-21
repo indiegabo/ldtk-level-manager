@@ -12,20 +12,20 @@ namespace LDtkLevelManagerEditor
     [FilePath("LDtkLevelManager/MapEditorSettings", FilePathAttribute.Location.PreferencesFolder)]
     public class MapEditorSettings : ScriptableSingleton<MapEditorSettings>
     {
-        [SerializeField] private SceneAsset _mapScene;
+        [SerializeField] private SceneAsset _levelEditorScene;
         [SerializeField] private SceneAsset _universeScene;
         [SerializeField] private Project _currentProject;
         [SerializeField] private string _currentWorldName;
         [SerializeField] private LoadedLevelsRegistry _loadedLevelsRegistry = new();
         [SerializeField] private MapViewTransform _mapViewTransform;
 
-        public bool HasMapScene => _mapScene != null;
-        public SceneAsset MapScene
+        public bool HasLevelEditorScene => _levelEditorScene != null;
+        public SceneAsset LevelEditorScene
         {
-            get => _mapScene;
+            get => _levelEditorScene;
             set
             {
-                _mapScene = value;
+                _levelEditorScene = value;
                 Save(true);
             }
         }

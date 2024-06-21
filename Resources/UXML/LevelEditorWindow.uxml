@@ -6,11 +6,11 @@
                 <ui:Label tabindex="-1" text="Project" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-project" class="label-left-bar" />
                 <ui:DropdownField name="dropdown-project" />
             </ui:VisualElement>
-            <ui:VisualElement name="container-map-scene" class="container-left-bar" style="flex-direction: column; width: 100%;">
-                <ui:Label tabindex="-1" text="Map Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-map-scene" class="label-left-bar" />
+            <ui:VisualElement name="container-level-editor-scene" class="container-left-bar" style="flex-direction: column; width: 100%;">
+                <ui:Label tabindex="-1" text="Level Editor Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-map-scene" class="label-left-bar" />
                 <ui:VisualElement name="container" style="flex-grow: 1; flex-direction: row; width: 100%;">
-                    <uie:ObjectField name="field-map-editor-scene" type="UnityEditor.SceneAsset, UnityEditor.CoreModule" style="flex-grow: 1;" />
-                    <ui:Button text="Open" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-open-map-editor-scene" />
+                    <uie:ObjectField name="field-level-editor-scene" type="UnityEditor.SceneAsset, UnityEditor.CoreModule" style="flex-grow: 1;" />
+                    <ui:Button text="Open" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-open-level-editor-scene" />
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="container-universe-scene" class="container-left-bar" style="flex-direction: column; width: 100%;">

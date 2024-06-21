@@ -18,17 +18,17 @@ namespace LDtkLevelManagerEditor
     {
         #region Static
 
-        private static readonly string TemplateName = "MapEditorWindow";
+        private static readonly string TemplateName = "LevelEditorWindow";
 
         private static MapEditorWindow _window;
 
-        [MenuItem("Window/LdtkVania/Map Editor")]
+        [MenuItem("Window/LDtkLevelManager/Level Editor")]
         public static void ShowWindow()
         {
             if (_window == null)
             {
                 _window = GetWindow<MapEditorWindow>();
-                _window.titleContent = new GUIContent("LDtkLevelManager - Map Editor");
+                _window.titleContent = new GUIContent("Level Editor");
             }
             else
             {
@@ -45,14 +45,14 @@ namespace LDtkLevelManagerEditor
 
         private TemplateContainer _containerMain;
 
-        private ObjectField _fieldMapEditorScene;
+        private ObjectField _fieldLevelEditorScene;
         private ObjectField _fieldUniverseScene;
         private DropdownField _dropdownProject;
         private DropdownField _dropdownWorld;
         private VisualElement _containerSelectedLevel;
         private Label _labelSelectedLevel;
         private ScrollView _scrollViewSelectedLevel;
-        private Button _buttonOpenMapEditorScene;
+        private Button _buttonOpenLevelEditorScene;
         private Button _buttonOpenUniverseScene;
         private Button _buttonUnloadAll;
         private Button _buttonLoadWorld;
@@ -97,12 +97,12 @@ namespace LDtkLevelManagerEditor
 
             _dropdownWorld = _containerMain.Q<DropdownField>("dropdown-world");
 
-            _fieldMapEditorScene = _containerMain.Q<ObjectField>("field-map-editor-scene");
-            _fieldMapEditorScene.SetValueWithoutNotify(Settings.MapScene);
-            _fieldMapEditorScene.RegisterValueChangedCallback(x => Settings.MapScene = x.newValue as SceneAsset);
+            _fieldLevelEditorScene = _containerMain.Q<ObjectField>("field-level-editor-scene");
+            _fieldLevelEditorScene.SetValueWithoutNotify(Settings.LevelEditorScene);
+            _fieldLevelEditorScene.RegisterValueChangedCallback(x => Settings.LevelEditorScene = x.newValue as SceneAsset);
 
-            _buttonOpenMapEditorScene = _containerMain.Q<Button>("button-open-map-editor-scene");
-            _buttonOpenMapEditorScene.clicked += OpenMapEditorScene;
+            _buttonOpenLevelEditorScene = _containerMain.Q<Button>("button-open-level-editor-scene");
+            _buttonOpenLevelEditorScene.clicked += OpenMapEditorScene;
 
             _fieldUniverseScene = _containerMain.Q<ObjectField>("field-universe-scene");
             _fieldUniverseScene.SetValueWithoutNotify(Settings.UniverseScene);
@@ -132,7 +132,7 @@ namespace LDtkLevelManagerEditor
             _mapView.SetSelectionAnalysisCallback(OnLevelSelectionChanged);
             _mapView.SetLevelLoadToggleRequestCallback(OnLevelLoadToggleRequest);
 
-            if (Settings.HasMapScene && Settings.HasCurrentProject && _projects.ContainsKey(Settings.CurrentProject.name))
+            if (Settings.HasLevelEditorScene && Settings.HasCurrentProject && _projects.ContainsKey(Settings.CurrentProject.name))
             {
                 RebuildCurrentState();
             }
@@ -160,7 +160,7 @@ namespace LDtkLevelManagerEditor
 
         private void OnSceneOpened(Scene scene, OpenSceneMode mode)
         {
-            if (!Settings.HasMapScene)
+            if (!Settings.HasLevelEditorScene)
             {
                 ClearLoadedLevels();
                 Settings.ResetState();
@@ -496,7 +496,7 @@ namespace LDtkLevelManagerEditor
 
         private void OpenMapEditorScene()
         {
-            if (!Settings.HasMapScene) return;
+            if (!Settings.HasLevelEditorScene) return;
 
             if (IsMapSceneOpen())
             {
@@ -505,7 +505,7 @@ namespace LDtkLevelManagerEditor
 
             try
             {
-                string path = AssetDatabase.GetAssetPath(Settings.MapScene);
+                string path = AssetDatabase.GetAssetPath(Settings.LevelEditorScene);
                 if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
                 {
                     EditorSceneManager.OpenScene(path);
@@ -542,14 +542,14 @@ namespace LDtkLevelManagerEditor
 
         private bool IsMapSceneOpen()
         {
-            if (!Settings.HasMapScene)
+            if (!Settings.HasLevelEditorScene)
             {
                 Settings.ResetState();
                 return false;
             }
 
             Scene activeScene = EditorSceneManager.GetActiveScene();
-            bool isOpen = activeScene.name == Settings.MapScene.name;
+            bool isOpen = activeScene.name == Settings.LevelEditorScene.name;
 
             if (!isOpen)
             {
