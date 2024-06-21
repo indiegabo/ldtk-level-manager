@@ -79,22 +79,21 @@ namespace LDtkLevelManager
 
         public void UpdateInfo(LevelProcessingData data)
         {
-            LDtkFields fields = data.ldtkComponentLevel.GetComponent<LDtkFields>();
+            name = data.ldtkFile.name;
+            _areaName = null;
 
-            string displayName = fields.GetString("displayName");
-
-            if (!string.IsNullOrEmpty(displayName))
+            if (data.ldtkComponentLevel.TryGetComponent(out LDtkFields fields))
             {
-                name = displayName;
-            }
-            else
-            {
-                name = data.ldtkFile.name;
-            }
+                string displayName = fields.GetString("displayName");
+                if (!string.IsNullOrEmpty(displayName))
+                {
+                    name = displayName;
+                }
 
-            string area = fields.GetValueAsString("ldtkVaniaArea");
-            if (!string.IsNullOrEmpty(area))
-                _areaName = area;
+                string area = fields.GetValueAsString("ldtkVaniaArea");
+                if (!string.IsNullOrEmpty(area))
+                    _areaName = area;
+            }
 
             _assetPath = data.assetPath;
             _address = data.address;
