@@ -9,7 +9,6 @@ using LDtkUnity;
 using UnityEngine.SceneManagement;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
-using System;
 
 namespace LDtkLevelManagerEditor
 {
@@ -124,6 +123,7 @@ namespace LDtkLevelManagerEditor
             _buttonLoadWorld.clicked += LoadAllCurrentWorldLevels;
 
             _buttonLoadSelection = _containerMain.Q<Button>("button-load-selection");
+            _buttonLoadSelection.style.display = DisplayStyle.None;
             _buttonLoadSelection.clicked += LoadCurrentSelection;
 
             _scrollViewSelectedLevels = _containerMain.Q<ScrollView>("scroll-view-selected-levels");
@@ -288,18 +288,18 @@ namespace LDtkLevelManagerEditor
 
             ClearLoadedLevels();
 
-            Bounds bounds = new(Vector2.zero, Vector2.zero);
+            Bounds bounds = new(new Vector3(0, 0, -10), new Vector3(100, 100, 1));
 
             foreach (MapLevelElement element in _mapView.LevelElements)
             {
                 LoadedLevelEntry entry = LoadLevel(element.Info, false);
                 element.RegisterLoadedEntry(entry);
 
-                bounds.Encapsulate(element.LevelRect.min);
-                bounds.Encapsulate(element.LevelRect.max);
+                bounds.min = Vector2.Min(bounds.min, element.Level.UnityWorldRect.min);
+                bounds.max = Vector2.Max(bounds.max, element.Level.UnityWorldRect.max);
             }
 
-            SceneView.lastActiveSceneView.Frame(bounds);
+            SceneView.lastActiveSceneView.Frame(bounds, false);
         }
 
         #endregion
@@ -357,7 +357,7 @@ namespace LDtkLevelManagerEditor
             return entry;
         }
 
-        private void UnloadLevel(LDtkLevelManager.LevelInfo levelInfo)
+        private void UnloadLevel(LevelInfo levelInfo)
         {
             if (!Settings.TryGetLoadedLevel(levelInfo.Iid, out LoadedLevelEntry loadedLevelEntry)) return;
 
@@ -485,9 +485,8 @@ namespace LDtkLevelManagerEditor
             SceneView sceneView = SceneView.lastActiveSceneView;
             if (sceneView == null) return;
 
-            Vector3 targetPosition = new(0, 0, -10);
-            Quaternion targetRotation = Quaternion.Euler(90, 0, 0);
-            sceneView.LookAtDirect(targetPosition, targetRotation);
+            Bounds bounds = new(new Vector3(0, 0, -10), new Vector3(100, 100, 1));
+            SceneView.lastActiveSceneView.Frame(bounds, false);
         }
 
         #endregion
