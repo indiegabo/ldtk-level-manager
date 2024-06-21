@@ -9,8 +9,8 @@ using UnityEngine.SceneManagement;
 
 namespace LDtkLevelManagerEditor
 {
-    [FilePath("LDtkLevelManager/MapEditorSettings", FilePathAttribute.Location.PreferencesFolder)]
-    public class MapEditorSettings : ScriptableSingleton<MapEditorSettings>
+    [FilePath("LDtkLevelManager/LevelEditorSettings", FilePathAttribute.Location.PreferencesFolder)]
+    public class LevelEditorSettings : ScriptableSingleton<LevelEditorSettings>
     {
         [SerializeField] private SceneAsset _levelEditorScene;
         [SerializeField] private SceneAsset _universeScene;

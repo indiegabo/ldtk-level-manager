@@ -14,20 +14,20 @@ using System;
 namespace LDtkLevelManagerEditor
 {
     public delegate void ProjectSelected(Project project);
-    public class MapEditorWindow : EditorWindow
+    public class LevelEditorWindow : EditorWindow
     {
         #region Static
 
         private static readonly string TemplateName = "LevelEditorWindow";
 
-        private static MapEditorWindow _window;
+        private static LevelEditorWindow _window;
 
         [MenuItem("Window/LDtkLevelManager/Level Editor")]
         public static void ShowWindow()
         {
             if (_window == null)
             {
-                _window = GetWindow<MapEditorWindow>();
+                _window = GetWindow<LevelEditorWindow>();
                 _window.titleContent = new GUIContent("Level Editor");
             }
             else
@@ -68,7 +68,7 @@ namespace LDtkLevelManagerEditor
 
         #region Properties
 
-        protected MapEditorSettings Settings => MapEditorSettings.instance;
+        protected LevelEditorSettings Settings => LevelEditorSettings.instance;
 
         #endregion
 
