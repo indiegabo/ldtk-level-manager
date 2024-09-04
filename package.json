@@ -1,6 +1,6 @@
 {
   "name": "com.indiegabo.ldtk-level-manager",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "displayName": "LDtk Level Manager",
   "description": "A solution for managing LDtk levels in Unity.",
   "unity": "2022.3",
