@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/indiegabo/ldtk-level-manager/compare/v1.0.0...v1.0.1) (2024-09-04)
+
+
+### Bug Fixes
+
+* Naming folders ([f3043dd](https://github.com/indiegabo/ldtk-level-manager/commit/f3043dd4098968571b5c574a8b0099d072839ee5))
+
 # 1.0.0 (2024-09-04)
 
 
