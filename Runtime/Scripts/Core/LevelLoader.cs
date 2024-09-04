@@ -2,12 +2,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using UnityEngine.Events;
-using System.Threading.Tasks;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using System.Linq;
 using LDtkUnity;
+using Cysharp.Threading.Tasks;
 
 namespace LDtkLevelManager
 {
@@ -141,8 +141,8 @@ namespace LDtkLevelManager
         /// </list>
         /// </summary>
         /// <param name="iid">The LDtk Iid of the level to load.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task LoadLevel(string iid)
+        /// <returns>A <see cref="UniTask"/> representing the asynchronous operation.</returns>
+        public async UniTask LoadLevel(string iid)
         {
             if (!TryGetLevel(iid, out LevelInfo level))
             {
@@ -186,8 +186,8 @@ namespace LDtkLevelManager
         /// Iid of the level.
         /// </summary>
         /// <param name="level">The level to load.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task LoadLevel(LevelInfo level)
+        /// <returns>A <see cref="UniTask"/> representing the asynchronous operation.</returns>
+        public async UniTask LoadLevel(LevelInfo level)
         {
             await LoadLevel(level.Iid);
         }
@@ -199,10 +199,10 @@ namespace LDtkLevelManager
         /// Your LDtk project must have a world with the given name.
         /// </summary>
         /// <param name="worldName">The name of the world to load.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task LoadWorld(string worldName)
+        /// <returns>A <see cref="UniTask"/> representing the asynchronous operation.</returns>
+        public async UniTask LoadWorld(string worldName)
         {
-            if (!_loadingStrategy.Equals(LevelLoadingStrategy.Worlds))
+            if (_loadingStrategy != LevelLoadingStrategy.Worlds)
             {
                 Logger.Error($"LoadWorld method can only be used with when strategy is set to '{LevelLoadingStrategy.Worlds}'.", this);
                 return;
@@ -240,10 +240,10 @@ namespace LDtkLevelManager
         /// Your LDtk project must have an area (ldtkVaniaArea enum) with the given name.
         /// </summary>
         /// <param name="worldName">The name of the world to load.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task LoadArea(string areaName)
+        /// <returns>A <see cref="UniTask"/> representing the asynchronous operation.</returns>
+        public async UniTask LoadArea(string areaName)
         {
-            if (!_loadingStrategy.Equals(LevelLoadingStrategy.Areas))
+            if (_loadingStrategy != LevelLoadingStrategy.Areas)
             {
                 // LoadArea can only be used when the strategy is set to MV_LevelLoadingStrategy.Areas
                 Logger.Error(
@@ -484,8 +484,8 @@ namespace LDtkLevelManager
         /// This will load all neighbours of the given level up to the defined depth.
         /// </summary>
         /// <param name="level">The level to load neighbours from.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        private async Task LoadNeighboursAsync(LevelInfo level)
+        /// <returns>A <see cref="UniTask"/> representing the asynchronous operation.</returns>
+        private async UniTask LoadNeighboursAsync(LevelInfo level)
         {
             // Check if the given level is null
             if (level == null)
@@ -574,10 +574,10 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="levelsToLoad">The levels to load.</param>
         /// <returns></returns>
-        private async Task LoadMultipleAsync(HashSet<string> levelsToLoad)
+        private async UniTask LoadMultipleAsync(HashSet<string> levelsToLoad)
         {
             // Create a list to store the tasks for loading each level
-            List<Task> levelLoadTasks = new();
+            List<UniTask> levelLoadTasks = new();
 
             // For each level to load
             foreach (string toLoadiid in levelsToLoad)
@@ -587,7 +587,7 @@ namespace LDtkLevelManager
             }
 
             // Wait for all the tasks to complete
-            await Task.WhenAll(levelLoadTasks);
+            await UniTask.WhenAll(levelLoadTasks);
         }
 
         /// <summary>
@@ -595,7 +595,7 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="iid">The IID of the level to load.</param>
         /// <returns></returns>
-        private async Task LoadAsync(string iid)
+        private async UniTask LoadAsync(string iid)
         {
             // Check if the level exists
             if (!TryGetLevel(iid, out LevelInfo level)) return;
@@ -608,7 +608,7 @@ namespace LDtkLevelManager
 
                 // Load the level as an object
                 AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(level.Address);
-                await handle.Task;
+                await handle.ToUniTask();
 
                 // Check if the load operation succeeded
                 if (handle.Status != AsyncOperationStatus.Succeeded)
@@ -629,7 +629,7 @@ namespace LDtkLevelManager
 
                 // Load the level as a scene
                 AsyncOperationHandle<SceneInstance> handle = Addressables.LoadSceneAsync(level.Scene.AddressableKey, LoadSceneMode.Additive);
-                await handle.Task;
+                await handle.ToUniTask();
 
                 // Check if the load operation succeeded
                 if (handle.Status != AsyncOperationStatus.Succeeded)
@@ -648,7 +648,7 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="iid">The IID of the level to unload.</param>
         /// <returns>An async task that represents the unload operation.</returns>
-        private async Task UnloadAsync(string iid)
+        private async UniTask UnloadAsync(string iid)
         {
             // Check if the level exists
             if (!TryGetLevel(iid, out LevelInfo level)) return;
@@ -671,7 +671,7 @@ namespace LDtkLevelManager
                 AsyncOperationHandle handle = Addressables.UnloadSceneAsync(sceneInstance, false);
 
                 // Wait for the unload operation to finish
-                await handle.Task;
+                await handle.ToUniTask();
 
                 // Check if the unload operation succeeded
                 if (handle.Status != AsyncOperationStatus.Succeeded)
@@ -693,10 +693,10 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="levelsToUnload">The set of levels to unload.</param>
         /// <returns>An async task that represents the unload operation.</returns>
-        private async Task UnloadMultipleAsync(HashSet<string> levelsToUnload)
+        private async UniTask UnloadMultipleAsync(HashSet<string> levelsToUnload)
         {
             // Create a list of unload tasks
-            List<Task> unloadTasks = new();
+            List<UniTask> unloadTasks = new();
 
             // Iterate over each level to unload
             foreach (string toUnloadIid in levelsToUnload)
@@ -706,17 +706,17 @@ namespace LDtkLevelManager
             }
 
             // Wait for all unload tasks to finish
-            await Task.WhenAll(unloadTasks);
+            await UniTask.WhenAll(unloadTasks);
         }
 
         /// <summary>
         /// Unload all levels that have been loaded by this level manager.
         /// </summary>
         /// <returns>An async task that represents the unload operation.</returns>
-        private async Task UnloadAllAsync()
+        private async UniTask UnloadAllAsync()
         {
             // Create a list of unload tasks
-            List<Task> tasks = new();
+            List<UniTask> tasks = new();
 
             List<GameObject> objectsToUnload = _loadedObjects.Values.ToList();
             List<SceneInstance> scenesToUnload = _loadedScenes.Values.ToList();
@@ -734,11 +734,11 @@ namespace LDtkLevelManager
             {
                 // Start the unload operation
                 AsyncOperationHandle handle = Addressables.UnloadSceneAsync(sceneInstance, false);
-                tasks.Add(handle.Task);
+                tasks.Add(handle.ToUniTask());
             }
 
             // Wait for all unload tasks to finish
-            await Task.WhenAll(tasks);
+            await UniTask.WhenAll(tasks);
         }
 
         #endregion
