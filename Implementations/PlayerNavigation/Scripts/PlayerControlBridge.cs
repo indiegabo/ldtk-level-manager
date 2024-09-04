@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace LDtkLevelManager
+namespace LDtkLevelManager.PlayerNavigation
 {
     [CreateAssetMenu(fileName = "Player Control Bridge", menuName = "LDtkLevelManager/Player Control/Bridge")]
     public class PlayerControlBridge : ScriptableObject

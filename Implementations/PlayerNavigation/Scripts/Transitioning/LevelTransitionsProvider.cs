@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using LDtkLevelManager.Utils;
 
-namespace LDtkLevelManager.Transitioning
+namespace LDtkLevelManager.PlayerNavigation
 {
     [CreateAssetMenu(fileName = "Level Transitions Provider", menuName = "Poputara/Gameplay/Levels/Transitions Provider")]
     public class LevelTransitionsProvider : ScriptableObject

@@ -1,9 +1,8 @@
 using LDtkUnity;
-using LDtkLevelManager.Transitioning;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace LDtkLevelManager
+namespace LDtkLevelManager.PlayerNavigation
 {
     public class LevelConnection : MonoBehaviour, IConnection
     {

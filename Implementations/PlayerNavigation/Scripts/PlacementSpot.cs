@@ -1,7 +1,7 @@
 using LDtkUnity;
 using UnityEngine;
 
-namespace LDtkLevelManager
+namespace LDtkLevelManager.PlayerNavigation
 {
     public class PlacementSpot : MonoBehaviour, IPlacementSpot
     {

@@ -1,8 +1,7 @@
 using LDtkUnity;
-using LDtkLevelManager.Transitioning;
 using UnityEngine;
 
-namespace LDtkLevelManager
+namespace LDtkLevelManager.PlayerNavigation
 {
     public class Portal : MonoBehaviour, IPortal
     {
