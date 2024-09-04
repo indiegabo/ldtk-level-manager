@@ -1,5 +1,5 @@
 using UnityEngine;
-using LDtkVania.Cartography;
+using LDtkLevelManager.Cartography;
 using System.Collections.Generic;
 
 namespace Tests
@@ -21,7 +21,7 @@ namespace Tests
 
         #region Fields
 
-        private MV_Cartographer _cartographer;
+        private Cartographer _cartographer;
         private SpriteRenderer _renderer;
         private Transform _characterPinTransform;
         private float _scaledOffsetY;
@@ -32,7 +32,7 @@ namespace Tests
 
         private void Awake()
         {
-            _cartographer = GetComponent<MV_Cartographer>();
+            _cartographer = GetComponent<Cartographer>();
             _renderer = GetComponent<SpriteRenderer>();
 
             _characterPinTransform = Instantiate(_characterPinPrefab).transform;
@@ -42,14 +42,14 @@ namespace Tests
 
         private void Start()
         {
-            if (!_cartographer.TryGetWorld("City", out MV_WorldCartography worldCartography)) return;
+            if (!_cartographer.TryGetWorld("City", out WorldCartography worldCartography)) return;
 
             Vector2 worldCenter = worldCartography.Bounds.ScaledCenter;
             transform.position = new Vector3(worldCenter.x, worldCenter.y, transform.position.z);
 
-            foreach (MV_AreaCartography area in worldCartography.GetAllAreas())
+            foreach (AreaCartography area in worldCartography.GetAllAreas())
             {
-                foreach (MV_LevelCartography levelCartography in area.GetAllLevels())
+                foreach (LevelCartography levelCartography in area.GetAllLevels())
                 {
                     MapLevelDrawer mapLevelDrawer = Instantiate(_mapLevelDrawerPrefab, transform);
                     mapLevelDrawer.Initialize(levelCartography, transform.position.z);

@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/LDtkLevelManager/Resources/Styles/Level_style.uss?fileID=7433441132597879392&amp;guid=29cac97f9a0a8214e911f21f7fa01b2d&amp;type=3#Level_style" />
+    <ui:VisualElement name="container-asset" style="flex-grow: 1; flex-direction: row; flex-wrap: nowrap;">
+        <uie:ObjectField label="Asset" type="UnityEditor.SceneAsset, UnityEditor.CoreModule" name="field-asset" class="level-field" style="flex-grow: 1;" />
+        <ui:Button text="Open" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-open-scene" style="margin-left: 6px;" />
+    </ui:VisualElement>
+</ui:UXML>
