@@ -1,3 +1,15 @@
+# 1.0.0 (2024-09-04)
+
+
+### Bug Fixes
+
+* releaserc.json ([9d12099](https://github.com/indiegabo/ldtk-level-manager/commit/9d12099f723228eba890e28ffe2d124964a3dfb2))
+
+
+### Features
+
+* UniTasks ([0a3b0b8](https://github.com/indiegabo/ldtk-level-manager/commit/0a3b0b815e00b0908f6e7ebef547fb3384f33d0b))
+
 ## [1.4.9](https://github.com/no-slopes/handy-fsm/compare/v1.4.8...v1.4.9) (2024-01-29)
 
 
