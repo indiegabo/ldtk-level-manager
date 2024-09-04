@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/indiegabo/ldtk-level-manager/compare/v1.0.2...v1.0.3) (2024-09-04)
+
+
+### Bug Fixes
+
+* Removing scene fiels ([3f53363](https://github.com/indiegabo/ldtk-level-manager/commit/3f53363acf4808d4ac77752d9cc11bc28e148771))
+
 ## [1.0.2](https://github.com/indiegabo/ldtk-level-manager/compare/v1.0.1...v1.0.2) (2024-09-04)
 
 
