@@ -1,24 +1,28 @@
-using System;
-using Cinemachine;
 using LDtkUnity;
 using LDtkLevelManager.Utils;
 using UnityEngine;
 
-namespace LDtkLevelManager
+# if CINEMACHINE_UNDER_3
+using Cinemachine;
+# else
+using Unity.Cinemachine;
+# endif
+
+namespace LDtkLevelManager.PlayerNavigation
 {
     [RequireComponent(typeof(LevelBehaviour))]
-    public class LevelBoundaries : MonoBehaviour
+    [RequireComponent(typeof(LevelBoundaries))]
+    public class LevelCameraBinder : MonoBehaviour
     {
         #region Inspector
 
-        [SerializeField]
-        private PolygonCollider2D _boundaries;
-
+# if CINEMACHINE_UNDER_3
         [SerializeField]
         private CinemachineVirtualCamera _virtualCamera;
-
+# else
         [SerializeField]
-        private LevelBoundariesUpdater _boundariesUpdater;
+        private CinemachineCamera _virtualCamera;
+# endif
 
         [SerializeField]
         private GameObjectProvider _mainCharacterProvider;
@@ -28,7 +32,10 @@ namespace LDtkLevelManager
         #region Fields
 
         private LevelBehaviour _levelBehaviour;
+        private LevelBoundaries _boundaries;
         private LDtkComponentLevel _ldtkComponentLevel;
+
+        private CinemachineConfiner2D _confiner;
 
         #endregion
 
@@ -37,7 +44,8 @@ namespace LDtkLevelManager
         private void Awake()
         {
             _levelBehaviour = GetComponent<LevelBehaviour>();
-            Compose();
+            _boundaries = GetComponent<LevelBoundaries>();
+            _confiner = _virtualCamera.gameObject.GetComponent<CinemachineConfiner2D>();
             _virtualCamera.gameObject.SetActive(false);
         }
 
@@ -52,27 +60,10 @@ namespace LDtkLevelManager
             _levelBehaviour.ExitedEvent.RemoveListener(OnLevelExited);
             _levelBehaviour.PreparationStartedEvent.RemoveListener(OnLevelPreparationStarted);
         }
-        private void Start()
-        {
-        }
 
         #endregion
 
-        #region Preparing
-
-        public void Compose()
-        {
-            _ldtkComponentLevel = GetComponent<LDtkComponentLevel>();
-            Vector2 size = _ldtkComponentLevel.Size;
-            _boundaries.points = new Vector2[] {
-                new(size.x, size.y),
-                new(0, size.y),
-                new(0, 0),
-                new(size.x, 0)
-            };
-        }
-
-        #endregion
+        #region Level Events
 
         private void OnLevelExited(LevelBehaviour arg0)
         {
@@ -80,11 +71,21 @@ namespace LDtkLevelManager
 
         private void OnLevelPreparationStarted(LevelBehaviour arg0, Vector2 arg1)
         {
+
+#if CINEMACHINE_UNDER_3
+            _confiner.m_BoundingShape2D = _boundaries.Shape;
+#elif CINEMACHINE_ABOVE_3
+            _confiner.BoundingShape2D = _boundaries.Shape;
+# endif
+
             if (_mainCharacterProvider.TryGet(out GameObject characterObj))
             {
                 _virtualCamera.Follow = characterObj.transform;
             }
+
             _virtualCamera.gameObject.SetActive(true);
         }
+
+        #endregion
     }
 }
