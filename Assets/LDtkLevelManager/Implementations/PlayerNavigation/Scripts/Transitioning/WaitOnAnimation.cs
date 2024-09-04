@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace LDtkLevelManager
+namespace LDtkLevelManager.PlayerNavigation
 {
     public class WaitOnAnimation : CustomYieldInstruction
     {

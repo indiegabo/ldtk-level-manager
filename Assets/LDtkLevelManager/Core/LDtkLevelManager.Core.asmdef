@@ -1,5 +1,5 @@
 {
-    "name": "LDtkLevelManager.Runtime",
+    "name": "LDtkLevelManager.Core",
     "rootNamespace": "",
     "references": [
         "LDtkUnity.Runtime",
@@ -17,12 +17,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [
-        {
-            "name": "com.unity.addressables",
-            "expression": "1.8.5",
-            "define": "LDTK_UNITY_ADDRESSABLES"
-        }
-    ],
+    "versionDefines": [],
     "noEngineReferences": false
 }

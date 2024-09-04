@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace LDtkLevelManager.Transitioning
+namespace LDtkLevelManager.PlayerNavigation
 {
     [CreateAssetMenu(fileName = "Level Transition Bridge", menuName = "LDtkLevelManager/Transitioning/Transition Bridge", order = 0)]
     public class LevelTransitionBridge : ScriptableObject

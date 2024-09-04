@@ -1,4 +1,4 @@
-namespace LDtkLevelManager.Transitioning
+namespace LDtkLevelManager.PlayerNavigation
 {
     public enum LevelTransitionMoment
     {

@@ -1,11 +1,16 @@
 using UnityEngine;
 using UnityEngine.Events;
-using System.Threading.Tasks;
-using Cinemachine;
 using System;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 
-namespace LDtkLevelManager.Transitioning
+# if CINEMACHINE_UNDER_3
+using Cinemachine;
+# else
+using Unity.Cinemachine;
+# endif
+
+namespace LDtkLevelManager.PlayerNavigation
 {
     public class LevelTransitioner : MonoBehaviour
     {
@@ -82,11 +87,17 @@ namespace LDtkLevelManager.Transitioning
         }
 
 
-        public async Task TransitionIntoAwaitable(string levelIid, string spotIid)
+        public async UniTask TransitionIntoAwaitable(string levelIid, string spotIid)
         {
             LevelLoader.Instance.Exit();
             await BeforePreparationTask();
-            CinemachineVirtualCamera camera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera as CinemachineVirtualCamera;
+
+#if CINEMACHINE_UNDER_3
+            CinemachineVirtualCamera camera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera as CinemachineVirtualCamera;            
+            await LevelLoader.Instance.LoadLevel(levelIid);
+#elif CINEMACHINE_ABOVE_3
+            CinemachineCamera camera = CinemachineBrain.GetActiveBrain(0).ActiveVirtualCamera as CinemachineCamera;
+#endif
 
             await LevelLoader.Instance.LoadLevel(levelIid);
 
@@ -95,16 +106,20 @@ namespace LDtkLevelManager.Transitioning
                 camera.Follow = null;
                 camera.gameObject.SetActive(false);
             }
-
             LevelLoader.Instance.Prepare(levelIid, spotIid);
             await AfterPreparationTask();
         }
 
-        public async Task TransitionIntoAwaitable(string levelIid, IConnection connection)
+        public async UniTask TransitionIntoAwaitable(string levelIid, IConnection connection)
         {
             LevelLoader.Instance.Exit();
             await BeforePreparationTask();
-            CinemachineVirtualCamera camera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera as CinemachineVirtualCamera;
+#if CINEMACHINE_UNDER_3
+            CinemachineVirtualCamera camera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera as CinemachineVirtualCamera;            
+            await LevelLoader.Instance.LoadLevel(levelIid);
+#elif CINEMACHINE_ABOVE_3
+            CinemachineCamera camera = CinemachineBrain.GetActiveBrain(0).ActiveVirtualCamera as CinemachineCamera;
+#endif
             await LevelLoader.Instance.LoadLevel(levelIid);
 
             if (camera != null)
@@ -117,7 +132,7 @@ namespace LDtkLevelManager.Transitioning
             await AfterPreparationTask();
         }
 
-        public async Task TransitionToPortalAwaitable(string levelIid, IPortal portal)
+        public async UniTask TransitionToPortalAwaitable(string levelIid, IPortal portal)
         {
             _transitioning = true;
             _transitionStartedEvent.Invoke();
@@ -135,7 +150,7 @@ namespace LDtkLevelManager.Transitioning
             _transitionEndedEvent.Invoke();
         }
 
-        private async Task BeforePreparationTask()
+        private async UniTask BeforePreparationTask()
         {
             _transitioning = true;
             _transitionStartedEvent.Invoke();
@@ -147,10 +162,10 @@ namespace LDtkLevelManager.Transitioning
             LevelLoader.Instance.Exit();
         }
 
-        private async Task AfterPreparationTask()
+        private async UniTask AfterPreparationTask()
         {
             // Opening curtains
-            await Task.Delay(TimeSpan.FromSeconds(0.1f));
+            await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
             await PerformTransitions(LevelTransitionMoment.Open);
 
             if (Camera.main.TryGetComponent<CinemachineBrain>(out var cinemachineBrain))
@@ -165,36 +180,36 @@ namespace LDtkLevelManager.Transitioning
             _transitionEndedEvent.Invoke();
         }
 
-        private async Task PerformTransitions(LevelTransitionMoment moment)
+        private async UniTask PerformTransitions(LevelTransitionMoment moment)
         {
             // For now this is just a dummy transition
-            await Task.CompletedTask;
+            await UniTask.CompletedTask;
         }
 
         #endregion
-        private async Task WaitOnCameraBlend(CinemachineBrain brain)
+        private async UniTask WaitOnCameraBlend(CinemachineBrain brain)
         {
-            await Task.Delay(TimeSpan.FromSeconds(0.5f));
+            await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
 
             var blend = brain.ActiveBlend;
             if (blend == null) return;
 
             float delay = blend.Duration > 0.5f ? blend.Duration - 0.5f : 0f;
-            await Task.Delay(TimeSpan.FromSeconds(delay));
+            await UniTask.Delay(TimeSpan.FromSeconds(delay));
         }
 
-        private async Task CloseCurtains()
+        private async UniTask CloseCurtains()
         {
             _curtainsAnimator.Play("CurtainsClose");
             int length = _curtainsAnimator.GetCurrentAnimatorClipInfo(0).Length;
-            await Task.Delay(TimeSpan.FromSeconds(length));
+            await UniTask.Delay(TimeSpan.FromSeconds(length));
         }
 
-        private async Task OpenCurtains()
+        private async UniTask OpenCurtains()
         {
             _curtainsAnimator.Play("CurtainsOpen");
             int length = _curtainsAnimator.GetCurrentAnimatorClipInfo(0).Length;
-            await Task.Delay(TimeSpan.FromSeconds(length));
+            await UniTask.Delay(TimeSpan.FromSeconds(length));
 
             if (Camera.main.TryGetComponent<CinemachineBrain>(out var cinemachineBrain))
             {
