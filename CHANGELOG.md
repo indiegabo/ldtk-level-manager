@@ -1,3 +1,16 @@
+# [1.1.0](https://github.com/indiegabo/ldtk-level-manager/compare/v1.0.4...v1.1.0) (2024-09-05)
+
+
+### Bug Fixes
+
+* Assembly cinemachine ([fc84935](https://github.com/indiegabo/ldtk-level-manager/commit/fc849355952c5b860ce68666e471b93663d95a43))
+* documentation URL ([da2df52](https://github.com/indiegabo/ldtk-level-manager/commit/da2df525b40e3911d48c61eca80a06e2d1861c23))
+
+
+### Features
+
+* Basic Sample ([baa243d](https://github.com/indiegabo/ldtk-level-manager/commit/baa243d20fd63f27f985fe6e20d6c595cbe3b590))
+
 ## [1.0.4](https://github.com/indiegabo/ldtk-level-manager/compare/v1.0.3...v1.0.4) (2024-09-05)
 
 
