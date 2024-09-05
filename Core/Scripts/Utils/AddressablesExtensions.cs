@@ -40,10 +40,29 @@ namespace LDtkLevelManager.Utils
 
             AddressableAssetSettings settings = AddressableAssetSettingsDefaultObject.Settings;
 
+            if (settings == null)
+            {
+                Logger.Warning("AddressableAssetSettings not found. Please create it in the project before using synchyng levels.", obj);
+                return false;
+            }
+
             if (string.IsNullOrEmpty(groupName)) return false;
 
-            AddressableAssetGroup group = settings.FindGroup(groupName)
-                ?? settings.CreateGroup(groupName, false, true, true, null, typeof(ContentUpdateGroupSchema), typeof(BundledAssetGroupSchema));
+            AddressableAssetGroup group = settings.FindGroup(groupName);
+
+            if (group == null)
+            {
+                group = settings.CreateGroup(
+                    groupName,
+                    false,
+                    true,
+                    true,
+                    null,
+                    typeof(ContentUpdateGroupSchema),
+                    typeof(BundledAssetGroupSchema)
+                );
+            }
+
 
             AssetReference assetReference = settings.CreateAssetReference(guid);
             assetReference.SetEditorAsset(obj);

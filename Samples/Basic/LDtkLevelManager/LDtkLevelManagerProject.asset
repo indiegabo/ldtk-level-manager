@@ -172,9 +172,9 @@ MonoBehaviour:
   _assetPath: Assets/LDtkLevelManager/Samples/Basic/LDtk/LDtkSample/Factory_1.ldtkl
   _address: LM__363b42a0-7820-11ed-a571-2bca691f63e1
   _scene:
-    _assetGuid: c3ef365281daaff4d9874fd731da81b1
+    _assetGuid: 13ff484e8cf3472469eeb1d838140239
     _addressableKey: LM_Scene_363b42a0-7820-11ed-a571-2bca691f63e1
-  _leftBehind: 0
+  _leftBehind: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,8 +224,10 @@ MonoBehaviour:
     - {fileID: -7134989087529076595}
     - {fileID: 164763834221068449}
   _lostLevels:
-    _listKeys: []
-    _listValues: []
+    _listKeys:
+    - 363b42a0-7820-11ed-a571-2bca691f63e1
+    _listValues:
+    - {fileID: -221090667263422172}
   _worldAreas:
     _listKeys:
     - City
@@ -320,7 +322,7 @@ MonoBehaviour:
   _assetPath: Assets/LDtkLevelManager/Samples/Basic/LDtk/LDtkSample/Factory_4.ldtkl
   _address: LM__49e346a0-fec0-11ee-9039-5b61900789be
   _scene:
-    _assetGuid: 236fbdd882877d244926b22e2418da09
+    _assetGuid: f1e32554816ea154b8cd1fbd1e15fd98
     _addressableKey: LM_Scene_49e346a0-fec0-11ee-9039-5b61900789be
   _leftBehind: 0
 --- !u!114 &4497664737447744018

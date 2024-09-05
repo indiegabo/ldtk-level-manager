@@ -8,6 +8,8 @@ using UnityEngine.ResourceManagement.ResourceProviders;
 using System.Linq;
 using LDtkUnity;
 using Cysharp.Threading.Tasks;
+using System;
+using UnityEngine.ResourceManagement.Exceptions;
 
 namespace LDtkLevelManager
 {
@@ -614,12 +616,27 @@ namespace LDtkLevelManager
             // Check if the level should be loaded as an object or a scene
             if (!level.HasScene)
             {
-                // Check if the level has already been loaded
-                if (_loadedObjects.ContainsKey(iid)) return;
+                await LoadLevelObjectAsync(level);
+            }
+            else
+            {
+                await LoadLevelSceneAsync(level);
+            }
+        }
 
+        protected virtual async UniTask LoadLevelObjectAsync(LevelInfo level)
+        {
+            // Check if the level has already been loaded
+            if (_loadedObjects.ContainsKey(level.Iid)) return;
+
+            try
+            {
                 // Load the level as an object
-                AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(level.Address);
-                await handle.ToUniTask();
+                AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>(
+                    level.Address
+                );
+
+                await handle;
 
                 // Check if the load operation succeeded
                 if (handle.Status != AsyncOperationStatus.Succeeded)
@@ -633,16 +650,38 @@ namespace LDtkLevelManager
                 // Instantiate the loaded object
                 GameObject loadedObject = Instantiate(handle.Result);
                 // Add the loaded object to the list of loaded objects
-                _loadedObjects.Add(iid, loadedObject);
+                _loadedObjects.Add(level.Iid, loadedObject);
             }
-            else
+            catch (InvalidKeyException e)
             {
-                // Check if the level has already been loaded
-                if (_loadedScenes.ContainsKey(iid)) return;
+                Logger.Error($"Async operation for level {level.name} as an object failed.", this);
+                Logger.Exception(e, this);
+            }
+            catch (OperationException e)
+            {
+                Logger.Error($"Async operation for loading level {level.name} failed.", this);
+                Logger.Exception(e, this);
+            }
+            catch (Exception e)
+            {
+                Logger.Error($"Async operation for level {level.name} as an object  failed.", this);
+                Logger.Exception(e, this);
+            }
+        }
 
-                // Load the level as a scene
-                AsyncOperationHandle<SceneInstance> handle = Addressables.LoadSceneAsync(level.Scene.AddressableKey, LoadSceneMode.Additive);
-                await handle.ToUniTask();
+        protected virtual async UniTask LoadLevelSceneAsync(LevelInfo level)
+        {
+            // Check if the level has already been loaded
+            if (_loadedScenes.ContainsKey(level.Iid)) return;
+
+            try
+            {
+                AsyncOperationHandle<SceneInstance> handle = Addressables.LoadSceneAsync(
+                    level.Scene.AddressableKey,
+                    LoadSceneMode.Additive
+                );
+
+                await handle;
 
                 // Check if the load operation succeeded
                 if (handle.Status != AsyncOperationStatus.Succeeded)
@@ -654,7 +693,22 @@ namespace LDtkLevelManager
                 }
 
                 // Add the loaded scene to the list of loaded scenes
-                _loadedScenes.Add(iid, handle.Result);
+                _loadedScenes.Add(level.Iid, handle.Result);
+            }
+            catch (InvalidKeyException e)
+            {
+                Logger.Error($"Async operation for level {level.name} as a Scene failed.", this);
+                Logger.Exception(e, this);
+            }
+            catch (OperationException e)
+            {
+                Logger.Error($"Async operation for loading level {level.name} was canceled.", this);
+                Logger.Exception(e, this);
+            }
+            catch (Exception e)
+            {
+                Logger.Error($"Async operation for level {level.name} as a Scene failed.", this);
+                Logger.Exception(e, this);
             }
         }
 

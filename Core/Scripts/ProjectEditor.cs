@@ -78,7 +78,7 @@ namespace LDtkLevelManager
 
             foreach (World world in ldtkJson.Worlds)
             {
-                foreach (LDtkUnity.Level level in world.Levels)
+                foreach (Level level in world.Levels)
                 {
                     if (!ldtkFiles.TryGetValue(level.Iid, out LDtkLevelFile levelFile)) continue;
 
@@ -165,12 +165,22 @@ namespace LDtkLevelManager
             if (TryGetLevel(ldtkIid.Iid, out LevelInfo level))
             {
                 level.UpdateInfo(processingData);
+
+                if (level.HasScene)
+                {
+                    LevelScene.EnforceSceneAddressable(level);
+                }
+
                 return ldtkIid.Iid;
             }
 
             if (_lostLevels.TryGetValue(ldtkIid.Iid, out LevelInfo lostLevel))
             {
                 lostLevel.UpdateInfo(processingData);
+                if (lostLevel.HasScene)
+                {
+                    LevelScene.EnforceSceneAddressable(lostLevel);
+                }
                 AddLevel(lostLevel);
                 return lostLevel.Iid;
             }
