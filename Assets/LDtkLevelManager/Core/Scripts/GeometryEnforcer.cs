@@ -1,6 +1,5 @@
 using LDtkUnity;
 using UnityEngine;
-using System.Linq;
 
 namespace LDtkLevelManager
 {
@@ -26,7 +25,9 @@ namespace LDtkLevelManager
 
             if (!LevelLoader.Instance.TryGetLevel(_ldtkIid.Iid, out _info))
             {
-                Logger.Error($"{name} could not have its geometry enforced because there was no level found under the LDtk Iid {_ldtkIid.Iid}", this);
+                var message = $"{name} could not have its geometry enforced because there was no level "
+                    + $"found under the LDtk Iid {_ldtkIid.Iid}";
+                Logger.Error(message, this);
                 return;
             }
 
@@ -39,6 +40,7 @@ namespace LDtkLevelManager
             }
 
             Enforce();
+            Destroy(this);
         }
 
         #endregion
