@@ -34,7 +34,7 @@
   "dependencies": {
     "com.unity.addressables": "1.21.*",
     "com.unity.cinemachine": "2.9.*",
-    "com.cammin.ldtkunity": "4.2.*",
+    "com.cammin.ldtkunity": "6.4.2",
     "com.cysharp.unitask": "2.5.*"
   }
 }
