@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/indiegabo/ldtk-level-manager/compare/v1.1.1...v1.1.2) (2024-09-05)
+
+
+### Bug Fixes
+
+* Samples folder meta files ([4f8904e](https://github.com/indiegabo/ldtk-level-manager/commit/4f8904eeca0d482fda39005900d9808dbda6bffc))
+
 ## [1.1.1](https://github.com/indiegabo/ldtk-level-manager/compare/v1.1.0...v1.1.1) (2024-09-05)
 
 
