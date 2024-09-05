@@ -116,6 +116,30 @@ namespace LDtkLevelManager
             return true;
         }
 
+        public static void EnforceSceneAddressable(LevelInfo level)
+        {
+            if (!level.HasScene) return;
+
+            if (!TryScenePath(level.Scene.AssetGuid, out string path))
+            {
+                level.ClearScene();
+                return;
+            }
+
+            SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
+            string addressableAddress = $"{AddressableSceneLabel}_{level.Iid}";
+            if (!sceneAsset.TrySetAsAddressable(addressableAddress, AddressableGroupName, AddressableSceneLabel))
+            {
+                Logger.Error($"Could not set scene for level <color=#FFFFFF>{level.name}</color> as addressable. Please check the console for errors.", level);
+            }
+
+            string[] labels = AssetDatabase.GetLabels(sceneAsset);
+            if (!labels.Contains(SceneLabelName))
+            {
+                AssetDatabase.SetLabels(sceneAsset, labels.Append(SceneLabelName).ToArray());
+            }
+        }
+
         public static bool TryScenePath(string guid, out string path)
         {
             if (string.IsNullOrEmpty(guid)) { path = null; return false; }

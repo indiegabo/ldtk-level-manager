@@ -1,7 +1,6 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-
 namespace LDtkLevelManager.Implementations.Basic
 {
     public class GameplayStarter : MonoBehaviour

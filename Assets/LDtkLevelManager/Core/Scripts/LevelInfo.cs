@@ -115,6 +115,11 @@ namespace LDtkLevelManager
             _scene = levelScene;
         }
 
+        public void ClearScene()
+        {
+            _scene = null;
+        }
+
         #endregion
 
         #region Leaving Behind
