@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/indiegabo/ldtk-level-manager/compare/v1.1.2...v1.1.3) (2024-09-05)
+
+
+### Bug Fixes
+
+* Samples Addressables ([dfdf9a7](https://github.com/indiegabo/ldtk-level-manager/commit/dfdf9a77c56de02687d1b9afc4bbc4ab5cad81d5))
+
 ## [1.1.2](https://github.com/indiegabo/ldtk-level-manager/compare/v1.1.1...v1.1.2) (2024-09-05)
 
 
