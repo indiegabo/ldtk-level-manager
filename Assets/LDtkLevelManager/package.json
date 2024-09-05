@@ -24,7 +24,6 @@
     "editor",
     "indiegabo"
   ],
-  "samples": [],
   "scripts": {
     "release": "npm run release-it",
     "pre-release": "npx auto-changelog -p && mv -f CHANGELOG.md ../../docfx_project/documentation/CHANGELOG.md && docfx ../../docfx_project/docfx.json && echo Go create Unity .meta and the .unitypackage before releasing",
@@ -36,5 +35,17 @@
     "com.unity.cinemachine": "2.9.*",
     "com.cammin.ldtkunity": "6.4.2",
     "com.cysharp.unitask": "2.5.*"
-  }
+  },
+  "samples": [
+    {
+      "displayName": "Basic",
+      "description": "A sample scene demonstrating how to use the package",
+      "path": "Samples~/Basic"
+    },
+    {
+      "displayName": "Cartography",
+      "description": "Scripts for cartography",
+      "path": "Samples~/Cartography"
+    }
+  ]
 }

@@ -90,7 +90,7 @@ namespace LDtkLevelManager
                     name = displayName;
                 }
 
-                string area = fields.GetValueAsString("ldtkVaniaArea");
+                string area = fields.GetValueAsString("area");
                 if (!string.IsNullOrEmpty(area))
                     _areaName = area;
             }

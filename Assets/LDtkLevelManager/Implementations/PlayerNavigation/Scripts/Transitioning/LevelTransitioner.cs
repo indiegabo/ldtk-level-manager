@@ -95,7 +95,7 @@ namespace LDtkLevelManager.PlayerNavigation
 #if CINEMACHINE_UNDER_3
             CinemachineVirtualCamera camera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera as CinemachineVirtualCamera;            
             await LevelLoader.Instance.LoadLevel(levelIid);
-#elif CINEMACHINE_ABOVE_3
+#else
             CinemachineCamera camera = CinemachineBrain.GetActiveBrain(0).ActiveVirtualCamera as CinemachineCamera;
 #endif
 
@@ -117,7 +117,7 @@ namespace LDtkLevelManager.PlayerNavigation
 #if CINEMACHINE_UNDER_3
             CinemachineVirtualCamera camera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera as CinemachineVirtualCamera;            
             await LevelLoader.Instance.LoadLevel(levelIid);
-#elif CINEMACHINE_ABOVE_3
+#else
             CinemachineCamera camera = CinemachineBrain.GetActiveBrain(0).ActiveVirtualCamera as CinemachineCamera;
 #endif
             await LevelLoader.Instance.LoadLevel(levelIid);
