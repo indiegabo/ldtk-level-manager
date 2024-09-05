@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/indiegabo/ldtk-level-manager/compare/v1.1.0...v1.1.1) (2024-09-05)
+
+
+### Bug Fixes
+
+* Removing Sirenix Odin namespace ([801f0ca](https://github.com/indiegabo/ldtk-level-manager/commit/801f0ca14799575a22169f3f8df54b220ebcd350))
+
 # [1.1.0](https://github.com/indiegabo/ldtk-level-manager/compare/v1.0.4...v1.1.0) (2024-09-05)
 
 
