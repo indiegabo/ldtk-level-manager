@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/indiegabo/ldtk-level-manager/compare/v1.0.3...v1.0.4) (2024-09-05)
+
+
+### Bug Fixes
+
+* Rearranging folders ([488c2b3](https://github.com/indiegabo/ldtk-level-manager/commit/488c2b3497f1577904c8aa83dcef2f9879dfb161))
+
 ## [1.0.3](https://github.com/indiegabo/ldtk-level-manager/compare/v1.0.2...v1.0.3) (2024-09-04)
 
 
