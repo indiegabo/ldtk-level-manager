@@ -1,0 +1,33 @@
+fileFormatVersion: 2
+guid: df7f3fbd68adee24db1bda124d3e43be
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: aaa16bfc62c086f4fb45da87b6acf9b1, type: 3}
+  _reimportOnDependencyChange: 1
+  _jsonFile: {fileID: -164016180542632921, guid: df7f3fbd68adee24db1bda124d3e43be, type: 3}
+  _pixelsPerUnit: 16
+  _customLevelPrefab: {fileID: 4400579314322995303, guid: 29da767cee5b88840a7979bba5836271, type: 3}
+  _intGridValueColorsVisible: 0
+  _useCompositeCollider: 1
+  _geometryType: 0
+  _createBackgroundColor: 0
+  _createLevelBoundsTrigger: 0
+  _useParallax: 1
+  _intGridValues:
+  - _key: Ground_1
+    _asset: {fileID: 11400000, guid: 08217e8fd8e15c64cb8ba4e3a344bd1c, type: 2}
+  _entities:
+  - _key: Connection
+    _asset: {fileID: 7480802360855543441, guid: c9142ffe618af61468e951e56962dfa0, type: 3}
+  - _key: PlacementSpot
+    _asset: {fileID: 8491176365153170283, guid: 2256c93a5d4de7f4d97c0e332be2fe84, type: 3}
+  - _key: Portal
+    _asset: {fileID: 8197947690036917936, guid: 7008c72c532da6540a9595e4f48f3967, type: 3}
+  _enumGenerate: 1
+  _enumPath: 
+  _enumNamespace: LDtkLevelManagerSample

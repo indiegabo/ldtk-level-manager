@@ -51,7 +51,7 @@ namespace LDtkLevelManager
                 public static void Exception(System.Exception exception, UnityEngine.Object sender = null)
                 {
 #if UNITY_EDITOR
-                        Message($"The following exception was thrown:", sender);
+                        Message($"{Prefix} The following exception was thrown:", sender);
                         Debug.LogException(exception, sender);
 #endif
                 }

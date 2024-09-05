@@ -1,0 +1,33 @@
+{
+  "Rects": null,
+  "Def": {
+    "__cHei": 2,
+    "__cWid": 5,
+    "cachedPixelData": {
+      "opaqueTiles": "0000000001",
+      "averageColors": "ffff5fff5fffffff0000ffff5fff5fffffffffff"
+    },
+    "customData": [
+
+    ],
+    "embedAtlas": null,
+    "enumTags": [
+
+    ],
+    "identifier": "Doors",
+    "padding": 0,
+    "pxHei": 32,
+    "pxWid": 80,
+    "relPath": "Tilesets/doors-sprite-sheet.png",
+    "savedSelections": [
+
+    ],
+    "spacing": 0,
+    "tags": [
+
+    ],
+    "tagsSourceEnumUid": null,
+    "tileGridSize": 16,
+    "uid": 117
+  }
+}

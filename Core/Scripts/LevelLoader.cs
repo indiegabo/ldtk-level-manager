@@ -11,7 +11,7 @@ using Cysharp.Threading.Tasks;
 
 namespace LDtkLevelManager
 {
-    [DefaultExecutionOrder(-1000000)]
+    [DefaultExecutionOrder(-1000)]
     public class LevelLoader : MonoBehaviour
     {
         #region Static
@@ -23,7 +23,7 @@ namespace LDtkLevelManager
 
         #region Inspector        
 
-        [Tooltip("Mark this if you want this object to NOT be destroyed whe a new scene is loaded.")]
+        [Tooltip("Mark this if you want this object to NOT be destroyed when a new scene is loaded.")]
         [SerializeField]
         private bool _persistent = true;
 
@@ -55,6 +55,7 @@ namespace LDtkLevelManager
         private readonly Dictionary<string, SceneInstance> _loadedScenes = new();
         private readonly HashSet<string> _shouldBeLoaded = new();
         private readonly HashSet<string> _shouldBeUnloaded = new();
+        private readonly Queue<(LevelInfo, int)> _neighboursQueue = new();
 
         #endregion
 
@@ -99,7 +100,7 @@ namespace LDtkLevelManager
 
         #region Behaviour
 
-        public void Awake()
+        public virtual void Awake()
         {
             LevelLoader currentInstance = Instance;
 
@@ -131,18 +132,18 @@ namespace LDtkLevelManager
         /// Loads a level by its LDtk Iid. If the level is not present in the project, <br />
         /// an error will be logged and no action will be taken. <br />
         /// <br />
-        /// The level will be loaded using the current Manager's defined strategy (<see cref="LevelLoadingStrategy"/>).
+        /// The level will be loaded using the current Loaders's defined strategy (<see cref="LevelLoadingStrategy"/>).
         /// <br />
         /// <b>Strategies:</b>
         /// <list type="bullet">
-        /// <item><b>Neighbours:</b> Guarantees the presence of the level and its immediate neighbours.</item>
+        /// <item><b>Neighbours:</b> Guarantees the presence of the level and its immediate neighbours. The amount of neighbours is defined by the Loader's <see cref="Depth"/> parameter.</item>
         /// <item><b>Worlds:</b> Guarantees the presence of the level and its entire world. </item>
         /// <item><b>Area:</b> Guarantees the presence of the level and the entire area it is in.</item>
         /// </list>
         /// </summary>
         /// <param name="iid">The LDtk Iid of the level to load.</param>
         /// <returns>A <see cref="UniTask"/> representing the asynchronous operation.</returns>
-        public async UniTask LoadLevel(string iid)
+        public virtual async UniTask LoadLevel(string iid)
         {
             if (!TryGetLevel(iid, out LevelInfo level))
             {
@@ -181,13 +182,13 @@ namespace LDtkLevelManager
         }
 
         /// <summary>
-        /// Load a level by its MV_Level object.
+        /// Load a level by its LevelInfo object.
         /// This is a shortcut for calling <see cref="LoadLevel(string)"/> with the
         /// Iid of the level.
         /// </summary>
         /// <param name="level">The level to load.</param>
         /// <returns>A <see cref="UniTask"/> representing the asynchronous operation.</returns>
-        public async UniTask LoadLevel(LevelInfo level)
+        public virtual async UniTask LoadLevel(LevelInfo level)
         {
             await LoadLevel(level.Iid);
         }
@@ -200,7 +201,7 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="worldName">The name of the world to load.</param>
         /// <returns>A <see cref="UniTask"/> representing the asynchronous operation.</returns>
-        public async UniTask LoadWorld(string worldName)
+        public virtual async UniTask LoadWorld(string worldName)
         {
             if (_loadingStrategy != LevelLoadingStrategy.Worlds)
             {
@@ -241,14 +242,15 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="worldName">The name of the world to load.</param>
         /// <returns>A <see cref="UniTask"/> representing the asynchronous operation.</returns>
-        public async UniTask LoadArea(string areaName)
+        public virtual async UniTask LoadArea(string areaName)
         {
             if (_loadingStrategy != LevelLoadingStrategy.Areas)
             {
-                // LoadArea can only be used when the strategy is set to MV_LevelLoadingStrategy.Areas
+                // LoadArea can only be used when the strategy is set to LevelLoadingStrategy.Areas
                 Logger.Error(
                     $"LoadArea method can only be used with when strategy is set to '{LevelLoadingStrategy.Areas}'.",
-                    this);
+                    this
+                );
                 return;
             }
 
@@ -286,12 +288,11 @@ namespace LDtkLevelManager
         /// <br/>
         /// </summary>
         /// <param name="iid">The Iid of the level to prepare.</param>
-        public void Prepare(string iid)
+        public virtual void Prepare(string iid)
         {
             // If the level could not be found, do not attempt to prepare it.
-            if (!EvaluateLevelForPreparation(iid, out LevelBehaviour levelBehaviour))
+            if (!EvaluateAndPrepareLevel(iid, out LevelBehaviour levelBehaviour))
             {
-                // The level could not be found, do not attempt to prepare it.
                 return;
             }
 
@@ -311,10 +312,10 @@ namespace LDtkLevelManager
         /// <param name="iid">The Iid of the level to prepare.</param>
         /// <param name="position">The position to place the character at.</param>
         /// <param name="facingSign">The facing sign of the character.</param>
-        public void Prepare(string iid, Vector2 position, int facingSign)
+        public virtual void Prepare(string iid, Vector2 position, int facingSign)
         {
             // If the level could not be found, do not attempt to prepare it.
-            if (!EvaluateLevelForPreparation(iid, out LevelBehaviour levelBehaviour))
+            if (!EvaluateAndPrepareLevel(iid, out LevelBehaviour levelBehaviour))
             {
                 return;
             }
@@ -334,10 +335,10 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="iid">The Iid of the level to prepare.</param>
         /// <param name="spotIid">The Iid of the spot to use at the character placement.</param>
-        public void Prepare(string iid, string spotIid)
+        public virtual void Prepare(string iid, string spotIid)
         {
             // If the level could not be found, do not attempt to prepare it.
-            if (!EvaluateLevelForPreparation(iid, out LevelBehaviour levelBehaviour))
+            if (!EvaluateAndPrepareLevel(iid, out LevelBehaviour levelBehaviour))
             {
                 return;
             }
@@ -357,9 +358,9 @@ namespace LDtkLevelManager
         /// <br/>
         /// </summary>
         /// <param name="connection">The connection to use to enter the level.</param>
-        public void Prepare(string iid, IConnection connection)
+        public virtual void Prepare(string iid, IConnection connection)
         {
-            if (!EvaluateLevelForPreparation(iid, out LevelBehaviour levelBehaviour))
+            if (!EvaluateAndPrepareLevel(iid, out LevelBehaviour levelBehaviour))
             {
                 // If the level could not be found, do not attempt to prepare it.
                 return;
@@ -380,10 +381,10 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="iid">The Iid of the level to prepare.</param>
         /// <param name="portal">The portal to use to enter the level.</param>
-        public void Prepare(string iid, IPortal portal)
+        public virtual void Prepare(string iid, IPortal portal)
         {
             // If the level could not be found, do not attempt to prepare it.
-            if (!EvaluateLevelForPreparation(iid, out LevelBehaviour levelBehaviour))
+            if (!EvaluateAndPrepareLevel(iid, out LevelBehaviour levelBehaviour))
             {
                 return;
             }
@@ -395,13 +396,22 @@ namespace LDtkLevelManager
                 _navigationBridge.LevelPreparedEvent.Invoke(levelBehaviour, trail);
         }
 
+
         /// <summary>
-        /// Evaluates the level to be entered by its Iid.
+        /// Tries to prepare a level by its Iid.<br/>
+        /// <br/>
+        /// It first tries to get the level by its Iid from the project.<br/>
+        /// If the level is not found, it logs an error and returns false.<br/>
+        /// <br/>
+        /// If the level is found, it tries to get the registered behaviour for the level.<br/>
+        /// If the level is not registered, it logs an error and returns false.<br/>
+        /// <br/>
+        /// If the level is registered, it prepares the level according to the strategy and returns true.
         /// </summary>
         /// <param name="iid">The Iid of the level to prepare.</param>
-        /// <param name="behaviour">The MV_LevelBehaviour to prepare.</param>
-        /// <returns><c>true</c> if the level was prepared successfully, <c>false</c> otherwise.</returns>
-        private bool EvaluateLevelForPreparation(string iid, out LevelBehaviour behaviour)
+        /// <param name="behaviour">The behaviour to be used to prepare the level.</param>
+        /// <returns>True if the level was prepared, false otherwise.</returns>
+        protected virtual bool EvaluateAndPrepareLevel(string iid, out LevelBehaviour behaviour)
         {
             // Tries to get a level by its Iid.
             if (!TryGetLevel(iid, out LevelInfo level))
@@ -424,7 +434,8 @@ namespace LDtkLevelManager
 
             _currentLevel = level;
             _currentBehaviour = behaviour;
-            if (_loadingStrategy.Equals(LevelLoadingStrategy.Neighbours))
+
+            if (_loadingStrategy == LevelLoadingStrategy.Neighbours)
             {
                 _ = LoadNeighboursAsync(_currentLevel);
             }
@@ -440,7 +451,7 @@ namespace LDtkLevelManager
         /// <br/>        
         /// </summary>
         /// <param name="iid">The Iid of the level to enter.</param>
-        public void Enter()
+        public virtual void Enter()
         {
             if (_currentLevel == null || _currentBehaviour == null)
             {
@@ -463,7 +474,7 @@ namespace LDtkLevelManager
         /// since all level subjects will receive a level exited event in the same frame.<br/>
         /// <br/>        
         /// </summary>
-        public void Exit()
+        public virtual void Exit()
         {
             if (_currentBehaviour != null)
             {
@@ -485,7 +496,7 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="level">The level to load neighbours from.</param>
         /// <returns>A <see cref="UniTask"/> representing the asynchronous operation.</returns>
-        private async UniTask LoadNeighboursAsync(LevelInfo level)
+        protected virtual async UniTask LoadNeighboursAsync(LevelInfo level)
         {
             // Check if the given level is null
             if (level == null)
@@ -496,28 +507,28 @@ namespace LDtkLevelManager
 
             float depth = Mathf.Clamp(_depth, 1, 10);
 
-            // Create a queue to store the levels to be loaded
-            Queue<(LevelInfo, int)> queue = new();
+            // Clears the queue of levels to be loaded
+            _neighboursQueue.Clear();
 
             // Clear the lists of levels to be loaded and unloaded
             _shouldBeLoaded.Clear();
             _shouldBeUnloaded.Clear();
 
             // Add the given level to the queue and to the list of levels to be loaded
-            queue.Enqueue((level, 0));
+            _neighboursQueue.Enqueue((level, 0));
             _shouldBeLoaded.Add(level.Iid);
 
             // While there are levels in the queue
-            while (queue.Count > 0)
+            while (_neighboursQueue.Count > 0)
             {
                 // Get the next level and its depth
-                (LevelInfo currentLevel, int currentDepth) = queue.Dequeue();
+                (LevelInfo currentLevel, int currentDepth) = _neighboursQueue.Dequeue();
 
                 // If the current depth is less than the given depth
                 if (currentDepth < depth)
                 {
                     // For each neighbour of the current level
-                    foreach (LDtkUnity.Level neighbour in currentLevel.LDtkLevel.Neighbours)
+                    foreach (Level neighbour in currentLevel.LDtkLevel.Neighbours)
                     {
                         // Try to get the neighbour level
                         if (!TryGetLevel(neighbour.Iid, out LevelInfo levelInfo))
@@ -531,7 +542,7 @@ namespace LDtkLevelManager
                         if (!_shouldBeLoaded.Contains(levelInfo.Iid))
                         {
                             // Add the neighbour level to the queue and to the list of levels to be loaded
-                            queue.Enqueue((levelInfo, currentDepth + 1));
+                            _neighboursQueue.Enqueue((levelInfo, currentDepth + 1));
                             _shouldBeLoaded.Add(levelInfo.Iid);
                         }
                     }
@@ -574,7 +585,7 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="levelsToLoad">The levels to load.</param>
         /// <returns></returns>
-        private async UniTask LoadMultipleAsync(HashSet<string> levelsToLoad)
+        protected virtual async UniTask LoadMultipleAsync(HashSet<string> levelsToLoad)
         {
             // Create a list to store the tasks for loading each level
             List<UniTask> levelLoadTasks = new();
@@ -595,7 +606,7 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="iid">The IID of the level to load.</param>
         /// <returns></returns>
-        private async UniTask LoadAsync(string iid)
+        protected virtual async UniTask LoadAsync(string iid)
         {
             // Check if the level exists
             if (!TryGetLevel(iid, out LevelInfo level)) return;
@@ -614,6 +625,8 @@ namespace LDtkLevelManager
                 if (handle.Status != AsyncOperationStatus.Succeeded)
                 {
                     Logger.Error($"Async operation for level {level.name} as an object failed.", this);
+                    if (handle.OperationException != null)
+                        Logger.Exception(handle.OperationException, this);
                     return;
                 }
 
@@ -635,6 +648,8 @@ namespace LDtkLevelManager
                 if (handle.Status != AsyncOperationStatus.Succeeded)
                 {
                     Logger.Error($"Async operation for loading level {level.name} as a scene failed.", this);
+                    if (handle.OperationException != null)
+                        Logger.Exception(handle.OperationException, this);
                     return;
                 }
 
@@ -648,7 +663,7 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="iid">The IID of the level to unload.</param>
         /// <returns>An async task that represents the unload operation.</returns>
-        private async UniTask UnloadAsync(string iid)
+        protected virtual async UniTask UnloadAsync(string iid)
         {
             // Check if the level exists
             if (!TryGetLevel(iid, out LevelInfo level)) return;
@@ -678,8 +693,8 @@ namespace LDtkLevelManager
                 {
                     // Log an error if the unload operation failed
                     Logger.Error($"Async operation for unloading level {level.name} as a scene failed.", this);
-                    Logger.Warning($"Handle status: {handle.Status}");
-                    Logger.Warning($"{handle.OperationException?.StackTrace}");
+                    if (handle.OperationException != null)
+                        Logger.Exception(handle.OperationException, this);
                     return;
                 }
 
@@ -693,7 +708,7 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="levelsToUnload">The set of levels to unload.</param>
         /// <returns>An async task that represents the unload operation.</returns>
-        private async UniTask UnloadMultipleAsync(HashSet<string> levelsToUnload)
+        protected virtual async UniTask UnloadMultipleAsync(HashSet<string> levelsToUnload)
         {
             // Create a list of unload tasks
             List<UniTask> unloadTasks = new();
@@ -713,7 +728,7 @@ namespace LDtkLevelManager
         /// Unload all levels that have been loaded by this level manager.
         /// </summary>
         /// <returns>An async task that represents the unload operation.</returns>
-        private async UniTask UnloadAllAsync()
+        protected virtual async UniTask UnloadAllAsync()
         {
             // Create a list of unload tasks
             List<UniTask> tasks = new();
@@ -750,7 +765,7 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="iid">The Iid of the level to register the behaviour for.</param>
         /// <param name="behaviour">The behaviour to register.</param>
-        public void RegisterAsBehaviour(string iid, LevelBehaviour behaviour)
+        public virtual void RegisterAsBehaviour(string iid, LevelBehaviour behaviour)
         {
             if (!TryGetLevel(iid, out LevelInfo level))
             {
@@ -773,7 +788,7 @@ namespace LDtkLevelManager
         /// Unregisters a level behaviour from being used when transitioning to the level with the given Iid.
         /// </summary>
         /// <param name="iid">The Iid of the level to unregister the behaviour for.</param>
-        public void UnregisterAsBehaviour(string iid)
+        public virtual void UnregisterAsBehaviour(string iid)
         {
             if (!TryGetLevel(iid, out LevelInfo level))
             {
@@ -796,7 +811,7 @@ namespace LDtkLevelManager
         /// <param name="iid">The Iid of the level to retrieve.</param>
         /// <param name="level">The retrieved level if successful, or null if not.</param>
         /// <returns>true if the level was successfully retrieved, false otherwise.</returns>
-        public bool TryGetLevel(string iid, out LevelInfo level)
+        public virtual bool TryGetLevel(string iid, out LevelInfo level)
         {
             // Try to get the level from the project.
             return _project.TryGetLevel(iid, out level);
@@ -807,7 +822,7 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="iid">The Iid of the level to retrieve.</param>
         /// <returns>The retrieved level if successful, or null if not.</returns>
-        public LevelInfo GetLevel(string iid)
+        public virtual LevelInfo GetLevel(string iid)
         {
             // Attempt to get the level from the project.
             return _project.GetLevel(iid);
