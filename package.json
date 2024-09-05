@@ -5,7 +5,7 @@
   "description": "A solution for managing LDtk levels in Unity.",
   "unity": "2022.3",
   "unityRelease": "0f1",
-  "documentationUrl": "https://indiegabo.github.io/ldtk-vania",
+  "documentationUrl": "https://indiegabo.github.io/ldtk-level-manager",
   "changelogUrl": "https://indiegabo.github.io/ldtk-level-manager/documentation/CHANGELOG.html",
   "licensesUrl": "https://github.com/indiegabo/ldtk-level-manager/blob/main/LICENSE.md",
   "author": {
