@@ -185,7 +185,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 825ee4dd3ba3d76428e41c1af1444edd, type: 3}
-  m_Name: VaniaSampleLevelManager
+  m_Name: LDtkLevelManagerSample_LM
   m_EditorClassIdentifier: 
   _ldtkProjectFile: {fileID: -164016180542632921, guid: df7f3fbd68adee24db1bda124d3e43be, type: 3}
   _syncLevelsAtCompile: 1

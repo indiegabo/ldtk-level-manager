@@ -10,6 +10,7 @@ ScriptedImporter:
   script: {fileID: 11500000, guid: f3268c876daf4890b6af6cd462063137, type: 3}
   _reimportOnDependencyChange: 1
   _pixelsPerUnit: 16
+  _overrideTexture: {instanceID: 0}
   _sprites:
   - name: Doors_0
     originalName: 
@@ -22,7 +23,7 @@ ScriptedImporter:
       y: 16
       width: 16
       height: 16
-    spriteID: e9bcca51d0e2bb443a46344abe62d41d
+    spriteID: 12c235a6b2e100f448e13eb04e65d93a
     spriteOutline: []
     tessellationDetail: 0
   - name: Doors_1
@@ -36,7 +37,7 @@ ScriptedImporter:
       y: 16
       width: 16
       height: 16
-    spriteID: 0d94df68cdef35a4e9fd501ebfd9d8ae
+    spriteID: b2140d19bccd6a14c9c440974d6acd96
     spriteOutline: []
     tessellationDetail: 0
   - name: Doors_2
@@ -50,7 +51,7 @@ ScriptedImporter:
       y: 16
       width: 16
       height: 16
-    spriteID: c790c61587879c4428488d8bdf3d291b
+    spriteID: df5a328264dab4143aea1e1b6b0574f1
     spriteOutline: []
     tessellationDetail: 0
   - name: Doors_3
@@ -64,7 +65,7 @@ ScriptedImporter:
       y: 16
       width: 16
       height: 16
-    spriteID: 56a34169c2bbe284c91a86833c163b8a
+    spriteID: 956947867b00c2341be89f708680f29b
     spriteOutline: []
     tessellationDetail: 0
   - name: Doors_4
@@ -78,7 +79,7 @@ ScriptedImporter:
       y: 16
       width: 16
       height: 16
-    spriteID: 422bcd512fdcf7d46be49d0907d23455
+    spriteID: de4be26e4ac1e6d4490eabff08163b92
     spriteOutline: []
     tessellationDetail: 0
   - name: Doors_5
@@ -92,7 +93,7 @@ ScriptedImporter:
       y: 0
       width: 16
       height: 16
-    spriteID: dfb11547c35926b41814cd141d54b219
+    spriteID: b19d238844e308b4bac6d8a8fe4329d8
     spriteOutline: []
     tessellationDetail: 0
   - name: Doors_6
@@ -106,7 +107,7 @@ ScriptedImporter:
       y: 0
       width: 16
       height: 16
-    spriteID: f3def9288f1096a4cac76e1deee5357d
+    spriteID: 19b4540dee7567748896251e84ab0b23
     spriteOutline: []
     tessellationDetail: 0
   - name: Doors_7
@@ -120,7 +121,7 @@ ScriptedImporter:
       y: 0
       width: 16
       height: 16
-    spriteID: c6cb002b745b26043b6f6cb8122059db
+    spriteID: c31485f4d258c29439ce121ba10f3e3c
     spriteOutline: []
     tessellationDetail: 0
   - name: Doors_8
@@ -134,7 +135,7 @@ ScriptedImporter:
       y: 0
       width: 16
       height: 16
-    spriteID: 89ce0f74984ec744eb2a9abc9cf933bb
+    spriteID: ae4c2880435c06949b300b1fdf924d0c
     spriteOutline: []
     tessellationDetail: 0
   - name: Doors_9
@@ -148,7 +149,8 @@ ScriptedImporter:
       y: 0
       width: 16
       height: 16
-    spriteID: b27680831c32b8947911227e0778eb5f
+    spriteID: b527b0a94d9eea547889fba83b15a5aa
     spriteOutline: []
     tessellationDetail: 0
   _secondaryTextures: []
+  _artifacts: {instanceID: 0}
