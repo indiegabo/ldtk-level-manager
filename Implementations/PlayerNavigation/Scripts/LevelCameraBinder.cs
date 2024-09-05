@@ -74,7 +74,7 @@ namespace LDtkLevelManager.PlayerNavigation
 
 #if CINEMACHINE_UNDER_3
             _confiner.m_BoundingShape2D = _boundaries.Shape;
-#elif CINEMACHINE_ABOVE_3
+#else
             _confiner.BoundingShape2D = _boundaries.Shape;
 # endif
 

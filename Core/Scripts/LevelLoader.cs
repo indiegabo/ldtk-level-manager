@@ -237,7 +237,7 @@ namespace LDtkLevelManager
         /// Unloads all loaded levels and loads all levels of a given area (by name). If the area is not present in the project, <br/>
         /// an error will be logged and no action will be taken.<br/>
         /// <br/>
-        /// Your LDtk project must have an area (ldtkVaniaArea enum) with the given name.
+        /// Your LDtk project must have an area (area enum) with the given name.
         /// </summary>
         /// <param name="worldName">The name of the world to load.</param>
         /// <returns>A <see cref="UniTask"/> representing the asynchronous operation.</returns>
