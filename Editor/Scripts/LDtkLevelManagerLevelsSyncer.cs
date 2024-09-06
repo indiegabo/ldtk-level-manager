@@ -94,5 +94,45 @@ namespace LDtkLevelManagerEditor
 
             return projects;
         }
+
+
+        [MenuItem("Assets/LDtkLevelManager/Resync Project", true, priority = 80)] // Enable validation
+        private static bool ValidateResyncMenuItem()
+        {
+            // Check if any assets are selected
+            if (Selection.assetGUIDs.Length == 0)
+                return false; // No assets selected, hide the menu item
+
+            if (Selection.assetGUIDs.Length > 1)
+                return false; // More than one asset selected, hide the menu item
+
+            string guid = Selection.assetGUIDs[0];
+            string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            Project project = AssetDatabase.LoadAssetAtPath<Project>(assetPath);
+            return project != null;
+        }
+
+        [MenuItem("Assets/LDtkLevelManager/Resync Project", false, priority = 80)]
+        private static void ResyncProject()
+        {
+
+            string guid = Selection.assetGUIDs[0];
+            string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            Project project = AssetDatabase.LoadAssetAtPath<Project>(assetPath);
+
+            if (project == null)
+            {
+                LDtkLevelManager.Logger.Error($"Could not load project file at {assetPath}");
+                return;
+            }
+
+            project.ReSync();
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            EditorUtility.FocusProjectWindow();
+
+            Selection.activeObject = project;
+        }
     }
 }

@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace LDtkLevelManager.Implementations.Basic
 {
+    /// <summary>
+    /// A portal that can be used to transition between distant levels.
+    /// </summary>
     public class Portal : MonoBehaviour, IPortal
     {
         [SerializeField]
@@ -70,21 +73,26 @@ namespace LDtkLevelManager.Implementations.Basic
             }
         }
 
-        void IPortal.SetActive(bool isActive)
-        {
-            // gameObject.SetActive(isActive);
-        }
+        void IPortal.SetActive(bool isActive) { }
 
         #endregion
 
         #region Collisions
 
+        /// <summary>
+        /// Called when the player enters the portal bounds.
+        /// </summary>
+        /// <param name="other">The player's collider.</param>
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (!other.CompareTag(_playerTag)) return;
             _playerInsideBounds = true;
         }
 
+        /// <summary>
+        /// Called when the player exits the portal bounds.
+        /// </summary>
+        /// <param name="other">The player's collider.</param>
         private void OnTriggerExit2D(Collider2D other)
         {
             if (!other.CompareTag(_playerTag)) return;
