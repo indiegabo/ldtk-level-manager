@@ -321,7 +321,7 @@ namespace LDtkLevelManagerEditor
             }
         }
 
-        private LoadedLevelEntry LoadLevel(LDtkLevelManager.LevelInfo levelInfo, bool frameAfterLoad = true)
+        private LoadedLevelEntry LoadLevel(LevelInfo levelInfo, bool frameAfterLoad = true)
         {
             LoadedLevelEntry entry;
             if (levelInfo.HasScene)
@@ -336,7 +336,7 @@ namespace LDtkLevelManagerEditor
                     {
                         if (obj.TryGetComponent(out LDtkComponentLevel ldtkComponentLevel))
                         {
-                            PrepareLevel(obj);
+                            PrepareLevel(obj, levelInfo);
                             FrameLevel(obj);
                             break;
                         }
@@ -350,7 +350,7 @@ namespace LDtkLevelManagerEditor
                 entry = Settings.RegisterLoadedLevel(levelInfo, obj);
                 if (frameAfterLoad)
                 {
-                    PrepareLevel(obj);
+                    PrepareLevel(obj, levelInfo);
                     FrameLevel(obj);
                 }
             }
@@ -458,11 +458,11 @@ namespace LDtkLevelManagerEditor
             }
         }
 
-        private void PrepareLevel(GameObject obj)
+        private void PrepareLevel(GameObject obj, LevelInfo levelInfo)
         {
-            if (obj.TryGetComponent(out GeometryEnforcer geometryEnforcer))
+            if (obj.TryGetComponent(out SceneLevelSetuper setuper))
             {
-                geometryEnforcer.Enforce();
+                setuper.Setup(levelInfo);
             }
 
             if (obj.TryGetComponent(out LevelBoundaries boundaries))

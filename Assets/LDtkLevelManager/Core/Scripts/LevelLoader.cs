@@ -63,6 +63,12 @@ namespace LDtkLevelManager
 
         #region Getters
 
+
+        /// <summary>
+        /// The current project (<see cref="Project"/>).
+        /// </summary>   
+        public Project Project => _project;
+
         /// <summary>
         /// The current loading strategy (<see cref="LevelLoadingStrategy"/>) of the LevelManger (<see cref="LevelLoader"/>).
         /// </summary>

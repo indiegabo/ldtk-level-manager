@@ -2,6 +2,8 @@ using LDtkUnity;
 using LDtkUnity.Editor;
 using LDtkLevelManager;
 using UnityEngine;
+using UnityEditor;
+
 namespace LDtkLevelManagerEditor
 {
     public class LDtkProjectPostProcessor : LDtkPostprocessor

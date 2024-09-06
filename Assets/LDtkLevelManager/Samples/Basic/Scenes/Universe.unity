@@ -474,6 +474,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4199253421452915247, guid: 91df1b4316cd5ec4a939783a3708e719, type: 3}
+      propertyPath: _initialLevel
+      value: 
+      objectReference: {fileID: 1601154471049027453, guid: cce43c9b18b60c844b58ead0bc993bba, type: 2}
+    - target: {fileID: 4199253421452915247, guid: 91df1b4316cd5ec4a939783a3708e719, type: 3}
       propertyPath: _levelTransitioner
       value: 
       objectReference: {fileID: 1776743301}
