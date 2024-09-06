@@ -86,7 +86,7 @@ namespace LDtkLevelManager
         /// <summary>
         /// [Editor only] <br/><br/>
         /// Synchronizes the LDtk levels with the levels in the project and
-        /// evaluates the world areas of all levels in the project.<br/>
+        /// evaluates the worlds and areas of all levels in the project.<br/>
         /// This method is called automatically when the user edit the LDtk project from the LDtk app.<br/>
         /// </summary>
         public void ReSync()
@@ -238,7 +238,7 @@ namespace LDtkLevelManager
             AddLevel(level);
 
             // Method to update the level info.
-            void UpdateLevelInfo(LevelInfo levelInfo, LevelProcessingData processingData)
+            static void UpdateLevelInfo(LevelInfo levelInfo, LevelProcessingData processingData)
             {
                 levelInfo.UpdateInfo(processingData);
 

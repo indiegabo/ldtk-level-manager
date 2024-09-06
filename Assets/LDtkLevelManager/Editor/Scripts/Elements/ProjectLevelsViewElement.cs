@@ -16,8 +16,8 @@ namespace LDtkLevelManagerEditor
         private const string TemplateName = "ProjectInspector_LevelsView";
 
         private Project _project;
-        private List<LDtkLevelManager.LevelInfo> _leftBehind;
-        private List<LDtkLevelManager.LevelInfo> _searchableLevels = new();
+        private List<LevelInfo> _leftBehind;
+        private List<LevelInfo> _searchableLevels = new();
 
         private TemplateContainer _containerMain;
         private ListView _listLevels;
@@ -26,7 +26,6 @@ namespace LDtkLevelManagerEditor
         private DropdownField _fieldFilterArea;
         private TextField _fieldFilterName;
         private Button _buttonFilter;
-        private Button _buttonSyncLevels;
         private Label _labelTotalOfLevels;
         private PaginatorElement _paginatorElement;
 
@@ -95,9 +94,6 @@ namespace LDtkLevelManagerEditor
             };
 
             _listLeftBehind.itemsSource = _leftBehind;
-
-            _buttonSyncLevels = _containerMain.Q<Button>("button-sync-levels");
-            _buttonSyncLevels.clicked += () => _project.ReSync();
 
             EvaluateAreaFilter("None");
             Paginate();

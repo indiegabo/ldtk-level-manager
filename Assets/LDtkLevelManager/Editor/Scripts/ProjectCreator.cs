@@ -9,7 +9,7 @@ namespace LDtkLevelManagerEditor
 {
     public static class ProjectCreator
     {
-        [MenuItem("Assets/Create LDtkLevelManager Project", true, priority = 80)] // Enable validation
+        [MenuItem("Assets/LDtkLevelManager/Create Project", true, priority = 80)] // Enable validation
         private static bool ValidateCreationMenuItem()
         {
             // Check if any assets are selected
@@ -25,7 +25,7 @@ namespace LDtkLevelManagerEditor
             return projectFile != null;
         }
 
-        [MenuItem("Assets/Create LDtkLevelManager Project", false, priority = 80)]
+        [MenuItem("Assets/LDtkLevelManager/Create Project", false, priority = 80)]
         private static void RequestProjectCreation()
         {
             string guid = Selection.assetGUIDs[0];

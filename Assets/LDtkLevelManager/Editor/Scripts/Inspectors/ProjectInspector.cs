@@ -18,6 +18,7 @@ namespace LDtkLevelManagerEditor
         private TemplateContainer _containerMain;
         private TabViewElement _tabViewElement;
         private ObjectField _fieldLDtkProject;
+        private Button _buttonResync;
 
         private ProgressBar _progressBar;
 
@@ -48,15 +49,20 @@ namespace LDtkLevelManagerEditor
                 EvaluateTabViewPresence(_project.IsInitialized);
             });
 
+            _buttonResync = _containerMain.Q<Button>("button-resync");
+            _buttonResync.clicked += () =>
+            {
+                _project.ReSync();
+            };
+
             _tabViewElement = new();
+            _tabViewElement.AddToClassList("container");
             _containerMain.Add(_tabViewElement);
             ProjectMainViewElement mainViewElement = new(_project);
             ProjectLevelsViewElement levelsViewElement = new(_project);
-            ProjectSettingsViewElement settingsViewElement = new(_project);
 
             _tabViewElement.AddTab("Main", mainViewElement);
             _tabViewElement.AddTab("Levels", levelsViewElement);
-            _tabViewElement.AddTab("Settings", settingsViewElement);
 
             if (string.IsNullOrEmpty(TabViewElement.LastUsedTab))
             {
