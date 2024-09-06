@@ -69,9 +69,9 @@ namespace LDtkLevelManagerEditor
             _levelSceneElement = new LevelSceneElement();
             _containerSceneElement = _containerMain.Q<VisualElement>("container-scene-element");
             _containerSceneElement.Add(_levelSceneElement);
-            if (_level.HasScene)
+            if (_level.WrappedInScene)
             {
-                _levelSceneElement.LevelScene = _level.Scene;
+                _levelSceneElement.LevelScene = _level.SceneInfo;
             }
 
             _buttonCreateScene = _containerMain.Q<Button>("button-create-scene");
@@ -113,7 +113,7 @@ namespace LDtkLevelManagerEditor
 
         private void EvaluateSceneDisplay()
         {
-            if (_level.HasScene)
+            if (_level.WrappedInScene)
             {
                 _containerSceneElement.style.display = DisplayStyle.Flex;
                 _buttonDestroyScene.style.display = DisplayStyle.Flex;

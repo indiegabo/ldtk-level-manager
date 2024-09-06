@@ -36,7 +36,7 @@ namespace LDtkLevelManager
         private Project _project;
 
         [SerializeField]
-        private LevelLoadingStrategy _loadingStrategy;
+        private LoadingStrategy _loadingStrategy;
 
         [SerializeField]
         [Min(1)]
@@ -70,9 +70,9 @@ namespace LDtkLevelManager
         public Project Project => _project;
 
         /// <summary>
-        /// The current loading strategy (<see cref="LevelLoadingStrategy"/>) of the LevelManger (<see cref="LevelLoader"/>).
+        /// The current loading strategy (<see cref="Strategy"/>) of the LevelManger (<see cref="LevelLoader"/>).
         /// </summary>
-        public LevelLoadingStrategy LoadingStrategy => _loadingStrategy;
+        public LoadingStrategy Strategy => _loadingStrategy;
 
         /// <summary>
         /// The navigation layer's name set in the LDtk project
@@ -92,17 +92,17 @@ namespace LDtkLevelManager
         /// <summary>
         /// The event that is triggered when a level is exited.
         /// </summary>
-        public UnityEvent<LevelBehaviour> LevelExitedEvent => _navigationBridge.LevelExitedEvent;
+        public UnityEvent<LevelBehaviour> LevelExitedEvent => _navigationBridge.PlayerExitedLevel;
 
         /// <summary>
         /// The event that is triggered when a level is prepared.
         /// </summary>
-        public UnityEvent<LevelBehaviour, LevelTrail> LevelPreparedEvent => _navigationBridge.LevelPreparedEvent;
+        public UnityEvent<LevelBehaviour, LevelTrail> LevelPreparedEvent => _navigationBridge.LevelPrepared;
 
         /// <summary>
         /// The event that is triggered when a level is entered.
         /// </summary>
-        public UnityEvent<LevelBehaviour> LevelEnteredEvent => _navigationBridge.LevelEnteredEvent;
+        public UnityEvent<LevelBehaviour> LevelEnteredEvent => _navigationBridge.PlayerEnteredLevel;
 
         #endregion
 
@@ -140,7 +140,7 @@ namespace LDtkLevelManager
         /// Loads a level by its LDtk Iid. If the level is not present in the project, <br />
         /// an error will be logged and no action will be taken. <br />
         /// <br />
-        /// The level will be loaded using the current Loaders's defined strategy (<see cref="LevelLoadingStrategy"/>).
+        /// The level will be loaded using the current Loaders's defined strategy (<see cref="LoadingStrategy"/>).
         /// <br />
         /// <b>Strategies:</b>
         /// <list type="bullet">
@@ -163,14 +163,14 @@ namespace LDtkLevelManager
             switch (_loadingStrategy)
             {
                 /// Load the level by loading its neighboring levels.
-                case LevelLoadingStrategy.Neighbours:
+                case LoadingStrategy.Neighbours:
                     await LoadNeighboursAsync(level);
                     break;
 
                 /// Load the level by loading its world.
                 /// If the current level is not in the same world as the level to load,
                 /// the world will be loaded. Otherwise, nothing changes.
-                case LevelLoadingStrategy.Worlds:
+                case LoadingStrategy.Worlds:
                     if (_currentLevel == null || _currentLevel.WorldName != level.WorldName)
                     {
                         await LoadWorld(level.WorldName);
@@ -180,7 +180,7 @@ namespace LDtkLevelManager
                 /// Load the level by loading its area.
                 /// If the current level is not in the same area as the level to load,
                 /// the area will be loaded. Otherwise, nothing changes.
-                case LevelLoadingStrategy.Areas:
+                case LoadingStrategy.Areas:
                     if (_currentLevel == null || _currentLevel.AreaName != level.AreaName)
                     {
                         await LoadArea(level.AreaName);
@@ -211,9 +211,9 @@ namespace LDtkLevelManager
         /// <returns>A <see cref="UniTask"/> representing the asynchronous operation.</returns>
         public virtual async UniTask LoadWorld(string worldName)
         {
-            if (_loadingStrategy != LevelLoadingStrategy.Worlds)
+            if (_loadingStrategy != LoadingStrategy.Worlds)
             {
-                Logger.Error($"LoadWorld method can only be used with when strategy is set to '{LevelLoadingStrategy.Worlds}'.", this);
+                Logger.Error($"LoadWorld method can only be used with when strategy is set to '{LoadingStrategy.Worlds}'.", this);
                 return;
             }
 
@@ -252,11 +252,11 @@ namespace LDtkLevelManager
         /// <returns>A <see cref="UniTask"/> representing the asynchronous operation.</returns>
         public virtual async UniTask LoadArea(string areaName)
         {
-            if (_loadingStrategy != LevelLoadingStrategy.Areas)
+            if (_loadingStrategy != LoadingStrategy.Areas)
             {
                 // LoadArea can only be used when the strategy is set to LevelLoadingStrategy.Areas
                 Logger.Error(
-                    $"LoadArea method can only be used with when strategy is set to '{LevelLoadingStrategy.Areas}'.",
+                    $"LoadArea method can only be used with when strategy is set to '{LoadingStrategy.Areas}'.",
                     this
                 );
                 return;
@@ -308,7 +308,7 @@ namespace LDtkLevelManager
             if (!levelBehaviour.Prepare(out LevelTrail trail)) return;
 
             if (_navigationBridge != null)
-                _navigationBridge.LevelPreparedEvent.Invoke(levelBehaviour, trail);
+                _navigationBridge.LevelPrepared.Invoke(levelBehaviour, trail);
         }
 
         /// <summary>
@@ -332,7 +332,7 @@ namespace LDtkLevelManager
             if (!levelBehaviour.Prepare(position, facingSign, out LevelTrail trail)) return;
 
             if (_navigationBridge != null)
-                _navigationBridge.LevelPreparedEvent.Invoke(levelBehaviour, trail);
+                _navigationBridge.LevelPrepared.Invoke(levelBehaviour, trail);
         }
 
         /// <summary>
@@ -355,7 +355,7 @@ namespace LDtkLevelManager
             if (!levelBehaviour.Prepare(spotIid, out LevelTrail trail)) return;
 
             if (_navigationBridge != null)
-                _navigationBridge.LevelPreparedEvent.Invoke(levelBehaviour, trail);
+                _navigationBridge.LevelPrepared.Invoke(levelBehaviour, trail);
         }
 
 
@@ -378,7 +378,7 @@ namespace LDtkLevelManager
             if (!levelBehaviour.Prepare(connection, out LevelTrail trail)) return;
 
             if (_navigationBridge != null)
-                _navigationBridge.LevelPreparedEvent.Invoke(levelBehaviour, trail);
+                _navigationBridge.LevelPrepared.Invoke(levelBehaviour, trail);
         }
 
         /// <summary>
@@ -401,7 +401,7 @@ namespace LDtkLevelManager
             if (!levelBehaviour.Prepare(portal, out LevelTrail trail)) return;
 
             if (_navigationBridge != null)
-                _navigationBridge.LevelPreparedEvent.Invoke(levelBehaviour, trail);
+                _navigationBridge.LevelPrepared.Invoke(levelBehaviour, trail);
         }
 
 
@@ -443,7 +443,7 @@ namespace LDtkLevelManager
             _currentLevel = level;
             _currentBehaviour = behaviour;
 
-            if (_loadingStrategy == LevelLoadingStrategy.Neighbours)
+            if (_loadingStrategy == LoadingStrategy.Neighbours)
             {
                 _ = LoadNeighboursAsync(_currentLevel);
             }
@@ -472,7 +472,7 @@ namespace LDtkLevelManager
             _currentBehaviour.Enter();
             // Invokes the level entered event for the current level.
             if (_navigationBridge != null)
-                _navigationBridge.LevelEnteredEvent.Invoke(_currentBehaviour);
+                _navigationBridge.PlayerEnteredLevel.Invoke(_currentBehaviour);
         }
 
         /// <summary>
@@ -491,7 +491,7 @@ namespace LDtkLevelManager
 
                 // Invokes the level exited event for the current level.
                 if (_navigationBridge != null)
-                    _navigationBridge.LevelExitedEvent.Invoke(_currentBehaviour);
+                    _navigationBridge.PlayerExitedLevel.Invoke(_currentBehaviour);
             }
         }
 
@@ -620,7 +620,7 @@ namespace LDtkLevelManager
             if (!TryGetLevel(iid, out LevelInfo level)) return;
 
             // Check if the level should be loaded as an object or a scene
-            if (!level.HasScene)
+            if (!level.WrappedInScene)
             {
                 await LoadLevelObjectAsync(level);
             }
@@ -683,7 +683,7 @@ namespace LDtkLevelManager
             try
             {
                 AsyncOperationHandle<SceneInstance> handle = Addressables.LoadSceneAsync(
-                    level.Scene.AddressableKey,
+                    level.SceneInfo.AddressableKey,
                     LoadSceneMode.Additive
                 );
 
@@ -886,6 +886,48 @@ namespace LDtkLevelManager
         {
             // Attempt to get the level from the project.
             return _project.GetLevel(iid);
+        }
+
+        #endregion
+
+        #region Metadata
+
+        /// <summary>
+        /// Represents the different modes of loading a level.
+        /// </summary>
+        public enum LevelLoadingMode
+        {
+            /// <summary>
+            /// Only load the level without entering it.
+            /// </summary>
+            LoadOnly,
+
+            /// <summary>
+            /// Load the level and enter it.
+            /// </summary>
+            LoadAndEnter
+        }
+
+        /// <summary>
+        /// Represents the different strategies for loading levels.
+        /// </summary>
+        public enum LoadingStrategy
+        {
+            /// <summary>
+            /// Load the level and its neighbours.
+            /// </summary>
+            [InspectorName("Level and Neighbours")]
+            Neighbours,
+            /// <summary>
+            /// Load all the levels of the entire world.
+            /// </summary>
+            [InspectorName("Entire Worlds")]
+            Worlds,
+            /// <summary>
+            /// Load all the levels of the same area.
+            /// </summary>
+            [InspectorName("Areas")]
+            Areas,
         }
 
         #endregion

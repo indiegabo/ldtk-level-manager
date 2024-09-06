@@ -51,7 +51,7 @@ namespace LDtkLevelManagerEditor
                 "None",
             };
 
-            foreach (WorldInfo worldAreas in _project.GetAllWorldAreas())
+            foreach (WorldInfo worldAreas in _project.GetAllWorldInfos())
             {
                 worldChoices.Add(worldAreas.worldName);
             }
@@ -97,7 +97,7 @@ namespace LDtkLevelManagerEditor
             _listLeftBehind.itemsSource = _leftBehind;
 
             _buttonSyncLevels = _containerMain.Q<Button>("button-sync-levels");
-            _buttonSyncLevels.clicked += () => _project.SyncLevels();
+            _buttonSyncLevels.clicked += () => _project.ReSync();
 
             EvaluateAreaFilter("None");
             Paginate();

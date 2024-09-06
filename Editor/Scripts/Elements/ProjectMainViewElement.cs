@@ -34,7 +34,7 @@ namespace LDtkLevelManagerEditor
         {
             _project = project;
             _ldtkJson = _project.LDtkProject;
-            _worldAreas = _project.GetAllWorldAreas();
+            _worldAreas = _project.GetAllWorldInfos();
             _layers = _ldtkJson.Defs.Layers.Select(x => x.Identifier).ToList();
 
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();

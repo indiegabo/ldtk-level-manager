@@ -324,9 +324,9 @@ namespace LDtkLevelManagerEditor
         private LoadedLevelEntry LoadLevel(LevelInfo levelInfo, bool frameAfterLoad = true)
         {
             LoadedLevelEntry entry;
-            if (levelInfo.HasScene)
+            if (levelInfo.WrappedInScene)
             {
-                string path = AssetDatabase.GUIDToAssetPath(levelInfo.Scene.AssetGuid);
+                string path = AssetDatabase.GUIDToAssetPath(levelInfo.SceneInfo.AssetGuid);
                 Scene scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
                 entry = Settings.RegisterLoadedLevel(levelInfo, scene);
 
@@ -363,9 +363,9 @@ namespace LDtkLevelManagerEditor
 
             Settings.UnregisterLoadedLevel(levelInfo.Iid);
 
-            if (levelInfo.HasScene)
+            if (levelInfo.WrappedInScene)
             {
-                string path = AssetDatabase.GUIDToAssetPath(levelInfo.Scene.AssetGuid);
+                string path = AssetDatabase.GUIDToAssetPath(levelInfo.SceneInfo.AssetGuid);
                 SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
                 Scene scene = EditorSceneManager.GetSceneByName(sceneAsset.name);
                 if (scene != null && scene.isLoaded)

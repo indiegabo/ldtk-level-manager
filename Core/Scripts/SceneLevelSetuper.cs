@@ -41,7 +41,7 @@ namespace LDtkLevelManager
 
         public void Setup(LevelInfo levelInfo)
         {
-            if (!levelInfo.HasScene)
+            if (!levelInfo.WrappedInScene)
             {
                 return;
             }

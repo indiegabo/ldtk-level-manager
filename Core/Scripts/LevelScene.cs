@@ -13,6 +13,11 @@ using UnityEditor.SceneManagement;
 
 namespace LDtkLevelManager
 {
+    /// <summary>
+    /// Represents a scene for a level. Useful for levels where you need to compose the level
+    /// with stuf you only have available in the Unity Editor and would not be able to compose
+    /// in the LDtk app.
+    /// </summary>
     [System.Serializable]
     public class LevelScene
     {
@@ -32,11 +37,25 @@ namespace LDtkLevelManager
         public static readonly string AddressableSceneLabel = "LM_Scene";
         public static readonly string SceneLabelName = "LM_Scene";
 
+
+        /// <summary>
+        /// [Editor Only] <br/><br/>
+        /// Creates a scene for the given level and returns it as a LevelScene.
+        /// If a scene already exists for the level, this method will return false and not 
+        /// create a new scene.
+        /// </summary>
+        /// <param name="level">The level to create a scene for.</param>
+        /// <param name="levelScene">The created LevelScene, if any.</param>
+        /// <returns>True if the scene was created, false otherwise.</returns>
         public static bool CreateSceneForLevel(LevelInfo level, out LevelScene levelScene)
         {
-            if (level.HasScene && TryScenePath(level.Scene.AssetGuid, out string existentScenePath))
+            if (level.WrappedInScene && TryScenePath(level.SceneInfo.AssetGuid, out string existentScenePath))
             {
-                Logger.Error($"A scene for level <color=#FFFFFF>{level.name}</color> already exists. It can be found at <color=#FFFFFF>{existentScenePath}</color> .", level);
+                Logger.Error(
+                    $"A scene for level <color=#FFFFFF>{level.name}</color> already exists. "
+                    + $"It can be found at <color=#FFFFFF>{existentScenePath}</color> .",
+                    level
+                );
                 levelScene = null;
                 return false;
             }
@@ -78,11 +97,19 @@ namespace LDtkLevelManager
             return true;
         }
 
+        /// <summary>
+        /// [Editor Only] <br/><br/>
+        /// Destroys a scene associated with a level. <br/><br/>
+        /// If the level has a scene, this method will delete the scene asset and remove the scene from the level information.
+        /// </summary>
+        /// <param name="level">The level to remove the scene from.</param>
+        /// <param name="requestConfirmation">Whether or not to request confirmation from the user before destroying the scene.</param>
+        /// <returns>True if the scene was successfully destroyed, false otherwise.</returns>
         public static bool DestroySceneForLevel(LevelInfo level, bool requestConfirmation = true)
         {
-            if (!level.HasScene) return true;
+            if (!level.WrappedInScene) return true;
 
-            if (!TryScenePath(level.Scene.AssetGuid, out string scenePath))
+            if (!TryScenePath(level.SceneInfo.AssetGuid, out string scenePath))
             {
                 Logger.Error($"Could not find scene for level <color=#FFFFFF>{level.name}</color> . Did you create the scene through a LDtkLevelManagerProject inspector?", level);
                 return false;
@@ -112,7 +139,11 @@ namespace LDtkLevelManager
 
             if (!AssetDatabase.DeleteAsset(scenePath))
             {
-                Logger.Error($"Could not delete scene for level <color=#FFFFFF>{level.name}</color> . Please check the console for errors.", level);
+                Logger.Error(
+                    $"Could not delete scene for level <color=#FFFFFF>{level.name}</color> . "
+                    + "Please check the console for errors.",
+                    level
+                );
                 return false;
             }
 
@@ -122,11 +153,16 @@ namespace LDtkLevelManager
             return true;
         }
 
+        /// <summary>
+        /// [Editor Only] <br/><br/>
+        /// Enforces a scene to be addressable. If the scene does not exist, it will be removed from the level information.
+        /// </summary>
+        /// <param name="level">The level to enforce the scene for.</param>
         public static void EnforceSceneAddressable(LevelInfo level)
         {
-            if (!level.HasScene) return;
+            if (!level.WrappedInScene) return;
 
-            if (!TryScenePath(level.Scene.AssetGuid, out string path))
+            if (!TryScenePath(level.SceneInfo.AssetGuid, out string path))
             {
                 level.ClearScene();
                 return;
@@ -134,9 +170,17 @@ namespace LDtkLevelManager
 
             SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
             string addressableAddress = $"{AddressableSceneLabel}_{level.Iid}";
-            if (!sceneAsset.TrySetAsAddressable(addressableAddress, AddressableGroupName, AddressableSceneLabel))
+            if (!sceneAsset.TrySetAsAddressable(
+                addressableAddress,
+                AddressableGroupName,
+                AddressableSceneLabel
+            ))
             {
-                Logger.Error($"Could not set scene for level <color=#FFFFFF>{level.name}</color> as addressable. Please check the console for errors.", level);
+                Logger.Error(
+                    $"Could not set scene for level <color=#FFFFFF>{level.name}</color> as addressable. "
+                    + "Please check the console for errors.",
+                    level
+                );
             }
 
             string[] labels = AssetDatabase.GetLabels(sceneAsset);
@@ -146,15 +190,20 @@ namespace LDtkLevelManager
             }
         }
 
+
         /// <summary>
-        /// Regenerates the level object in the scene for the given level. This is useful if you modified the level's prefab or its children.
+        /// [Editor Only] <br/><br/>
+        /// Regenerates the level object associated with the given level by opening the scene,
+        /// removing the LDtk component and re-adding it.
+        /// If the level does not have a scene, the method will do nothing and return.
+        /// If the scene does not exist, it will be removed from the level information.
         /// </summary>
-        /// <param name="level">The level to regenerate the object for.</param>
+        /// <param name="level">The level for which the level object should be regenerated.</param>
         public static void RegenerateLevelObject(LevelInfo level)
         {
-            if (!level.HasScene) return;
+            if (!level.WrappedInScene) return;
 
-            if (!TryScenePath(level.Scene.AssetGuid, out string path))
+            if (!TryScenePath(level.SceneInfo.AssetGuid, out string path))
             {
                 level.ClearScene();
                 return;
@@ -187,6 +236,13 @@ namespace LDtkLevelManager
             EditorSceneManager.CloseScene(scene, true);
         }
 
+        /// <summary>
+        /// [Editor Only] <br/><br/>
+        /// Attempts to get the path of a scene asset from a GUID.
+        /// </summary>
+        /// <param name="guid">The GUID of the scene asset.</param>
+        /// <param name="path">The path of the scene asset, or null if the GUID is invalid.</param>
+        /// <returns>True if the GUID is valid and the path is not null, false otherwise.</returns>
         public static bool TryScenePath(string guid, out string path)
         {
             if (string.IsNullOrEmpty(guid)) { path = null; return false; }
@@ -195,6 +251,16 @@ namespace LDtkLevelManager
             return true;
         }
 
+        /// <summary>
+        /// [Editor Only] <br/><br/>
+        /// Requests a path from the user for a scene, given a level name.
+        /// The method will return false if the user cancels the operation.
+        /// Otherwise, it will return true and the scene path will be set to
+        /// the given level name, with the correct extension and directory.
+        /// </summary>
+        /// <param name="levelName">The name of the level.</param>
+        /// <param name="scenePath">The path of the scene, or null if the operation is canceled.</param>
+        /// <returns>True if the operation is successful, false otherwise.</returns>
         private static bool RequestPathForUser(string levelName, out string scenePath)
         {
             string chosenPath = EditorUtility.OpenFolderPanel("Select a folder", Application.dataPath, "");
