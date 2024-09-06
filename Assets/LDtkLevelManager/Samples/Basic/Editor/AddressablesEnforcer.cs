@@ -35,7 +35,7 @@ namespace LDtkLevelManager.Implementations.Basic
 
             if (project == null) return;
 
-            project.SyncLevels();
+            project.ReSync();
             project.EvaluateWorldAreas();
 
             AssetDatabase.SaveAssets();

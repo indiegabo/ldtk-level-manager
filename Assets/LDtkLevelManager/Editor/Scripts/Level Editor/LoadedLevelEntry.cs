@@ -32,7 +32,7 @@ namespace LDtkLevelManagerEditor
 
         public bool IsLoaded()
         {
-            if (!_levelInfo.HasScene)
+            if (!_levelInfo.WrappedInScene)
             {
                 return _loadedObject != null;
             }

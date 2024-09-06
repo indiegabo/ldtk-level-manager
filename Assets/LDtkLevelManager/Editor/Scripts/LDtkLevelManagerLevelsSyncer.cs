@@ -38,8 +38,7 @@ namespace LDtkLevelManagerEditor
                 return;
             }
 
-            project.SyncLevels();
-            project.EvaluateWorldAreas();
+            project.ReSync();
 
             ClearProjectToProcess();
             ClearProcessSubjectLevels();// No need to process levels since the project is already synced
@@ -75,7 +74,6 @@ namespace LDtkLevelManagerEditor
             }
 
             ClearProcessSubjectLevels();
-
         }
 
         private static Dictionary<string, Project> GenerateProjectsDictionary()

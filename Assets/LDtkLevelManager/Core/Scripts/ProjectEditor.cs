@@ -17,6 +17,11 @@ namespace LDtkLevelManager
         public static string AddressablesGroupName = "LDtkLevelManager";
         public static string AddressablesLevelsLabel = "LDtkLevels";
 
+        /// <summary>    
+        /// [Editor only] <br/><br/>
+        /// Finds all LDtkLevelManager projects in this Unity project.
+        /// </summary>
+        /// <returns>A list of all LDtkLevelManager projects in the project.</returns>
         public static List<Project> FindAllProjects()
         {
             string[] guids = AssetDatabase.FindAssets($"t:{nameof(Project)}");
@@ -38,7 +43,12 @@ namespace LDtkLevelManager
         #endregion
 
 
-        // Settings
+        /// <summary>
+        /// [Editor only] <br/><br/>
+        /// Used to ensure a clean project deletion.<br/>
+        /// This method is called automatically when the user deletes the project asset.<br/>
+        /// It iterates over all levels and removes any addressable labels or references to the deleted scene assets.<br/>
+        /// </summary>
         public void ClearBeforeDeletion()
         {
             IEnumerable<LevelInfo> levels = _levels.Values.Concat(_lostLevels.Values);
@@ -48,7 +58,7 @@ namespace LDtkLevelManager
 
                 if (!levelInfo.LeftBehind) continue;
 
-                string path = AssetDatabase.GUIDToAssetPath(levelInfo.Scene.AssetGuid);
+                string path = AssetDatabase.GUIDToAssetPath(levelInfo.SceneInfo.AssetGuid);
                 SceneAsset sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(path);
                 if (sceneAsset != null)
                 {
@@ -58,16 +68,28 @@ namespace LDtkLevelManager
             }
         }
 
+        /// <summary>
+        /// [Editor only] <br/><br/>
+        /// Initializes the <see cref="LDtkLevelManager.Project"/> from an LDtk project file.<br/>
+        /// This method is called automatically when creating a new LDtkLevelManager project.<br/>
+        /// </summary>
+        /// <param name="projectFile">The LDtk project file to initialize the project from.</param>
         public void Initialize(LDtkProjectFile projectFile)
         {
             _ldtkProjectFile = projectFile;
-            SyncLevels();
+            ReSync();
             EvaluateWorldAreas();
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
 
-        public void SyncLevels()
+        /// <summary>
+        /// [Editor only] <br/><br/>
+        /// Synchronizes the LDtk levels with the levels in the project and
+        /// evaluates the world areas of all levels in the project.<br/>
+        /// This method is called automatically when the user edit the LDtk project from the LDtk app.<br/>
+        /// </summary>
+        public void ReSync()
         {
             if (_ldtkProjectFile == null) return;
 
@@ -107,10 +129,20 @@ namespace LDtkLevelManager
                 SoftRemoveLevel(iid);
             }
 
+            EvaluateWorldAreas();
+
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+
+            Logger.Message($"Re-synced project: {name}.");
         }
 
+        /// <summary>
+        /// Generates a dictionary mapping LDtk level IIDs to their
+        /// corresponding LDtkLevelFile assets.
+        /// </summary>
+        /// <returns>A dictionary mapping LDtk level IIDs to their
+        /// corresponding LDtkLevelFile assets.</returns>
         private Dictionary<string, LDtkLevelFile> GenerateLdtkFilesDictionary()
         {
             Dictionary<string, LDtkLevelFile> levels = new();
@@ -131,25 +163,47 @@ namespace LDtkLevelManager
             return levels;
         }
 
+        /// <summary>
+        /// [Editor only] <br/><br/>
+        /// Processes a level file and its associated Unity scene.
+        /// 
+        /// This method is used by the LDtkLevelManager to process levels and their associated
+        /// scenes. It will set the level as addressable and create a LevelInfo object for it.
+        /// If the level already exists, the LevelInfo object will be updated.
+        /// 
+        /// If the level has a scene, it will be regenerated and the addressable will be enforced.
+        /// </summary>
+        /// <param name="levelAssetPath">The path to the level asset.</param>
+        /// <param name="levelFile">The LDtkLevelFile object.</param>
+        /// <param name="world">(Optional) The world to which the level belongs to.</param>
+        /// <returns>The IID of the level.</returns>
         public string ProcessLevelFile(string levelAssetPath, LDtkLevelFile levelFile, World world = null)
         {
-            LDtkComponentLevel componentLevel = AssetDatabase.LoadAssetAtPath<LDtkComponentLevel>(levelAssetPath);
-            if (componentLevel == null) return string.Empty;
+            // Load the LDtkComponentLevel and LDtkIid components from the given path.
+            (LDtkComponentLevel componentLevel, LDtkIid ldtkIid) = LoadLevelComponents(levelAssetPath);
 
+            if (componentLevel == null || ldtkIid == null) return string.Empty;
+
+            // Load the level asset.
             Object asset = AssetDatabase.LoadAssetAtPath<Object>(levelAssetPath);
             if (asset == null) return string.Empty;
 
-            LDtkIid ldtkIid = componentLevel.GetComponent<LDtkIid>();
-
+            // Generate the addressable address.
             string address = $"{LevelInfo.AdressableAddressPrexix}_{ldtkIid.Iid}";
             string groupName = LevelInfo.AddressableGroupName;
             string label = LevelInfo.AddressableLabel;
 
+            // Try to set the level as addressable.
             if (!levelFile.TrySetAsAddressable(address, groupName, label))
             {
-                Logger.Error($"Could not set level <color=#FFFFFF>{levelFile.name}</color> as addressable. Please check the console for errors.", levelFile);
+                Logger.Error(
+                    $"Could not set level <color=#FFFFFF>{levelFile.name}</color> as addressable. "
+                    + "Please check the console for errors.",
+                    levelFile
+                );
             }
 
+            // Initialize the processing data.
             LevelProcessingData processingData = new()
             {
                 project = this,
@@ -162,39 +216,71 @@ namespace LDtkLevelManager
                 world = world
             };
 
+            // Check if the level is already in the project.
             if (TryGetLevel(ldtkIid.Iid, out LevelInfo level))
             {
-                level.UpdateInfo(processingData);
-
-                if (level.HasScene)
-                {
-                    LevelScene.RegenerateLevelObject(level);
-                    LevelScene.EnforceSceneAddressable(level);
-                }
-
+                UpdateLevelInfo(level, processingData);
                 return ldtkIid.Iid;
             }
 
+            // Check if the level is in the lost levels dictionary.
             if (_lostLevels.TryGetValue(ldtkIid.Iid, out LevelInfo lostLevel))
             {
-                lostLevel.UpdateInfo(processingData);
-                if (lostLevel.HasScene)
-                {
-                    LevelScene.RegenerateLevelObject(lostLevel);
-                    LevelScene.EnforceSceneAddressable(lostLevel);
-                }
+                UpdateLevelInfo(lostLevel, processingData);
                 AddLevel(lostLevel);
                 return lostLevel.Iid;
             }
 
+            // Create a new level.
             level = CreateInstance<LevelInfo>();
             level.name = asset.name;
             level.Initialize(processingData);
             AddLevel(level);
 
+            // Method to update the level info.
+            void UpdateLevelInfo(LevelInfo levelInfo, LevelProcessingData processingData)
+            {
+                levelInfo.UpdateInfo(processingData);
+
+                // If the level has a scene, regenerate it and enforce the addressable.
+                if (levelInfo.WrappedInScene)
+                {
+                    LevelScene.RegenerateLevelObject(levelInfo);
+                    LevelScene.EnforceSceneAddressable(levelInfo);
+                }
+            }
+
+            // Return the IID of the level.
             return ldtkIid.Iid;
         }
 
+        /// <summary>
+        /// Loads the LDtkComponentLevel asset and LDtkIid component from the given path.
+        /// </summary>
+        /// <param name="levelAssetPath">The path to the level asset.</param>
+        /// <returns>A tuple of the LDtkComponentLevel and LDtkIid components.</returns>
+        (LDtkComponentLevel ComponentLevel, LDtkIid LdtkIid) LoadLevelComponents(string levelAssetPath)
+        {
+            LDtkComponentLevel componentLevel = AssetDatabase.LoadAssetAtPath<LDtkComponentLevel>(
+                levelAssetPath
+            );
+
+            if (componentLevel == null) return (null, null);
+
+            LDtkIid ldtkIid = componentLevel.GetComponent<LDtkIid>();
+
+            return (componentLevel, ldtkIid);
+        }
+
+        /// <summary>
+        /// [Editor only] <br/><br/>
+        /// Adds a level to the project.
+        /// </summary>
+        /// <remarks>
+        /// If the level is already in the project, it will be updated.
+        /// If the level is in the lost levels dictionary, it will be removed from there.
+        /// </remarks>
+        /// <param name="level">The level to add.</param>
         public void AddLevel(LevelInfo level)
         {
             if (!_levels.ContainsKey(level.Iid))
@@ -214,11 +300,20 @@ namespace LDtkLevelManager
             }
         }
 
+        /// <summary>
+        /// [Editor only] <br/><br/>
+        /// Removes a level from the project.
+        /// </summary>
+        /// <remarks>
+        /// If the level has a scene, it will be destroyed.
+        /// The level will be removed from the project and the lost levels dictionary.
+        /// </remarks>
+        /// <param name="iid">The IID of the level to remove.</param>
         public void RemoveLevel(string iid)
         {
             if (_levels.TryGetValue(iid, out LevelInfo level))
             {
-                if (level.HasScene)
+                if (level.WrappedInScene)
                 {
                     LevelScene.DestroySceneForLevel(level, false);
                 }
@@ -233,7 +328,7 @@ namespace LDtkLevelManager
 
             if (_lostLevels.TryGetValue(iid, out LevelInfo lostLevel))
             {
-                if (lostLevel.HasScene)
+                if (lostLevel.WrappedInScene)
                 {
                     LevelScene.DestroySceneForLevel(lostLevel, false);
                 }
@@ -244,6 +339,15 @@ namespace LDtkLevelManager
             }
         }
 
+        /// <summary>
+        /// [Editor only] <br/><br/>
+        /// Soft removes a level from the project.
+        /// </summary>
+        /// <remarks>
+        /// The level will be removed from the project, and added to the lost levels dictionary.
+        /// The level will be marked as left behind.
+        /// </remarks>
+        /// <param name="iid">The IID of the level to soft remove.</param>
         public void SoftRemoveLevel(string iid)
         {
             if (!_levels.TryGetValue(iid, out LevelInfo level)) return;
@@ -255,6 +359,13 @@ namespace LDtkLevelManager
             level.SetLeftBehind(true);
         }
 
+        /// <summary>
+        /// [Editor only] <br/><br/>
+        /// Clears the project by removing all levels and lost levels from the project.
+        /// The levels will be removed from the project and the lost levels dictionary.
+        /// The levels will be destroyed if they have a scene.
+        /// The changes will be saved to disk.
+        /// </summary>
         public void HardClear()
         {
             GetAllLevels().ForEach(level =>
@@ -280,17 +391,24 @@ namespace LDtkLevelManager
             Debug.Log($"Lost levels: {_lostLevels.Count}");
         }
 
+        /// <summary>
+        /// Returns a list of all levels that were left behind in the project.
+        /// A level is considered "left behind" if its LDtk level file was not found in the project.
+        /// </summary>
+        /// <returns>A list of all levels that were left behind in the project.</returns>
         public List<LevelInfo> GetAllLeftBehind()
         {
             return _lostLevels.Values.ToList();
         }
 
+
         /// <summary>
-        /// Returns a paginated list of levels filtered by world, area and level name.
+        /// [Editor only] <br/><br/>
+        /// Returns a paginated list of levels based on the given filters and pagination info.
         /// </summary>
-        /// <param name="filters">The filters to apply</param>
-        /// <param name="pagination">The pagination info</param>
-        /// <returns>A paginated list of levels</returns>
+        /// <param name="filters">The filters to apply to the levels.</param>
+        /// <param name="pagination">The pagination info to use when getting the levels.</param>
+        /// <returns>A paginated response containing the levels matching the filters and pagination info.</returns>
         public PaginatedResponse<LevelInfo> GetPaginatedLevels(LevelListFilters filters, PaginationInfo pagination)
         {
             // Normalize the input filter values to lower case
@@ -352,16 +470,26 @@ namespace LDtkLevelManager
             return response;
         }
 
+        /// <summary>
+        /// [Editor only] <br/><br/>
+        /// Evaluates all the world areas in the project and returns a dictionary of <c>WorldInfo</c> instances.
+        /// The dictionary is keyed by world name. Each <c>WorldInfo</c> instance contains the world identifier, world name, and a list of areas.
+        /// The areas are sorted in alphabetical order.
+        /// <para>
+        /// This method is used by the editor to display the world areas in the project.
+        /// </para>
+        /// </summary>
+        /// <returns>A dictionary of <c>WorldInfo</c> instances, keyed by world name.</returns>
         public WorldInfoDictionary EvaluateWorldAreas()
         {
             if (_ldtkProjectFile == null) return default;
 
             LdtkJson ldtkJson = _ldtkProjectFile.FromJson;
-            _worldAreas.Clear();
+            _worldInfoRegistry.Clear();
 
             foreach (World world in ldtkJson.Worlds)
             {
-                _worldAreas.Add(world.Identifier, new WorldInfo()
+                _worldInfoRegistry.Add(world.Identifier, new WorldInfo()
                 {
                     worldIid = world.Iid,
                     worldName = world.Identifier,
@@ -372,7 +500,7 @@ namespace LDtkLevelManager
             foreach (LevelInfo level in _levels.Values)
             {
                 if (string.IsNullOrEmpty(level.WorldName) || string.IsNullOrEmpty(level.AreaName)) continue;
-                if (!_worldAreas.TryGetValue(level.WorldName, out WorldInfo worldAreas)) continue;
+                if (!_worldInfoRegistry.TryGetValue(level.WorldName, out WorldInfo worldAreas)) continue;
                 if (worldAreas.areas.Contains(level.AreaName)) continue;
                 worldAreas.areas.Add(level.AreaName);
             }
@@ -380,9 +508,14 @@ namespace LDtkLevelManager
             EditorUtility.SetDirty(this);
             AssetDatabase.SaveAssetIfDirty(this);
 
-            return _worldAreas;
+            return _worldInfoRegistry;
         }
 
+        /// <summary>
+        /// [Editor only] <br/><br/>
+        /// Sets the navigation layer for the project.
+        /// </summary>
+        /// <param name="layerName">The name of the layer to set as the navigation layer.</param>
         public void SetNavigationLayer(string layerName)
         {
             _navigationLayer = layerName;

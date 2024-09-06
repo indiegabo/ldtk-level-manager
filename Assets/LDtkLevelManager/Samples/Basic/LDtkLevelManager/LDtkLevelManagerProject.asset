@@ -201,7 +201,7 @@ MonoBehaviour:
   _lostLevels:
     _listKeys: []
     _listValues: []
-  _worldAreas:
+  _worldInfoRegistry:
     _listKeys:
     - City
     - Horizontal_World

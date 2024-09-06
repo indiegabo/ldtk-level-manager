@@ -3,6 +3,10 @@ using UnityEngine.Events;
 
 namespace LDtkLevelManager
 {
+    /// <summary>
+    /// Used by the <see cref="LDtkLevelManager.LevelLoader"/> to fire events about the
+    /// player's navigation through the Universe and its levels.
+    /// </summary>
     [CreateAssetMenu(fileName = "Level Navigation Bridge", menuName = "LDtkLevelManager/Navigation/Navigation Bridge", order = 0)]
     public class LevelNavigationBridge : ScriptableObject
     {
@@ -22,19 +26,21 @@ namespace LDtkLevelManager
         #region Getters
 
         /// <summary>
-        /// The event that is triggered when a level is exited.
+        /// Occurs when the player has exited a level.
         /// </summary>
-        public UnityEvent<LevelBehaviour> LevelExitedEvent => _levelExitedEvent;
+        public UnityEvent<LevelBehaviour> PlayerExitedLevel => _levelExitedEvent;
 
         /// <summary>
-        /// The event that is triggered when a level is prepared.
+        /// Occurs when a level is prepared for the player to enter. The curtains are
+        /// still closed an about to be opened.
         /// </summary>
-        public UnityEvent<LevelBehaviour, LevelTrail> LevelPreparedEvent => _levelPreparedEvent;
+        public UnityEvent<LevelBehaviour, LevelTrail> LevelPrepared => _levelPreparedEvent;
 
         /// <summary>
-        /// The event that is triggered when a level is entered.
+        /// Occurs when the player has entered a level and the curtains have been
+        /// opened.
         /// </summary>
-        public UnityEvent<LevelBehaviour> LevelEnteredEvent => _levelEnteredEvent;
+        public UnityEvent<LevelBehaviour> PlayerEnteredLevel => _levelEnteredEvent;
 
         #endregion
     }

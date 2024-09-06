@@ -78,7 +78,7 @@ namespace LDtkLevelManager.Cartography
             }
 
             // Get all the world areas from the project.
-            List<WorldInfo> worldAreas = _project.GetAllWorldAreas();
+            List<WorldInfo> worldAreas = _project.GetAllWorldInfos();
 
             foreach (WorldInfo worldArea in worldAreas)
             {

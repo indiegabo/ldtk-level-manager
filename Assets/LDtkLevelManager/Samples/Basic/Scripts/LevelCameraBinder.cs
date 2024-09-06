@@ -41,14 +41,14 @@ namespace LDtkLevelManager.Implementations.Basic
 
         private void OnEnable()
         {
-            _levelBehaviour.ExitedEvent.AddListener(OnLevelExited);
-            _levelBehaviour.PreparationStartedEvent.AddListener(OnLevelPreparationStarted);
+            _levelBehaviour.PlayerExited.AddListener(OnLevelExited);
+            _levelBehaviour.PreparationStarted.AddListener(OnLevelPreparationStarted);
         }
 
         private void OnDisable()
         {
-            _levelBehaviour.ExitedEvent.RemoveListener(OnLevelExited);
-            _levelBehaviour.PreparationStartedEvent.RemoveListener(OnLevelPreparationStarted);
+            _levelBehaviour.PlayerExited.RemoveListener(OnLevelExited);
+            _levelBehaviour.PreparationStarted.RemoveListener(OnLevelPreparationStarted);
         }
 
         #endregion

@@ -3,6 +3,10 @@ using UnityEngine.Events;
 
 namespace LDtkLevelManager
 {
+    /// <summary>
+    /// A MonoBehaviour that listens to the events from a <see cref="LevelBehaviour"/> and 
+    /// dispatches them to its subscribers. Awesome for entities prefabs.
+    /// </summary>
     public class LevelSubject : MonoBehaviour
     {
         #region Inspector
@@ -33,13 +37,40 @@ namespace LDtkLevelManager
 
         #region Getters
 
+        /// <summary>
+        /// Gets a value indicating whether this instance has a level behaviour.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance has a level behaviour; otherwise, <c>false</c>.
+        /// </value>
         public bool HasBehaviour => _levelBehaviour != null;
-        private LevelBehaviour LevelBehaviour => _levelBehaviour;
+
+        /// <summary>
+        /// Occurs when the level set property has changed.
+        /// </summary>
         public UnityEvent<LevelBehaviour> LevelSet => _levelSet;
 
+        /// <summary>
+        /// Occurs when the player exited the level.
+        /// </summary>
         public UnityEvent<LevelBehaviour> Exited => _exited;
+
+        /// <summary>
+        /// Occurs when the level has started preparation. Meaning the player will be
+        /// spawned in the level.
+        /// </summary>
         public UnityEvent<LevelBehaviour, Vector2> PreparationStarted => _preparationStarted;
+
+        /// <summary>
+        /// Occurs when the level has finished preparation. Meaning the player is in the 
+        /// correct spot in the level and the curtains are about to be opened.
+        /// </summary>
         public UnityEvent<LevelBehaviour, LevelTrail> Prepared => _prepared;
+
+        /// <summary>
+        /// Occurs when the level has finished entering. Curtains are now open and the
+        /// gameplay is restablished.
+        /// </summary>
         public UnityEvent<LevelBehaviour> Entered => _entered;
 
         #endregion
@@ -99,20 +130,20 @@ namespace LDtkLevelManager
         {
             if (behaviour == null) return;
 
-            _levelBehaviour.ExitedEvent.AddListener(OnLevelExited);
-            _levelBehaviour.PreparationStartedEvent.AddListener(OnLevelPreparationStarted);
-            _levelBehaviour.PreparedEvent.AddListener(OnLevelPrepared);
-            _levelBehaviour.EnteredEvent.AddListener(OnLevelEntered);
+            _levelBehaviour.PlayerExited.AddListener(OnLevelExited);
+            _levelBehaviour.PreparationStarted.AddListener(OnLevelPreparationStarted);
+            _levelBehaviour.Prepared.AddListener(OnLevelPrepared);
+            _levelBehaviour.PlayerEntered.AddListener(OnLevelEntered);
         }
 
         private void UnregisterEvents(LevelBehaviour behaviour)
         {
             if (behaviour == null) return;
 
-            _levelBehaviour.ExitedEvent.RemoveListener(OnLevelExited);
-            _levelBehaviour.PreparationStartedEvent.RemoveListener(OnLevelPreparationStarted);
-            _levelBehaviour.PreparedEvent.RemoveListener(OnLevelPrepared);
-            _levelBehaviour.EnteredEvent.RemoveListener(OnLevelEntered);
+            _levelBehaviour.PlayerExited.RemoveListener(OnLevelExited);
+            _levelBehaviour.PreparationStarted.RemoveListener(OnLevelPreparationStarted);
+            _levelBehaviour.Prepared.RemoveListener(OnLevelPrepared);
+            _levelBehaviour.PlayerEntered.RemoveListener(OnLevelEntered);
         }
 
         #endregion
