@@ -3,6 +3,8 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System.Linq;
 using LDtkLevelManager.Utils;
+using LDtkUnity;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -45,9 +47,13 @@ namespace LDtkLevelManager
                 return false;
             }
 
-            GameObject ldtkLevelObject = PrefabUtility.InstantiatePrefab(level.Asset) as GameObject;
             Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Additive);
-            SceneManager.MoveGameObjectToScene(ldtkLevelObject, scene);
+            GameObject ldtkLevelObject = PrefabUtility.InstantiatePrefab(level.Asset, scene) as GameObject;
+
+            if (ldtkLevelObject.TryGetComponent(out SceneLevelSetuper setuper))
+            {
+                setuper.Setup(level);
+            }
 
             EditorSceneManager.SaveScene(scene, path);
             EditorSceneManager.CloseScene(scene, true);
@@ -138,6 +144,47 @@ namespace LDtkLevelManager
             {
                 AssetDatabase.SetLabels(sceneAsset, labels.Append(SceneLabelName).ToArray());
             }
+        }
+
+        /// <summary>
+        /// Regenerates the level object in the scene for the given level. This is useful if you modified the level's prefab or its children.
+        /// </summary>
+        /// <param name="level">The level to regenerate the object for.</param>
+        public static void RegenerateLevelObject(LevelInfo level)
+        {
+            if (!level.HasScene) return;
+
+            if (!TryScenePath(level.Scene.AssetGuid, out string path))
+            {
+                level.ClearScene();
+                return;
+            }
+
+            Scene scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
+
+            if (!scene.IsValid())
+            {
+                level.ClearScene();
+                return;
+            }
+
+            foreach (GameObject root in scene.GetRootGameObjects())
+            {
+                if (root.TryGetComponent(out LDtkComponentLevel componentLevel))
+                {
+                    GameObject.DestroyImmediate(componentLevel.gameObject);
+                    break;
+                }
+            }
+
+            GameObject ldtkLevelObject = PrefabUtility.InstantiatePrefab(level.Asset, scene) as GameObject;
+            if (ldtkLevelObject.TryGetComponent(out SceneLevelSetuper setuper))
+            {
+                setuper.Setup(level);
+            }
+
+            EditorSceneManager.SaveScene(scene, path);
+            EditorSceneManager.CloseScene(scene, true);
         }
 
         public static bool TryScenePath(string guid, out string path)

@@ -168,6 +168,7 @@ namespace LDtkLevelManager
 
                 if (level.HasScene)
                 {
+                    LevelScene.RegenerateLevelObject(level);
                     LevelScene.EnforceSceneAddressable(level);
                 }
 
@@ -179,6 +180,7 @@ namespace LDtkLevelManager
                 lostLevel.UpdateInfo(processingData);
                 if (lostLevel.HasScene)
                 {
+                    LevelScene.RegenerateLevelObject(lostLevel);
                     LevelScene.EnforceSceneAddressable(lostLevel);
                 }
                 AddLevel(lostLevel);

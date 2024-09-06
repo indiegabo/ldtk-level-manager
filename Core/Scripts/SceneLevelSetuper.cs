@@ -1,15 +1,15 @@
 using LDtkUnity;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace LDtkLevelManager
 {
     [Tooltip("Enforces the geometry of the level. Only needed if the level has a scene. This solution is focused on levels wrapped in scenes.")]
-    public class GeometryEnforcer : MonoBehaviour
+    public class SceneLevelSetuper : MonoBehaviour
     {
         #region Fields
 
         private LDtkIid _ldtkIid;
-        private LevelInfo _info;
 
         #endregion
 
@@ -23,7 +23,7 @@ namespace LDtkLevelManager
                 return;
             }
 
-            if (!LevelLoader.Instance.TryGetLevel(_ldtkIid.Iid, out _info))
+            if (!LevelLoader.Instance.TryGetLevel(_ldtkIid.Iid, out LevelInfo info))
             {
                 var message = $"{name} could not have its geometry enforced because there was no level "
                     + $"found under the LDtk Iid {_ldtkIid.Iid}";
@@ -31,15 +31,7 @@ namespace LDtkLevelManager
                 return;
             }
 
-            // Only needed if the level has a scene. This solution is focused
-            // on levels pre instantiated in scenes.
-            if (!_info.HasScene)
-            {
-                Destroy(this);
-                return;
-            }
-
-            Enforce();
+            Setup(info);
             Destroy(this);
         }
 
@@ -47,13 +39,26 @@ namespace LDtkLevelManager
 
         #region Geometry
 
-        public void Enforce()
+        public void Setup(LevelInfo levelInfo)
         {
-            var colliders = GetComponentsInChildren<CompositeCollider2D>();
-
-            foreach (var collider in colliders)
+            if (!levelInfo.HasScene)
             {
-                collider.GenerateGeometry();
+                return;
+            }
+
+            var tilemaps = GetComponentsInChildren<TilemapCollider2D>();
+
+            foreach (var tilemapCollider in tilemaps)
+            {
+                if (tilemapCollider.hasTilemapChanges)
+                {
+                    tilemapCollider.ProcessTilemapChanges();
+                }
+
+                if (tilemapCollider.TryGetComponent(out CompositeCollider2D compositeCollider2D))
+                {
+                    compositeCollider2D.GenerateGeometry();
+                }
             }
         }
 
