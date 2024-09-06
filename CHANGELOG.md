@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/indiegabo/ldtk-level-manager/compare/v1.1.3...v1.2.0) (2024-09-06)
+
+
+### Features
+
+* SceneLevelSetuper ([63f66c1](https://github.com/indiegabo/ldtk-level-manager/commit/63f66c1881f4659b4cd5c1060fe1ce0c76c6b84e))
+
 ## [1.1.3](https://github.com/indiegabo/ldtk-level-manager/compare/v1.1.2...v1.1.3) (2024-09-05)
 
 
