@@ -40,6 +40,7 @@ namespace LDtkLevelManagerEditor
         #region Fields
 
         private Dictionary<string, Project> _projects;
+        private Dictionary<Project, LdtkJson> _jsons;
         private Dictionary<string, World> _selectedProjectWorlds;
 
         private TemplateContainer _containerMain;
@@ -47,8 +48,10 @@ namespace LDtkLevelManagerEditor
         private ObjectField _fieldLevelEditorScene;
         private ObjectField _fieldUniverseScene;
         private DropdownField _dropdownProject;
+        private Button _buttonRefreshProject;
         private DropdownField _dropdownWorld;
         private VisualElement _containerSelectedLevel;
+        private VisualElement _containerNoLevelSelected;
         private Label _labelSelectedLevel;
         private ScrollView _scrollViewSelectedLevel;
         private Button _buttonOpenLevelEditorScene;
@@ -78,12 +81,14 @@ namespace LDtkLevelManagerEditor
             _projects = new();
             _selectedProjectWorlds = new();
             _currentlySelectedLevels = new();
+            _jsons = new();
 
             List<Project> projects = Project.FindAllProjects();
 
             foreach (Project project in projects)
             {
                 _projects.Add(project.name, project);
+                _jsons.Add(project, project.LDtkProject);
             }
 
             VisualElement root = rootVisualElement;
@@ -93,6 +98,12 @@ namespace LDtkLevelManagerEditor
 
             _dropdownProject = _containerMain.Q<DropdownField>("dropdown-project");
             InitializeProjectsDropdown();
+
+            _buttonRefreshProject = _containerMain.Q<Button>("button-refresh");
+            _buttonRefreshProject.clicked += () =>
+            {
+                RebuildCurrentState();
+            };
 
             _dropdownWorld = _containerMain.Q<DropdownField>("dropdown-world");
 
@@ -113,6 +124,9 @@ namespace LDtkLevelManagerEditor
             _containerSelectedLevel = _containerMain.Q<VisualElement>("container-selected-level");
             _containerSelectedLevel.style.display = DisplayStyle.None;
 
+            _containerNoLevelSelected = _containerMain.Q<VisualElement>("container-no-level-selected");
+            _containerNoLevelSelected.style.display = DisplayStyle.Flex;
+
             _labelSelectedLevel = _containerMain.Q<Label>("label-selected-level");
             _scrollViewSelectedLevel = _containerMain.Q<ScrollView>("scroll-view-selected-level");
 
@@ -132,18 +146,15 @@ namespace LDtkLevelManagerEditor
             _mapView.SetSelectionAnalysisCallback(OnLevelSelectionChanged);
             _mapView.SetLevelLoadToggleRequestCallback(OnLevelLoadToggleRequest);
 
-            if (Settings.HasLevelEditorScene && Settings.HasCurrentProject && _projects.ContainsKey(Settings.CurrentProject.name))
+            root.Add(_containerMain);
+
+            if (Settings.HasCurrentProject && _projects.ContainsKey(Settings.CurrentProject.name))
             {
                 RebuildCurrentState();
-            }
-            else
-            {
-                Settings.CurrentProject = null;
-                Settings.ResetState();
-                EvaluateProjectSelection();
+                return;
             }
 
-            root.Add(_containerMain);
+            BuildDefaultState();
         }
 
         private void OnEnable()
@@ -189,10 +200,18 @@ namespace LDtkLevelManagerEditor
 
         private void RebuildCurrentState()
         {
-            _dropdownProject.SetValueWithoutNotify(Settings.CurrentProject.name);
-            InitializeWorldsDropdown(Settings.CurrentProject);
+            if (!Settings.HasCurrentProject) return;
 
-            if (Settings.HasInitializedWorldName && CurrentProjectContainsWorld(Settings.InitializedWorldName))
+            LdtkJson ldtkJson = Settings.CurrentProject.LDtkProject;
+            _jsons[Settings.CurrentProject] = ldtkJson;
+
+            _dropdownProject.SetValueWithoutNotify(Settings.CurrentProject.name);
+            InitializeWorldsDropdown(ldtkJson);
+
+            if (
+                Settings.HasInitializedWorldName
+                && CurrentProjectContainsWorld(Settings.InitializedWorldName)
+            )
             {
                 _dropdownWorld.SetValueWithoutNotify(Settings.InitializedWorldName);
                 LoadWorldSilently(Settings.InitializedWorldName);
@@ -213,6 +232,13 @@ namespace LDtkLevelManagerEditor
                 World world = _selectedProjectWorlds[worldName];
                 _mapView.InitializeWorld(Settings.CurrentProject, world, Settings.MapViewTransform);
             }
+        }
+
+        private void BuildDefaultState()
+        {
+            Settings.CurrentProject = null;
+            Settings.ResetState();
+            EvaluateProjectSelection();
         }
 
         private void EvaluateProjectSelection()
@@ -239,7 +265,13 @@ namespace LDtkLevelManagerEditor
 
         private void OnProjectSelected(Project project)
         {
-            InitializeWorldsDropdown(Settings.CurrentProject);
+            if (!_jsons.TryGetValue(project, out LdtkJson ldtkJson))
+            {
+                LDtkLevelManager.Logger.Error($"Could not find LdtkJson for project {project.name}");
+                return;
+            }
+
+            InitializeWorldsDropdown(ldtkJson);
 
             if (_selectedProjectWorlds.Count > 0)
             {
@@ -258,9 +290,9 @@ namespace LDtkLevelManagerEditor
 
         #region Worlds
 
-        private void InitializeWorldsDropdown(Project project)
+        private void InitializeWorldsDropdown(LdtkJson ldtkJson)
         {
-            List<World> worlds = project.LDtkProject.Worlds.ToList();
+            List<World> worlds = ldtkJson.Worlds.ToList();
             _selectedProjectWorlds.Clear();
 
             foreach (World world in worlds)
@@ -312,7 +344,13 @@ namespace LDtkLevelManagerEditor
 
         private void OnLevelLoadToggleRequest(MapLevelElement element)
         {
-            if (!IsMapSceneOpen()) { return; }
+            if (!IsMapSceneOpen())
+            {
+                LDtkLevelManager.Logger.Warning(
+                    $"Trying to operate on level {element.Info.Iid} but Level Editor Scene not open."
+                );
+                return;
+            }
 
             if (!Settings.IsLevelLoaded(element.Info))
             {
@@ -392,46 +430,73 @@ namespace LDtkLevelManagerEditor
             }
         }
 
+        /// <summary>
+        /// Called whenever the selection of levels changes.
+        /// </summary>
+        /// <param name="selectables">The new selection of levels.</param>
         private void OnLevelSelectionChanged(List<ISelectable> selectables)
         {
+            // Clear the current selection
             ClearSelectedLevels();
 
+            // Store the new selection of levels
             _currentlySelectedLevels = selectables;
             int totalSelected = _currentlySelectedLevels.Count;
 
+            // If no levels are selected, show the "No level selected" UI
             if (totalSelected == 0)
             {
-                _containerSelectedLevel.style.display = DisplayStyle.None;
+                EvaluateStateLevelDisplay(totalSelected);
                 return;
             }
 
+            // If one level is selected, show the details of that level in the UI
             if (totalSelected == 1)
             {
                 if (selectables[0] is MapLevelElement mapElement)
                 {
+                    // Create a new SelectedLevelElement for the selected level
                     SelectedLevelElement selectedLevelElement = new(mapElement);
                     _scrollViewSelectedLevels.Add(selectedLevelElement);
 
+                    // Create a new LevelElement for the selected level
                     LevelElement levelElement = new(mapElement.Info);
                     _labelSelectedLevel.text = mapElement.Info.Name;
                     _scrollViewSelectedLevel.Add(levelElement);
                 }
 
-                _containerSelectedLevel.style.display = DisplayStyle.Flex;
+                // Show the details of the selected level
+                EvaluateStateLevelDisplay(totalSelected);
                 return;
             }
 
+            // If multiple levels are selected, show the details of all of them in the UI
             foreach (ISelectable selectable in selectables)
             {
                 if (selectable is MapLevelElement MapElement)
                 {
+                    // Create a new SelectedLevelElement for the selected level
                     SelectedLevelElement selectedLevelElement = new(MapElement);
                     _scrollViewSelectedLevels.Add(selectedLevelElement);
                 }
             }
 
-            _containerSelectedLevel.style.display = DisplayStyle.None;
-            _buttonLoadSelection.style.display = DisplayStyle.Flex;
+            // Show the details of all of the selected levels
+            EvaluateStateLevelDisplay(totalSelected);
+
+        }
+
+        private void EvaluateStateLevelDisplay(int totalOfSelectedLevels)
+        {
+            if (totalOfSelectedLevels > 1)
+            {
+                _containerSelectedLevel.style.display = DisplayStyle.None;
+                _containerNoLevelSelected.style.display = DisplayStyle.None;
+                return;
+            }
+
+            _containerSelectedLevel.style.display = totalOfSelectedLevels == 1 ? DisplayStyle.Flex : DisplayStyle.None;
+            _containerNoLevelSelected.style.display = totalOfSelectedLevels == 0 ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
         private void ClearSelectedLevels()
