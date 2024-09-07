@@ -35,6 +35,11 @@ namespace LDtkLevelManagerEditor
         {
             base.capabilities |= Capabilities.Selectable | Capabilities.Groupable;
 
+            if (levelInfo == null)
+            {
+                throw new ArgumentNullException(nameof(levelInfo));
+            }
+
             _mapView = mapView;
             _level = level;
             _levelInfo = levelInfo;

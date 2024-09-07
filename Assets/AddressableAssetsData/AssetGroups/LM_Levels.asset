@@ -107,14 +107,8 @@ MonoBehaviour:
     m_SerializedLabels:
     - LM_Level
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7a728d479aebedc49927ec3e069e8268
-    m_Address: LM__d873bf90-4ce0-11ef-8367-2318af412280
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - LM_Level
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b1186245869a1654598eac6d76f7cebb
-    m_Address: LM__2e514df0-4ce0-11ef-8367-59d9a8933545
+  - m_GUID: 86809d92edcf0af4aba9dd21cdcbbbb1
+    m_Address: LM__d68ca5b0-4ce0-11ef-8367-418dfc165db4
     m_ReadOnly: 0
     m_SerializedLabels:
     - LM_Level

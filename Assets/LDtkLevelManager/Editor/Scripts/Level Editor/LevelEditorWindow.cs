@@ -277,8 +277,12 @@ namespace LDtkLevelManagerEditor
             ClearSelectedLevels();
             ClearLoadedLevels();
             Settings.InitializedWorldName = worldName;
-            World world = _selectedProjectWorlds[worldName];
-            rootVisualElement.schedule.Execute(() => _mapView.InitializeWorld(Settings.CurrentProject, world));
+
+            World world = Settings.CurrentProject.LDtkProject.Worlds.FirstOrDefault(x => x.Identifier == worldName);
+            _selectedProjectWorlds[worldName] = world;
+            rootVisualElement.schedule.Execute(
+                () => _mapView.InitializeWorld(Settings.CurrentProject, world)
+            );
         }
 
         private void LoadAllCurrentWorldLevels()
