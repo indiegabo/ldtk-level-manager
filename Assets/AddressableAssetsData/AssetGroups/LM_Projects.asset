@@ -10,16 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: LDtkLevelManagerLevels
+  m_Name: LM_Projects
   m_EditorClassIdentifier: 
-  m_GroupName: LDtkLevelManagerLevels
+  m_GroupName: LM_Projects
   m_Data:
     m_SerializedData: []
-  m_GUID: 5f463ad88382c1a4d81251de0396f148
-  m_SerializeEntries: []
+  m_GUID: f79dd7443d4ce96499210cbcde079caf
+  m_SerializeEntries:
+  - m_GUID: cce43c9b18b60c844b58ead0bc993bba
+    m_Address: LM_Project_363af480-7820-11ed-a571-47952de1c82f
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - LM_Project
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 1ba21a4611ac85b4f95e8eab66dc3553, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 29122426a588b92418d42f2c6d7479bb, type: 2}
-    - {fileID: 11400000, guid: 995a17bf9db1d4d46a80cc0c7069a3ec, type: 2}
+    - {fileID: 11400000, guid: c83033aecf289fa4c98f8c6eb55a675a, type: 2}
+    - {fileID: 11400000, guid: 7ca5439b744e3fc418288b24ee5581f6, type: 2}

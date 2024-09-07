@@ -49,6 +49,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 95a1da0824f6cb1448e5ac6e6925d238, type: 2}
   - {fileID: 11400000, guid: a37e504dbb683a14fb0f495a5c44a84a, type: 2}
   - {fileID: 11400000, guid: 6e40047e2cc6cae4eb50029edc0e41e3, type: 2}
+  - {fileID: 11400000, guid: 1cfdad1a64dafab46902675e23060e7e, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -90,13 +91,9 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
-    - LDtkLevels
-    - LDtkSceneLevel
-    - LDtkVaniaLevel
-    - LDtkVaniaScene
-    - LDtkLevelManagerLevel
     - LM_Level
     - LM_Scene
+    - LM_Project
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: c86b2b71c0fb49a4099b56a1ee2a0d14, type: 2}
