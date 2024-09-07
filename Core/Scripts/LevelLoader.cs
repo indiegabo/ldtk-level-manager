@@ -120,7 +120,6 @@ namespace LDtkLevelManager
                 }
 
                 Destroy(gameObject);
-
                 return;
             }
 
@@ -129,7 +128,8 @@ namespace LDtkLevelManager
             if (_persistent)
                 DontDestroyOnLoad(gameObject);
 
-            LDtkIidBank.CacheIidData(_project.LDtkProject);
+            LdtkJson json = _project.LDtkProject;
+            LDtkIidBank.CacheIidData(json);
         }
 
         #endregion

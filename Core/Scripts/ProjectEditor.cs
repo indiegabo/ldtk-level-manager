@@ -133,8 +133,6 @@ namespace LDtkLevelManager
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-
-            Logger.Message($"Re-synced project: {name}.");
         }
 
         /// <summary>

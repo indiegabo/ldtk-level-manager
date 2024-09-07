@@ -100,6 +100,8 @@ namespace LDtkLevelManagerEditor
 
             foreach (LDtkUnity.Level level in world.Levels)
             {
+                if (level == null) continue;
+
                 project.TryGetLevel(level.Iid, out LDtkLevelManager.LevelInfo levelInfo);
 
                 Rect levelRect = new()
@@ -123,6 +125,7 @@ namespace LDtkLevelManagerEditor
 
             foreach (LDtkUnity.Level level in world.Levels)
             {
+                if (level == null) continue;
 
                 project.TryGetLevel(level.Iid, out LDtkLevelManager.LevelInfo levelInfo);
 
@@ -147,6 +150,7 @@ namespace LDtkLevelManagerEditor
 
             foreach (LDtkUnity.Level level in world.Levels)
             {
+                if (level == null) continue;
 
                 project.TryGetLevel(level.Iid, out LDtkLevelManager.LevelInfo levelInfo);
 

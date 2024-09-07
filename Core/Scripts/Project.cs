@@ -68,7 +68,22 @@ namespace LDtkLevelManager
         /// <summary>
         /// The LDtk project JSON.
         /// </summary>
-        public LdtkJson LDtkProject => _ldtkProject ??= _ldtkProjectFile.FromJson;
+#if UNITY_EDITOR
+        public LdtkJson LDtkProject => _ldtkProjectFile.FromJson;
+#else
+        public LdtkJson LDtkProject 
+        {
+            get 
+            {
+                if (_ldtkProject == null)
+                {
+                    _ldtkProject = _ldtkProjectFile.FromJson;
+                }
+
+                return _ldtkProject;
+            }
+        }
+#endif
 
         /// <summary>
         /// The number of pixels per unit in the LDtk project.
