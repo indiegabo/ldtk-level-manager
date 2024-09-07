@@ -13,9 +13,8 @@ namespace LDtkLevelManager
     {
         #region Static
 
-        public static string AddressablesProjectAddress = "LDtkLevelManagerProject";
-        public static string AddressablesGroupName = "LDtkLevelManager";
-        public static string AddressablesLevelsLabel = "LDtkLevels";
+        public static string AddressablesProjectGroup = "LM_Projects";
+        public static string AddressablesProjectLabel = "LM_Project";
 
         /// <summary>    
         /// [Editor only] <br/><br/>
@@ -96,6 +95,19 @@ namespace LDtkLevelManager
             Dictionary<string, LDtkLevelFile> ldtkFiles = GenerateLdtkFilesDictionary();
 
             LdtkJson ldtkJson = _ldtkProjectFile.FromJson;
+
+            if (!this.TrySetAsAddressable(
+               $"{AddressablesProjectLabel}_{ldtkJson.Iid}",
+               AddressablesProjectGroup,
+               AddressablesProjectLabel
+            ))
+            {
+                Logger.Error(
+                    $"Failed to set project as addressable: {AddressablesProjectLabel}_{ldtkJson.Iid}",
+                    this
+                );
+            }
+
             HashSet<string> presentLevels = new();
 
             foreach (World world in ldtkJson.Worlds)

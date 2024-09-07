@@ -150,6 +150,31 @@ MonoBehaviour:
     _assetGuid: 
     _addressableKey: 
   _leftBehind: 1
+--- !u!114 &-5002981046446572785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76238ae897cf99441a858f74751e647c, type: 3}
+  m_Name: City_Level_8_Json
+  m_EditorClassIdentifier: 
+  _project: {fileID: 11400000}
+  _iid: 66d401b0-4ce0-11ef-8367-e9d421a431a6
+  _displayName: 
+  _worldName: City
+  _areaName: 
+  _asset: {fileID: 8824414179476436942, guid: 86809d92edcf0af4aba9dd21cdcbbbb1, type: 3}
+  _levelFile: {fileID: -8655009601392300639, guid: 86809d92edcf0af4aba9dd21cdcbbbb1, type: 3}
+  _assetPath: Assets/LDtkLevelManager/Samples/Basic/LDtk/LDtkSample/City_Level_8.ldtkl
+  _address: LM__66d401b0-4ce0-11ef-8367-e9d421a431a6
+  _scene:
+    _assetGuid: 
+    _addressableKey: 
+  _leftBehind: 0
 --- !u!114 &-4835384297412290868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,7 +324,7 @@ MonoBehaviour:
   _scene:
     _assetGuid: 
     _addressableKey: 
-  _leftBehind: 0
+  _leftBehind: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,7 +357,7 @@ MonoBehaviour:
     - cc428b60-25d0-11ef-b9ac-9f703a597d6d
     - b8abf8a0-ed50-11ed-a82b-5f61164d4b1d
     - e4e69a60-ed50-11ed-a82b-27cab0fad380
-    - d68ca5b0-4ce0-11ef-8367-418dfc165db4
+    - 66d401b0-4ce0-11ef-8367-e9d421a431a6
     _listValues:
     - {fileID: 1601154471049027453}
     - {fileID: -4835384297412290868}
@@ -349,7 +374,7 @@ MonoBehaviour:
     - {fileID: 7097329947834075805}
     - {fileID: -7134989087529076595}
     - {fileID: 164763834221068449}
-    - {fileID: -1041302224685899693}
+    - {fileID: -5002981046446572785}
   _lostLevels:
     _listKeys:
     - f6c10eb0-4ce0-11ef-8367-e5b6516cc48a
@@ -359,6 +384,7 @@ MonoBehaviour:
     - 31aefa10-4ce0-11ef-8367-3982227cceea
     - 2537fd20-4ce0-11ef-8367-d5c59b17412b
     - c43918f0-4ce0-11ef-8367-fba9ad4f421f
+    - d68ca5b0-4ce0-11ef-8367-418dfc165db4
     _listValues:
     - {fileID: -5554863327026390395}
     - {fileID: 7881604449884563627}
@@ -367,6 +393,7 @@ MonoBehaviour:
     - {fileID: -5187443766902695685}
     - {fileID: -7711099947427997117}
     - {fileID: 2963084935044549980}
+    - {fileID: -1041302224685899693}
   _worldInfoRegistry:
     _listKeys:
     - City

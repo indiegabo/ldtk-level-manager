@@ -128,8 +128,13 @@ namespace LDtkLevelManager
             if (_persistent)
                 DontDestroyOnLoad(gameObject);
 
-            LdtkJson json = _project.LDtkProject;
-            LDtkIidBank.CacheIidData(json);
+            if (!ProjectService.Instance.TryGetLdtkJson(_project, out LdtkJson ldtkProject))
+            {
+                Logger.Error($"Failed to load LDtkJson for project {_project.name}.", this);
+                return;
+            }
+
+            LDtkIidBank.CacheIidData(ldtkProject);
         }
 
         #endregion

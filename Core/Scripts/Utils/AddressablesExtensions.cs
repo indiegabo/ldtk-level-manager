@@ -63,7 +63,6 @@ namespace LDtkLevelManager.Utils
                 );
             }
 
-
             AssetReference assetReference = settings.CreateAssetReference(guid);
             assetReference.SetEditorAsset(obj);
             AddressableAssetEntry entry = settings.CreateOrMoveEntry(guid, group);
