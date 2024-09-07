@@ -1,3 +1,16 @@
+# [1.3.0](https://github.com/indiegabo/ldtk-level-manager/compare/v1.2.0...v1.3.0) (2024-09-07)
+
+
+### Bug Fixes
+
+* Project JSON cache was preventing new level loads ([6a47c12](https://github.com/indiegabo/ldtk-level-manager/commit/6a47c122203188769dce91b75006d5f190b72c45))
+
+
+### Features
+
+* Level Editor Window refresh button and other layout adjustments ([f71fce3](https://github.com/indiegabo/ldtk-level-manager/commit/f71fce35783f1db11f7a5830c848a6afd39f27dc))
+* ProjectService. Projects now have their own addressables groups and label. ([49f47de](https://github.com/indiegabo/ldtk-level-manager/commit/49f47deb67f01b99e1fb21b8e5369611f0093860))
+
 # [1.2.0](https://github.com/indiegabo/ldtk-level-manager/compare/v1.1.3...v1.2.0) (2024-09-06)
 
 
