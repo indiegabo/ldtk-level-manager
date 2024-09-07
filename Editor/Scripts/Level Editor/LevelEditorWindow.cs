@@ -347,7 +347,8 @@ namespace LDtkLevelManagerEditor
             if (!IsMapSceneOpen())
             {
                 LDtkLevelManager.Logger.Warning(
-                    $"Trying to operate on level {element.Info.Iid} but Level Editor Scene not open."
+                    $"Trying to operate on level <color=#FFFFFF><b>{element.Info.Name}</b></color> "
+                    + "but Level Editor Scene not open."
                 );
                 return;
             }
