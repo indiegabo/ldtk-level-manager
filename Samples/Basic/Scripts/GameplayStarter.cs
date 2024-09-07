@@ -26,6 +26,9 @@ namespace LDtkLevelManager.Implementations.Basic
             _levelLoader = LevelLoader.Instance;
         }
 
+        /// <summary>
+        /// Instantiates the player and loads a level.
+        /// </summary>
         private void Start()
         {
             Player player = Instantiate(_player);

@@ -248,7 +248,7 @@ namespace LDtkLevelManager.Implementations.Basic
         private async UniTask PerformTransitions(LevelTransitionMoment moment)
         {
             // For now this is just a dummy transition
-            await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
+            await UniTask.CompletedTask;
         }
 
         #endregion
