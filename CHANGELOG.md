@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/indiegabo/ldtk-level-manager/compare/v1.3.0...v1.4.0) (2024-09-07)
+
+
+### Features
+
+* Cartographer ([fdbbb74](https://github.com/indiegabo/ldtk-level-manager/commit/fdbbb74554b1f9a11948077e87075d21d742f591))
+
 # [1.3.0](https://github.com/indiegabo/ldtk-level-manager/compare/v1.2.0...v1.3.0) (2024-09-07)
 
 
