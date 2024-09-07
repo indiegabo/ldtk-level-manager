@@ -1,29 +1,48 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Assets/LDtkLevelManager/Resources/Styles/MapEditor_style.uss?fileID=7433441132597879392&amp;guid=1ab9ee8df067fd542bfd83a33d454394&amp;type=3#MapEditor_style" />
+    <Style src="project://database/Assets/LDtkLevelManager/Editor/Resources/Styles/MapEditor_style.uss?fileID=7433441132597879392&amp;guid=1ab9ee8df067fd542bfd83a33d454394&amp;type=3#MapEditor_style" />
+    <Style src="project://database/Assets/LDtkLevelManager/Editor/Resources/Styles/Common_style.uss?fileID=7433441132597879392&amp;guid=404bba9bc59b6124d814e73187e6b1fc&amp;type=3#Common_style" />
     <LDtkLevelManagerEditor.SliptView fixed-pane-initial-dimension="260" name="container-main">
         <ui:VisualElement name="container-left" style="flex-grow: 1;">
-            <ui:VisualElement name="container-project-dropdown" class="container-left-bar" style="flex-grow: 0;">
-                <ui:Label tabindex="-1" text="Project" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-project" class="label-left-bar" />
-                <ui:DropdownField name="dropdown-project" />
-            </ui:VisualElement>
-            <ui:VisualElement name="container-level-editor-scene" class="container-left-bar" style="flex-direction: column; width: 100%;">
-                <ui:Label tabindex="-1" text="Level Editor Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-map-scene" class="label-left-bar" />
-                <ui:VisualElement name="container" style="flex-grow: 1; flex-direction: row; width: 100%;">
-                    <uie:ObjectField name="field-level-editor-scene" type="UnityEditor.SceneAsset, UnityEditor.CoreModule" style="flex-grow: 1;" />
-                    <ui:Button text="Open" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-open-level-editor-scene" />
+            <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" style="flex-grow: 1;">
+                <ui:VisualElement name="container-project-dropdown" class="container-left-bar" style="flex-grow: 0;">
+                    <ui:Label tabindex="-1" text="Project" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-project" class="label-left-bar label-header" />
+                    <ui:VisualElement name="container-project" style="flex-direction: row; align-items: center;">
+                        <ui:VisualElement name="container-dummy" style="flex-grow: 1; align-items: stretch; justify-content: center;">
+                            <ui:DropdownField name="dropdown-project" />
+                        </ui:VisualElement>
+                        <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-refresh" tooltip="Refresh the project view" style="width: 20px; height: 20px; align-items: center; justify-content: center;">
+                            <ui:VisualElement name="icon-refresh" style="background-image: resource(&apos;Icons/refresh&apos;); width: 12px; height: 12px; -unity-background-scale-mode: scale-to-fit;" />
+                        </ui:Button>
+                    </ui:VisualElement>
                 </ui:VisualElement>
-            </ui:VisualElement>
-            <ui:VisualElement name="container-universe-scene" class="container-left-bar" style="flex-direction: column; width: 100%;">
-                <ui:Label tabindex="-1" text="Universe Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-universe-scene" class="label-left-bar" />
-                <ui:VisualElement name="container" style="flex-grow: 1; flex-direction: row; width: 100%;">
-                    <uie:ObjectField name="field-universe-scene" type="UnityEditor.SceneAsset, UnityEditor.CoreModule" style="flex-grow: 1;" />
-                    <ui:Button text="Open" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-open-universe-scene" />
+                <ui:VisualElement name="container-scenes" class="container">
+                    <ui:Label tabindex="-1" text="Scenes" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-scenes" class="label-header" />
+                    <ui:VisualElement name="container-level-editor-scene" class="container-left-bar" style="flex-direction: column; width: 100%;">
+                        <ui:Label tabindex="-1" text="Level Editor Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-map-scene" class="label-left-bar" />
+                        <ui:VisualElement name="container" style="flex-grow: 1; flex-direction: row; width: 100%;">
+                            <uie:ObjectField name="field-level-editor-scene" type="UnityEditor.SceneAsset, UnityEditor.CoreModule" style="flex-grow: 1;" />
+                            <ui:Button text="Open" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-open-level-editor-scene" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="container-universe-scene" class="container-left-bar" style="flex-direction: column; width: 100%;">
+                        <ui:Label tabindex="-1" text="Universe Scene" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-universe-scene" class="label-left-bar" />
+                        <ui:VisualElement name="container" style="flex-grow: 1; flex-direction: row; width: 100%;">
+                            <uie:ObjectField name="field-universe-scene" type="UnityEditor.SceneAsset, UnityEditor.CoreModule" style="flex-grow: 1;" />
+                            <ui:Button text="Open" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-open-universe-scene" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
                 </ui:VisualElement>
-            </ui:VisualElement>
-            <ui:VisualElement name="container-selected-level" class="container-left-bar" style="flex-grow: 1;">
-                <ui:Label tabindex="-1" text="Selected Level" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-selected-level" class="label-left-bar" />
-                <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="scroll-view-selected-level" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.45); padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px;" />
-            </ui:VisualElement>
+                <ui:VisualElement name="container-selected-level-main" class="container">
+                    <ui:Label tabindex="-1" text="Selected Level" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-selected-level-main" class="label-header" />
+                    <ui:VisualElement name="container-selected-level" class="container-left-bar" style="flex-grow: 1;">
+                        <ui:Label tabindex="-1" text="Level name" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-selected-level" class="label-left-bar" style="margin-bottom: 5px;" />
+                        <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" name="scroll-view-selected-level" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.45); padding-top: 5px; padding-right: 5px; padding-bottom: 5px; padding-left: 5px; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="container-no-level-selected" class="container-left-bar" style="flex-grow: 1; display: none;">
+                        <ui:Label tabindex="-1" text="None" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:ScrollView>
         </ui:VisualElement>
         <ui:VisualElement name="container-right" style="flex-grow: 1;">
             <uie:Toolbar name="toolbar-right">
