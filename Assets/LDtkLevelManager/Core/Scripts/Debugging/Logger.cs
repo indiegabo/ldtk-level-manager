@@ -5,7 +5,7 @@ namespace LDtkLevelManager
 {
         public static class Logger
         {
-                private static string Prefix => $"<color=#FFFFFF>[LDtkLevelManager]</color>";
+                private static string Prefix => $"<color=#FFFFFF><b>[LDtkLevelManager]</b></color>";
 
                 /// <summary>
                 /// Logs a message.

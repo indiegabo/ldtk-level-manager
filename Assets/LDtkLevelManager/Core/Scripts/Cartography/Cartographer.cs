@@ -1,25 +1,55 @@
 using System.Collections.Generic;
 using System.Linq;
+using LDtkUnity;
 using UnityEngine;
 
 namespace LDtkLevelManager.Cartography
 {
     public class Cartographer : MonoBehaviour
     {
+        #region Static
+
+        private static Dictionary<Project, Cartographer> _cartographers = new();
+
+        public static void RegisterCartograpers(List<CartographerEntry> entries)
+        {
+            _cartographers.Clear();
+            foreach (CartographerEntry entry in entries)
+            {
+                if (_cartographers.ContainsKey(entry.project))
+                {
+                    _cartographers[entry.project] = entry.cartographer;
+                }
+                else
+                {
+                    _cartographers.Add(entry.project, entry.cartographer);
+                }
+            }
+        }
+
+        public static Cartographer ForProject(Project project)
+        {
+            return _cartographers[project];
+        }
+
+        public struct CartographerEntry
+        {
+            public Project project;
+            public Cartographer cartographer;
+        }
+
+        #endregion
+
         #region Inspector
 
-        [SerializeField]
-        private Project _project;
-
-        [SerializeField]
-        private int _pixelsPerUnit = 16;
-
-        [SerializeField]
-        private float _scaleFactor = 1;
 
         #endregion
 
         #region Fields
+
+        private Project _project;
+        private LdtkJson _ldtkJson;
+        private float _scaleFactor = 0.1f;
 
         private Dictionary<string, LevelCartography> _levels;
         private Dictionary<string, WorldCartography> _worlds;
@@ -28,7 +58,7 @@ namespace LDtkLevelManager.Cartography
 
         #region Getters
 
-        public int PixelsPerUnit => _pixelsPerUnit;
+        public int PixelsPerUnit => _ldtkJson.DefaultGridSize;
         public float ScaleFactor => _scaleFactor;
 
         #endregion
@@ -37,7 +67,18 @@ namespace LDtkLevelManager.Cartography
 
         private void Awake()
         {
-            GenerateCartography();
+        }
+
+        #endregion
+
+        #region Initialization
+
+        public void Initialize(Project project, LdtkJson ldtkJson)
+        {
+            _project = project;
+            _ldtkJson = ldtkJson;
+
+            GenerateCartography(_project);
         }
 
         #endregion
@@ -47,11 +88,11 @@ namespace LDtkLevelManager.Cartography
         /// <summary>
         /// Generate the cartography for all levels and areas of the project.
         /// </summary>
-        private void GenerateCartography()
+        private void GenerateCartography(Project project)
         {
             _levels = new Dictionary<string, LevelCartography>();
             _worlds = new Dictionary<string, WorldCartography>();
-            List<LevelInfo> levels = _project.GetAllLevels();
+            List<LevelInfo> levels = project.GetAllLevels();
 
             // Build a dictionary with a key that combines the world and area names,
             // and the value is a list of level cartographies that belong to that world and area.
@@ -72,7 +113,7 @@ namespace LDtkLevelManager.Cartography
 
                 // Add the level cartography to the list for the key.
                 List<LevelCartography> levelsList = levelsByWorldAndArea[key];
-                LevelCartography levelCartography = new(level, _pixelsPerUnit, _scaleFactor);
+                LevelCartography levelCartography = new(level, PixelsPerUnit, _scaleFactor);
                 levelsList.Add(levelCartography);
                 _levels.Add(level.Iid, levelCartography);
             }
@@ -166,7 +207,7 @@ namespace LDtkLevelManager.Cartography
 
         #region Debugging
 
-        private void LogWorlds()
+        public void LogWorlds()
         {
             foreach (WorldCartography world in _worlds.Values)
             {
