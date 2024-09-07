@@ -182,6 +182,8 @@ MonoBehaviour:
     - cc428b60-25d0-11ef-b9ac-9f703a597d6d
     - b8abf8a0-ed50-11ed-a82b-5f61164d4b1d
     - e4e69a60-ed50-11ed-a82b-27cab0fad380
+    - d873bf90-4ce0-11ef-8367-2318af412280
+    - 2e514df0-4ce0-11ef-8367-59d9a8933545
     _listValues:
     - {fileID: 1601154471049027453}
     - {fileID: -4835384297412290868}
@@ -198,6 +200,8 @@ MonoBehaviour:
     - {fileID: 7097329947834075805}
     - {fileID: -7134989087529076595}
     - {fileID: 164763834221068449}
+    - {fileID: 5825952949040595098}
+    - {fileID: 9167108619046311189}
   _lostLevels:
     _listKeys: []
     _listValues: []
@@ -398,6 +402,31 @@ MonoBehaviour:
     _assetGuid: 
     _addressableKey: 
   _leftBehind: 0
+--- !u!114 &5825952949040595098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76238ae897cf99441a858f74751e647c, type: 3}
+  m_Name: Faar Right
+  m_EditorClassIdentifier: 
+  _project: {fileID: 11400000}
+  _iid: d873bf90-4ce0-11ef-8367-2318af412280
+  _displayName: 
+  _worldName: City
+  _areaName: Mall
+  _asset: {fileID: 8824414179476436942, guid: 7a728d479aebedc49927ec3e069e8268, type: 3}
+  _levelFile: {fileID: -8655009601392300639, guid: 7a728d479aebedc49927ec3e069e8268, type: 3}
+  _assetPath: Assets/LDtkLevelManager/Samples/Basic/LDtk/LDtkSample/City_Level_8.ldtkl
+  _address: LM__d873bf90-4ce0-11ef-8367-2318af412280
+  _scene:
+    _assetGuid: 
+    _addressableKey: 
+  _leftBehind: 0
 --- !u!114 &7097329947834075805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,6 +473,31 @@ MonoBehaviour:
   _levelFile: {fileID: -8655009601392300639, guid: 852556d742ba1db4fa5ddcb260a28922, type: 3}
   _assetPath: Assets/LDtkLevelManager/Samples/Basic/LDtk/LDtkSample/Vertical_World_Level_0.ldtkl
   _address: LM__c78ca470-25d0-11ef-b9ac-cb41f09aefa0
+  _scene:
+    _assetGuid: 
+    _addressableKey: 
+  _leftBehind: 0
+--- !u!114 &9167108619046311189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76238ae897cf99441a858f74751e647c, type: 3}
+  m_Name: Upper Right
+  m_EditorClassIdentifier: 
+  _project: {fileID: 11400000}
+  _iid: 2e514df0-4ce0-11ef-8367-59d9a8933545
+  _displayName: 
+  _worldName: City
+  _areaName: Mall
+  _asset: {fileID: -7340004079212624671, guid: b1186245869a1654598eac6d76f7cebb, type: 3}
+  _levelFile: {fileID: -8655009601392300639, guid: b1186245869a1654598eac6d76f7cebb, type: 3}
+  _assetPath: Assets/LDtkLevelManager/Samples/Basic/LDtk/LDtkSample/City_Level_9.ldtkl
+  _address: LM__2e514df0-4ce0-11ef-8367-59d9a8933545
   _scene:
     _assetGuid: 
     _addressableKey: 
