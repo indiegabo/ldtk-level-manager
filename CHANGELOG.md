@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/indiegabo/ldtk-level-manager/compare/v1.4.0...v1.5.0) (2024-09-08)
+
+
+### Features
+
+* Project cartography settings ([dc87025](https://github.com/indiegabo/ldtk-level-manager/commit/dc870254fc021a1d8477bed5490f02dc2d12b35a))
+
 # [1.4.0](https://github.com/indiegabo/ldtk-level-manager/compare/v1.3.0...v1.4.0) (2024-09-07)
 
 
