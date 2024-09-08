@@ -49,7 +49,6 @@ namespace LDtkLevelManager.Cartography
 
         private Project _project;
         private LdtkJson _ldtkJson;
-        private float _scaleFactor = 0.1f;
 
         private Dictionary<string, LevelCartography> _levels;
         private Dictionary<string, WorldCartography> _worlds;
@@ -59,7 +58,7 @@ namespace LDtkLevelManager.Cartography
         #region Getters
 
         public int PixelsPerUnit => _ldtkJson.DefaultGridSize;
-        public float ScaleFactor => _scaleFactor;
+        public float ScaleFactor => _project.Cartography.scaleFactor;
 
         #endregion
 
@@ -113,7 +112,7 @@ namespace LDtkLevelManager.Cartography
 
                 // Add the level cartography to the list for the key.
                 List<LevelCartography> levelsList = levelsByWorldAndArea[key];
-                LevelCartography levelCartography = new(level, PixelsPerUnit, _scaleFactor);
+                LevelCartography levelCartography = new(level, PixelsPerUnit, ScaleFactor);
                 levelsList.Add(levelCartography);
                 _levels.Add(level.Iid, levelCartography);
             }
@@ -200,7 +199,7 @@ namespace LDtkLevelManager.Cartography
 
         public Vector2 CalculateScaledPosition(Vector2 positionInWorld)
         {
-            return positionInWorld * _scaleFactor;
+            return positionInWorld * ScaleFactor;
         }
 
         #endregion

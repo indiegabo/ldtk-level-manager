@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using LDtkUnity;
 using System.Linq;
+using LDtkLevelManager.Cartography;
 
 namespace LDtkLevelManager
 {
@@ -10,23 +11,13 @@ namespace LDtkLevelManager
 
         #region Serializing
 
-        [SerializeField]
-        private LDtkProjectFile _ldtkProjectFile;
-
-        [SerializeField]
-        private bool _syncLevelsAtCompile = true;
-
-        [SerializeField]
-        private string _navigationLayer;
-
-        [SerializeField]
-        private InfoDictionary _levels = new();
-
-        [SerializeField]
-        private InfoDictionary _lostLevels = new();
-
-        [SerializeField]
-        private WorldInfoDictionary _worldInfoRegistry = new();
+        [SerializeField] private LDtkProjectFile _ldtkProjectFile;
+        [SerializeField] private bool _syncLevelsAtCompile = true;
+        [SerializeField] private string _navigationLayer;
+        [SerializeField] private ProjectCartography _cartography = new();
+        [SerializeField] private InfoDictionary _levels = new();
+        [SerializeField] private InfoDictionary _lostLevels = new();
+        [SerializeField] private WorldInfoDictionary _worldInfoRegistry = new();
 
         #endregion
 
@@ -45,10 +36,14 @@ namespace LDtkLevelManager
         public bool SyncLevelsAtCompile => _syncLevelsAtCompile;
 
         /// <summary>
-        /// [Inspector only] <br/><br/>
         /// The navigation layer defined in the LDtk project.<br/>
         /// </summary>
         public string NavigationLayer => _navigationLayer;
+
+        /// <summary>
+        /// The cartography settings for this project.
+        /// </summary>
+        public ProjectCartography Cartography => _cartography;
 
         /// <summary>
         /// Whether the LDtk project has been imported and the project is initialized.
