@@ -165,6 +165,8 @@ MonoBehaviour:
   _ldtkProjectFile: {fileID: -164016180542632921, guid: df7f3fbd68adee24db1bda124d3e43be, type: 3}
   _syncLevelsAtCompile: 1
   _navigationLayer: Navigation
+  _cartography:
+    scaleFactor: 0.73
   _levels:
     _listKeys:
     - 363b42a0-7820-11ed-a571-2bca691f63e1

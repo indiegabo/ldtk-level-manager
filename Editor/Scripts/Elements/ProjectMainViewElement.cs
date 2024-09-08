@@ -5,6 +5,7 @@ using LDtkUnity;
 using LDtkLevelManager;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEditor;
 
 namespace LDtkLevelManagerEditor
 {
@@ -21,6 +22,7 @@ namespace LDtkLevelManagerEditor
 
         private VisualElement _containerWorlds;
         private DropdownField _dropdownNavigationLayer;
+        private Slider _sliderScaleFactor;
         private ListView _listWorlds;
 
         private List<WorldInfo> _worldAreas;
@@ -42,7 +44,19 @@ namespace LDtkLevelManagerEditor
             _dropdownNavigationLayer = _containerMain.Q<DropdownField>("dropdown-navigation-layer");
             _dropdownNavigationLayer.choices = _layers;
             _dropdownNavigationLayer.value = _project.NavigationLayer;
-            _dropdownNavigationLayer.RegisterValueChangedCallback(x => _project.SetNavigationLayer(x.newValue));
+            _dropdownNavigationLayer.RegisterValueChangedCallback(x =>
+            {
+                _project.SetNavigationLayer(x.newValue);
+                EditorUtility.SetDirty(_project);
+            });
+
+            _sliderScaleFactor = _containerMain.Q<Slider>("slider-scale-factor");
+            _sliderScaleFactor.SetValueWithoutNotify(_project.Cartography.scaleFactor);
+            _sliderScaleFactor.RegisterValueChangedCallback(x =>
+            {
+                _project.Cartography.scaleFactor = x.newValue;
+                EditorUtility.SetDirty(_project);
+            });
 
             _listWorlds = _containerMain.Q<ListView>("list-worlds");
             _listWorlds.itemsSource = _worldAreas;
