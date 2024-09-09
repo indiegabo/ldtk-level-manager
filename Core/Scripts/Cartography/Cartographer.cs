@@ -192,6 +192,12 @@ namespace LDtkLevelManager.Cartography
             return _worlds.TryGetValue(worldName, out worldCartography);
         }
 
+
+        public bool TryWorldCartography(World world, out WorldCartography worldCartography)
+        {
+            return TryWorldCartography(world.Identifier, out worldCartography);
+        }
+
         /// <summary>
         /// Retrieves the cartography of a given area from the project.
         /// </summary>
