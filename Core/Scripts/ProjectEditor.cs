@@ -485,9 +485,9 @@ namespace LDtkLevelManager
         /// Evaluates all the world areas in the project and returns a dictionary of <c>WorldInfo</c> instances.
         /// The dictionary is keyed by world name. Each <c>WorldInfo</c> instance contains the world identifier, world name, and a list of areas.
         /// The areas are sorted in alphabetical order.
-        /// <para>
+        /// <remarks>
         /// This method is used by the editor to display the world areas in the project.
-        /// </para>
+        /// </remarks>
         /// </summary>
         /// <returns>A dictionary of <c>WorldInfo</c> instances, keyed by world name.</returns>
         public WorldInfoDictionary EvaluateWorldAreas()
@@ -501,8 +501,8 @@ namespace LDtkLevelManager
             {
                 _worldInfoRegistry.Add(world.Identifier, new WorldInfo()
                 {
-                    worldIid = world.Iid,
-                    worldName = world.Identifier,
+                    iid = world.Iid,
+                    name = world.Identifier,
                     areas = new List<string>(),
                 });
             }
@@ -510,13 +510,13 @@ namespace LDtkLevelManager
             foreach (LevelInfo level in _levels.Values)
             {
                 if (string.IsNullOrEmpty(level.WorldName) || string.IsNullOrEmpty(level.AreaName)) continue;
-                if (!_worldInfoRegistry.TryGetValue(level.WorldName, out WorldInfo worldAreas)) continue;
-                if (worldAreas.areas.Contains(level.AreaName)) continue;
-                worldAreas.areas.Add(level.AreaName);
+                if (!_worldInfoRegistry.TryGetValue(level.WorldName, out WorldInfo info)) continue;
+                if (info.areas.Contains(level.AreaName)) continue;
+                info.areas.Add(level.AreaName);
             }
 
             EditorUtility.SetDirty(this);
-            AssetDatabase.SaveAssetIfDirty(this);
+            // AssetDatabase.SaveAssetIfDirty(this);
 
             return _worldInfoRegistry;
         }
@@ -530,7 +530,7 @@ namespace LDtkLevelManager
         {
             _navigationLayer = layerName;
             EditorUtility.SetDirty(this);
-            AssetDatabase.SaveAssetIfDirty(this);
+            // AssetDatabase.SaveAssetIfDirty(this);
         }
     }
 }
