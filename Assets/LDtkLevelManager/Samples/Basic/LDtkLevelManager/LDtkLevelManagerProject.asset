@@ -166,7 +166,7 @@ MonoBehaviour:
   _syncLevelsAtCompile: 1
   _navigationLayer: Navigation
   _cartography:
-    scaleFactor: 0.73
+    scaleFactor: 0.05
   _levels:
     _listKeys:
     - 363b42a0-7820-11ed-a571-2bca691f63e1
@@ -210,19 +210,19 @@ MonoBehaviour:
     - Vertical_World
     - World2
     _listValues:
-    - worldIid: 7f865a90-c640-11ed-a835-078936813e60
-      worldName: City
+    - iid: 7f865a90-c640-11ed-a835-078936813e60
+      name: City
       areas:
       - Factory
       - Mall
-    - worldIid: 78079cf0-c640-11ed-bdac-f1f4e542fc31
-      worldName: Horizontal_World
+    - iid: 78079cf0-c640-11ed-bdac-f1f4e542fc31
+      name: Horizontal_World
       areas: []
-    - worldIid: fce28910-c640-11ed-8852-37bccc8dfb69
-      worldName: Vertical_World
+    - iid: fce28910-c640-11ed-8852-37bccc8dfb69
+      name: Vertical_World
       areas: []
-    - worldIid: b8abd190-ed50-11ed-a82b-63bae5b82235
-      worldName: World2
+    - iid: b8abd190-ed50-11ed-a82b-63bae5b82235
+      name: World2
       areas:
       - World_2_Area
 --- !u!114 &164763834221068449

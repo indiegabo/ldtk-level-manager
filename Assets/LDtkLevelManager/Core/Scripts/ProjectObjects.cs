@@ -27,8 +27,8 @@ namespace LDtkLevelManager
     [System.Serializable]
     public class WorldInfo
     {
-        public string worldIid;
-        public string worldName;
+        public string iid;
+        public string name;
         public List<string> areas;
     }
 

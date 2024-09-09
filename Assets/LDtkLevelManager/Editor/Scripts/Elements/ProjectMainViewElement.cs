@@ -77,18 +77,18 @@ namespace LDtkLevelManagerEditor
 
         private void BindWorldFoldout(VisualElement element, int index)
         {
-            // (element, i) => (element as Label).text = _worldAreas[i].worldName
             element.Clear();
             WorldInfo worldAreas = _worldAreas[index];
             if (worldAreas.areas.Count == 0)
             {
-                element.Add(new Label(worldAreas.worldName));
+                element.Add(new Label(worldAreas.name));
             }
             else
             {
                 Foldout foldout = new()
                 {
-                    text = _worldAreas[index].worldName
+                    text = _worldAreas[index].name,
+                    value = false
                 };
 
                 VisualElement labelsContainer = new();
