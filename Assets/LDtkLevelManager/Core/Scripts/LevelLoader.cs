@@ -53,8 +53,12 @@ namespace LDtkLevelManager
         private LevelBehaviour _currentBehaviour;
 
         private readonly Dictionary<string, LevelBehaviour> _registeredBehaviours = new();
-        private readonly Dictionary<string, GameObject> _loadedObjects = new();
-        private readonly Dictionary<string, SceneInstance> _loadedScenes = new();
+
+        private readonly Dictionary<string, GameObject> _universeObjects = new();
+        private readonly Dictionary<string, GameObject> _standAloneObjects = new();
+        private readonly Dictionary<string, SceneInstance> _universeScenes = new();
+        private readonly Dictionary<string, SceneInstance> _standAloneScenes = new();
+
         private readonly HashSet<string> _shouldBeLoaded = new();
         private readonly HashSet<string> _shouldBeUnloaded = new();
         private readonly Queue<(LevelInfo, int)> _neighboursQueue = new();
@@ -104,6 +108,8 @@ namespace LDtkLevelManager
         /// </summary>
         public UnityEvent<LevelBehaviour> LevelEnteredEvent => _navigationBridge.PlayerEnteredLevel;
 
+        public bool InStandAloneLevel => _currentLevel.StandAlone;
+
         #endregion
 
         #region Behaviour
@@ -139,7 +145,7 @@ namespace LDtkLevelManager
 
         #endregion
 
-        #region Entering Levels
+        #region Requests
 
         /// <summary>
         /// Loads a level by its LDtk Iid. If the level is not present in the project, <br />
@@ -155,12 +161,38 @@ namespace LDtkLevelManager
         /// </list>
         /// </summary>
         /// <param name="iid">The LDtk Iid of the level to load.</param>
-        /// <returns>A <see cref="UniTask"/> representing the asynchronous operation.</returns>
-        public virtual async UniTask LoadLevel(string iid)
+        /// <returns>A <see cref="UniTask"/> that completes when the level is loaded.</returns>
+        public virtual async UniTask LoadUniverseLevel(string iid)
         {
             if (!TryGetLevel(iid, out LevelInfo level))
             {
                 Logger.Error($"Level under LDtk Iid {iid} not present in project {_project.name}", this);
+                return;
+            }
+
+            await LoadUniverseLevel(level);
+        }
+
+        /// <summary>
+        /// Loads a level by its <see cref="LevelInfo"/>. If the level is not present in the project, <br />
+        /// an error will be logged and no action will be taken. <br />
+        /// <br />
+        /// The level will be loaded using the current Loaders's defined strategy (<see cref="LoadingStrategy"/>).
+        /// <br />
+        /// <b>Strategies:</b>
+        /// <list type="bullet">
+        /// <item><b>Neighbours:</b> Guarantees the presence of the level and its immediate neighbours. The amount of neighbours is defined by the Loader's <see cref="Depth"/> parameter.</item>
+        /// <item><b>Worlds:</b> Guarantees the presence of the level and its entire world. </item>
+        /// <item><b>Area:</b> Guarantees the presence of the level and the entire area it is in.</item>
+        /// </list>
+        /// </summary>
+        /// <param name="level">The <see cref="LevelInfo"/> of the level to load.</param>
+        /// <returns>A <see cref="UniTask"/> that completes when the level is loaded.</returns>
+        public virtual async UniTask LoadUniverseLevel(LevelInfo level)
+        {
+            if (level.StandAlone)
+            {
+                Logger.Error($"Level {level.Iid} is standalone and cannot be loaded as a Universe level.", this);
                 return;
             }
 
@@ -178,7 +210,7 @@ namespace LDtkLevelManager
                 case LoadingStrategy.Worlds:
                     if (_currentLevel == null || _currentLevel.WorldName != level.WorldName)
                     {
-                        await LoadWorld(level.WorldName);
+                        await LoadUniverseWorld(level.WorldName);
                     }
                     break;
 
@@ -188,22 +220,161 @@ namespace LDtkLevelManager
                 case LoadingStrategy.Areas:
                     if (_currentLevel == null || _currentLevel.AreaName != level.AreaName)
                     {
-                        await LoadArea(level.AreaName);
+                        await LoadUniverseArea(level.AreaName);
                     }
                     break;
             }
         }
 
         /// <summary>
-        /// Load a level by its LevelInfo object.
-        /// This is a shortcut for calling <see cref="LoadLevel(string)"/> with the
-        /// Iid of the level.
+        /// Unloads the entire universe.
         /// </summary>
-        /// <param name="level">The level to load.</param>
-        /// <returns>A <see cref="UniTask"/> representing the asynchronous operation.</returns>
-        public virtual async UniTask LoadLevel(LevelInfo level)
+        /// <remarks>
+        /// This method will unload all levels that have been loaded as part of the universe.
+        /// It will not unload standalone levels.
+        /// </remarks>
+        /// <returns>A <see cref="UniTask"/> that completes when all levels have been unloaded.</returns>
+        public virtual async UniTask UnloadUniverse()
         {
-            await LoadLevel(level.Iid);
+            await UniTask.WhenAll(_universeObjects.Keys.Concat(_universeScenes.Keys).Select(UnloadAsync));
+        }
+
+        /// <summary>
+        /// Loads a standalone level by its LDtk Iid. If the level is not present in the project, <br />
+        /// an error will be logged and no action will be taken. <br />
+        /// </summary>
+        /// <remarks>
+        /// This method will check if the given level is standalone. If it is not, it will not do anything.
+        /// </remarks>
+        /// <param name="iid">The LDtk Iid of the level to load.</param>
+        /// <returns>A <see cref="UniTask"/> that completes when the level is loaded.</returns>
+        public virtual async UniTask LoadStandaloneLevel(string iid)
+        {
+            if (!TryGetLevel(iid, out LevelInfo level))
+            {
+                Logger.Error($"Level under LDtk Iid {iid} not present in project {_project.name}", this);
+                return;
+            }
+
+            await LoadStandaloneLevel(level);
+        }
+
+        /// <summary>
+        /// Loads a standalone level asynchronously.
+        /// </summary>
+        /// <remarks>
+        /// This method will check if the given level is standalone. If it is not, it will not do anything.
+        /// </remarks>
+        /// <param name="level">The level to load.</param>
+        /// <returns>A <see cref="UniTask"/> that completes when the level is loaded.</returns>
+        public virtual async UniTask LoadStandaloneLevel(LevelInfo level)
+        {
+            if (!level.StandAlone)
+            {
+                Logger.Error($"Level {level.Name} is not standalone.", this);
+                return;
+            }
+
+            await LoadAsync(level.Iid, true);
+        }
+
+        /// <summary>
+        /// Unloads a standalone level by its LDtk Iid.
+        /// </summary>
+        /// <param name="iid">The LDtk Iid of the level to unload.</param>
+        /// <returns>A <see cref="UniTask"/> that completes when the level is unloaded.</returns>
+        public virtual async UniTask UnloadStandaloneLevel(string iid, bool removeFromRegistry = true)
+        {
+            if (!TryGetLevel(iid, out LevelInfo level))
+            {
+                Logger.Error($"Level under LDtk Iid {iid} not present in project {_project.name}", this);
+                return;
+            }
+
+            await UnloadStandaloneLevel(level, removeFromRegistry);
+        }
+
+        /// <summary>
+        /// Unloads a standalone level asynchronously.
+        /// </summary>
+        /// <remarks>
+        /// This method will unload the level if it has been loaded as an object or as a scene.
+        /// </remarks>
+        /// <param name="level">The level to unload.</param>
+        /// <returns>A <see cref="UniTask"/> that completes when the unload operation is complete.</returns>
+        public virtual async UniTask UnloadStandaloneLevel(LevelInfo level, bool removeFromRegistry = true)
+        {
+            // Check if the level has been loaded as an object
+            if (_standAloneObjects.TryGetValue(level.Iid, out GameObject loadedObject))
+            {
+                // Remove the level from the list of loaded objects
+                if (removeFromRegistry)
+                    _standAloneObjects.Remove(level.Iid);
+
+                // Destroy the loaded object
+                Destroy(loadedObject);
+                return;
+            }
+
+            // Check if the level has been loaded as a scene
+            if (_standAloneScenes.TryGetValue(level.Iid, out SceneInstance sceneInstance))
+            {
+                // Start the unload operation
+                AsyncOperationHandle handle = Addressables.UnloadSceneAsync(sceneInstance, false);
+
+                // Wait for the unload operation to finish
+                await handle;
+
+                // Check if the unload operation succeeded
+                if (handle.Status != AsyncOperationStatus.Succeeded)
+                {
+                    // Log an error if the unload operation failed
+                    Logger.Error($"Async operation for unloading level {level.name} as a scene failed.", this);
+                    if (handle.OperationException != null)
+                        Logger.Exception(handle.OperationException, this);
+                    return;
+                }
+
+                // Remove the level from the list of loaded scenes
+                if (removeFromRegistry)
+                    _standAloneScenes.Remove(level.Iid);
+            }
+        }
+
+        /// <summary>
+        /// Unloads all standalone levels.
+        /// </summary>
+        /// <remarks>
+        /// This method will unload all levels that have been loaded as standalone levels.
+        /// It will not unload levels that have been loaded as part of the universe.
+        /// </remarks>
+        /// <returns>A <see cref="UniTask"/> that completes when all levels have been unloaded.</returns>
+        public virtual async UniTask UnloadAllStandaloneLevels()
+        {
+
+            List<string> keys = _standAloneObjects.Keys.Concat(_standAloneScenes.Keys).ToList();
+            List<UniTask> tasks = new List<UniTask>();
+            foreach (string key in keys)
+            {
+                tasks.Add(UnloadStandaloneLevel(key, false));
+            }
+
+            await UniTask.WhenAll(tasks);
+
+            _standAloneObjects.Clear();
+            _standAloneScenes.Clear();
+        }
+
+        /// <summary>
+        /// Unloads all loaded levels, both standalone and universe levels.
+        /// </summary>
+        /// <returns>A <see cref="UniTask"/> that completes when all levels have been unloaded.</returns>
+        public virtual async UniTask UnloadEverything()
+        {
+            await UniTask.WhenAll(
+                UnloadAllStandaloneLevels(),
+                UnloadUniverse()
+            );
         }
 
         /// <summary>
@@ -214,7 +385,7 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="worldName">The name of the world to load.</param>
         /// <returns>A <see cref="UniTask"/> representing the asynchronous operation.</returns>
-        public virtual async UniTask LoadWorld(string worldName)
+        public virtual async UniTask LoadUniverseWorld(string worldName)
         {
             if (_loadingStrategy != LoadingStrategy.Worlds)
             {
@@ -235,13 +406,13 @@ namespace LDtkLevelManager
             Exit();
 
             /// Unload all loaded levels and objects before loading new ones.
-            await UnloadAllAsync();
+            await UnloadUniverse();
 
             /// Clear the lists of registered behaviors and loaded objects and scenes
             /// before loading new levels.
             _registeredBehaviours.Clear();
-            _loadedObjects.Clear();
-            _loadedScenes.Clear();
+            _universeObjects.Clear();
+            _universeScenes.Clear();
 
             /// Load all the levels in the given world.
             await LoadMultipleAsync(iids);
@@ -255,7 +426,7 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="worldName">The name of the world to load.</param>
         /// <returns>A <see cref="UniTask"/> representing the asynchronous operation.</returns>
-        public virtual async UniTask LoadArea(string areaName)
+        public virtual async UniTask LoadUniverseArea(string areaName)
         {
             if (_loadingStrategy != LoadingStrategy.Areas)
             {
@@ -281,13 +452,13 @@ namespace LDtkLevelManager
             Exit();
 
             /// Unload all loaded levels and objects before loading new ones.
-            await UnloadAllAsync();
+            await UnloadUniverse();
 
             /// Clear the lists of registered behaviors and loaded objects and scenes
             /// before loading new levels.
             _registeredBehaviours.Clear();
-            _loadedObjects.Clear();
-            _loadedScenes.Clear();
+            _universeObjects.Clear();
+            _universeScenes.Clear();
 
             /// Load all the levels in the given area.
             await LoadMultipleAsync(iids);
@@ -448,7 +619,7 @@ namespace LDtkLevelManager
             _currentLevel = level;
             _currentBehaviour = behaviour;
 
-            if (_loadingStrategy == LoadingStrategy.Neighbours)
+            if (!level.StandAlone && _loadingStrategy == LoadingStrategy.Neighbours)
             {
                 _ = LoadNeighboursAsync(_currentLevel);
             }
@@ -563,7 +734,7 @@ namespace LDtkLevelManager
             }
 
             // For each level that was previously loaded but is not in the list of levels to be loaded
-            foreach (string iid in _loadedObjects.Keys)
+            foreach (string iid in _universeObjects.Keys)
             {
                 if (!_shouldBeLoaded.Contains(iid))
                 {
@@ -573,7 +744,7 @@ namespace LDtkLevelManager
             }
 
             // For each scene that was previously loaded but is not in the list of levels to be loaded
-            foreach (string iid in _loadedScenes.Keys)
+            foreach (string iid in _universeScenes.Keys)
             {
                 if (!_shouldBeLoaded.Contains(iid))
                 {
@@ -619,26 +790,30 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="iid">The IID of the level to load.</param>
         /// <returns></returns>
-        protected virtual async UniTask LoadAsync(string iid)
+        protected virtual async UniTask LoadAsync(string iid, bool standalone = false)
         {
             // Check if the level exists
             if (!TryGetLevel(iid, out LevelInfo level)) return;
+            await LoadAsync(level, standalone);
+        }
 
+        protected virtual async UniTask LoadAsync(LevelInfo level, bool standalone = false)
+        {
             // Check if the level should be loaded as an object or a scene
             if (!level.WrappedInScene)
             {
-                await LoadLevelObjectAsync(level);
+                await LoadLevelObjectAsync(level, standalone);
             }
             else
             {
-                await LoadLevelSceneAsync(level);
+                await LoadLevelSceneAsync(level, standalone);
             }
         }
 
-        protected virtual async UniTask LoadLevelObjectAsync(LevelInfo level)
+        protected virtual async UniTask LoadLevelObjectAsync(LevelInfo level, bool standalone = false)
         {
             // Check if the level has already been loaded
-            if (_loadedObjects.ContainsKey(level.Iid)) return;
+            if (_universeObjects.ContainsKey(level.Iid) || _standAloneObjects.ContainsKey(level.Iid)) return;
 
             try
             {
@@ -660,8 +835,16 @@ namespace LDtkLevelManager
 
                 // Instantiate the loaded object
                 GameObject loadedObject = Instantiate(handle.Result);
+
                 // Add the loaded object to the list of loaded objects
-                _loadedObjects.Add(level.Iid, loadedObject);
+                if (!standalone)
+                {
+                    _universeObjects.Add(level.Iid, loadedObject);
+                }
+                else
+                {
+                    _standAloneObjects.Add(level.Iid, loadedObject);
+                }
             }
             catch (InvalidKeyException e)
             {
@@ -680,10 +863,10 @@ namespace LDtkLevelManager
             }
         }
 
-        protected virtual async UniTask LoadLevelSceneAsync(LevelInfo level)
+        protected virtual async UniTask LoadLevelSceneAsync(LevelInfo level, bool standalone = false)
         {
             // Check if the level has already been loaded
-            if (_loadedScenes.ContainsKey(level.Iid)) return;
+            if (_universeScenes.ContainsKey(level.Iid) || _standAloneScenes.ContainsKey(level.Iid)) return;
 
             try
             {
@@ -703,8 +886,17 @@ namespace LDtkLevelManager
                     return;
                 }
 
+                SceneInstance sceneInstance = handle.Result;
+
                 // Add the loaded scene to the list of loaded scenes
-                _loadedScenes.Add(level.Iid, handle.Result);
+                if (!standalone)
+                {
+                    _universeScenes.Add(level.Iid, sceneInstance);
+                }
+                else
+                {
+                    _standAloneScenes.Add(level.Iid, sceneInstance);
+                }
             }
             catch (InvalidKeyException e)
             {
@@ -734,10 +926,10 @@ namespace LDtkLevelManager
             if (!TryGetLevel(iid, out LevelInfo level)) return;
 
             // Check if the level has been loaded as an object
-            if (_loadedObjects.TryGetValue(iid, out GameObject loadedObject))
+            if (_universeObjects.TryGetValue(iid, out GameObject loadedObject))
             {
                 // Remove the level from the list of loaded objects
-                _loadedObjects.Remove(iid);
+                _universeObjects.Remove(iid);
 
                 // Destroy the loaded object
                 Destroy(loadedObject);
@@ -745,13 +937,13 @@ namespace LDtkLevelManager
             }
 
             // Check if the level has been loaded as a scene
-            if (_loadedScenes.TryGetValue(iid, out SceneInstance sceneInstance))
+            if (_universeScenes.TryGetValue(iid, out SceneInstance sceneInstance))
             {
                 // Start the unload operation
                 AsyncOperationHandle handle = Addressables.UnloadSceneAsync(sceneInstance, false);
 
                 // Wait for the unload operation to finish
-                await handle.ToUniTask();
+                await handle;
 
                 // Check if the unload operation succeeded
                 if (handle.Status != AsyncOperationStatus.Succeeded)
@@ -764,7 +956,7 @@ namespace LDtkLevelManager
                 }
 
                 // Remove the level from the list of loaded scenes
-                _loadedScenes.Remove(iid);
+                _universeScenes.Remove(iid);
             }
         }
 
@@ -787,38 +979,6 @@ namespace LDtkLevelManager
 
             // Wait for all unload tasks to finish
             await UniTask.WhenAll(unloadTasks);
-        }
-
-        /// <summary>
-        /// Unload all levels that have been loaded by this level manager.
-        /// </summary>
-        /// <returns>An async task that represents the unload operation.</returns>
-        protected virtual async UniTask UnloadAllAsync()
-        {
-            // Create a list of unload tasks
-            List<UniTask> tasks = new();
-
-            List<GameObject> objectsToUnload = _loadedObjects.Values.ToList();
-            List<SceneInstance> scenesToUnload = _loadedScenes.Values.ToList();
-            _loadedObjects.Clear();
-            _loadedScenes.Clear();
-
-            // Iterate over each level that has been loaded as an object
-            foreach (GameObject levelObject in objectsToUnload)
-            {
-                Destroy(levelObject);
-            }
-
-            // Iterate over each level that has been loaded as a scene
-            foreach (SceneInstance sceneInstance in scenesToUnload)
-            {
-                // Start the unload operation
-                AsyncOperationHandle handle = Addressables.UnloadSceneAsync(sceneInstance, false);
-                tasks.Add(handle.ToUniTask());
-            }
-
-            // Wait for all unload tasks to finish
-            await UniTask.WhenAll(tasks);
         }
 
         #endregion
@@ -855,13 +1015,6 @@ namespace LDtkLevelManager
         /// <param name="iid">The Iid of the level to unregister the behaviour for.</param>
         public virtual void UnregisterAsBehaviour(string iid)
         {
-            if (!TryGetLevel(iid, out LevelInfo level))
-            {
-                // If the level is not found, log an error.
-                Logger.Error($"Level under LDtk Iid {iid} not found for unregistering as behaviour", this);
-                return;
-            }
-
             // Remove the behaviour from the list of registered behaviours.
             _registeredBehaviours.Remove(iid);
         }
