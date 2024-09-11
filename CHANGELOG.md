@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/indiegabo/ldtk-level-manager/compare/v1.5.0...v1.6.0) (2024-09-11)
+
+
+### Features
+
+* StandAlone Levels ([5f96446](https://github.com/indiegabo/ldtk-level-manager/commit/5f96446dc7f83e18b557f2d3ecb0fa77c2840c32))
+
 # [1.5.0](https://github.com/indiegabo/ldtk-level-manager/compare/v1.4.0...v1.5.0) (2024-09-08)
 
 
