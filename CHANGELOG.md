@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/indiegabo/ldtk-level-manager/compare/v1.6.0...v1.6.1) (2024-09-11)
+
+
+### Bug Fixes
+
+* Material ([daa7343](https://github.com/indiegabo/ldtk-level-manager/commit/daa73437eda6fe2f8cf8cae604273e3cecf96413))
+
 # [1.6.0](https://github.com/indiegabo/ldtk-level-manager/compare/v1.5.0...v1.6.0) (2024-09-11)
 
 
