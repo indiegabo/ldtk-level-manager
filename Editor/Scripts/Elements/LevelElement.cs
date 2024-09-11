@@ -81,7 +81,7 @@ namespace LDtkLevelManagerEditor
             _buttonDestroyScene = _containerMain.Q<Button>("button-destroy-scene");
             _buttonDestroyScene.clicked += DestroyScene;
 
-            _fieldAsset = _containerMain.Q<ObjectField>("field-asset");
+            _fieldAsset = _containerMain.Q<ObjectField>("field-level-asset");
             _fieldAsset.SetEnabled(false);
 
             _fieldLDtkAsset = _containerMain.Q<ObjectField>("field-ldtk-asset");

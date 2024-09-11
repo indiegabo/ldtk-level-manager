@@ -25,8 +25,10 @@ namespace LDtkLevelManager
         [SerializeField] private Project _project;
         [SerializeField] private string _iid;
         [SerializeField] private string _displayName;
+        [SerializeField] private string _worldIid;
         [SerializeField] private string _worldName;
         [SerializeField] private string _areaName;
+        [SerializeField] private bool _standAlone;
         [SerializeField] private Object _asset;
         [SerializeField] private LDtkLevelFile _levelFile;
         [SerializeField] private string _assetPath;
@@ -46,6 +48,7 @@ namespace LDtkLevelManager
         /// The project this level belongs to.
         /// </summary>
         public Project Project => _project;
+
         /// <summary>
         /// The IID of the level in the LDtk project.
         /// </summary>
@@ -59,12 +62,22 @@ namespace LDtkLevelManager
         /// <summary>
         /// The world of the level.
         /// </summary>
+        public string WorldIid => _worldIid;
+
+        /// <summary>
+        /// The world of the level.
+        /// </summary>
         public string WorldName => _worldName;
 
         /// <summary>
         /// The area of the level.
         /// </summary>
         public string AreaName => _areaName;
+
+        /// <summary>
+        /// Whether the level is standalone.
+        /// </summary>
+        public bool StandAlone => _standAlone;
 
         /// <summary>
         /// The asset that represents the level.
@@ -111,7 +124,11 @@ namespace LDtkLevelManager
 #if UNITY_EDITOR
                 return _levelFile.FromJson;
 #else
-                return _ldtkLevel ??= _levelFile.FromJson;
+                if (_ldtkLevel == null)
+                {
+                    _ldtkLevel = _levelFile.FromJson;
+                }                
+                return _ldtkLevel;
 #endif
             }
         }
@@ -157,6 +174,8 @@ namespace LDtkLevelManager
                 string area = fields.GetValueAsString("area");
                 if (!string.IsNullOrEmpty(area))
                     _areaName = area;
+
+                _standAlone = fields.GetBool("standAlone");
             }
 
             _assetPath = data.assetPath;
@@ -166,6 +185,7 @@ namespace LDtkLevelManager
 
             if (data.world != null)
             {
+                _worldIid = data.world.Iid;
                 _worldName = data.world.Identifier;
             }
         }

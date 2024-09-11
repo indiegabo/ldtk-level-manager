@@ -221,15 +221,14 @@ namespace LDtkLevelManager
             {
                 if (root.TryGetComponent(out LDtkComponentLevel componentLevel))
                 {
-                    GameObject.DestroyImmediate(componentLevel.gameObject);
+                    if (PrefabUtility.HasPrefabInstanceAnyOverrides(root, false))
+                    {
+                        Vector2 previousPos = root.transform.position;
+                        PrefabUtility.RevertObjectOverride(root, InteractionMode.AutomatedAction);
+                        root.transform.position = previousPos;
+                    }
                     break;
                 }
-            }
-
-            GameObject ldtkLevelObject = PrefabUtility.InstantiatePrefab(level.Asset, scene) as GameObject;
-            if (ldtkLevelObject.TryGetComponent(out SceneLevelSetuper setuper))
-            {
-                setuper.Setup(level);
             }
 
             EditorSceneManager.SaveScene(scene, path);

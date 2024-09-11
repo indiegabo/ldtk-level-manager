@@ -52,7 +52,7 @@ namespace LDtkLevelManagerEditor
 
             foreach (WorldInfo worldAreas in _project.GetAllWorldInfos())
             {
-                worldChoices.Add(worldAreas.worldName);
+                worldChoices.Add(worldAreas.name);
             }
 
             _fieldFilterWorld.choices = worldChoices;

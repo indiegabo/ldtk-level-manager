@@ -50,7 +50,7 @@ namespace LDtkLevelManager.Implementations.Basic
             // Load the level and its neighbours. At the end of this task
             // the level will be fully loaded and can rely on its neighbours
             // being loaded as well
-            await _levelLoader.LoadLevel(_initialLevel.Iid);
+            await _levelLoader.LoadUniverseLevel(_initialLevel.Iid);
 
             // Prepare the level. This sets the player in the loading spot. 
             // Notice that at this time the curtains are not yet open.

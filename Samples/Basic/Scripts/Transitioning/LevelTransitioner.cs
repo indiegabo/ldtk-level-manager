@@ -125,7 +125,7 @@ namespace LDtkLevelManager.Implementations.Basic
             CinemachineVirtualCamera camera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera as CinemachineVirtualCamera;
 
             // Load the new level
-            await LevelLoader.Instance.LoadLevel(levelIid);
+            await LevelLoader.Instance.LoadUniverseLevel(levelIid);
 
             // If there was a camera, make it inactive
             if (camera != null)
@@ -160,7 +160,7 @@ namespace LDtkLevelManager.Implementations.Basic
             CinemachineVirtualCamera camera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera as CinemachineVirtualCamera;
 
             // Load the new level
-            await LevelLoader.Instance.LoadLevel(levelIid);
+            await LevelLoader.Instance.LoadUniverseLevel(levelIid);
 
             // If there was a camera, make it inactive
             if (camera != null)
@@ -185,6 +185,12 @@ namespace LDtkLevelManager.Implementations.Basic
         /// <returns>A UniTask that completes when the transition is complete.</returns>
         public async UniTask TransitionToPortalAsync(string levelIid, IPortal portal)
         {
+            if (!LevelLoader.Instance.TryGetLevel(levelIid, out LevelInfo level))
+            {
+                Logger.Error($"Level under LDtk Iid {levelIid} not present in project {LevelLoader.Instance.Project.name}", this);
+                return;
+            }
+
             // Notify the outside world that the transition has started
             _transitioning = true;
             _transitionStartedEvent.Invoke();
@@ -193,8 +199,22 @@ namespace LDtkLevelManager.Implementations.Basic
             // then enter it.
             LevelLoader.Instance.Exit();
             await CloseCurtains();
-            await LevelLoader.Instance.LoadLevel(levelIid);
+
+            // In this example we unload all stand alone levels upon using portals. But
+            // you can choose to keep them loaded if you want.
+            await LevelLoader.Instance.UnloadAllStandaloneLevels();
+
+            if (level.StandAlone)
+            {
+                await LevelLoader.Instance.LoadStandaloneLevel(level);
+            }
+            else
+            {
+                await LevelLoader.Instance.LoadUniverseLevel(level);
+            }
+
             LevelLoader.Instance.Prepare(levelIid, portal);
+            await WaitOnCameraBlend();
             await OpenCurtains();
             LevelLoader.Instance.Enter();
 
@@ -226,11 +246,7 @@ namespace LDtkLevelManager.Implementations.Basic
         {
             // Wait on transitions
             await PerformTransitions(LevelTransitionMoment.Open);
-
-            if (Camera.main.TryGetComponent<CinemachineBrain>(out var cinemachineBrain))
-            {
-                await WaitOnCameraBlend(cinemachineBrain);
-            }
+            await WaitOnCameraBlend();
 
             // "Activating" level
             LevelLoader.Instance.Enter();
@@ -258,8 +274,12 @@ namespace LDtkLevelManager.Implementations.Basic
         /// </summary>
         /// <param name="brain">The <see cref="CinemachineBrain"/> to wait for.</param>
         /// <returns>A <see cref="UniTask"/> that completes when the camera blend is over.</returns>
-        private async UniTask WaitOnCameraBlend(CinemachineBrain brain)
+        private async UniTask WaitOnCameraBlend()
         {
+            CinemachineBrain brain = CinemachineCore.Instance.GetActiveBrain(0);
+
+            if (brain == null) return;
+
             // Delays for 0.3 seconds. Enough time for the camera to initiate
             // any possible blending.
             await UniTask.Delay(TimeSpan.FromSeconds(0.3f));
@@ -307,7 +327,7 @@ namespace LDtkLevelManager.Implementations.Basic
             // If there is a CinemachineBrain attached to the camera, wait for the camera to finish its blend
             if (Camera.main.TryGetComponent<CinemachineBrain>(out var cinemachineBrain))
             {
-                await WaitOnCameraBlend(cinemachineBrain);
+                await WaitOnCameraBlend();
             }
         }
     }

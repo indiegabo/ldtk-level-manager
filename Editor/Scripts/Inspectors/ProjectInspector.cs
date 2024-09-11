@@ -60,9 +60,11 @@ namespace LDtkLevelManagerEditor
             _containerMain.Add(_tabViewElement);
             ProjectMainViewElement mainViewElement = new(_project);
             ProjectLevelsViewElement levelsViewElement = new(_project);
+            ProjectLanesViewElement lanesViewElement = new(_project);
 
             _tabViewElement.AddTab("Main", mainViewElement);
             _tabViewElement.AddTab("Levels", levelsViewElement);
+            _tabViewElement.AddTab("Lanes", lanesViewElement);
 
             if (string.IsNullOrEmpty(TabViewElement.LastUsedTab))
             {
