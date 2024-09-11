@@ -15,6 +15,7 @@ namespace LDtkLevelManagerSample
     /// </summary>
     public enum LDtkLevelManagerAreas
     {
+        None,
         Factory,
         Mall,
         World_2_Area

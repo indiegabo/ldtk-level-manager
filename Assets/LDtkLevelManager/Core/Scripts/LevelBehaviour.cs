@@ -296,7 +296,7 @@ namespace LDtkLevelManager
             _preparationStartedEvent.Invoke(this, spawnPoint);
 
             // Place the character at the spawn position
-            PlaceCharacter(spawnPoint, facingSign);
+            PlaceCharacter(new Vector3(spawnPoint.x, spawnPoint.y, transform.position.z), facingSign);
 
             // Broadcast the preparation finished event
             _preparedEvent.Invoke(this, trail);
@@ -464,6 +464,7 @@ namespace LDtkLevelManager
                     // Log a warning if there is already a portal with the same Iid
                     Logger.Warning($"Level {name} has more than one portal with the same Iid: {portal.Iid}. Using the first found.", this);
                 }
+
                 // Add the portal to the dictionary
                 _portals.Add(portal.Iid, portal);
             }
@@ -490,8 +491,14 @@ namespace LDtkLevelManager
                 return;
             }
 
+            Vector3 placementPos = new(
+                position.x,
+                position.y,
+                transform.position.z
+            );
+
             // Call the PlaceInLevel method on the main character's ICharacterLevelFlowSubject
-            levelFlowSubject.PlaceInLevel(position, directionSign);
+            levelFlowSubject.PlaceInLevel(placementPos, directionSign);
         }
 
         #endregion

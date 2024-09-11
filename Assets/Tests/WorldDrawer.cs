@@ -56,7 +56,7 @@ namespace Tests
 
         private void Start()
         {
-            if (!_cartographer.TryGetWorld("City", out WorldCartography worldCartography)) return;
+            if (!_cartographer.TryWorldCartography("City", out WorldCartography worldCartography)) return;
 
             Vector2 worldCenter = worldCartography.Bounds.ScaledCenter;
             transform.position = new Vector3(worldCenter.x, worldCenter.y, transform.position.z);
