@@ -15,6 +15,7 @@ namespace LDtkLevelManager
         [SerializeField] private bool _syncLevelsAtCompile = true;
         [SerializeField] private string _navigationLayer;
         [SerializeField] private ProjectCartography _cartography = new();
+        [SerializeField] private LanesSettings _lanesSettings = new();
         [SerializeField] private InfoDictionary _levels = new();
         [SerializeField] private InfoDictionary _lostLevels = new();
         [SerializeField] private WorldInfoDictionary _worldInfoRegistry = new();
@@ -44,6 +45,11 @@ namespace LDtkLevelManager
         /// The cartography settings for this project.
         /// </summary>
         public ProjectCartography Cartography => _cartography;
+
+        /// <summary>
+        /// The lanes settings for this project.
+        /// </summary>
+        public LanesSettings LanesSettings => _lanesSettings;
 
         /// <summary>
         /// Whether the LDtk project has been imported and the project is initialized.

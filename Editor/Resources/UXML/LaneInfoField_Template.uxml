@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/LDtkLevelManager/Editor/Resources/Styles/ProjectMainView_style.uss?fileID=7433441132597879392&amp;guid=f2a2b7edccabd9b4b9af38f2c37f6ce3&amp;type=3#ProjectMainView_style" />
+    <Style src="project://database/Assets/LDtkLevelManager/Editor/Resources/Styles/Common_style.uss?fileID=7433441132597879392&amp;guid=404bba9bc59b6124d814e73187e6b1fc&amp;type=3#Common_style" />
+    <ui:FloatField label="Starting Z" value="42,2" name="field-starting-z" />
+    <ui:FloatField label="Depth" value="600" name="field-depth" />
+</ui:UXML>

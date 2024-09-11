@@ -21,8 +21,8 @@
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:Foldout text="Related Assets" name="foldout-info" value="false" style="margin-left: 0;">
-        <uie:ObjectField label="Asset" name="field-asset" binding-path="_asset" class="level-field" />
-        <uie:ObjectField label="LDtk File" name="field-ldtk-asset" binding-path="_levelFile" class="level-field" />
+        <uie:ObjectField label="Asset" name="field-level-asset" binding-path="_asset" allow-scene-objects="false" class="level-field" />
+        <uie:ObjectField label="LDtk File" name="field-ldtk-asset" binding-path="_levelFile" allow-scene-objects="false" class="level-field" />
         <ui:VisualElement name="container-asset-path" style="flex-grow: 1; flex-direction: row; flex-shrink: 0;">
             <ui:TextField picking-mode="Ignore" label="Asset Path" name="field-asset-path" binding-path="_assetPath" class="level-field" />
             <ui:Button text="Copy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="button-asset-path-copy" style="width: 40px;" />

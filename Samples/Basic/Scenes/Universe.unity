@@ -730,7 +730,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 172990235297809979, guid: 36cda79d4a7ad8f458e2584e400923e5, type: 3}
       propertyPath: m_Name
-      value: World Drawer
+      value: World Map
       objectReference: {fileID: 0}
     - target: {fileID: 7776695343876648765, guid: 36cda79d4a7ad8f458e2584e400923e5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -742,7 +742,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7776695343876648765, guid: 36cda79d4a7ad8f458e2584e400923e5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 500
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7776695343876648765, guid: 36cda79d4a7ad8f458e2584e400923e5, type: 3}
       propertyPath: m_LocalRotation.w

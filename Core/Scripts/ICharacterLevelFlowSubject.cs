@@ -27,6 +27,6 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="position">The position to place the player in.</param>
         /// <param name="facingDirectionSign">The direction wich the player should be facing</param>
-        void PlaceInLevel(Vector2 position, int facingDirectionSign);
+        void PlaceInLevel(Vector3 position, int facingDirectionSign);
     }
 }

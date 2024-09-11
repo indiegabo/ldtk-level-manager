@@ -29,7 +29,8 @@ Transform:
   m_LocalPosition: {x: 20.195635, y: 22.140053, z: -0.0080998335}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 729651180395516272}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3213015430128527747
@@ -48,3 +49,36 @@ MonoBehaviour:
   _mapLevelDrawerPrefab: {fileID: 3800468179374012673, guid: f6c8d25c796fb4540861451c62e481a9, type: 3}
   _playerProvider: {fileID: 11400000, guid: 970118869fc56f645ae8a447e4bb295d, type: 2}
   _characterPinPrefab: {fileID: 2671942988697422639, guid: cedaf5e278b505e4988626cc2876e5cf, type: 3}
+  _navigationBridge: {fileID: 11400000, guid: 7222f9fa0bc11e14d955bfd3cabf99c8, type: 2}
+  _levelsContainer: {fileID: 729651180395516272}
+--- !u!1 &3294804801590240742
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 729651180395516272}
+  m_Layer: 0
+  m_Name: Levels Container
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &729651180395516272
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3294804801590240742}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7776695343876648765}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -8,6 +8,7 @@ namespace LDtkLevelManager.Implementations.Basic
     public class Player : MonoBehaviour, ICharacterLevelFlowSubject
     {
         [SerializeField] private GameObjectProvider _characterProvider;
+        [SerializeField] private SpriteRenderer _spriteRenderer;
 
         private PlayerController _playerController;
         private Rigidbody2D _rb;
@@ -24,9 +25,10 @@ namespace LDtkLevelManager.Implementations.Basic
             _playerController.RemoveControl();
         }
 
-        public void PlaceInLevel(Vector2 position, int directionSign)
+        public void PlaceInLevel(Vector3 position, int directionSign)
         {
-            transform.position = new Vector3(position.x, position.y - 0.5f, transform.position.z);
+            transform.position = new Vector3(position.x, position.y - 0.5f, position.z);
+            _spriteRenderer.flipX = directionSign < 0;
         }
 
         public void OnLevelEnter()

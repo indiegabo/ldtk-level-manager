@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using LDtkLevelManager.Cartography;
 using LDtkLevelManager.Utils;
@@ -9,24 +11,22 @@ namespace LDtkLevelManager.Implementations.Basic
     public class WorldMap : MonoBehaviour
     {
         [SerializeField] private Project _project;
-
-        [SerializeField]
-        private MapLevelDrawer _mapLevelDrawerPrefab;
-
-        [SerializeField]
-        private GameObjectProvider _playerProvider;
-
-        [SerializeField]
-        private GameObject _characterPinPrefab;
+        [SerializeField] private MapLevelDrawer _mapLevelDrawerPrefab;
+        [SerializeField] private GameObjectProvider _playerProvider;
+        [SerializeField] private GameObject _characterPinPrefab;
+        [SerializeField] private LevelNavigationBridge _navigationBridge;
+        [SerializeField] private Transform _levelsContainer;
 
         private Player _player;
         private Transform _characterPinTransform;
 
         private Cartographer _cartographer;
-        private WorldInfo _currentWorld;
+        private World _currentWorld;
 
         private LdtkJson _projectJson;
         private float _scaledOffsetY;
+
+        private Dictionary<string, World> _worlds = new();
 
         #region Behaviour
 
@@ -39,23 +39,33 @@ namespace LDtkLevelManager.Implementations.Basic
                 return;
             }
 
+            transform.position = new Vector3(
+                transform.position.x,
+                transform.position.y,
+                _project.LanesSettings.MapRenderingLane.StartingZ
+            );
+            _levelsContainer.position = transform.position;
             _characterPinTransform = Instantiate(_characterPinPrefab, transform).transform;
+            _characterPinTransform.localScale *= _cartographer.ScaleFactor;
             _scaledOffsetY = 0.75f * _cartographer.ScaleFactor;
 
-            World world = _projectJson.Worlds[0];
-            SetWorld(world);
+            foreach (World world in _projectJson.Worlds)
+            {
+                _worlds[world.Iid] = world;
+            }
         }
 
         private void OnEnable()
         {
             EvaluatePlayer();
-
             _playerProvider.Registered.AddListener(OnPlayerRegistered);
+            _navigationBridge.LevelPrepared.AddListener(OnLevelPrepared);
         }
 
         private void OnDisable()
         {
             _playerProvider.Registered.RemoveListener(OnPlayerRegistered);
+            _navigationBridge.LevelPrepared.RemoveListener(OnLevelPrepared);
         }
 
         private void Update()
@@ -86,8 +96,24 @@ namespace LDtkLevelManager.Implementations.Basic
 
         #endregion
 
+        #region Navigation        
+
+        private void OnLevelPrepared(LevelBehaviour levelBehaviour, LevelTrail trail)
+        {
+            if (!_worlds.TryGetValue(levelBehaviour.Info.WorldIid, out World world)) return;
+            if (_currentWorld != world)
+            {
+                SetWorld(world);
+            }
+        }
+
         public void SetWorld(World world)
         {
+            foreach (Transform child in _levelsContainer)
+            {
+                Destroy(child.gameObject);
+            }
+
             _cartographer.TryWorldCartography(world, out WorldCartography worldCartography);
 
             Vector2 worldCenter = worldCartography.Bounds.ScaledCenter;
@@ -97,12 +123,13 @@ namespace LDtkLevelManager.Implementations.Basic
             {
                 foreach (LevelCartography levelCartography in area.GetAllLevels())
                 {
-                    MapLevelDrawer mapLevelDrawer = Instantiate(_mapLevelDrawerPrefab, transform);
+                    MapLevelDrawer mapLevelDrawer = Instantiate(_mapLevelDrawerPrefab, _levelsContainer);
                     mapLevelDrawer.Initialize(levelCartography, transform.position.z);
                 }
             }
-
-            _characterPinTransform.localScale *= _cartographer.ScaleFactor;
+            _currentWorld = world;
         }
+
+        #endregion
     }
 }
