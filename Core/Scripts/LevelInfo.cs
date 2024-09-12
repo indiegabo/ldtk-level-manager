@@ -40,6 +40,8 @@ namespace LDtkLevelManager
 
         #region Fields
 
+        private Level _ldtkLevel;
+
         #endregion
 
         #region Getters

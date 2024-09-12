@@ -14,9 +14,7 @@ namespace LDtkLevelManager
                 /// <param name="sender">The object that triggered the error (optional).</param>
                 public static void Message(string message, UnityEngine.Object sender = null)
                 {
-#if UNITY_EDITOR
                         Debug.Log($"{Prefix} {message}", sender);
-#endif
                 }
 
                 /// <summary>
@@ -26,9 +24,7 @@ namespace LDtkLevelManager
                 /// <param name="sender">The object that triggered the error (optional).</param>
                 public static void Warning(string message, UnityEngine.Object sender = null)
                 {
-#if UNITY_EDITOR
                         Debug.LogWarning($"{Prefix} {message}", sender);
-#endif
                 }
 
                 /// <summary>
@@ -38,9 +34,7 @@ namespace LDtkLevelManager
                 /// <param name="sender">The object that triggered the error (optional).</param>
                 public static void Error(string message, UnityEngine.Object sender = null)
                 {
-#if UNITY_EDITOR
                         Debug.LogError($"{Prefix} {message}", sender);
-#endif
                 }
 
                 /// <summary>
@@ -50,10 +44,8 @@ namespace LDtkLevelManager
                 /// <param name="sender">The object that triggered the error (optional).</param>
                 public static void Exception(System.Exception exception, UnityEngine.Object sender = null)
                 {
-#if UNITY_EDITOR
                         Message($"{Prefix} The following exception was thrown:", sender);
                         Debug.LogException(exception, sender);
-#endif
                 }
         }
 }

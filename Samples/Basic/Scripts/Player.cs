@@ -1,37 +1,42 @@
-using LDtkLevelManager;
 using LDtkLevelManager.Utils;
 using TarodevController;
 using UnityEngine;
 
 namespace LDtkLevelManager.Implementations.Basic
 {
-    public class Player : MonoBehaviour, ICharacterLevelFlowSubject
+    public class Player : MonoBehaviour, ILevelFlowSubject
     {
-        [SerializeField] private GameObjectProvider _characterProvider;
+        private static Player _currentInstance;
+        public static Player Instance => _currentInstance;
+
         [SerializeField] private SpriteRenderer _spriteRenderer;
 
         private PlayerController _playerController;
-        private Rigidbody2D _rb;
 
         private void Awake()
         {
-            _rb = GetComponent<Rigidbody2D>();
-            _characterProvider.Register(gameObject);
+            if (_currentInstance != null && _currentInstance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            _currentInstance = this;
             _playerController = GetComponent<PlayerController>();
         }
 
-        public void OnLevelExit()
+        public void LeaveLevel(LevelBehaviour levelBehaviour)
         {
             _playerController.RemoveControl();
         }
 
-        public void PlaceInLevel(Vector3 position, int directionSign)
+        public void PlaceInLevel(LevelBehaviour levelBehaviour, Vector3 position, int directionSign)
         {
-            transform.position = new Vector3(position.x, position.y - 0.5f, position.z);
             _spriteRenderer.flipX = directionSign < 0;
+            transform.position = new Vector3(position.x, position.y - 0.5f, position.z);
         }
 
-        public void OnLevelEnter()
+        public void EnterLevel(LevelBehaviour levelBehaviour)
         {
             _playerController.GiveControl();
         }

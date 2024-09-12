@@ -9,9 +9,6 @@ namespace LDtkLevelManager.Implementations.Basic
         #region Inspector
 
         [SerializeField]
-        private LevelTransitionerBridge _transitionBridge;
-
-        [SerializeField]
         private string _playerTag;
 
         [SerializeField]
@@ -149,9 +146,9 @@ namespace LDtkLevelManager.Implementations.Basic
 
         private void OnTriggerEnter2D(Collider2D otherCollider)
         {
-            if (!_active || !otherCollider.gameObject.CompareTag(_playerTag)) return;
+            if (!_active || !otherCollider.TryGetComponent(out Player player)) return;
             _used.Invoke();
-            _transitionBridge.TransitionToConnection(_targetLevelIid, this);
+            LevelTransitioner.Instance.TransitionToConnection(player, _targetLevelIid, this);
         }
 
         #endregion

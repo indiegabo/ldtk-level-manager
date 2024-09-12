@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3320033007105279893}
   - component: {fileID: 1885385094183166458}
   - component: {fileID: 3800468179374012673}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Level Drawer
   m_TagString: Untagged
   m_Icon: {fileID: 0}

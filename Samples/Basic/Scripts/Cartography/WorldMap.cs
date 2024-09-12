@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using LDtkLevelManager.Cartography;
 using LDtkLevelManager.Utils;
 using LDtkUnity;
@@ -12,12 +11,11 @@ namespace LDtkLevelManager.Implementations.Basic
     {
         [SerializeField] private Project _project;
         [SerializeField] private MapLevelDrawer _mapLevelDrawerPrefab;
-        [SerializeField] private GameObjectProvider _playerProvider;
         [SerializeField] private GameObject _characterPinPrefab;
         [SerializeField] private LevelNavigationBridge _navigationBridge;
         [SerializeField] private Transform _levelsContainer;
+        [SerializeField] private Camera _camera;
 
-        private Player _player;
         private Transform _characterPinTransform;
 
         private Cartographer _cartographer;
@@ -32,8 +30,9 @@ namespace LDtkLevelManager.Implementations.Basic
 
         private void Awake()
         {
-            _cartographer = Cartographer.ForProject(_project);
-            if (!ProjectService.Instance.TryGetLdtkJson(_project, out _projectJson))
+            _cartographer = Cartographer.For(_project);
+
+            if (!ProjectsService.Instance.TryGetLdtkJson(_project, out _projectJson))
             {
                 Logger.Error($"Failed to load LDtkJson for project {_project.name}.", this);
                 return;
@@ -44,6 +43,7 @@ namespace LDtkLevelManager.Implementations.Basic
                 transform.position.y,
                 _project.LanesSettings.MapRenderingLane.StartingZ
             );
+
             _levelsContainer.position = transform.position;
             _characterPinTransform = Instantiate(_characterPinPrefab, transform).transform;
             _characterPinTransform.localScale *= _cartographer.ScaleFactor;
@@ -57,41 +57,30 @@ namespace LDtkLevelManager.Implementations.Basic
 
         private void OnEnable()
         {
-            EvaluatePlayer();
-            _playerProvider.Registered.AddListener(OnPlayerRegistered);
             _navigationBridge.LevelPrepared.AddListener(OnLevelPrepared);
         }
 
         private void OnDisable()
         {
-            _playerProvider.Registered.RemoveListener(OnPlayerRegistered);
             _navigationBridge.LevelPrepared.RemoveListener(OnLevelPrepared);
         }
 
         private void Update()
         {
-            if (_player == null) return;
-            Vector2 newPos = _cartographer.CalculateScaledPosition(_player.transform.position);
+            if (Player.Instance == null) return;
+
+            Vector2 newPos = _cartographer.CalculateScaledPosition(Player.Instance.transform.position);
             _characterPinTransform.position = new Vector3(
                 newPos.x,
                 newPos.y + _scaledOffsetY,
                 transform.position.z - 1
             );
-        }
 
-        #endregion
-
-        #region Player
-
-        private void EvaluatePlayer()
-        {
-            if (_playerProvider.IsRegistered) return;
-            _playerProvider.TryGetComponent(out _player);
-        }
-
-        private void OnPlayerRegistered(GameObject playerGO)
-        {
-            _player = playerGO.GetComponent<Player>();
+            _camera.transform.position = new Vector3(
+                newPos.x,
+                newPos.y,
+                transform.position.z - 10
+            );
         }
 
         #endregion
