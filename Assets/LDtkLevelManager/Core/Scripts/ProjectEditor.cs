@@ -95,6 +95,7 @@ namespace LDtkLevelManager
             Dictionary<string, LDtkLevelFile> ldtkFiles = GenerateLdtkFilesDictionary();
 
             LdtkJson ldtkJson = _ldtkProjectFile.FromJson;
+            _iid = ldtkJson.Iid;
 
             if (!this.TrySetAsAddressable(
                $"{AddressablesProjectLabel}_{ldtkJson.Iid}",

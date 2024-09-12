@@ -11,6 +11,7 @@ namespace LDtkLevelManager
 
         #region Serializing
 
+        [SerializeField] private string _iid;
         [SerializeField] private LDtkProjectFile _ldtkProjectFile;
         [SerializeField] private bool _syncLevelsAtCompile = true;
         [SerializeField] private string _navigationLayer;
@@ -29,6 +30,8 @@ namespace LDtkLevelManager
         #endregion
 
         #region Getters
+
+        public string Iid => _iid;
 
         /// <summary>
         /// [Inspector only] <br/><br/>
@@ -233,6 +236,5 @@ namespace LDtkLevelManager
         }
 
         #endregion
-
     }
 }

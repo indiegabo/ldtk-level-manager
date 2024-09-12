@@ -14,9 +14,6 @@ namespace LDtkLevelManager.Implementations.Basic
         [SerializeField]
         private CinemachineVirtualCamera _virtualCamera;
 
-        [SerializeField]
-        private GameObjectProvider _mainCharacterProvider;
-
         #endregion
 
         #region Fields
@@ -41,13 +38,13 @@ namespace LDtkLevelManager.Implementations.Basic
 
         private void OnEnable()
         {
-            _levelBehaviour.PlayerExited.AddListener(OnLevelExited);
+            _levelBehaviour.Deactivated.AddListener(OnLevelExited);
             _levelBehaviour.PreparationStarted.AddListener(OnLevelPreparationStarted);
         }
 
         private void OnDisable()
         {
-            _levelBehaviour.PlayerExited.RemoveListener(OnLevelExited);
+            _levelBehaviour.Deactivated.RemoveListener(OnLevelExited);
             _levelBehaviour.PreparationStarted.RemoveListener(OnLevelPreparationStarted);
         }
 
@@ -59,14 +56,11 @@ namespace LDtkLevelManager.Implementations.Basic
         {
         }
 
-        private void OnLevelPreparationStarted(LevelBehaviour arg0, Vector2 arg1)
+        private void OnLevelPreparationStarted(LevelBehaviour levelBehaviour, ILevelFlowSubject subject, Vector2 position)
         {
             _confiner.m_BoundingShape2D = _boundaries.Shape;
 
-            if (_mainCharacterProvider.TryGet(out GameObject characterObj))
-            {
-                _virtualCamera.Follow = characterObj.transform;
-            }
+            _virtualCamera.Follow = subject.transform;
 
             _virtualCamera.gameObject.SetActive(true);
         }

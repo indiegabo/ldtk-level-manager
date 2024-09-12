@@ -20,8 +20,6 @@ namespace LDtkLevelManagerEditor
         private ObjectField _fieldLDtkProject;
         private Button _buttonResync;
 
-        private ProgressBar _progressBar;
-
         #endregion
 
         private Project _project;
@@ -29,11 +27,6 @@ namespace LDtkLevelManagerEditor
         public override VisualElement CreateInspectorGUI()
         {
             _project = target as Project;
-
-            _progressBar = new ProgressBar
-            {
-                title = "Loading project..."
-            };
 
             _containerMain = Resources.Load<VisualTreeAsset>($"UXML/{TemplateName}").Instantiate();
             _fieldLDtkProject = _containerMain.Q<ObjectField>("field-ldtk-project");

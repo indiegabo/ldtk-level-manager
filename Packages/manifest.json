@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.cammin.ldtkunity": "6.4.3",
+    "com.cammin.ldtkunity": "6.4.4",
     "com.cysharp.unitask": "2.5.5",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",

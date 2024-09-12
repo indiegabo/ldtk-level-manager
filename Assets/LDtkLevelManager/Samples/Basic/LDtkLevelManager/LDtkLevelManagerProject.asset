@@ -147,6 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 825ee4dd3ba3d76428e41c1af1444edd, type: 3}
   m_Name: LDtkLevelManagerProject
   m_EditorClassIdentifier: 
+  _iid: 363af480-7820-11ed-a571-47952de1c82f
   _ldtkProjectFile: {fileID: -164016180542632921, guid: df7f3fbd68adee24db1bda124d3e43be, type: 3}
   _syncLevelsAtCompile: 1
   _navigationLayer: Navigation
@@ -279,8 +280,8 @@ MonoBehaviour:
   _assetPath: Assets/LDtkLevelManager/Samples/Basic/LDtk/LDtkSample/World_1_Level_1.ldtkl
   _address: LM__363b42a0-7820-11ed-a571-2bca691f63e1
   _scene:
-    _assetGuid: 13ff484e8cf3472469eeb1d838140239
-    _addressableKey: LM_Scene_363b42a0-7820-11ed-a571-2bca691f63e1
+    _assetGuid: 
+    _addressableKey: 
   _leftBehind: 0
 --- !u!114 &4497664737447744018
 MonoBehaviour:

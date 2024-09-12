@@ -8,7 +8,7 @@ namespace LDtkLevelManager.Implementations.Basic
         #region Inspector
 
         [SerializeField] private LevelInfo _initialLevel;
-        [SerializeField] private Player _player;
+        [SerializeField] private Player _playerPrefab;
         [SerializeField] private LevelTransitioner _levelTransitioner;
 
         #endregion
@@ -16,6 +16,7 @@ namespace LDtkLevelManager.Implementations.Basic
         #region Fields
 
         private LevelLoader _levelLoader;
+        private Player _player;
 
         #endregion
 
@@ -31,10 +32,9 @@ namespace LDtkLevelManager.Implementations.Basic
         /// </summary>
         private void Start()
         {
-            Player player = Instantiate(_player);
-            player.gameObject.name = "Player";
-
-            _ = LoadStandAloneLevel();
+            _player = Instantiate(_playerPrefab);
+            _player.gameObject.name = "Player";
+            _ = LoadFirstLevel();
         }
 
         #endregion
@@ -45,8 +45,9 @@ namespace LDtkLevelManager.Implementations.Basic
         /// Loads a level, prepares it, opens the curtains and enters it.
         /// </summary>
         /// <returns>A UniTask that completes when the level is entered.</returns>
-        private async UniTask LoadStandAloneLevel()
+        private async UniTask LoadFirstLevel()
         {
+
             // Load the level and its neighbours. At the end of this task
             // the level will be fully loaded and can rely on its neighbours
             // being loaded as well
@@ -54,14 +55,14 @@ namespace LDtkLevelManager.Implementations.Basic
 
             // Prepare the level. This sets the player in the loading spot. 
             // Notice that at this time the curtains are not yet open.
-            _levelLoader.Prepare(_initialLevel.Iid);
+            _levelLoader.Prepare(_player, _initialLevel.Iid);
 
             // Open the curtains
             await _levelTransitioner.OpenCurtains();
 
             // Enter the level. Meaning the player is now in control
             // of the player character
-            _levelLoader.Enter();
+            _levelLoader.ActivatePreparedLevel();
         }
 
         #endregion

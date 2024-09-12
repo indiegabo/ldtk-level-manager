@@ -8,8 +8,6 @@ namespace LDtkLevelManager.Implementations.Basic
     /// </summary>
     public class Portal : MonoBehaviour, IPortal
     {
-        [SerializeField]
-        private LevelTransitionerBridge _transitionBridge;
 
         [SerializeField]
         private string _playerTag;
@@ -21,7 +19,7 @@ namespace LDtkLevelManager.Implementations.Basic
         private string _targetLevelIid;
         private string _targetPortalIid;
 
-        private bool _playerInsideBounds;
+        private Player _player;
 
         #region Behaviour
 
@@ -37,9 +35,9 @@ namespace LDtkLevelManager.Implementations.Basic
 
         private void Update()
         {
-            if (!_playerInsideBounds || !Input.GetKeyDown(KeyCode.E)) return;
-            _transitionBridge.TransitionToPortal(_targetLevelIid, this);
-            _playerInsideBounds = false;
+            if (_player == null || !Input.GetKeyDown(KeyCode.E)) return;
+            LevelTransitioner.Instance.TransitionToPortal(_player, _targetLevelIid, this);
+            _player = null;
         }
 
         #endregion
@@ -86,7 +84,7 @@ namespace LDtkLevelManager.Implementations.Basic
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (!other.CompareTag(_playerTag)) return;
-            _playerInsideBounds = true;
+            _player = other.GetComponent<Player>();
         }
 
         /// <summary>
@@ -96,7 +94,7 @@ namespace LDtkLevelManager.Implementations.Basic
         private void OnTriggerExit2D(Collider2D other)
         {
             if (!other.CompareTag(_playerTag)) return;
-            _playerInsideBounds = false;
+            _player = null;
         }
 
         #endregion
