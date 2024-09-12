@@ -12,6 +12,12 @@ namespace LDtkLevelManager.Implementations.Basic
         [SerializeField]
         private string _playerTag;
 
+        [SerializeField]
+        private GameObject _hintContainer;
+
+        [SerializeField]
+        private GameObject _textContainer;
+
         private LDtkIid _ldtkIid;
         private LDtkFields _fields;
         private PlacementSpot _spot;
@@ -85,6 +91,8 @@ namespace LDtkLevelManager.Implementations.Basic
         {
             if (!other.CompareTag(_playerTag)) return;
             _player = other.GetComponent<Player>();
+            _hintContainer.SetActive(true);
+            _textContainer.SetActive(false);
         }
 
         /// <summary>
@@ -95,6 +103,8 @@ namespace LDtkLevelManager.Implementations.Basic
         {
             if (!other.CompareTag(_playerTag)) return;
             _player = null;
+            _hintContainer.SetActive(false);
+            _textContainer.SetActive(true);
         }
 
         #endregion
