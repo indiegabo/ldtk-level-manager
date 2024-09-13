@@ -1,3 +1,16 @@
+# [1.7.0](https://github.com/indiegabo/ldtk-level-manager/compare/v1.6.2...v1.7.0) (2024-09-13)
+
+
+### Bug Fixes
+
+* Phew... building is now a thing ([f797077](https://github.com/indiegabo/ldtk-level-manager/commit/f797077da8cbfc5980c4b45c4f1d7a40aa4ddc51))
+
+
+### Features
+
+* Improved Level transioning and removing the navigation bridge ScriptableObject ([6290770](https://github.com/indiegabo/ldtk-level-manager/commit/6290770151036500faa5421ea9734cacac5e1f6c))
+* Samples scene navigational hints ([0e0d214](https://github.com/indiegabo/ldtk-level-manager/commit/0e0d214ccbfe0e2ea0d0273f17ac826fb027a57f))
+
 ## [1.6.2](https://github.com/indiegabo/ldtk-level-manager/compare/v1.6.1...v1.6.2) (2024-09-11)
 
 
