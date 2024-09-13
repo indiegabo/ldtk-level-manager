@@ -1,22 +1,24 @@
 using System.Collections.Generic;
+using System.Linq;
 using LDtkUnity;
 using UnityEngine;
 
 namespace LDtkLevelManager
 {
-    public class ProjectService : MonoBehaviour
+    public class ProjectsService : MonoBehaviour
     {
         #region Static
 
         public static readonly string ProjectAddressabelsLabel = "LM_Project";
-        static ProjectService _instance;
-        public static ProjectService Instance => _instance;
+        static ProjectsService _instance;
+        public static ProjectsService Instance => _instance;
 
         #endregion
 
         #region Fields
 
-        Dictionary<Project, LdtkJson> _ldtkJsons = new();
+        Dictionary<string, LdtkJson> _ldtkJsons = new();
+        Dictionary<string, Project> _projects = new();
 
         #endregion
 
@@ -27,7 +29,7 @@ namespace LDtkLevelManager
         #region Initialization
 
         /// <summary>
-        /// Initializes the <see cref="ProjectService"/>.
+        /// Initializes the <see cref="ProjectsService"/>.
         /// </summary>
         /// <param name="projects">The list of projects to initialize the service with.</param>
         /// <remarks>
@@ -40,22 +42,29 @@ namespace LDtkLevelManager
             _instance = this;
 
             // Set the name of the service to the name of the class.
-            name = $"[LDtkLevelManager] {nameof(ProjectService)}";
+            name = $"[LDtkLevelManager] {nameof(ProjectsService)}";
 
             // Iterate over the projects and add them to the dictionary.
             foreach (Project project in projects)
             {
+                _projects.Add(project.Iid, project);
+
                 // Get the LDtkJson from the project.
                 LdtkJson ldtkJson = project.LDtkProject;
 
                 // Add the project and its LDtkJson to the dictionary.
-                _ldtkJsons.Add(project, ldtkJson);
+                _ldtkJsons.Add(project.Iid, ldtkJson);
             }
         }
 
         #endregion
 
         #region Serving
+
+        public List<Project> GetAllProjects()
+        {
+            return _projects.Values.ToList();
+        }
 
         /// <summary>
         /// Attempts to retrieve the <see cref="LdtkJson"/> associated with the given <see cref="Project"/>.
@@ -65,7 +74,7 @@ namespace LDtkLevelManager
         /// <returns><c>true</c> if the LDtkJson was found, otherwise <c>false</c>.</returns>
         public bool TryGetLdtkJson(Project project, out LdtkJson ldtkJson)
         {
-            return _ldtkJsons.TryGetValue(project, out ldtkJson);
+            return _ldtkJsons.TryGetValue(project.Iid, out ldtkJson);
         }
 
         #endregion

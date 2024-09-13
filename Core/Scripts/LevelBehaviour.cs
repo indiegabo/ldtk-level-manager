@@ -14,32 +14,29 @@ namespace LDtkLevelManager
     {
         #region Inspector
 
-        [SerializeField]
-        private GameObjectProvider _mainCharacterProvider;
-
         /// <summary>
         /// Invoked when the player has exited the level.
         /// </summary>
         [SerializeField, Tooltip("Invoked when the player has exited the level.")]
-        private UnityEvent<LevelBehaviour> _exitedEvent;
+        private UnityEvent<LevelBehaviour> _deactivatedEvent;
 
         /// <summary>
         /// Invoked when the level has started its preparation process.
         /// </summary>
         [SerializeField, Tooltip("Invoked when the level has started its preparation process.")]
-        private UnityEvent<LevelBehaviour, Vector2> _preparationStartedEvent;
+        private UnityEvent<LevelBehaviour, ILevelFlowSubject, Vector2> _preparationStartedEvent;
 
         /// <summary>
         /// Invoked when the level has finished its preparation process.
         /// </summary>
         [SerializeField, Tooltip("Invoked when the level has finished its preparation process.")]
-        private UnityEvent<LevelBehaviour, LevelTrail> _preparedEvent;
+        private UnityEvent<LevelBehaviour, ILevelFlowSubject, LevelTrail> _preparedEvent;
 
         /// <summary>
         /// Invoked when the player has entered the level.
         /// </summary>
         [SerializeField, Tooltip("Invoked when the player has entered the level.")]
-        private UnityEvent<LevelBehaviour> _enteredEvent;
+        private UnityEvent<LevelBehaviour> _activatedEvent;
 
         #endregion
 
@@ -52,6 +49,7 @@ namespace LDtkLevelManager
         private Dictionary<string, IConnection> _connections;
         private Dictionary<string, IPlacementSpot> _spots;
         private Dictionary<string, IPortal> _portals;
+        private List<ILevelFlowSubject> _subjects;
 
         #endregion
 
@@ -65,23 +63,23 @@ namespace LDtkLevelManager
         /// <summary>
         /// Fired when the player exits the level.
         /// </summary>
-        public UnityEvent<LevelBehaviour> PlayerExited => _exitedEvent;
+        public UnityEvent<LevelBehaviour> Deactivated => _deactivatedEvent;
 
         /// <summary>
         /// Fired when the preparation for the player to enter the level is started.
         /// </summary>
-        public UnityEvent<LevelBehaviour, Vector2> PreparationStarted => _preparationStartedEvent;
+        public UnityEvent<LevelBehaviour, ILevelFlowSubject, Vector2> PreparationStarted => _preparationStartedEvent;
 
         /// <summary>
         /// Fired when the level is fully prepared and player is already in position.
         /// Curtains are about to be opened.
         /// </summary>
-        public UnityEvent<LevelBehaviour, LevelTrail> Prepared => _preparedEvent;
+        public UnityEvent<LevelBehaviour, ILevelFlowSubject, LevelTrail> Prepared => _preparedEvent;
 
         /// <summary>
         /// Fired when the player enters the level.
         /// </summary>
-        public UnityEvent<LevelBehaviour> PlayerEntered => _enteredEvent;
+        public UnityEvent<LevelBehaviour> Activated => _activatedEvent;
 
         #endregion
 
@@ -118,6 +116,7 @@ namespace LDtkLevelManager
             EvaluateSpots(navigationContainer);
             EvaluateNavigators(navigationContainer);
             EvaluatePortals(navigationContainer);
+            _subjects = new();
 
             LevelLoader.Instance.RegisterAsBehaviour(_ldtkIid.Iid, this);
             BroadcastMessage("OnLevelAwake", this, SendMessageOptions.DontRequireReceiver);
@@ -142,7 +141,7 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="trail">The trail to be used when entering the level.</param>
         /// <returns>True if the level was prepared, false otherwise.</returns>
-        public bool Prepare(out LevelTrail trail)
+        public bool Prepare(ILevelFlowSubject subject, out LevelTrail trail)
         {
             if (_spots.Count == 0)
             {
@@ -165,13 +164,13 @@ namespace LDtkLevelManager
             trail = LevelTrail.FromSpot(_info.Iid, mainSpot);
 
             // Broadcast the preparation started event
-            _preparationStartedEvent.Invoke(this, mainSpot.SpawnPoint);
+            _preparationStartedEvent.Invoke(this, subject, mainSpot.SpawnPoint);
 
             // Place the character at the main spot
-            PlaceCharacter(mainSpot.SpawnPoint, mainSpot.FacingSign);
+            PlaceSubject(subject, mainSpot.SpawnPoint, mainSpot.FacingSign);
 
             // Broadcast the preparation finished event
-            _preparedEvent.Invoke(this, trail);
+            _preparedEvent.Invoke(this, subject, trail);
 
             return true;
         }
@@ -183,7 +182,7 @@ namespace LDtkLevelManager
         /// <param name="spotIid">The Iid of the spot where the player should spawn.</param>
         /// <param name="trail">The trail to be used when entering the level.</param>
         /// <returns>True if the level was prepared, false otherwise.</returns>
-        public bool Prepare(string spotIid, out LevelTrail trail)
+        public bool Prepare(ILevelFlowSubject subject, string spotIid, out LevelTrail trail)
         {
             if (!_spots.TryGetValue(spotIid, out IPlacementSpot registeredSpot))
             {
@@ -197,13 +196,13 @@ namespace LDtkLevelManager
             trail = LevelTrail.FromSpot(_info.Iid, registeredSpot);
 
             // Broadcast the preparation started event
-            _preparationStartedEvent.Invoke(this, registeredSpot.SpawnPoint);
+            _preparationStartedEvent.Invoke(this, subject, registeredSpot.SpawnPoint);
 
             // Place the character at the main spot
-            PlaceCharacter(registeredSpot.SpawnPoint, registeredSpot.FacingSign);
+            PlaceSubject(subject, registeredSpot.SpawnPoint, registeredSpot.FacingSign);
 
             // Broadcast the preparation finished event
-            _preparedEvent.Invoke(this, trail);
+            _preparedEvent.Invoke(this, subject, trail);
 
             return true;
         }
@@ -216,7 +215,7 @@ namespace LDtkLevelManager
         /// <param name="connection">The connection to use to enter the level.</param>
         /// <param name="trail">The trail to be used when entering the level.</param>
         /// <returns>True if the level was prepared, false otherwise.</returns>
-        public bool Prepare(IConnection connection, out LevelTrail trail)
+        public bool Prepare(ILevelFlowSubject subject, IConnection connection, out LevelTrail trail)
         {
             // It is comming from a connection, so it must find the target connection within the dictionary
             if (!_connections.TryGetValue(connection.TargetIid, out IConnection registeredConnection))
@@ -232,13 +231,13 @@ namespace LDtkLevelManager
             trail = LevelTrail.FromConnection(_info.Iid, registeredConnection);
 
             // Broadcast the preparation started event
-            _preparationStartedEvent.Invoke(this, registeredConnection.Spot.SpawnPoint);
+            _preparationStartedEvent.Invoke(this, subject, registeredConnection.Spot.SpawnPoint);
 
             // Place the character at the main spot
-            PlaceCharacter(registeredConnection.Spot.SpawnPoint, registeredConnection.Spot.FacingSign);
+            PlaceSubject(subject, registeredConnection.Spot.SpawnPoint, registeredConnection.Spot.FacingSign);
 
             // Broadcast the preparation finished event
-            _preparedEvent.Invoke(this, trail);
+            _preparedEvent.Invoke(this, subject, trail);
 
             return true;
         }
@@ -251,7 +250,7 @@ namespace LDtkLevelManager
         /// <param name="portal">The portal to use to enter the level.</param>
         /// <param name="trail">The trail to be used when entering the level.</param>
         /// <returns>True if the level was prepared, false otherwise.</returns>
-        public bool Prepare(IPortal portal, out LevelTrail trail)
+        public bool Prepare(ILevelFlowSubject subject, IPortal portal, out LevelTrail trail)
         {
             // It is comming from a portal, so it must find the target portal within the dictionary
             if (!_portals.TryGetValue(portal.TargetIid, out IPortal registeredPortal))
@@ -268,13 +267,13 @@ namespace LDtkLevelManager
             trail = LevelTrail.FromPortal(_info.Iid, registeredPortal);
 
             // Broadcast the preparation started event
-            _preparationStartedEvent.Invoke(this, registeredPortal.Spot.SpawnPoint);
+            _preparationStartedEvent.Invoke(this, subject, registeredPortal.Spot.SpawnPoint);
 
             // Place the character at the main spot
-            PlaceCharacter(registeredPortal.Spot.SpawnPoint, registeredPortal.Spot.FacingSign);
+            PlaceSubject(subject, registeredPortal.Spot.SpawnPoint, registeredPortal.Spot.FacingSign);
 
             // Broadcast the preparation finished event
-            _preparedEvent.Invoke(this, trail);
+            _preparedEvent.Invoke(this, subject, trail);
 
             return true;
         }
@@ -287,19 +286,19 @@ namespace LDtkLevelManager
         /// <param name="facingSign">The direction the player should face.</param>
         /// <param name="trail">The trail to be used when entering the level.</param>
         /// <returns>True if the level was prepared, false otherwise.</returns>
-        public bool Prepare(Vector2 spawnPoint, int facingSign, out LevelTrail trail)
+        public bool Prepare(ILevelFlowSubject subject, Vector2 spawnPoint, int facingSign, out LevelTrail trail)
         {
             // Create a new trail with the level's Iid and the spawn position and facing sign
             trail = LevelTrail.FromPoint(_info.Iid, spawnPoint, facingSign);
 
             // Broadcast the preparation started event
-            _preparationStartedEvent.Invoke(this, spawnPoint);
+            _preparationStartedEvent.Invoke(this, subject, spawnPoint);
 
             // Place the character at the spawn position
-            PlaceCharacter(new Vector3(spawnPoint.x, spawnPoint.y, transform.position.z), facingSign);
+            PlaceSubject(subject, new Vector3(spawnPoint.x, spawnPoint.y, transform.position.z), facingSign);
 
             // Broadcast the preparation finished event
-            _preparedEvent.Invoke(this, trail);
+            _preparedEvent.Invoke(this, subject, trail);
 
             // If the level was prepared, return true
             return true;
@@ -308,49 +307,42 @@ namespace LDtkLevelManager
 
         /// <summary>
         /// Enters the level enabling all navigators and calling 
-        /// <see cref="ICharacterLevelFlowSubject.OnLevelEnter"/> on the main character.
+        /// <see cref="ILevelFlowSubject.EnterLevel"/> on the main character.
         /// </summary>
-        public void Enter()
+        public void Activate()
         {
             // Enable all navigators
             EnableNavigators();
 
-            // Get the main character's level flow subject
-            if (!_mainCharacterProvider.TryGetComponent(out ICharacterLevelFlowSubject levelFlowSubject))
+            // Call OnLevelEnter on the main character's level flow subject
+            foreach (ILevelFlowSubject levelFlowSubject in _subjects)
             {
-                // If it doesn't exist, log an error and return
-                Logger.Error($"Level {name} could not find an ({nameof(ICharacterLevelFlowSubject)}) to call {nameof(ICharacterLevelFlowSubject.OnLevelEnter)}", this);
-                return;
+                levelFlowSubject.EnterLevel(this);
             }
 
-            // Call OnLevelEnter on the main character's level flow subject
-            levelFlowSubject.OnLevelEnter();
-
             // Broadcast the level entered event
-            _enteredEvent.Invoke(this);
+            _activatedEvent.Invoke(this);
         }
 
         /// <summary>
-        /// Exits the level disabling all connections and calling 
-        /// <see cref="ICharacterLevelFlowSubject.OnLevelExit"/> on the main character.
+        /// Deactivates the level disabling all connections and calling 
+        /// <see cref="ILevelFlowSubject.LeaveLevel"/> on the current subjects.
         /// </summary>
-        public void Exit()
+        public void Deactivate()
         {
             // Disable all connections
             DisableNavigators();
 
-            if (!_mainCharacterProvider.TryGetComponent(out ICharacterLevelFlowSubject levelFlowSubject))
+            // Call OnLevelExit on the main character's level flow subject
+            foreach (ILevelFlowSubject levelFlowSubject in _subjects)
             {
-                // If it doesn't exist, log an error and return
-                Logger.Error($"Level {name} could not find an ({nameof(ICharacterLevelFlowSubject)}) to call {nameof(ICharacterLevelFlowSubject.OnLevelExit)}", this);
-                return;
+                levelFlowSubject.LeaveLevel(this);
             }
 
-            // Call OnLevelExit on the main character's level flow subject
-            levelFlowSubject.OnLevelExit();
+            _subjects.Clear();
 
             // Broadcast the level exited event
-            _exitedEvent.Invoke(this);
+            _deactivatedEvent.Invoke(this);
         }
         #endregion
 
@@ -479,26 +471,18 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="position">The position to place the main character in.</param>
         /// <param name="directionSign">The direction sign to place the main character with.</param>
-        private void PlaceCharacter(Vector2 position, int directionSign)
+        private void PlaceSubject(ILevelFlowSubject subject, Vector2 position, int directionSign)
         {
-            // Try to get the main character's ICharacterLevelFlowSubject component
-            if (!_mainCharacterProvider.TryGetComponent(out ICharacterLevelFlowSubject levelFlowSubject))
-            {
-                // Log an error if the component is not found
-                Logger.Error($"Level {name} could not find an ({nameof(ICharacterLevelFlowSubject)}) to place the character into", this);
-
-                // Return to avoid a null reference exception
-                return;
-            }
-
             Vector3 placementPos = new(
                 position.x,
                 position.y,
                 transform.position.z
             );
 
+            _subjects.Add(subject);
+
             // Call the PlaceInLevel method on the main character's ICharacterLevelFlowSubject
-            levelFlowSubject.PlaceInLevel(placementPos, directionSign);
+            subject.PlaceInLevel(this, placementPos, directionSign);
         }
 
         #endregion

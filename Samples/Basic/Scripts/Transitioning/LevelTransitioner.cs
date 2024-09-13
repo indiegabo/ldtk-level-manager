@@ -8,6 +8,13 @@ namespace LDtkLevelManager.Implementations.Basic
 {
     public class LevelTransitioner : MonoBehaviour
     {
+        #region Static
+
+        private static LevelTransitioner _instance;
+        public static LevelTransitioner Instance => _instance;
+
+        #endregion
+
         #region Inspector        
 
         [SerializeField]
@@ -17,13 +24,10 @@ namespace LDtkLevelManager.Implementations.Basic
         private Animator _curtainsPrefab;
 
         [SerializeField]
-        private LevelTransitionerBridge _transitionerBridge;
+        private UnityEvent _transitionStarted;
 
         [SerializeField]
-        private UnityEvent _transitionStartedEvent;
-
-        [SerializeField]
-        private UnityEvent _transitionEndedEvent;
+        private UnityEvent _transitionEnded;
 
         #endregion
 
@@ -44,12 +48,12 @@ namespace LDtkLevelManager.Implementations.Basic
         /// <summary>
         /// The event fired when the transition begins.
         /// </summary>
-        public UnityEvent TransitionStartedEvent => _transitionStartedEvent;
+        public UnityEvent TransitionStarted => _transitionStarted;
 
         /// <summary>
         /// The event fired when the transition ends.
         /// </summary>
-        public UnityEvent TransitionEndedEvent => _transitionEndedEvent;
+        public UnityEvent TransitionEnded => _transitionEnded;
 
         #endregion
 
@@ -57,18 +61,15 @@ namespace LDtkLevelManager.Implementations.Basic
 
         private void Awake()
         {
+            _instance = this;
             _curtainsAnimator = Instantiate(_curtainsPrefab, _curtainsCanvas.transform);
         }
 
-        private void OnEnable()
+        private void OnDestroy()
         {
-            _transitionerBridge.Register(this);
+            _instance = null;
         }
 
-        private void OnDisable()
-        {
-            _transitionerBridge.ClearRegistry();
-        }
 
         #endregion
 
@@ -80,9 +81,9 @@ namespace LDtkLevelManager.Implementations.Basic
         /// </summary>
         /// <param name="levelIid">The LDtk Iid of the level.</param>
         /// <param name="spotIid">The LDtk Iid of the spot in the level.</param>
-        public void TransitionToSpot(string levelIid, string spotIid)
+        public void TransitionToSpot(ILevelFlowSubject subject, string levelIid, string spotIid)
         {
-            _ = TransitionToLevelAsync(levelIid, spotIid);
+            _ = TransitionToLevelAsync(subject, levelIid, spotIid);
         }
 
         /// <summary>
@@ -91,9 +92,9 @@ namespace LDtkLevelManager.Implementations.Basic
         /// </summary>
         /// <param name="levelIid">The LDtk Iid of the level.</param>
         /// <param name="connection">The connection to transition from.</param>
-        public void TransitionToConnection(string levelIid, IConnection connection)
+        public void TransitionToConnection(ILevelFlowSubject subject, string levelIid, IConnection connection)
         {
-            _ = TransitionToLevelAsync(levelIid, connection);
+            _ = TransitionToLevelAsync(subject, levelIid, connection);
         }
 
         /// <summary>
@@ -102,9 +103,9 @@ namespace LDtkLevelManager.Implementations.Basic
         /// </summary>
         /// <param name="levelIid">The LDtk Iid of the level.</param>
         /// <param name="portal">The portal to transition to.</param>
-        public void TransitionToPortal(string levelIid, IPortal portal)
+        public void TransitionToPortal(ILevelFlowSubject subject, string levelIid, IPortal portal)
         {
-            _ = TransitionToPortalAsync(levelIid, portal);
+            _ = TransitionToPortalAsync(subject, levelIid, portal);
         }
 
         /// <summary>
@@ -113,10 +114,10 @@ namespace LDtkLevelManager.Implementations.Basic
         /// <param name="levelIid">The LDtk Iid of the level.</param>
         /// <param name="spotIid">The Iid of the spot to transition to.</param>
         /// <returns>A UniTask that completes when the transition is complete.</returns>
-        public async UniTask TransitionToLevelAsync(string levelIid, string spotIid)
+        public async UniTask TransitionToLevelAsync(ILevelFlowSubject subject, string levelIid, string spotIid)
         {
             // Exit the current level
-            LevelLoader.Instance.Exit();
+            LevelLoader.Instance.DeactivatePreparedLevel();
 
             // Run the task that should be run before the level is prepared
             await BeforePreparationTask();
@@ -135,7 +136,7 @@ namespace LDtkLevelManager.Implementations.Basic
             }
 
             // Prepare the new level for transition
-            LevelLoader.Instance.Prepare(levelIid, spotIid);
+            LevelLoader.Instance.Prepare(subject, levelIid, spotIid);
 
             // Run the task that should be run after the level is prepared
             await AfterPreparationTask();
@@ -148,10 +149,10 @@ namespace LDtkLevelManager.Implementations.Basic
         /// <param name="levelIid">The LDtk Iid of the level to transition to.</param>
         /// <param name="connection">The connection to transition from.</param>
         /// <returns>A UniTask that completes when the transition is complete.</returns>
-        public async UniTask TransitionToLevelAsync(string levelIid, IConnection connection)
+        public async UniTask TransitionToLevelAsync(ILevelFlowSubject subject, string levelIid, IConnection connection)
         {
             // Exit the current level
-            LevelLoader.Instance.Exit();
+            LevelLoader.Instance.DeactivatePreparedLevel();
 
             // Run the task that should be run before the level is prepared
             await BeforePreparationTask();
@@ -170,7 +171,7 @@ namespace LDtkLevelManager.Implementations.Basic
             }
 
             // Prepare the new level for transition
-            LevelLoader.Instance.Prepare(levelIid, connection);
+            LevelLoader.Instance.Prepare(subject, levelIid, connection);
 
             // Run the task that should be run after the level is prepared
             await AfterPreparationTask();
@@ -183,7 +184,7 @@ namespace LDtkLevelManager.Implementations.Basic
         /// <param name="levelIid">The LDtk Iid of the level to transition to.</param>
         /// <param name="portal">The portal to transition from.</param>
         /// <returns>A UniTask that completes when the transition is complete.</returns>
-        public async UniTask TransitionToPortalAsync(string levelIid, IPortal portal)
+        public async UniTask TransitionToPortalAsync(ILevelFlowSubject subject, string levelIid, IPortal portal)
         {
             if (!LevelLoader.Instance.TryGetLevel(levelIid, out LevelInfo level))
             {
@@ -193,11 +194,11 @@ namespace LDtkLevelManager.Implementations.Basic
 
             // Notify the outside world that the transition has started
             _transitioning = true;
-            _transitionStartedEvent.Invoke();
+            _transitionStarted.Invoke();
 
             // Exit the current level, close the curtains, prepare the new level,
             // then enter it.
-            LevelLoader.Instance.Exit();
+            LevelLoader.Instance.DeactivatePreparedLevel();
             await CloseCurtains();
 
             // In this example we unload all stand alone levels upon using portals. But
@@ -213,14 +214,14 @@ namespace LDtkLevelManager.Implementations.Basic
                 await LevelLoader.Instance.LoadUniverseLevel(level);
             }
 
-            LevelLoader.Instance.Prepare(levelIid, portal);
+            LevelLoader.Instance.Prepare(subject, levelIid, portal);
             await WaitOnCameraBlend();
             await OpenCurtains();
-            LevelLoader.Instance.Enter();
+            LevelLoader.Instance.ActivatePreparedLevel();
 
             // Notify the outside world that the transition has ended
             _transitioning = false;
-            _transitionEndedEvent.Invoke();
+            _transitionEnded.Invoke();
         }
 
         /// <summary>
@@ -231,11 +232,11 @@ namespace LDtkLevelManager.Implementations.Basic
         private async UniTask BeforePreparationTask()
         {
             _transitioning = true;
-            _transitionStartedEvent.Invoke();
+            _transitionStarted.Invoke();
 
             await PerformTransitions(LevelTransitionMoment.Close);
 
-            LevelLoader.Instance.Exit();
+            LevelLoader.Instance.DeactivatePreparedLevel();
         }
 
         /// <summary>
@@ -249,10 +250,10 @@ namespace LDtkLevelManager.Implementations.Basic
             await WaitOnCameraBlend();
 
             // "Activating" level
-            LevelLoader.Instance.Enter();
+            LevelLoader.Instance.ActivatePreparedLevel();
 
             _transitioning = false;
-            _transitionEndedEvent.Invoke();
+            _transitionEnded.Invoke();
         }
 
         /// <summary>
@@ -280,9 +281,8 @@ namespace LDtkLevelManager.Implementations.Basic
 
             if (brain == null) return;
 
-            // Delays for 0.3 seconds. Enough time for the camera to initiate
-            // any possible blending.
-            await UniTask.Delay(TimeSpan.FromSeconds(0.3f));
+            // Wait a frame to make sure the camera blend starts
+            await UniTask.DelayFrame(1);
 
             // Get the active blend
             var blend = brain.ActiveBlend;
@@ -291,7 +291,7 @@ namespace LDtkLevelManager.Implementations.Basic
             if (blend == null) return;
 
             // Calculate the delay until the blend is over
-            float delay = blend.Duration > 0.3f ? blend.Duration - 0.3f : 0f;
+            float delay = blend.Duration;
 
             // Wait until the blend is over
             await UniTask.Delay(TimeSpan.FromSeconds(delay));

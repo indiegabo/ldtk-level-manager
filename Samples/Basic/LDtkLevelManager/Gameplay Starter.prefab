@@ -45,5 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _initialLevel: {fileID: -221090667263422172, guid: cce43c9b18b60c844b58ead0bc993bba, type: 2}
-  _player: {fileID: 2376939134424097163, guid: 741f2c91d30a20b4f8f525e268b112dd, type: 3}
+  _playerPrefab: {fileID: 2376939134424097163, guid: 741f2c91d30a20b4f8f525e268b112dd, type: 3}
   _levelTransitioner: {fileID: 0}

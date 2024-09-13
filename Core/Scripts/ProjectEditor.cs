@@ -95,6 +95,7 @@ namespace LDtkLevelManager
             Dictionary<string, LDtkLevelFile> ldtkFiles = GenerateLdtkFilesDictionary();
 
             LdtkJson ldtkJson = _ldtkProjectFile.FromJson;
+            _iid = ldtkJson.Iid;
 
             if (!this.TrySetAsAddressable(
                $"{AddressablesProjectLabel}_{ldtkJson.Iid}",
@@ -214,7 +215,7 @@ namespace LDtkLevelManager
             }
 
             // Initialize the processing data.
-            LevelProcessingData processingData = new()
+            LevelInfo.UpdateData processingData = new()
             {
                 project = this,
                 iid = ldtkIid.Iid,
@@ -248,7 +249,7 @@ namespace LDtkLevelManager
             AddLevel(level);
 
             // Method to update the level info.
-            static void UpdateLevelInfo(LevelInfo levelInfo, LevelProcessingData processingData)
+            static void UpdateLevelInfo(LevelInfo levelInfo, LevelInfo.UpdateData processingData)
             {
                 levelInfo.UpdateInfo(processingData);
 
