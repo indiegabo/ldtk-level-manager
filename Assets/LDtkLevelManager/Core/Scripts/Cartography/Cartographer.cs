@@ -1,41 +1,38 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using LDtkUnity;
 using UnityEngine;
 
 namespace LDtkLevelManager.Cartography
 {
+
     public class Cartographer : MonoBehaviour
     {
         #region Static
 
-        private static Dictionary<Project, Cartographer> _cartographers = new();
+        private static Dictionary<string, Cartographer> _cartographers;
 
-        public static void RegisterCartograpers(List<CartographerEntry> entries)
+        public static void RegisterCartographers(List<CartographerEntry> entries)
         {
-            _cartographers.Clear();
+            _cartographers = new();
             foreach (CartographerEntry entry in entries)
             {
-                if (_cartographers.ContainsKey(entry.project))
-                {
-                    _cartographers[entry.project] = entry.cartographer;
-                }
-                else
-                {
-                    _cartographers.Add(entry.project, entry.cartographer);
-                }
+                _cartographers.Add(entry.project.Iid, entry.cartographer);
             }
         }
 
-        public static Cartographer ForProject(Project project)
-        {
-            return _cartographers[project];
-        }
+        public class CartographerEntry { public Project project; public Cartographer cartographer; }
 
-        public struct CartographerEntry
+        public static Cartographer For(Project project)
         {
-            public Project project;
-            public Cartographer cartographer;
+            if (!_cartographers.TryGetValue(project.Iid, out Cartographer cartographer))
+            {
+                Logger.Error($"Cartographer for project {project.name} not found.", project);
+                return null;
+            }
+
+            return cartographer;
         }
 
         #endregion
@@ -59,14 +56,6 @@ namespace LDtkLevelManager.Cartography
 
         public int PixelsPerUnit => _ldtkJson.DefaultGridSize;
         public float ScaleFactor => _project.Cartography.scaleFactor;
-
-        #endregion
-
-        #region Behaviour
-
-        private void Awake()
-        {
-        }
 
         #endregion
 

@@ -9,10 +9,10 @@ namespace LDtkLevelManager.Implementations.Basic
         #region Inspector
 
         [SerializeField]
-        private LevelTransitionerBridge _transitionBridge;
+        private string _playerTag;
 
         [SerializeField]
-        private string _playerTag;
+        private RectTransform _textContainerTransform;
 
         [SerializeField]
         private UnityEvent _used;
@@ -25,6 +25,7 @@ namespace LDtkLevelManager.Implementations.Basic
         private LDtkFields _fields;
         private PlacementSpot _spot;
         private BoxCollider2D _collider2D;
+        private LineRenderer _lineRenderer;
 
         private bool _active;
         private bool _transitioning;
@@ -83,6 +84,7 @@ namespace LDtkLevelManager.Implementations.Basic
             _collider2D = GetComponent<BoxCollider2D>();
             _ldtkIid = GetComponent<LDtkIid>();
             _fields = GetComponent<LDtkFields>();
+            _lineRenderer = GetComponent<LineRenderer>();
 
             LDtkReferenceToAnEntityInstance entityRef = _fields.GetEntityReference("Target");
             _targetConnectionIid = entityRef.EntityIid;
@@ -96,6 +98,7 @@ namespace LDtkLevelManager.Implementations.Basic
 
             SetupPosition();
             SetupCollider();
+            SetupText();
         }
 
         void IConnection.SetActive(bool isActive)
@@ -149,9 +152,25 @@ namespace LDtkLevelManager.Implementations.Basic
 
         private void OnTriggerEnter2D(Collider2D otherCollider)
         {
-            if (!_active || !otherCollider.gameObject.CompareTag(_playerTag)) return;
+            if (!_active || !otherCollider.TryGetComponent(out Player player)) return;
             _used.Invoke();
-            _transitionBridge.TransitionToConnection(_targetLevelIid, this);
+            LevelTransitioner.Instance.TransitionToConnection(player, _targetLevelIid, this);
+        }
+
+        #endregion
+
+        #region Text
+
+        private void SetupText()
+        {
+
+            Vector2 textPos = _fields.GetPoint("TextSpot");
+            _textContainerTransform.position = textPos;
+
+            _lineRenderer.positionCount = 2;
+
+            _lineRenderer.SetPosition(0, textPos);
+            _lineRenderer.SetPosition(1, _collider2D.bounds.center);
         }
 
         #endregion

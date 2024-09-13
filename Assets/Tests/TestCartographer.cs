@@ -8,7 +8,7 @@ public class TestCartographer : MonoBehaviour
 
     private void Awake()
     {
-        Cartographer cartographer = Cartographer.ForProject(project);
+        Cartographer cartographer = Cartographer.For(project);
         Debug.Log(cartographer.PixelsPerUnit);
         Debug.Log(cartographer.ScaleFactor);
         cartographer.LogWorlds();

@@ -15,13 +15,13 @@ namespace LDtkLevelManager
         {
             Profiler.BeginSample("[LDtkLevelManager] Loading projects");
             // Load all projects with the label "LM_Project"
-            var handle = Addressables.LoadAssetsAsync<Project>(ProjectService.ProjectAddressabelsLabel, null);
+            var handle = Addressables.LoadAssetsAsync<Project>(ProjectsService.ProjectAddressabelsLabel, null);
             handle.WaitForCompletion();
 
             if (handle.Status != UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
             {
                 Logger.Error(
-                    $"Failed to load projects labeled {ProjectService.ProjectAddressabelsLabel}. "
+                    $"Failed to load projects labeled {ProjectsService.ProjectAddressabelsLabel}. "
                     + "The project sevice will not be initialized."
                 );
 
@@ -33,37 +33,30 @@ namespace LDtkLevelManager
 
             if (projects.Count == 0)
             {
-                Logger.Warning(
-                    $"No projects labeled {ProjectService.ProjectAddressabelsLabel} were found. "
+                Logger.Error(
+                    $"No projects labeled {ProjectsService.ProjectAddressabelsLabel} were found. "
                     + $"The {nameof(LDtkLevelManager)} services will not be initialized."
                 );
                 return;
             }
             Profiler.EndSample();
 
-            ProjectService service = BootstrapProjectService(projects);
-            BootstrapCartographers(projects, service);
-        }
-
-        private static ProjectService BootstrapProjectService(List<Project> projects)
-        {
             Profiler.BeginSample("[LDtkLevelManager] Bootstrapping project service");
 
             // Create a new game object that will hold the service
             GameObject serviceGO = new();
             // Add the service to the game object
-            ProjectService service = serviceGO.AddComponent<ProjectService>();
+            ProjectsService service = serviceGO.AddComponent<ProjectsService>();
             // Initialize the service with the loaded projects
             service.Initialize(projects);
             // Make sure the game object is not destroyed when the scenes are unloaded
             Object.DontDestroyOnLoad(serviceGO);
 
             Profiler.EndSample();
-
-            return service;
         }
 
-        private static void BootstrapCartographers(List<Project> projects, ProjectService service)
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void BootstrapCartographers()
         {
             Profiler.BeginSample("[LDtkLevelManager] Bootstrapping cartographers");
 
@@ -75,9 +68,9 @@ namespace LDtkLevelManager
 
             List<Cartographer.CartographerEntry> entries = new();
 
-            foreach (Project project in projects)
+            foreach (Project project in ProjectsService.Instance.GetAllProjects())
             {
-                if (!service.TryGetLdtkJson(project, out LdtkJson ldtkJson))
+                if (!ProjectsService.Instance.TryGetLdtkJson(project, out LdtkJson ldtkJson))
                 {
                     Logger.Error(
                         $"Failed to get LDtkJson for project {project}."
@@ -87,15 +80,18 @@ namespace LDtkLevelManager
                 }
 
                 // Create a new game object that will hold the cartographer
-                GameObject cartographerGO = new();
+                GameObject cartographerGO = new()
+                {
+                    name = $"[Cartographer] {project.name}"
+                };
+
                 cartographerGO.transform.SetParent(cartographersContainerGO.transform);
-                cartographerGO.name = $"Cartographer: {project.name}";
 
                 // Add the cartographer to the game object
                 Cartographer cartographer = cartographerGO.AddComponent<Cartographer>();
+
                 // Initialize the cartographer with the project
                 cartographer.Initialize(project, ldtkJson);
-
                 entries.Add(new Cartographer.CartographerEntry
                 {
                     project = project,
@@ -103,10 +99,11 @@ namespace LDtkLevelManager
                 });
             }
 
-            // Register for static access during runtime
-            Cartographer.RegisterCartograpers(entries);
-            Object.DontDestroyOnLoad(cartographersContainerGO);
+            cartographersContainerGO.AddComponent<CartographersContainer>();
 
+            // Register for static access during runtime
+            Object.DontDestroyOnLoad(cartographersContainerGO);
+            Cartographer.RegisterCartographers(entries);
             Profiler.EndSample();
         }
     }

@@ -13,9 +13,6 @@ namespace Tests
         private MapLevelDrawer _mapLevelDrawerPrefab;
 
         [SerializeField]
-        private GameObjectProvider _playerProvider;
-
-        [SerializeField]
         private GameObject _characterPinPrefab;
 
         #endregion
@@ -45,13 +42,11 @@ namespace Tests
         private void OnEnable()
         {
             EvaluatePlayer();
-
-            _playerProvider.Registered.AddListener(OnPlayerRegistered);
         }
 
         private void OnDisable()
         {
-            _playerProvider.Registered.RemoveListener(OnPlayerRegistered);
+
         }
 
         private void Start()
@@ -86,8 +81,7 @@ namespace Tests
 
         private void EvaluatePlayer()
         {
-            if (_playerProvider.IsRegistered) return;
-            _playerProvider.TryGetComponent(out _player);
+
         }
 
         private void OnPlayerRegistered(GameObject playerGO)

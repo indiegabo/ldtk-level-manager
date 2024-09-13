@@ -1,9 +1,8 @@
 fileFormatVersion: 2
-guid: 13ff484e8cf3472469eeb1d838140239
-labels:
-- LM_Scene
-DefaultImporter:
+guid: bc198c6c2a1c5ba439db7c6e481d82d1
+NativeFormatImporter:
   externalObjects: {}
+  mainObjectFileID: 8400000
   userData: 
   assetBundleName: 
   assetBundleVariant: 

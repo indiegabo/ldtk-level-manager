@@ -43,7 +43,13 @@ namespace LDtkLevelManager
         private int _depth = 1;
 
         [SerializeField]
-        private LevelNavigationBridge _navigationBridge;
+        private LevelActivatedEvent _levelActivated;
+
+        [SerializeField]
+        private LevelDeactivatedEvent _levelDeactivated;
+
+        [SerializeField]
+        private LevelPreparedEvent _levelPrepared;
 
         #endregion
 
@@ -94,19 +100,19 @@ namespace LDtkLevelManager
         public LevelBehaviour CurrentBehaviour => _currentBehaviour;
 
         /// <summary>
-        /// The event that is triggered when a level is exited.
+        /// The event that is triggered when a level is deactivated.
         /// </summary>
-        public UnityEvent<LevelBehaviour> LevelExitedEvent => _navigationBridge.PlayerExitedLevel;
+        public LevelDeactivatedEvent LevelDeactivated => _levelDeactivated;
 
         /// <summary>
         /// The event that is triggered when a level is prepared.
         /// </summary>
-        public UnityEvent<LevelBehaviour, LevelTrail> LevelPreparedEvent => _navigationBridge.LevelPrepared;
+        public LevelPreparedEvent LevelPrepared => _levelPrepared;
 
         /// <summary>
-        /// The event that is triggered when a level is entered.
+        /// The event that is triggered when a level is activated.
         /// </summary>
-        public UnityEvent<LevelBehaviour> LevelEnteredEvent => _navigationBridge.PlayerEnteredLevel;
+        public LevelActivatedEvent LevelActivated => _levelActivated;
 
         public bool InStandAloneLevel => _currentLevel.StandAlone;
 
@@ -134,7 +140,7 @@ namespace LDtkLevelManager
             if (_persistent)
                 DontDestroyOnLoad(gameObject);
 
-            if (!ProjectService.Instance.TryGetLdtkJson(_project, out LdtkJson ldtkProject))
+            if (!ProjectsService.Instance.TryGetLdtkJson(_project, out LdtkJson ldtkProject))
             {
                 Logger.Error($"Failed to load LDtkJson for project {_project.name}.", this);
                 return;
@@ -403,7 +409,7 @@ namespace LDtkLevelManager
             }
 
             /// Exit the current level before loading new ones.
-            Exit();
+            DeactivatePreparedLevel();
 
             /// Unload all loaded levels and objects before loading new ones.
             await UnloadUniverse();
@@ -449,7 +455,7 @@ namespace LDtkLevelManager
             }
 
             /// Exit the current level before loading new ones.
-            Exit();
+            DeactivatePreparedLevel();
 
             /// Unload all loaded levels and objects before loading new ones.
             await UnloadUniverse();
@@ -472,7 +478,7 @@ namespace LDtkLevelManager
         /// <br/>
         /// </summary>
         /// <param name="iid">The Iid of the level to prepare.</param>
-        public virtual void Prepare(string iid)
+        public virtual void Prepare(ILevelFlowSubject subject, string iid)
         {
             // If the level could not be found, do not attempt to prepare it.
             if (!EvaluateAndPrepareLevel(iid, out LevelBehaviour levelBehaviour))
@@ -481,10 +487,8 @@ namespace LDtkLevelManager
             }
 
             // Prepare the level for entering through the main spot.
-            if (!levelBehaviour.Prepare(out LevelTrail trail)) return;
-
-            if (_navigationBridge != null)
-                _navigationBridge.LevelPrepared.Invoke(levelBehaviour, trail);
+            if (!levelBehaviour.Prepare(subject, out LevelTrail trail)) return;
+            _levelPrepared.Invoke(levelBehaviour, subject, trail);
         }
 
         /// <summary>
@@ -496,7 +500,7 @@ namespace LDtkLevelManager
         /// <param name="iid">The Iid of the level to prepare.</param>
         /// <param name="position">The position to place the character at.</param>
         /// <param name="facingSign">The facing sign of the character.</param>
-        public virtual void Prepare(string iid, Vector2 position, int facingSign)
+        public virtual void Prepare(ILevelFlowSubject subject, string iid, Vector2 position, int facingSign)
         {
             // If the level could not be found, do not attempt to prepare it.
             if (!EvaluateAndPrepareLevel(iid, out LevelBehaviour levelBehaviour))
@@ -505,10 +509,8 @@ namespace LDtkLevelManager
             }
 
             // Prepare the level for entering through the spot.
-            if (!levelBehaviour.Prepare(position, facingSign, out LevelTrail trail)) return;
-
-            if (_navigationBridge != null)
-                _navigationBridge.LevelPrepared.Invoke(levelBehaviour, trail);
+            if (!levelBehaviour.Prepare(subject, position, facingSign, out LevelTrail trail)) return;
+            _levelPrepared.Invoke(levelBehaviour, subject, trail);
         }
 
         /// <summary>
@@ -519,7 +521,7 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="iid">The Iid of the level to prepare.</param>
         /// <param name="spotIid">The Iid of the spot to use at the character placement.</param>
-        public virtual void Prepare(string iid, string spotIid)
+        public virtual void Prepare(ILevelFlowSubject subject, string iid, string spotIid)
         {
             // If the level could not be found, do not attempt to prepare it.
             if (!EvaluateAndPrepareLevel(iid, out LevelBehaviour levelBehaviour))
@@ -528,10 +530,8 @@ namespace LDtkLevelManager
             }
 
             // Prepare the level for entering through the spot.
-            if (!levelBehaviour.Prepare(spotIid, out LevelTrail trail)) return;
-
-            if (_navigationBridge != null)
-                _navigationBridge.LevelPrepared.Invoke(levelBehaviour, trail);
+            if (!levelBehaviour.Prepare(subject, spotIid, out LevelTrail trail)) return;
+            _levelPrepared.Invoke(levelBehaviour, subject, trail);
         }
 
 
@@ -542,7 +542,7 @@ namespace LDtkLevelManager
         /// <br/>
         /// </summary>
         /// <param name="connection">The connection to use to enter the level.</param>
-        public virtual void Prepare(string iid, IConnection connection)
+        public virtual void Prepare(ILevelFlowSubject subject, string iid, IConnection connection)
         {
             if (!EvaluateAndPrepareLevel(iid, out LevelBehaviour levelBehaviour))
             {
@@ -551,10 +551,8 @@ namespace LDtkLevelManager
             }
 
             // Prepare the level for entering through the connection.
-            if (!levelBehaviour.Prepare(connection, out LevelTrail trail)) return;
-
-            if (_navigationBridge != null)
-                _navigationBridge.LevelPrepared.Invoke(levelBehaviour, trail);
+            if (!levelBehaviour.Prepare(subject, connection, out LevelTrail trail)) return;
+            _levelPrepared.Invoke(levelBehaviour, subject, trail);
         }
 
         /// <summary>
@@ -565,7 +563,7 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="iid">The Iid of the level to prepare.</param>
         /// <param name="portal">The portal to use to enter the level.</param>
-        public virtual void Prepare(string iid, IPortal portal)
+        public virtual void Prepare(ILevelFlowSubject subject, string iid, IPortal portal)
         {
             // If the level could not be found, do not attempt to prepare it.
             if (!EvaluateAndPrepareLevel(iid, out LevelBehaviour levelBehaviour))
@@ -574,10 +572,8 @@ namespace LDtkLevelManager
             }
 
             // Prepare the level for entering through the portal.
-            if (!levelBehaviour.Prepare(portal, out LevelTrail trail)) return;
-
-            if (_navigationBridge != null)
-                _navigationBridge.LevelPrepared.Invoke(levelBehaviour, trail);
+            if (!levelBehaviour.Prepare(subject, portal, out LevelTrail trail)) return;
+            _levelPrepared.Invoke(levelBehaviour, subject, trail);
         }
 
 
@@ -635,7 +631,7 @@ namespace LDtkLevelManager
         /// <br/>        
         /// </summary>
         /// <param name="iid">The Iid of the level to enter.</param>
-        public virtual void Enter()
+        public virtual void ActivatePreparedLevel()
         {
             if (_currentLevel == null || _currentBehaviour == null)
             {
@@ -645,10 +641,9 @@ namespace LDtkLevelManager
             }
 
             // Enters the level according to its behaviour.
-            _currentBehaviour.Enter();
+            _currentBehaviour.Activate();
             // Invokes the level entered event for the current level.
-            if (_navigationBridge != null)
-                _navigationBridge.PlayerEnteredLevel.Invoke(_currentBehaviour);
+            _levelActivated.Invoke(_currentBehaviour);
         }
 
         /// <summary>
@@ -658,16 +653,15 @@ namespace LDtkLevelManager
         /// since all level subjects will receive a level exited event in the same frame.<br/>
         /// <br/>        
         /// </summary>
-        public virtual void Exit()
+        public virtual void DeactivatePreparedLevel()
         {
             if (_currentBehaviour != null)
             {
                 // Calls the level exited event for the current level.
-                _currentBehaviour.Exit();
+                _currentBehaviour.Deactivate();
 
                 // Invokes the level exited event for the current level.
-                if (_navigationBridge != null)
-                    _navigationBridge.PlayerExitedLevel.Invoke(_currentBehaviour);
+                _levelDeactivated.Invoke(_currentBehaviour);
             }
         }
 
@@ -1045,6 +1039,17 @@ namespace LDtkLevelManager
             // Attempt to get the level from the project.
             return _project.GetLevel(iid);
         }
+
+        #endregion
+
+        #region Events
+
+        [Serializable]
+        public class LevelActivatedEvent : UnityEvent<LevelBehaviour> { }
+        [Serializable]
+        public class LevelDeactivatedEvent : UnityEvent<LevelBehaviour> { }
+        [Serializable]
+        public class LevelPreparedEvent : UnityEvent<LevelBehaviour, ILevelFlowSubject, LevelTrail> { }
 
         #endregion
 
