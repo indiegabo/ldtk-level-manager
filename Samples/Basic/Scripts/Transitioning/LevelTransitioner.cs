@@ -24,10 +24,10 @@ namespace LDtkLevelManager.Implementations.Basic
         private Animator _curtainsPrefab;
 
         [SerializeField]
-        private UnityEvent _transitionStartedEvent;
+        private UnityEvent _transitionStarted;
 
         [SerializeField]
-        private UnityEvent _transitionEndedEvent;
+        private UnityEvent _transitionEnded;
 
         #endregion
 
@@ -48,12 +48,12 @@ namespace LDtkLevelManager.Implementations.Basic
         /// <summary>
         /// The event fired when the transition begins.
         /// </summary>
-        public UnityEvent TransitionStartedEvent => _transitionStartedEvent;
+        public UnityEvent TransitionStarted => _transitionStarted;
 
         /// <summary>
         /// The event fired when the transition ends.
         /// </summary>
-        public UnityEvent TransitionEndedEvent => _transitionEndedEvent;
+        public UnityEvent TransitionEnded => _transitionEnded;
 
         #endregion
 
@@ -194,7 +194,7 @@ namespace LDtkLevelManager.Implementations.Basic
 
             // Notify the outside world that the transition has started
             _transitioning = true;
-            _transitionStartedEvent.Invoke();
+            _transitionStarted.Invoke();
 
             // Exit the current level, close the curtains, prepare the new level,
             // then enter it.
@@ -221,7 +221,7 @@ namespace LDtkLevelManager.Implementations.Basic
 
             // Notify the outside world that the transition has ended
             _transitioning = false;
-            _transitionEndedEvent.Invoke();
+            _transitionEnded.Invoke();
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace LDtkLevelManager.Implementations.Basic
         private async UniTask BeforePreparationTask()
         {
             _transitioning = true;
-            _transitionStartedEvent.Invoke();
+            _transitionStarted.Invoke();
 
             await PerformTransitions(LevelTransitionMoment.Close);
 
@@ -253,7 +253,7 @@ namespace LDtkLevelManager.Implementations.Basic
             LevelLoader.Instance.ActivatePreparedLevel();
 
             _transitioning = false;
-            _transitionEndedEvent.Invoke();
+            _transitionEnded.Invoke();
         }
 
         /// <summary>
@@ -281,9 +281,8 @@ namespace LDtkLevelManager.Implementations.Basic
 
             if (brain == null) return;
 
-            // Delays for 0.3 seconds. Enough time for the camera to initiate
-            // any possible blending.
-            await UniTask.Delay(TimeSpan.FromSeconds(0.3f));
+            // Wait a frame to make sure the camera blend starts
+            await UniTask.DelayFrame(1);
 
             // Get the active blend
             var blend = brain.ActiveBlend;
@@ -292,7 +291,7 @@ namespace LDtkLevelManager.Implementations.Basic
             if (blend == null) return;
 
             // Calculate the delay until the blend is over
-            float delay = blend.Duration > 0.3f ? blend.Duration - 0.3f : 0f;
+            float delay = blend.Duration;
 
             // Wait until the blend is over
             await UniTask.Delay(TimeSpan.FromSeconds(delay));

@@ -12,7 +12,6 @@ namespace LDtkLevelManager.Implementations.Basic
         [SerializeField] private Project _project;
         [SerializeField] private MapLevelDrawer _mapLevelDrawerPrefab;
         [SerializeField] private GameObject _characterPinPrefab;
-        [SerializeField] private LevelNavigationBridge _navigationBridge;
         [SerializeField] private Transform _levelsContainer;
         [SerializeField] private Camera _camera;
 
@@ -57,12 +56,12 @@ namespace LDtkLevelManager.Implementations.Basic
 
         private void OnEnable()
         {
-            _navigationBridge.LevelPrepared.AddListener(OnLevelPrepared);
+            LevelLoader.Instance.LevelPrepared.AddListener(OnLevelPrepared);
         }
 
         private void OnDisable()
         {
-            _navigationBridge.LevelPrepared.RemoveListener(OnLevelPrepared);
+            LevelLoader.Instance.LevelPrepared.RemoveListener(OnLevelPrepared);
         }
 
         private void Update()
@@ -87,7 +86,7 @@ namespace LDtkLevelManager.Implementations.Basic
 
         #region Navigation        
 
-        private void OnLevelPrepared(LevelBehaviour levelBehaviour, LevelTrail trail)
+        private void OnLevelPrepared(LevelBehaviour levelBehaviour, ILevelFlowSubject subject, LevelTrail trail)
         {
             if (!_worlds.TryGetValue(levelBehaviour.Info.WorldIid, out World world)) return;
             if (_currentWorld != world)

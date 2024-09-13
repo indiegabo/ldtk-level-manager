@@ -143,11 +143,11 @@ namespace LDtkLevelManager
 
         /// <summary>
         /// [Editor Only] <br/><br/>
-        /// Initializes the <see cref="LevelInfo"/> from the given <see cref="LevelProcessingData"/>.
+        /// Initializes the <see cref="LevelInfo"/> from the given <see cref="UpdateData"/>.
         /// This method is called automatically when the <see cref="LDtkLevelManager.Project"/> is initialized.
         /// </summary>
-        /// <param name="data">The <see cref="LevelProcessingData"/> to initialize the level from.</param>
-        public void Initialize(LevelProcessingData data)
+        /// <param name="data">The <see cref="UpdateData"/> to initialize the level from.</param>
+        public void Initialize(UpdateData data)
         {
             _project = data.project;
             _iid = data.iid;
@@ -156,11 +156,11 @@ namespace LDtkLevelManager
 
         /// <summary>
         /// [Editor Only] <br/><br/>
-        /// Updates the <see cref="LevelInfo"/> from the given <see cref="LevelProcessingData"/>.
+        /// Updates the <see cref="LevelInfo"/> from the given <see cref="UpdateData"/>.
         /// This method is called automatically when the <see cref="LDtkLevelManager.Project"/> is reinitialized.
         /// </summary>
-        /// <param name="data">The <see cref="LevelProcessingData"/> to update the level from.</param>
-        public void UpdateInfo(LevelProcessingData data)
+        /// <param name="data">The <see cref="UpdateData"/> to update the level from.</param>
+        public void UpdateInfo(UpdateData data)
         {
             name = data.ldtkFile.name;
             _areaName = null;
@@ -231,6 +231,22 @@ namespace LDtkLevelManager
         }
 
         #endregion
+
+        /// <summary>
+        /// [Editor Only] <br /><br />
+        /// Holds all the information needed to process a level.
+        /// </summary>
+        public class UpdateData
+        {
+            public Project project;
+            public string iid;
+            public string assetPath;
+            public string address;
+            public LDtkComponentLevel ldtkComponentLevel;
+            public Object asset;
+            public LDtkLevelFile ldtkFile;
+            public World world;
+        }
 #endif
     }
 }

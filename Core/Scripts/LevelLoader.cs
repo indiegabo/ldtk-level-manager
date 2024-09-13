@@ -43,7 +43,13 @@ namespace LDtkLevelManager
         private int _depth = 1;
 
         [SerializeField]
-        private LevelNavigationBridge _navigationBridge;
+        private LevelActivatedEvent _levelActivated;
+
+        [SerializeField]
+        private LevelDeactivatedEvent _levelDeactivated;
+
+        [SerializeField]
+        private LevelPreparedEvent _levelPrepared;
 
         #endregion
 
@@ -94,19 +100,19 @@ namespace LDtkLevelManager
         public LevelBehaviour CurrentBehaviour => _currentBehaviour;
 
         /// <summary>
-        /// The event that is triggered when a level is exited.
+        /// The event that is triggered when a level is deactivated.
         /// </summary>
-        public UnityEvent<LevelBehaviour> LevelExitedEvent => _navigationBridge.PlayerExitedLevel;
+        public LevelDeactivatedEvent LevelDeactivated => _levelDeactivated;
 
         /// <summary>
         /// The event that is triggered when a level is prepared.
         /// </summary>
-        public UnityEvent<LevelBehaviour, LevelTrail> LevelPreparedEvent => _navigationBridge.LevelPrepared;
+        public LevelPreparedEvent LevelPrepared => _levelPrepared;
 
         /// <summary>
-        /// The event that is triggered when a level is entered.
+        /// The event that is triggered when a level is activated.
         /// </summary>
-        public UnityEvent<LevelBehaviour> LevelEnteredEvent => _navigationBridge.PlayerEnteredLevel;
+        public LevelActivatedEvent LevelActivated => _levelActivated;
 
         public bool InStandAloneLevel => _currentLevel.StandAlone;
 
@@ -482,9 +488,7 @@ namespace LDtkLevelManager
 
             // Prepare the level for entering through the main spot.
             if (!levelBehaviour.Prepare(subject, out LevelTrail trail)) return;
-
-            if (_navigationBridge != null)
-                _navigationBridge.LevelPrepared.Invoke(levelBehaviour, trail);
+            _levelPrepared.Invoke(levelBehaviour, subject, trail);
         }
 
         /// <summary>
@@ -506,9 +510,7 @@ namespace LDtkLevelManager
 
             // Prepare the level for entering through the spot.
             if (!levelBehaviour.Prepare(subject, position, facingSign, out LevelTrail trail)) return;
-
-            if (_navigationBridge != null)
-                _navigationBridge.LevelPrepared.Invoke(levelBehaviour, trail);
+            _levelPrepared.Invoke(levelBehaviour, subject, trail);
         }
 
         /// <summary>
@@ -529,9 +531,7 @@ namespace LDtkLevelManager
 
             // Prepare the level for entering through the spot.
             if (!levelBehaviour.Prepare(subject, spotIid, out LevelTrail trail)) return;
-
-            if (_navigationBridge != null)
-                _navigationBridge.LevelPrepared.Invoke(levelBehaviour, trail);
+            _levelPrepared.Invoke(levelBehaviour, subject, trail);
         }
 
 
@@ -552,9 +552,7 @@ namespace LDtkLevelManager
 
             // Prepare the level for entering through the connection.
             if (!levelBehaviour.Prepare(subject, connection, out LevelTrail trail)) return;
-
-            if (_navigationBridge != null)
-                _navigationBridge.LevelPrepared.Invoke(levelBehaviour, trail);
+            _levelPrepared.Invoke(levelBehaviour, subject, trail);
         }
 
         /// <summary>
@@ -575,9 +573,7 @@ namespace LDtkLevelManager
 
             // Prepare the level for entering through the portal.
             if (!levelBehaviour.Prepare(subject, portal, out LevelTrail trail)) return;
-
-            if (_navigationBridge != null)
-                _navigationBridge.LevelPrepared.Invoke(levelBehaviour, trail);
+            _levelPrepared.Invoke(levelBehaviour, subject, trail);
         }
 
 
@@ -647,8 +643,7 @@ namespace LDtkLevelManager
             // Enters the level according to its behaviour.
             _currentBehaviour.Activate();
             // Invokes the level entered event for the current level.
-            if (_navigationBridge != null)
-                _navigationBridge.PlayerEnteredLevel.Invoke(_currentBehaviour);
+            _levelActivated.Invoke(_currentBehaviour);
         }
 
         /// <summary>
@@ -666,8 +661,7 @@ namespace LDtkLevelManager
                 _currentBehaviour.Deactivate();
 
                 // Invokes the level exited event for the current level.
-                if (_navigationBridge != null)
-                    _navigationBridge.PlayerExitedLevel.Invoke(_currentBehaviour);
+                _levelDeactivated.Invoke(_currentBehaviour);
             }
         }
 
@@ -1045,6 +1039,17 @@ namespace LDtkLevelManager
             // Attempt to get the level from the project.
             return _project.GetLevel(iid);
         }
+
+        #endregion
+
+        #region Events
+
+        [Serializable]
+        public class LevelActivatedEvent : UnityEvent<LevelBehaviour> { }
+        [Serializable]
+        public class LevelDeactivatedEvent : UnityEvent<LevelBehaviour> { }
+        [Serializable]
+        public class LevelPreparedEvent : UnityEvent<LevelBehaviour, ILevelFlowSubject, LevelTrail> { }
 
         #endregion
 
