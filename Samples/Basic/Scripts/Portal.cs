@@ -48,7 +48,7 @@ namespace LDtkLevelManager.Implementations.Basic
 
         #endregion
 
-        #region IConnection
+        #region IPortal
 
         public string Iid
         {
