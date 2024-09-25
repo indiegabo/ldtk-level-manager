@@ -415,6 +415,10 @@ PrefabInstance:
       value: Level Loader
       objectReference: {fileID: 0}
     - target: {fileID: 7718231550397100257, guid: b48ed8d06f6022e498e8862fea67a606, type: 3}
+      propertyPath: _depth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7718231550397100257, guid: b48ed8d06f6022e498e8862fea67a606, type: 3}
       propertyPath: _loadingStrategy
       value: 0
       objectReference: {fileID: 0}
