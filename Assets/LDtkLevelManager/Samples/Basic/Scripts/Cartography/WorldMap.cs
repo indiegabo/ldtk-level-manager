@@ -1,7 +1,6 @@
-using System;
 using System.Collections.Generic;
 using LDtkLevelManager.Cartography;
-using LDtkLevelManager.Utils;
+using LDtkLevelManager.EventBus;
 using LDtkUnity;
 using UnityEngine;
 
@@ -25,11 +24,14 @@ namespace LDtkLevelManager.Implementations.Basic
 
         private Dictionary<string, World> _worlds = new();
 
+        private IEventBinding<LevelPreparationEvent> _levelPreparedBinding;
+
         #region Behaviour
 
         private void Awake()
         {
             _cartographer = Cartographer.For(_project);
+            _levelPreparedBinding = new EventBinding<LevelPreparationEvent>(OnLevelPrepared);
 
             if (!ProjectsService.Instance.TryGetLdtkJson(_project, out _projectJson))
             {
@@ -56,12 +58,12 @@ namespace LDtkLevelManager.Implementations.Basic
 
         private void OnEnable()
         {
-            LevelLoader.Instance.LevelPrepared.AddListener(OnLevelPrepared);
+            Bus<LevelPreparationEvent>.Register(_levelPreparedBinding);
         }
 
         private void OnDisable()
         {
-            LevelLoader.Instance.LevelPrepared.RemoveListener(OnLevelPrepared);
+            Bus<LevelPreparationEvent>.Deregister(_levelPreparedBinding);
         }
 
         private void Update()
@@ -86,9 +88,9 @@ namespace LDtkLevelManager.Implementations.Basic
 
         #region Navigation        
 
-        private void OnLevelPrepared(LevelBehaviour levelBehaviour, ILevelFlowSubject subject, LevelTrail trail)
+        private void OnLevelPrepared(LevelPreparationEvent @event)
         {
-            if (!_worlds.TryGetValue(levelBehaviour.Info.WorldIid, out World world)) return;
+            if (!_worlds.TryGetValue(@event.behaviour.Info.WorldIid, out World world)) return;
             if (_currentWorld != world)
             {
                 SetWorld(world);
