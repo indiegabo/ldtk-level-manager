@@ -97,6 +97,10 @@ namespace LDtkLevelManager.Implementations.Basic
             }
         }
 
+        /// <summary>
+        /// Sets the world to display on the map. Clears all drawn levels and areas and redoes the world.
+        /// </summary>
+        /// <param name="world">The world to set.</param>
         public void SetWorld(World world)
         {
             foreach (Transform child in _levelsContainer)
