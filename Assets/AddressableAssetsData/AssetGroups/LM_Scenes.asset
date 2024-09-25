@@ -17,6 +17,18 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: e4803c279cc8eb441b4533426deb91d6
   m_SerializeEntries:
+  - m_GUID: 6f4dd6a8051fb4b44a921894d2ac6aba
+    m_Address: LM_Scene_f277f910-fec0-11ee-9039-191aedcc41c6
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - LM_Scene
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cc5fc3bca9c0e5d41b88c25b94905a67
+    m_Address: LM_Scene_363b42a0-7820-11ed-a571-2bca691f63e1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - LM_Scene
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f1e32554816ea154b8cd1fbd1e15fd98
     m_Address: LM_Scene_49e346a0-fec0-11ee-9039-5b61900789be
     m_ReadOnly: 0

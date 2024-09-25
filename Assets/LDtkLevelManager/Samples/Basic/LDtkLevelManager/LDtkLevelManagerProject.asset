@@ -280,8 +280,8 @@ MonoBehaviour:
   _assetPath: Assets/LDtkLevelManager/Samples/Basic/LDtk/LDtkSample/World_1_Level_1.ldtkl
   _address: LM__363b42a0-7820-11ed-a571-2bca691f63e1
   _scene:
-    _assetGuid: 
-    _addressableKey: 
+    _assetGuid: cc5fc3bca9c0e5d41b88c25b94905a67
+    _addressableKey: LM_Scene_363b42a0-7820-11ed-a571-2bca691f63e1
   _leftBehind: 0
 --- !u!114 &4497664737447744018
 MonoBehaviour:
@@ -334,6 +334,6 @@ MonoBehaviour:
   _assetPath: Assets/LDtkLevelManager/Samples/Basic/LDtk/LDtkSample/World_1_Level_3.ldtkl
   _address: LM__f277f910-fec0-11ee-9039-191aedcc41c6
   _scene:
-    _assetGuid: 
-    _addressableKey: 
+    _assetGuid: 6f4dd6a8051fb4b44a921894d2ac6aba
+    _addressableKey: LM_Scene_f277f910-fec0-11ee-9039-191aedcc41c6
   _leftBehind: 0
