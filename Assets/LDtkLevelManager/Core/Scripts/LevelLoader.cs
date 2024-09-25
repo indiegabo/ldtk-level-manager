@@ -10,6 +10,7 @@ using LDtkUnity;
 using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine.ResourceManagement.Exceptions;
+using LDtkLevelManager.EventBus;
 
 namespace LDtkLevelManager
 {
@@ -42,15 +43,6 @@ namespace LDtkLevelManager
         [Min(1)]
         private int _depth = 1;
 
-        [SerializeField]
-        private LevelActivatedEvent _levelActivated;
-
-        [SerializeField]
-        private LevelDeactivatedEvent _levelDeactivated;
-
-        [SerializeField]
-        private LevelPreparedEvent _levelPrepared;
-
         #endregion
 
         #region Fields
@@ -68,6 +60,9 @@ namespace LDtkLevelManager
         private readonly HashSet<string> _shouldBeLoaded = new();
         private readonly HashSet<string> _shouldBeUnloaded = new();
         private readonly Queue<(LevelInfo, int)> _neighboursQueue = new();
+
+        private LevelActivationEvent _activationEventData = new();
+        private LevelPreparationEvent _preparationEventData = new();
 
         #endregion
 
@@ -99,20 +94,6 @@ namespace LDtkLevelManager
         /// </summary>
         public LevelBehaviour CurrentBehaviour => _currentBehaviour;
 
-        /// <summary>
-        /// The event that is triggered when a level is deactivated.
-        /// </summary>
-        public LevelDeactivatedEvent LevelDeactivated => _levelDeactivated;
-
-        /// <summary>
-        /// The event that is triggered when a level is prepared.
-        /// </summary>
-        public LevelPreparedEvent LevelPrepared => _levelPrepared;
-
-        /// <summary>
-        /// The event that is triggered when a level is activated.
-        /// </summary>
-        public LevelActivatedEvent LevelActivated => _levelActivated;
 
         public bool InStandAloneLevel => _currentLevel.StandAlone;
 
@@ -488,7 +469,7 @@ namespace LDtkLevelManager
 
             // Prepare the level for entering through the main spot.
             if (!levelBehaviour.Prepare(subject, out LevelTrail trail)) return;
-            _levelPrepared.Invoke(levelBehaviour, subject, trail);
+            AnnouncePreparation(_currentBehaviour, subject, trail);
         }
 
         /// <summary>
@@ -510,7 +491,7 @@ namespace LDtkLevelManager
 
             // Prepare the level for entering through the spot.
             if (!levelBehaviour.Prepare(subject, position, facingSign, out LevelTrail trail)) return;
-            _levelPrepared.Invoke(levelBehaviour, subject, trail);
+            AnnouncePreparation(_currentBehaviour, subject, trail);
         }
 
         /// <summary>
@@ -531,7 +512,7 @@ namespace LDtkLevelManager
 
             // Prepare the level for entering through the spot.
             if (!levelBehaviour.Prepare(subject, spotIid, out LevelTrail trail)) return;
-            _levelPrepared.Invoke(levelBehaviour, subject, trail);
+            AnnouncePreparation(_currentBehaviour, subject, trail);
         }
 
 
@@ -552,7 +533,7 @@ namespace LDtkLevelManager
 
             // Prepare the level for entering through the connection.
             if (!levelBehaviour.Prepare(subject, connection, out LevelTrail trail)) return;
-            _levelPrepared.Invoke(levelBehaviour, subject, trail);
+            AnnouncePreparation(_currentBehaviour, subject, trail);
         }
 
         /// <summary>
@@ -573,7 +554,8 @@ namespace LDtkLevelManager
 
             // Prepare the level for entering through the portal.
             if (!levelBehaviour.Prepare(subject, portal, out LevelTrail trail)) return;
-            _levelPrepared.Invoke(levelBehaviour, subject, trail);
+
+            AnnouncePreparation(_currentBehaviour, subject, trail);
         }
 
 
@@ -642,8 +624,8 @@ namespace LDtkLevelManager
 
             // Enters the level according to its behaviour.
             _currentBehaviour.Activate();
-            // Invokes the level entered event for the current level.
-            _levelActivated.Invoke(_currentBehaviour);
+
+            AnnounceActivation(true, _currentBehaviour, _currentLevel);
         }
 
         /// <summary>
@@ -655,14 +637,37 @@ namespace LDtkLevelManager
         /// </summary>
         public virtual void DeactivatePreparedLevel()
         {
-            if (_currentBehaviour != null)
-            {
-                // Calls the level exited event for the current level.
-                _currentBehaviour.Deactivate();
+            if (_currentBehaviour == null) return;
 
-                // Invokes the level exited event for the current level.
-                _levelDeactivated.Invoke(_currentBehaviour);
-            }
+            // Calls the level exited event for the current level.
+            _currentBehaviour.Deactivate();
+
+            AnnounceActivation(false, _currentBehaviour, _currentLevel);
+        }
+
+        protected virtual void AnnounceActivation(
+            bool isActive,
+            LevelBehaviour behaviour,
+            LevelInfo info
+        )
+        {
+            _activationEventData.isActive = isActive;
+            _activationEventData.behaviour = behaviour;
+
+            Bus<LevelActivationEvent>.Raise(_activationEventData);
+        }
+
+        protected virtual void AnnouncePreparation(
+            LevelBehaviour behaviour,
+            ILevelFlowSubject subject,
+            LevelTrail trail
+        )
+        {
+            _preparationEventData.behaviour = behaviour;
+            _preparationEventData.subject = subject;
+            _preparationEventData.trail = trail;
+
+            Bus<LevelPreparationEvent>.Raise(_preparationEventData);
         }
 
         #endregion
@@ -1039,17 +1044,6 @@ namespace LDtkLevelManager
             // Attempt to get the level from the project.
             return _project.GetLevel(iid);
         }
-
-        #endregion
-
-        #region Events
-
-        [Serializable]
-        public class LevelActivatedEvent : UnityEvent<LevelBehaviour> { }
-        [Serializable]
-        public class LevelDeactivatedEvent : UnityEvent<LevelBehaviour> { }
-        [Serializable]
-        public class LevelPreparedEvent : UnityEvent<LevelBehaviour, ILevelFlowSubject, LevelTrail> { }
 
         #endregion
 
