@@ -9,33 +9,35 @@ namespace LDtkLevelManager
     /// <summary>
     /// The behaviour of a level created in the LDtk app.
     /// </summary>
-    public class UniverseLevelBehaviour : MonoBehaviour
+    public class ConnectedLevelBehaviour : MonoBehaviour
     {
         #region Inspector
+
+        [SerializeField] private Project _project;
 
         /// <summary>
         /// Invoked when the player has exited the level.
         /// </summary>
         [SerializeField, Tooltip("Invoked when the player has exited the level.")]
-        private UnityEvent<UniverseLevelBehaviour> _deactivatedEvent;
+        private UnityEvent<ConnectedLevelBehaviour> _deactivatedEvent;
 
         /// <summary>
         /// Invoked when the level has started its preparation process.
         /// </summary>
         [SerializeField, Tooltip("Invoked when the level has started its preparation process.")]
-        private UnityEvent<UniverseLevelBehaviour, ILevelFlowSubject, Vector2> _preparationStartedEvent;
+        private UnityEvent<ConnectedLevelBehaviour, ILevelFlowSubject, Vector2> _preparationStartedEvent;
 
         /// <summary>
         /// Invoked when the level has finished its preparation process.
         /// </summary>
         [SerializeField, Tooltip("Invoked when the level has finished its preparation process.")]
-        private UnityEvent<UniverseLevelBehaviour, ILevelFlowSubject, LevelTrail> _preparedEvent;
+        private UnityEvent<ConnectedLevelBehaviour, ILevelFlowSubject, LevelTrail> _preparedEvent;
 
         /// <summary>
         /// Invoked when the player has entered the level.
         /// </summary>
         [SerializeField, Tooltip("Invoked when the player has entered the level.")]
-        private UnityEvent<UniverseLevelBehaviour> _activatedEvent;
+        private UnityEvent<ConnectedLevelBehaviour> _activatedEvent;
 
         #endregion
 
@@ -44,6 +46,7 @@ namespace LDtkLevelManager
         private LDtkIid _ldtkIid;
         private LDtkComponentLevel _ldtkComponentLevel;
         private LevelInfo _info;
+        private ConnectedLevelLoader _loader;
 
         private Dictionary<string, IConnection> _connections;
         private Dictionary<string, IPlacementSpot> _spots;
@@ -55,30 +58,30 @@ namespace LDtkLevelManager
         #region Getters
 
         /// <summary>
-        /// The <see cref="LDtkLevelManager.LevelInfo"/> associated with this <see cref="UniverseLevelBehaviour"/>.
+        /// The <see cref="LDtkLevelManager.LevelInfo"/> associated with this <see cref="ConnectedLevelBehaviour"/>.
         /// </summary>
         public LevelInfo Info => _info;
 
         /// <summary>
         /// Fired when the player exits the level.
         /// </summary>
-        public UnityEvent<UniverseLevelBehaviour> Deactivated => _deactivatedEvent;
+        public UnityEvent<ConnectedLevelBehaviour> Deactivated => _deactivatedEvent;
 
         /// <summary>
         /// Fired when the preparation for the player to enter the level is started.
         /// </summary>
-        public UnityEvent<UniverseLevelBehaviour, ILevelFlowSubject, Vector2> PreparationStarted => _preparationStartedEvent;
+        public UnityEvent<ConnectedLevelBehaviour, ILevelFlowSubject, Vector2> PreparationStarted => _preparationStartedEvent;
 
         /// <summary>
         /// Fired when the level is fully prepared and player is already in position.
         /// Curtains are about to be opened.
         /// </summary>
-        public UnityEvent<UniverseLevelBehaviour, ILevelFlowSubject, LevelTrail> Prepared => _preparedEvent;
+        public UnityEvent<ConnectedLevelBehaviour, ILevelFlowSubject, LevelTrail> Prepared => _preparedEvent;
 
         /// <summary>
         /// Fired when the player enters the level.
         /// </summary>
-        public UnityEvent<UniverseLevelBehaviour> Activated => _activatedEvent;
+        public UnityEvent<ConnectedLevelBehaviour> Activated => _activatedEvent;
 
         #endregion
 
@@ -98,32 +101,34 @@ namespace LDtkLevelManager
                 return;
             }
 
-            // if (!ConnectedLevelLoader.Instance.TryGetLevel(_ldtkIid.Iid, out _info))
-            // {
-            //     Logger.Error($"Level {name} could not be activated because {_ldtkIid.Iid} is not present on dictionary", this);
-            //     return;
-            // }
+            _loader = LevelLoader.For(_project).As<ConnectedLevelLoader>();
 
-            // name = _info.Name;
+            if (!_loader.TryGetLevel(_ldtkIid.Iid, out _info))
+            {
+                Logger.Error($"Level {name} could not be activated because {_ldtkIid.Iid} is not present on dictionary", this);
+                return;
+            }
 
-            // LDtkComponentLayer componentLayer = _ldtkComponentLevel.LayerInstances.FirstOrDefault(
-            //     l => l != null && l.Identifier == ConnectedLevelLoader.Instance.NavigationLayer
-            // );
+            name = _info.Name;
 
-            // Transform navigationContainer = componentLayer != null ? componentLayer.transform : transform;
+            LDtkComponentLayer componentLayer = _ldtkComponentLevel.LayerInstances.FirstOrDefault(
+                l => l != null && l.Identifier == _project.NavigationLayer
+            );
 
-            // EvaluateSpots(navigationContainer);
-            // EvaluateNavigators(navigationContainer);
-            // EvaluatePortals(navigationContainer);
-            // _subjects = new();
+            Transform navigationContainer = componentLayer != null ? componentLayer.transform : transform;
 
-            // ConnectedLevelLoader.Instance.RegisterAsBehaviour(_ldtkIid.Iid, this);
-            // BroadcastMessage("OnLevelAwake", this, SendMessageOptions.DontRequireReceiver);
+            EvaluateSpots(navigationContainer);
+            EvaluateNavigators(navigationContainer);
+            EvaluatePortals(navigationContainer);
+            _subjects = new();
+
+            _loader.RegisterAsBehaviour(_ldtkIid.Iid, this);
+            BroadcastMessage("OnLevelAwake", this, SendMessageOptions.DontRequireReceiver);
         }
 
         private void OnDestroy()
         {
-            // ConnectedLevelLoader.Instance.UnregisterAsBehaviour(_ldtkIid.Iid);
+            _loader.UnregisterAsBehaviour(_ldtkIid.Iid);
         }
 
         #endregion

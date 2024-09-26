@@ -202,6 +202,8 @@ MonoBehaviour:
       name: World_2
       areas:
       - None
+  _levelsOrganization: 0
+  _loadingStrategy: 0
 --- !u!114 &1057545810723391170
 MonoBehaviour:
   m_ObjectHideFlags: 0

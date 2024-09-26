@@ -12,13 +12,13 @@ using UnityEngine.SceneManagement;
 
 namespace LDtkLevelManager
 {
-    public abstract class UniverseLevelLoader : LevelLoader
+    public abstract class ConnectedLevelLoader : LevelLoader
     {
         #region Fields
 
-        protected UniverseLevelBehaviour _currentBehaviour;
+        protected ConnectedLevelBehaviour _currentBehaviour;
 
-        protected readonly Dictionary<string, UniverseLevelBehaviour> _registeredBehaviours = new();
+        protected readonly Dictionary<string, ConnectedLevelBehaviour> _registeredBehaviours = new();
 
         protected readonly Dictionary<string, GameObject> _universeObjects = new();
         protected readonly Dictionary<string, GameObject> _standAloneObjects = new();
@@ -40,9 +40,9 @@ namespace LDtkLevelManager
         public LevelInfo CurrentLevel => _currentLevel;
 
         /// <summary>
-        /// The current level's behaviour (<see cref="UniverseLevelBehaviour"/>).
+        /// The current level's behaviour (<see cref="ConnectedLevelBehaviour"/>).
         /// </summary>
-        public UniverseLevelBehaviour CurrentBehaviour => _currentBehaviour;
+        public ConnectedLevelBehaviour CurrentBehaviour => _currentBehaviour;
 
 
         public bool InStandAloneLevel => _currentLevel.StandAlone;
@@ -51,7 +51,7 @@ namespace LDtkLevelManager
 
         #region Abstractions
 
-        protected abstract bool EvaluateAndPrepareLevel(string iid, out UniverseLevelBehaviour behaviour);
+        protected abstract bool EvaluateAndPrepareLevel(string iid, out ConnectedLevelBehaviour behaviour);
 
         #endregion
 
@@ -85,7 +85,7 @@ namespace LDtkLevelManager
         public virtual void Prepare(ILevelFlowSubject subject, string iid)
         {
             // If the level could not be found, do not attempt to prepare it.
-            if (!EvaluateAndPrepareLevel(iid, out UniverseLevelBehaviour levelBehaviour))
+            if (!EvaluateAndPrepareLevel(iid, out ConnectedLevelBehaviour levelBehaviour))
             {
                 return;
             }
@@ -107,7 +107,7 @@ namespace LDtkLevelManager
         public virtual void Prepare(ILevelFlowSubject subject, string iid, Vector2 position, int facingSign)
         {
             // If the level could not be found, do not attempt to prepare it.
-            if (!EvaluateAndPrepareLevel(iid, out UniverseLevelBehaviour levelBehaviour))
+            if (!EvaluateAndPrepareLevel(iid, out ConnectedLevelBehaviour levelBehaviour))
             {
                 return;
             }
@@ -128,7 +128,7 @@ namespace LDtkLevelManager
         public virtual void Prepare(ILevelFlowSubject subject, string iid, string spotIid)
         {
             // If the level could not be found, do not attempt to prepare it.
-            if (!EvaluateAndPrepareLevel(iid, out UniverseLevelBehaviour levelBehaviour))
+            if (!EvaluateAndPrepareLevel(iid, out ConnectedLevelBehaviour levelBehaviour))
             {
                 return;
             }
@@ -148,7 +148,7 @@ namespace LDtkLevelManager
         /// <param name="connection">The connection to use to enter the level.</param>
         public virtual void Prepare(ILevelFlowSubject subject, string iid, IConnection connection)
         {
-            if (!EvaluateAndPrepareLevel(iid, out UniverseLevelBehaviour levelBehaviour))
+            if (!EvaluateAndPrepareLevel(iid, out ConnectedLevelBehaviour levelBehaviour))
             {
                 // If the level could not be found, do not attempt to prepare it.
                 return;
@@ -170,7 +170,7 @@ namespace LDtkLevelManager
         public virtual void Prepare(ILevelFlowSubject subject, string iid, IPortal portal)
         {
             // If the level could not be found, do not attempt to prepare it.
-            if (!EvaluateAndPrepareLevel(iid, out UniverseLevelBehaviour levelBehaviour))
+            if (!EvaluateAndPrepareLevel(iid, out ConnectedLevelBehaviour levelBehaviour))
             {
                 return;
             }
@@ -220,7 +220,7 @@ namespace LDtkLevelManager
         }
 
         protected virtual void AnnouncePreparation(
-            UniverseLevelBehaviour behaviour,
+            ConnectedLevelBehaviour behaviour,
             ILevelFlowSubject subject,
             LevelTrail trail
         )
@@ -232,33 +232,6 @@ namespace LDtkLevelManager
             Bus<LevelPreparationEvent>.Raise(_preparationEventData);
         }
 
-        #endregion        
-
-        #region Providing Levels
-
-        /// <summary>
-        /// Attempts to retrieve a level by its Iid.
-        /// </summary>
-        /// <param name="iid">The Iid of the level to retrieve.</param>
-        /// <param name="level">The retrieved level if successful, or null if not.</param>
-        /// <returns>true if the level was successfully retrieved, false otherwise.</returns>
-        public virtual bool TryGetLevel(string iid, out LevelInfo level)
-        {
-            // Try to get the level from the project.
-            return _project.TryGetLevel(iid, out level);
-        }
-
-        /// <summary>
-        /// Retrieves a level by its Iid.
-        /// </summary>
-        /// <param name="iid">The Iid of the level to retrieve.</param>
-        /// <returns>The retrieved level if successful, or null if not.</returns>
-        public virtual LevelInfo GetLevel(string iid)
-        {
-            // Attempt to get the level from the project.
-            return _project.GetLevel(iid);
-        }
-
         #endregion
 
         #region Registering Behaviours
@@ -268,7 +241,7 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="iid">The Iid of the level to register the behaviour for.</param>
         /// <param name="behaviour">The behaviour to register.</param>
-        public virtual void RegisterAsBehaviour(string iid, UniverseLevelBehaviour behaviour)
+        public virtual void RegisterAsBehaviour(string iid, ConnectedLevelBehaviour behaviour)
         {
             if (!TryGetLevel(iid, out LevelInfo level))
             {
