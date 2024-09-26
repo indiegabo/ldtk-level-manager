@@ -89,56 +89,16 @@ namespace LDtkLevelManager
             DeactivatePreparedLevel();
 
             /// Unload all loaded levels and objects before loading new ones.
-            await UnloadUniverse();
+            await UnloadEverything();
 
             /// Clear the lists of registered behaviors and loaded objects and scenes
             /// before loading new levels.
             _registeredBehaviours.Clear();
-            _universeObjects.Clear();
-            _universeScenes.Clear();
+            _loadedObjects.Clear();
+            _loadedScenes.Clear();
 
             /// Load all the levels in the given area.
             await LoadMultipleAsync(iids);
-        }
-
-        /// <summary>
-        /// Tries to prepare a level by its Iid.<br/>
-        /// <br/>
-        /// It first tries to get the level by its Iid from the project.<br/>
-        /// If the level is not found, it logs an error and returns false.<br/>
-        /// <br/>
-        /// If the level is found, it tries to get the registered behaviour for the level.<br/>
-        /// If the level is not registered, it logs an error and returns false.<br/>
-        /// <br/>
-        /// If the level is registered, it prepares the level according to the strategy and returns true.
-        /// </summary>
-        /// <param name="iid">The Iid of the level to prepare.</param>
-        /// <param name="behaviour">The behaviour to be used to prepare the level.</param>
-        /// <returns>True if the level was prepared, false otherwise.</returns>
-        protected override bool EvaluateAndPrepareLevel(string iid, out ConnectedLevelBehaviour behaviour)
-        {
-            // Tries to get a level by its Iid.
-            if (!TryGetLevel(iid, out LevelInfo level))
-            {
-                // If the level is not found, log the error and return false.
-                Logger.Error($"Trying to prepare a level by Iid {iid} but it was not found.", this);
-                behaviour = null;
-                return false;
-            }
-
-            // Tries to get the MV_LevelBehaviour for the level.
-            if (!_registeredBehaviours.TryGetValue(iid, out behaviour))
-            {
-                // If the level is not registered, log the error and return false.
-                Logger.Error($"Trying to prepare a level by Iid {iid} but it is not registered.", this);
-                return false;
-            }
-
-            _currentLevel = level;
-            _currentBehaviour = behaviour;
-
-            // If the level was prepared, return true.
-            return true;
         }
 
         #endregion

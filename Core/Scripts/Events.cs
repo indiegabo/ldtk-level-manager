@@ -10,7 +10,7 @@ namespace LDtkLevelManager
         /// <summary>
         /// The level behaviour that was activated .
         /// </summary>
-        public ConnectedLevelBehaviour behaviour;
+        public LevelBehaviour behaviour;
     }
 
     /// <summary>
@@ -21,7 +21,7 @@ namespace LDtkLevelManager
         /// <summary>
         /// The level behaviour that was deactivated.
         /// </summary>
-        public ConnectedLevelBehaviour behaviour;
+        public LevelBehaviour behaviour;
     }
 
     /// <summary>
@@ -32,7 +32,7 @@ namespace LDtkLevelManager
         /// <summary>
         /// The level behaviour that was prepared.
         /// </summary>
-        public ConnectedLevelBehaviour behaviour;
+        public LevelBehaviour behaviour;
 
         /// <summary>
         /// The level flow subject from which the level was prepared.
@@ -42,6 +42,6 @@ namespace LDtkLevelManager
         /// <summary>
         /// The trail that was used to prepare the level.
         /// </summary>
-        public LevelTrail trail;
+        public FlowSubjectTrail trail;
     }
 }
