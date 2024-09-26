@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 namespace LDtkLevelManager
 {
     [DefaultExecutionOrder(-1000)]
-    public class AreasLevelLoader : UniverseLevelLoader
+    public class AreasLevelLoader : ConnectedLevelLoader
     {
 
         #region Requests
@@ -115,7 +115,7 @@ namespace LDtkLevelManager
         /// <param name="iid">The Iid of the level to prepare.</param>
         /// <param name="behaviour">The behaviour to be used to prepare the level.</param>
         /// <returns>True if the level was prepared, false otherwise.</returns>
-        protected override bool EvaluateAndPrepareLevel(string iid, out UniverseLevelBehaviour behaviour)
+        protected override bool EvaluateAndPrepareLevel(string iid, out ConnectedLevelBehaviour behaviour)
         {
             // Tries to get a level by its Iid.
             if (!TryGetLevel(iid, out LevelInfo level))

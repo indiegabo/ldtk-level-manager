@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 namespace LDtkLevelManager
 {
     [DefaultExecutionOrder(-1000)]
-    public class NeighboursLevelLoader : UniverseLevelLoader
+    public class NeighboursLevelLoader : ConnectedLevelLoader
     {
 
         #region Inspector        
@@ -92,7 +92,7 @@ namespace LDtkLevelManager
         /// <param name="iid">The Iid of the level to prepare.</param>
         /// <param name="behaviour">The behaviour to be used to prepare the level.</param>
         /// <returns>True if the level was prepared, false otherwise.</returns>
-        protected override bool EvaluateAndPrepareLevel(string iid, out UniverseLevelBehaviour behaviour)
+        protected override bool EvaluateAndPrepareLevel(string iid, out ConnectedLevelBehaviour behaviour)
         {
             // Tries to get a level by its Iid.
             if (!TryGetLevel(iid, out LevelInfo level))
@@ -211,32 +211,6 @@ namespace LDtkLevelManager
 
             // Load all levels that are in the list of levels to be loaded
             await LoadMultipleAsync(_shouldBeLoaded);
-        }
-
-        #endregion
-
-        #region Metadata
-
-        /// <summary>
-        /// Represents the different strategies for loading levels.
-        /// </summary>
-        public enum LoadingStrategy
-        {
-            /// <summary>
-            /// Load the level and its neighbours.
-            /// </summary>
-            [InspectorName("Level and Neighbours")]
-            Neighbours,
-            /// <summary>
-            /// Load all the levels of the entire world.
-            /// </summary>
-            [InspectorName("Entire Worlds")]
-            Worlds,
-            /// <summary>
-            /// Load all the levels of the same area.
-            /// </summary>
-            [InspectorName("Areas")]
-            Areas,
         }
 
         #endregion

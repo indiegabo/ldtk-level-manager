@@ -10,7 +10,7 @@ namespace LDtkLevelManager
         /// <summary>
         /// The level behaviour that was activated .
         /// </summary>
-        public UniverseLevelBehaviour behaviour;
+        public ConnectedLevelBehaviour behaviour;
     }
 
     /// <summary>
@@ -21,7 +21,7 @@ namespace LDtkLevelManager
         /// <summary>
         /// The level behaviour that was deactivated.
         /// </summary>
-        public UniverseLevelBehaviour behaviour;
+        public ConnectedLevelBehaviour behaviour;
     }
 
     /// <summary>
@@ -32,7 +32,7 @@ namespace LDtkLevelManager
         /// <summary>
         /// The level behaviour that was prepared.
         /// </summary>
-        public UniverseLevelBehaviour behaviour;
+        public ConnectedLevelBehaviour behaviour;
 
         /// <summary>
         /// The level flow subject from which the level was prepared.

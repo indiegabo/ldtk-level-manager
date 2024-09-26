@@ -7,6 +7,7 @@ namespace LDtkLevelManager.Implementations.Basic
     {
         #region Inspector
 
+        [SerializeField] private Project _project;
         [SerializeField] private LevelInfo _initialLevel;
         [SerializeField] private Player _playerPrefab;
         [SerializeField] private LevelTransitioner _levelTransitioner;
@@ -24,7 +25,7 @@ namespace LDtkLevelManager.Implementations.Basic
 
         private void Awake()
         {
-            // _levelLoader = ConnectedLevelLoader.Instance;
+            _levelLoader = LevelLoader.For(_project).As<NeighboursLevelLoader>();
         }
 
         /// <summary>

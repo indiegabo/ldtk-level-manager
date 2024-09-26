@@ -67,8 +67,7 @@ namespace LDtkLevelManager.Implementations.Basic
         {
             _instance = this;
             _curtainsAnimator = Instantiate(_curtainsPrefab, _curtainsCanvas.transform);
-            LevelLoader.For(_project, out LevelLoader levelLoader);
-            _levelLoader = levelLoader as NeighboursLevelLoader;
+            _levelLoader = LevelLoader.For(_project).As<NeighboursLevelLoader>();
         }
 
         private void OnDestroy()
