@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using UnityEngine.Events;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
@@ -62,12 +61,12 @@ namespace LDtkLevelManager
         private readonly Queue<(LevelInfo, int)> _neighboursQueue = new();
 
         private LevelActivationEvent _activationEventData = new();
+        private LevelDeactivationEvent _deactivationEventData = new();
         private LevelPreparationEvent _preparationEventData = new();
 
         #endregion
 
         #region Getters
-
 
         /// <summary>
         /// The current project (<see cref="Project"/>).
@@ -624,8 +623,7 @@ namespace LDtkLevelManager
 
             // Enters the level according to its behaviour.
             _currentBehaviour.Activate();
-
-            AnnounceActivation(true, _currentBehaviour, _currentLevel);
+            AnnounceActivation(_currentBehaviour);
         }
 
         /// <summary>
@@ -641,20 +639,19 @@ namespace LDtkLevelManager
 
             // Calls the level exited event for the current level.
             _currentBehaviour.Deactivate();
-
-            AnnounceActivation(false, _currentBehaviour, _currentLevel);
+            AnnounceDeactivation(_currentBehaviour);
         }
 
-        protected virtual void AnnounceActivation(
-            bool isActive,
-            LevelBehaviour behaviour,
-            LevelInfo info
-        )
+        protected virtual void AnnounceActivation(LevelBehaviour behaviour)
         {
-            _activationEventData.isActive = isActive;
             _activationEventData.behaviour = behaviour;
-
             Bus<LevelActivationEvent>.Raise(_activationEventData);
+        }
+
+        protected virtual void AnnounceDeactivation(LevelBehaviour behaviour)
+        {
+            _activationEventData.behaviour = behaviour;
+            Bus<LevelDeactivationEvent>.Raise(_deactivationEventData);
         }
 
         protected virtual void AnnouncePreparation(
