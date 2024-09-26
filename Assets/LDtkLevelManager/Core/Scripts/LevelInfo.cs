@@ -4,7 +4,7 @@ using UnityEngine;
 namespace LDtkLevelManager
 {
     /// <summary>
-    /// Represents all the information the <see cref="LevelLoader"/> needs to know about a level, including
+    /// Represents all the information the <see cref="NeighboursLevelLoader"/> needs to know about a level, including
     /// its IID, name, world, area, and addressable address. The project will use this
     /// information to generate the level's addressable address and to keep track of the
     /// level's name and world. The project will also use this information to set the

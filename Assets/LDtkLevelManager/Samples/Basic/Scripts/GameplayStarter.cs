@@ -15,7 +15,7 @@ namespace LDtkLevelManager.Implementations.Basic
 
         #region Fields
 
-        private LevelLoader _levelLoader;
+        private NeighboursLevelLoader _levelLoader;
         private Player _player;
 
         #endregion
@@ -24,7 +24,7 @@ namespace LDtkLevelManager.Implementations.Basic
 
         private void Awake()
         {
-            _levelLoader = LevelLoader.Instance;
+            // _levelLoader = ConnectedLevelLoader.Instance;
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace LDtkLevelManager.Implementations.Basic
             // Load the level and its neighbours. At the end of this task
             // the level will be fully loaded and can rely on its neighbours
             // being loaded as well
-            await _levelLoader.LoadUniverseLevel(_initialLevel.Iid);
+            await _levelLoader.LoadLevel(_initialLevel.Iid);
 
             // Prepare the level. This sets the player in the loading spot. 
             // Notice that at this time the curtains are not yet open.

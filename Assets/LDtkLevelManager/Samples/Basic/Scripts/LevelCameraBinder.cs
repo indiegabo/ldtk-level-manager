@@ -5,7 +5,7 @@ using Cinemachine;
 
 namespace LDtkLevelManager.Implementations.Basic
 {
-    [RequireComponent(typeof(LevelBehaviour))]
+    [RequireComponent(typeof(UniverseLevelBehaviour))]
     [RequireComponent(typeof(LevelBoundaries))]
     public class LevelCameraBinder : MonoBehaviour
     {
@@ -18,7 +18,7 @@ namespace LDtkLevelManager.Implementations.Basic
 
         #region Fields
 
-        private LevelBehaviour _levelBehaviour;
+        private UniverseLevelBehaviour _levelBehaviour;
         private LevelBoundaries _boundaries;
         private LDtkComponentLevel _ldtkComponentLevel;
 
@@ -30,7 +30,7 @@ namespace LDtkLevelManager.Implementations.Basic
 
         private void Awake()
         {
-            _levelBehaviour = GetComponent<LevelBehaviour>();
+            _levelBehaviour = GetComponent<UniverseLevelBehaviour>();
             _boundaries = GetComponent<LevelBoundaries>();
             _confiner = _virtualCamera.gameObject.GetComponent<CinemachineConfiner2D>();
             _virtualCamera.gameObject.SetActive(false);
@@ -52,11 +52,11 @@ namespace LDtkLevelManager.Implementations.Basic
 
         #region Level Events
 
-        private void OnLevelExited(LevelBehaviour arg0)
+        private void OnLevelExited(UniverseLevelBehaviour arg0)
         {
         }
 
-        private void OnLevelPreparationStarted(LevelBehaviour levelBehaviour, ILevelFlowSubject subject, Vector2 position)
+        private void OnLevelPreparationStarted(UniverseLevelBehaviour levelBehaviour, ILevelFlowSubject subject, Vector2 position)
         {
             _confiner.m_BoundingShape2D = _boundaries.Shape;
 

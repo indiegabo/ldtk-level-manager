@@ -23,16 +23,16 @@ namespace LDtkLevelManager
                 return;
             }
 
-            if (!LevelLoader.Instance.TryGetLevel(_ldtkIid.Iid, out LevelInfo info))
-            {
-                var message = $"{name} could not have its geometry enforced because there was no level "
-                    + $"found under the LDtk Iid {_ldtkIid.Iid}";
-                Logger.Error(message, this);
-                return;
-            }
+            // if (!ConnectedLevelLoader.Instance.TryGetLevel(_ldtkIid.Iid, out LevelInfo info))
+            // {
+            //     var message = $"{name} could not have its geometry enforced because there was no level "
+            //         + $"found under the LDtk Iid {_ldtkIid.Iid}";
+            //     Logger.Error(message, this);
+            //     return;
+            // }
 
-            Setup(info);
-            Destroy(this);
+            // Setup(info);
+            // Destroy(this);
         }
 
         #endregion
