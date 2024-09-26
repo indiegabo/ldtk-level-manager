@@ -16,7 +16,7 @@ namespace LDtkLevelManager.Implementations.Basic
 
         #region Fields
 
-        private NeighboursLevelLoader _levelLoader;
+        private ConnectedLevelLoader _levelLoader;
         private Player _player;
 
         #endregion
@@ -25,7 +25,12 @@ namespace LDtkLevelManager.Implementations.Basic
 
         private void Awake()
         {
-            _levelLoader = LevelLoader.For(_project).As<NeighboursLevelLoader>();
+            _levelLoader = LevelLoader.For(_project).As<ConnectedLevelLoader>();
+
+            if (_levelLoader == null)
+            {
+                throw new System.ArgumentNullException("LevelLoader not found for project: " + _project.name);
+            }
         }
 
         /// <summary>

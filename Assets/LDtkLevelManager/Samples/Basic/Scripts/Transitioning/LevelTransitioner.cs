@@ -38,7 +38,7 @@ namespace LDtkLevelManager.Implementations.Basic
 
         private bool _transitioning = false;
         private Animator _curtainsAnimator;
-        private NeighboursLevelLoader _levelLoader;
+        private ConnectedLevelLoader _levelLoader;
 
         #endregion
 
@@ -67,7 +67,11 @@ namespace LDtkLevelManager.Implementations.Basic
         {
             _instance = this;
             _curtainsAnimator = Instantiate(_curtainsPrefab, _curtainsCanvas.transform);
-            _levelLoader = LevelLoader.For(_project).As<NeighboursLevelLoader>();
+            _levelLoader = LevelLoader.For(_project).As<ConnectedLevelLoader>();
+            if (_levelLoader == null)
+            {
+                throw new ArgumentNullException("LevelLoader not found for project: " + _project.name);
+            }
         }
 
         private void OnDestroy()

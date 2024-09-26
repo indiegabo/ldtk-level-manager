@@ -25,18 +25,18 @@ namespace LDtkLevelManager.Implementations.Basic
             _playerController = GetComponent<PlayerController>();
         }
 
-        public void LeaveLevel(ConnectedLevelBehaviour levelBehaviour)
+        public void LeaveLevel(LevelBehaviour levelBehaviour)
         {
             _playerController.RemoveControl();
         }
 
-        public void PlaceInLevel(ConnectedLevelBehaviour levelBehaviour, Vector3 position, int directionSign)
+        public void PlaceInLevel(LevelBehaviour levelBehaviour, Vector3 position, int directionSign)
         {
             _spriteRenderer.flipX = directionSign < 0;
             transform.position = new Vector3(position.x, position.y - 0.5f, position.z);
         }
 
-        public void EnterLevel(ConnectedLevelBehaviour levelBehaviour)
+        public void EnterLevel(LevelBehaviour levelBehaviour)
         {
             _playerController.GiveControl();
         }

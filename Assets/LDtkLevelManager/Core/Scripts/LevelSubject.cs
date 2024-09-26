@@ -4,7 +4,7 @@ using UnityEngine.Events;
 namespace LDtkLevelManager
 {
     /// <summary>
-    /// A MonoBehaviour that listens to the events from a <see cref="ConnectedLevelBehaviour"/> and 
+    /// A MonoBehaviour that listens to the events from a <see cref="LevelBehaviour"/> and 
     /// dispatches them to its subscribers. Awesome for entities prefabs.
     /// </summary>
     public class LevelSubject : MonoBehaviour
@@ -12,26 +12,26 @@ namespace LDtkLevelManager
         #region Inspector
 
         [SerializeField]
-        private UnityEvent<ConnectedLevelBehaviour> _levelSet;
+        private UnityEvent<LevelBehaviour> _levelSet;
 
         [SerializeField]
-        private UnityEvent<ConnectedLevelBehaviour> _exited;
+        private UnityEvent<LevelBehaviour> _exited;
 
         [SerializeField]
-        private UnityEvent<ConnectedLevelBehaviour, ILevelFlowSubject, Vector2> _preparationStarted;
+        private UnityEvent<LevelBehaviour, ILevelFlowSubject, Vector2> _preparationStarted;
 
         [SerializeField]
-        private UnityEvent<ConnectedLevelBehaviour, ILevelFlowSubject, LevelTrail> _prepared;
+        private UnityEvent<LevelBehaviour, ILevelFlowSubject, FlowSubjectTrail> _prepared;
 
         [SerializeField]
-        private UnityEvent<ConnectedLevelBehaviour> _entered;
+        private UnityEvent<LevelBehaviour> _entered;
 
 
         #endregion
 
         #region Fields
 
-        private ConnectedLevelBehaviour _levelBehaviour;
+        private LevelBehaviour _levelBehaviour;
 
         #endregion
 
@@ -48,30 +48,30 @@ namespace LDtkLevelManager
         /// <summary>
         /// Occurs when the level set property has changed.
         /// </summary>
-        public UnityEvent<ConnectedLevelBehaviour> LevelSet => _levelSet;
+        public UnityEvent<LevelBehaviour> LevelSet => _levelSet;
 
         /// <summary>
         /// Occurs when the player exited the level.
         /// </summary>
-        public UnityEvent<ConnectedLevelBehaviour> Exited => _exited;
+        public UnityEvent<LevelBehaviour> Exited => _exited;
 
         /// <summary>
         /// Occurs when the level has started preparation. Meaning the player will be
         /// spawned in the level.
         /// </summary>
-        public UnityEvent<ConnectedLevelBehaviour, ILevelFlowSubject, Vector2> PreparationStarted => _preparationStarted;
+        public UnityEvent<LevelBehaviour, ILevelFlowSubject, Vector2> PreparationStarted => _preparationStarted;
 
         /// <summary>
         /// Occurs when the level has finished preparation. Meaning the player is in the 
         /// correct spot in the level and the curtains are about to be opened.
         /// </summary>
-        public UnityEvent<ConnectedLevelBehaviour, ILevelFlowSubject, LevelTrail> Prepared => _prepared;
+        public UnityEvent<LevelBehaviour, ILevelFlowSubject, FlowSubjectTrail> Prepared => _prepared;
 
         /// <summary>
         /// Occurs when the level has finished entering. Curtains are now open and the
         /// gameplay is restablished.
         /// </summary>
-        public UnityEvent<ConnectedLevelBehaviour> Entered => _entered;
+        public UnityEvent<LevelBehaviour> Entered => _entered;
 
         #endregion
 
@@ -91,7 +91,7 @@ namespace LDtkLevelManager
 
         #region Metroidvania level
 
-        private void OnLevelAwake(ConnectedLevelBehaviour levelBehaviour)
+        private void OnLevelAwake(LevelBehaviour levelBehaviour)
         {
             _levelBehaviour = levelBehaviour;
             _levelSet.Invoke(_levelBehaviour);
@@ -102,22 +102,22 @@ namespace LDtkLevelManager
 
         #region Level Callbacks
 
-        private void OnLevelExited(ConnectedLevelBehaviour behaviour)
+        private void OnLevelExited(LevelBehaviour behaviour)
         {
             _exited.Invoke(behaviour);
         }
 
-        private void OnLevelPreparationStarted(ConnectedLevelBehaviour behaviour, ILevelFlowSubject subject, Vector2 point)
+        private void OnLevelPreparationStarted(LevelBehaviour behaviour, ILevelFlowSubject subject, Vector2 point)
         {
             _preparationStarted.Invoke(behaviour, subject, point);
         }
 
-        private void OnLevelPrepared(ConnectedLevelBehaviour behaviour, ILevelFlowSubject subject, LevelTrail trail)
+        private void OnLevelPrepared(LevelBehaviour behaviour, ILevelFlowSubject subject, FlowSubjectTrail trail)
         {
             _prepared.Invoke(behaviour, subject, trail);
         }
 
-        private void OnLevelEntered(ConnectedLevelBehaviour behaviour)
+        private void OnLevelEntered(LevelBehaviour behaviour)
         {
             _entered.Invoke(behaviour);
         }
@@ -126,24 +126,31 @@ namespace LDtkLevelManager
 
         #region Events
 
-        private void RegisterEvents(ConnectedLevelBehaviour behaviour)
+        private void RegisterEvents(LevelBehaviour behaviour)
         {
             if (behaviour == null) return;
 
             _levelBehaviour.Deactivated.AddListener(OnLevelExited);
-            _levelBehaviour.PreparationStarted.AddListener(OnLevelPreparationStarted);
-            _levelBehaviour.Prepared.AddListener(OnLevelPrepared);
             _levelBehaviour.Activated.AddListener(OnLevelEntered);
+
+            if (behaviour is ConnectedLevelBehaviour connectedLevelBehaviour)
+            {
+                connectedLevelBehaviour.PreparationStarted.AddListener(OnLevelPreparationStarted);
+                connectedLevelBehaviour.Prepared.AddListener(OnLevelPrepared);
+            }
         }
 
-        private void UnregisterEvents(ConnectedLevelBehaviour behaviour)
+        private void UnregisterEvents(LevelBehaviour behaviour)
         {
             if (behaviour == null) return;
 
             _levelBehaviour.Deactivated.RemoveListener(OnLevelExited);
-            _levelBehaviour.PreparationStarted.RemoveListener(OnLevelPreparationStarted);
-            _levelBehaviour.Prepared.RemoveListener(OnLevelPrepared);
             _levelBehaviour.Activated.RemoveListener(OnLevelEntered);
+            if (behaviour is ConnectedLevelBehaviour connectedLevelBehaviour)
+            {
+                connectedLevelBehaviour.PreparationStarted.RemoveListener(OnLevelPreparationStarted);
+                connectedLevelBehaviour.Prepared.RemoveListener(OnLevelPrepared);
+            }
         }
 
         #endregion

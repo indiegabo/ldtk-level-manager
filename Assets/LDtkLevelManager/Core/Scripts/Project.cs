@@ -22,6 +22,7 @@ namespace LDtkLevelManager
         [SerializeField] private WorldInfoDictionary _worldInfoRegistry = new();
         [SerializeField] private LevelsOrganization _levelsOrganization;
         [SerializeField] private ConnectedLoadingStrategy _loadingStrategy;
+        [SerializeField] private int _neighbouringDepth = 1;
 
         #endregion
 
@@ -95,6 +96,11 @@ namespace LDtkLevelManager
         /// The loading strategy for this project.
         /// </summary>
         public ConnectedLoadingStrategy Strategy => _loadingStrategy;
+
+        /// <summary>
+        /// The neighbouring depth for this project.
+        /// </summary>
+        public int NeighbouringDepth => _neighbouringDepth;
 
         #endregion
 

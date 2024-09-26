@@ -16,13 +16,13 @@ namespace LDtkLevelManager
         /// Called when the level is exited, meaning that the player should lose 
         /// control of the character and a new level will be loaded.
         /// </summary>
-        void LeaveLevel(ConnectedLevelBehaviour levelBehaviour);
+        void LeaveLevel(LevelBehaviour levelBehaviour);
 
         /// <summary>
         /// Called when the level is entered, meaning that the player should
         /// regain control of the character.
         /// </summary>
-        void EnterLevel(ConnectedLevelBehaviour levelBehaviour);
+        void EnterLevel(LevelBehaviour levelBehaviour);
 
         /// <summary>
         /// Called uppon level preparation in order place the player character in the level at the specified position 
@@ -30,6 +30,6 @@ namespace LDtkLevelManager
         /// </summary>
         /// <param name="position">The position to place the player in.</param>
         /// <param name="facingDirectionSign">The direction wich the player should be facing</param>
-        void PlaceInLevel(ConnectedLevelBehaviour levelBehaviour, Vector3 position, int facingDirectionSign);
+        void PlaceInLevel(LevelBehaviour levelBehaviour, Vector3 position, int facingDirectionSign);
     }
 }

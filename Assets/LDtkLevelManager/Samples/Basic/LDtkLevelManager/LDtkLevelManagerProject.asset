@@ -204,6 +204,7 @@ MonoBehaviour:
       - None
   _levelsOrganization: 0
   _loadingStrategy: 0
+  _neighbouringDepth: 1
 --- !u!114 &1057545810723391170
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,15 +8,6 @@ namespace LDtkLevelManager
     [DefaultExecutionOrder(-1000)]
     public class NeighboursLevelLoader : ConnectedLevelLoader
     {
-
-        #region Inspector        
-
-        [SerializeField]
-        [Min(1)]
-        private int _depth = 1;
-
-        #endregion
-
         #region Fields
 
         protected readonly Queue<(LevelInfo, int)> _neighboursQueue = new();
@@ -78,50 +69,11 @@ namespace LDtkLevelManager
         }
 
 
-        /// <summary>
-        /// Tries to prepare a level by its Iid.<br/>
-        /// <br/>
-        /// It first tries to get the level by its Iid from the project.<br/>
-        /// If the level is not found, it logs an error and returns false.<br/>
-        /// <br/>
-        /// If the level is found, it tries to get the registered behaviour for the level.<br/>
-        /// If the level is not registered, it logs an error and returns false.<br/>
-        /// <br/>
-        /// If the level is registered, it prepares the level according to the strategy and returns true.
-        /// </summary>
-        /// <param name="iid">The Iid of the level to prepare.</param>
-        /// <param name="behaviour">The behaviour to be used to prepare the level.</param>
-        /// <returns>True if the level was prepared, false otherwise.</returns>
-        protected override bool EvaluateAndPrepareLevel(string iid, out ConnectedLevelBehaviour behaviour)
+        protected override void AfterLevelDefinition()
         {
-            // Tries to get a level by its Iid.
-            if (!TryGetLevel(iid, out LevelInfo level))
-            {
-                // If the level is not found, log the error and return false.
-                Logger.Error($"Trying to prepare a level by Iid {iid} but it was not found.", this);
-                behaviour = null;
-                return false;
-            }
 
-            // Tries to get the MV_LevelBehaviour for the level.
-            if (!_registeredBehaviours.TryGetValue(iid, out behaviour))
-            {
-                // If the level is not registered, log the error and return false.
-                Logger.Error($"Trying to prepare a level by Iid {iid} but it is not registered.", this);
-                return false;
-            }
-
-            _currentLevel = level;
-            _currentBehaviour = behaviour;
-
-
-            if (!level.StandAlone)
-            {
-                _ = LoadNeighboursAsync(_currentLevel);
-            }
-
-            // If the level was prepared, return true.
-            return true;
+            if (_currentLevel.StandAlone) return;
+            _ = LoadNeighboursAsync(_currentLevel);
         }
 
         #endregion
@@ -142,7 +94,7 @@ namespace LDtkLevelManager
                 return;
             }
 
-            float depth = Mathf.Clamp(_depth, 1, 10);
+            float depth = Mathf.Clamp(_project.NeighbouringDepth, 1, 10);
 
             // Clears the queue of levels to be loaded
             _neighboursQueue.Clear();
@@ -187,7 +139,7 @@ namespace LDtkLevelManager
             }
 
             // For each level that was previously loaded but is not in the list of levels to be loaded
-            foreach (string iid in _universeObjects.Keys)
+            foreach (string iid in _loadedObjects.Keys)
             {
                 if (!_shouldBeLoaded.Contains(iid))
                 {
@@ -197,7 +149,7 @@ namespace LDtkLevelManager
             }
 
             // For each scene that was previously loaded but is not in the list of levels to be loaded
-            foreach (string iid in _universeScenes.Keys)
+            foreach (string iid in _loadedScenes.Keys)
             {
                 if (!_shouldBeLoaded.Contains(iid))
                 {

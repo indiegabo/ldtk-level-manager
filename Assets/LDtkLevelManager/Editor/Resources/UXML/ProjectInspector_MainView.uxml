@@ -1,10 +1,13 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Assets/LDtkLevelManager/Editor/Resources/Styles/ProjectMainView_style.uss?fileID=7433441132597879392&amp;guid=f2a2b7edccabd9b4b9af38f2c37f6ce3&amp;type=3#ProjectMainView_style" />
     <Style src="project://database/Assets/LDtkLevelManager/Editor/Resources/Styles/Common_style.uss?fileID=7433441132597879392&amp;guid=404bba9bc59b6124d814e73187e6b1fc&amp;type=3#Common_style" />
-    <ui:VisualElement name="container-navigation" class="container">
-        <ui:Label tabindex="-1" text="Navigation" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-navigation" class="label-header" />
+    <ui:VisualElement name="container-structure" class="container">
+        <ui:Label tabindex="-1" text="Structure" parse-escape-sequences="true" display-tooltip-when-elided="true" name="label-structure" class="label-header" />
         <ui:VisualElement name="container-content" class="container bordered-box" style="flex-grow: 1;">
-            <ui:DropdownField label="Navigation Layer" name="dropdown-navigation-layer" />
+            <ui:EnumField label="Level Organization" type="LDtkLevelManager.Project+LevelsOrganization, LDtkLevelManager.Core" name="field-organization" tooltip="How are levels organized in the LDtk project?" />
+            <ui:EnumField label="Loading Strategy" type="LDtkLevelManager.Project+ConnectedLoadingStrategy, LDtkLevelManager.Core" name="field-strategy" tooltip="How should the level loader handle the level loading?" />
+            <ui:SliderInt label="Neighbouring Depth" high-value="10" name="field-neighbouring-depth" low-value="1" show-input-field="true" tooltip="How many neighbours of neighbours should be loaded along side the current level?" />
+            <ui:DropdownField label="Navigation Layer" name="dropdown-navigation-layer" tooltip="What is the LDtk layer in wich you are defining navigation elements like connections or portals?" />
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="container-cartography" class="container">

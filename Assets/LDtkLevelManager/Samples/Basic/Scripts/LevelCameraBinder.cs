@@ -52,11 +52,11 @@ namespace LDtkLevelManager.Implementations.Basic
 
         #region Level Events
 
-        private void OnLevelExited(ConnectedLevelBehaviour arg0)
+        private void OnLevelExited(LevelBehaviour arg0)
         {
         }
 
-        private void OnLevelPreparationStarted(ConnectedLevelBehaviour levelBehaviour, ILevelFlowSubject subject, Vector2 position)
+        private void OnLevelPreparationStarted(LevelBehaviour levelBehaviour, ILevelFlowSubject subject, Vector2 position)
         {
             _confiner.m_BoundingShape2D = _boundaries.Shape;
 
