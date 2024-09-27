@@ -37,9 +37,14 @@
   },
   "samples": [
     {
-      "displayName": "Basic",
-      "description": "[Hard Dependency on Cimnemachine 2.9.7] A simple example of how to use LDtk Level Manager. Open the Scenes/Universe scene and hit play.",
-      "path": "Samples~/Basic"
+      "displayName": "Connected",
+      "description": "[Hard Dependency on Cimnemachine 2.9.7] A simple example of how to use LDtk Level Manager to navigate through connected levels. Open the Scenes/Universe scene and hit play.",
+      "path": "Samples~/Connected"
+    },
+    {
+      "displayName": "Unrelated",
+      "description": "A simple example of how to use LDtk Level Manager to load and unload unrelated levels. Open the Scenes/Universe scene and hit play.",
+      "path": "Samples~/Unrelated"
     }
   ]
 }

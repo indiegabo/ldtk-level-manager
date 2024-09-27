@@ -87,7 +87,6 @@ namespace LDtkLevelManager
 
         #region Abstractions
 
-        protected abstract void ResolvePlacement(Transform placementContainer);
 
         #endregion
 
@@ -140,6 +139,8 @@ namespace LDtkLevelManager
         #endregion
 
         #region Placement
+
+        protected virtual void ResolvePlacement(Transform placementContainer) { }
 
         /// <summary>
         /// Evaluates all <see cref="IPlacementSpot"/> children of the 
@@ -244,6 +245,32 @@ namespace LDtkLevelManager
             // Broadcast the preparation finished event
             _preparedEvent.Invoke(this, subject, trail);
 
+            return true;
+        }
+
+        /// <summary>
+        /// Prepares the level by setting the player at the specified spawn position and sets a 
+        /// <see cref="FlowSubjectTrail"/> with the level's Iid and the spawn position and facing sign.
+        /// </summary>
+        /// <param name="spawnPoint">The spawn position of the player.</param>
+        /// <param name="facingSign">The direction the player should face.</param>
+        /// <param name="trail">The trail to be used when entering the level.</param>
+        /// <returns>True if the level was prepared, false otherwise.</returns>
+        public bool Prepare(ILevelFlowSubject subject, Vector2 spawnPoint, int facingSign, out FlowSubjectTrail trail)
+        {
+            // Create a new trail with the level's Iid and the spawn position and facing sign
+            trail = FlowSubjectTrail.FromPoint(_info.Iid, spawnPoint, facingSign);
+
+            // Broadcast the preparation started event
+            _preparationStartedEvent.Invoke(this, subject, spawnPoint);
+
+            // Place the character at the spawn position
+            PlaceSubject(subject, new Vector3(spawnPoint.x, spawnPoint.y, transform.position.z), facingSign);
+
+            // Broadcast the preparation finished event
+            _preparedEvent.Invoke(this, subject, trail);
+
+            // If the level was prepared, return true
             return true;
         }
 

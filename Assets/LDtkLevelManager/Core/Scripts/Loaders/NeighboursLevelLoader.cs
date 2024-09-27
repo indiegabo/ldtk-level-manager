@@ -5,7 +5,6 @@ using Cysharp.Threading.Tasks;
 
 namespace LDtkLevelManager
 {
-    [DefaultExecutionOrder(-1000)]
     public class NeighboursLevelLoader : ConnectedLevelLoader
     {
         #region Fields
@@ -71,7 +70,6 @@ namespace LDtkLevelManager
 
         protected override void AfterLevelDefinition()
         {
-
             if (_currentLevel.StandAlone) return;
             _ = LoadNeighboursAsync(_currentLevel);
         }
