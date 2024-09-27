@@ -22,7 +22,7 @@ namespace LDtkLevelManager
         {
             if (!_loaders.TryGetValue(project.Iid, out LevelLoader loader))
             {
-                throw new System.ArgumentException("LevelLoader not found for project: " + project.name);
+                throw new ArgumentException("LevelLoader not found for project: " + project.name);
             }
 
             return loader;
@@ -155,7 +155,6 @@ namespace LDtkLevelManager
 
         protected virtual void DefineCurrentLevel(LevelInfo level)
         {
-
             // Tries to get the MV_LevelBehaviour for the level.
             if (!_registeredBehaviours.TryGetValue(level.Iid, out LevelBehaviour behaviour))
             {
@@ -170,10 +169,7 @@ namespace LDtkLevelManager
             AfterLevelDefinition();
         }
 
-        protected virtual void AfterLevelDefinition()
-        {
-
-        }
+        protected virtual void AfterLevelDefinition() { }
 
         #endregion
 
@@ -359,12 +355,21 @@ namespace LDtkLevelManager
         {
             // Check if the level exists
             if (!TryGetLevel(iid, out LevelInfo level)) return;
+            await UnloadAsync(level);
+        }
 
+        /// <summary>
+        /// Unloads a level asynchronously. 
+        /// </summary>
+        /// <param name="level">The <see cref="LevelInfo"/> of the level to unload.</param>
+        /// <returns>A <see cref="UniTask"/> that completes when the level is unloaded.</returns>
+        protected virtual async UniTask UnloadAsync(LevelInfo level)
+        {
             // Check if the level has been loaded as an object
-            if (_loadedObjects.TryGetValue(iid, out GameObject loadedObject))
+            if (_loadedObjects.TryGetValue(level.Iid, out GameObject loadedObject))
             {
                 // Remove the level from the list of loaded objects
-                _loadedObjects.Remove(iid);
+                _loadedObjects.Remove(level.Iid);
 
                 // Destroy the loaded object
                 Destroy(loadedObject);
@@ -372,7 +377,7 @@ namespace LDtkLevelManager
             }
 
             // Check if the level has been loaded as a scene
-            if (_loadedScenes.TryGetValue(iid, out SceneInstance sceneInstance))
+            if (_loadedScenes.TryGetValue(level.Iid, out SceneInstance sceneInstance))
             {
                 // Start the unload operation
                 AsyncOperationHandle handle = Addressables.UnloadSceneAsync(sceneInstance, false);
@@ -391,7 +396,7 @@ namespace LDtkLevelManager
                 }
 
                 // Remove the level from the list of loaded scenes
-                _loadedScenes.Remove(iid);
+                _loadedScenes.Remove(level.Iid);
             }
         }
 

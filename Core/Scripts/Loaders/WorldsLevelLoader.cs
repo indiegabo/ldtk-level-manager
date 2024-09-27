@@ -1,29 +1,11 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using UnityEngine.ResourceManagement.ResourceProviders;
-using System.Linq;
-using LDtkUnity;
 using Cysharp.Threading.Tasks;
-using System;
-using UnityEngine.ResourceManagement.Exceptions;
-using LDtkLevelManager.EventBus;
 
 namespace LDtkLevelManager
 {
-    [DefaultExecutionOrder(-1000)]
     public class WorldsLevelLoader : ConnectedLevelLoader
     {
-
-        #region Behaviour
-
-        protected override void Awake()
-        {
-        }
-
-        #endregion
 
         #region Requests
 
@@ -57,14 +39,6 @@ namespace LDtkLevelManager
         /// Loads a level by its <see cref="LevelInfo"/>. If the level is not present in the project, <br />
         /// an error will be logged and no action will be taken. <br />
         /// <br />
-        /// The level will be loaded using the current Loaders's defined strategy (<see cref="LoadingStrategy"/>).
-        /// <br />
-        /// <b>Strategies:</b>
-        /// <list type="bullet">
-        /// <item><b>Neighbours:</b> Guarantees the presence of the level and its immediate neighbours. The amount of neighbours is defined by the Loader's <see cref="Depth"/> parameter.</item>
-        /// <item><b>Worlds:</b> Guarantees the presence of the level and its entire world. </item>
-        /// <item><b>Area:</b> Guarantees the presence of the level and the entire area it is in.</item>
-        /// </list>
         /// </summary>
         /// <param name="level">The <see cref="LevelInfo"/> of the level to load.</param>
         /// <returns>A <see cref="UniTask"/> that completes when the level is loaded.</returns>
@@ -107,7 +81,6 @@ namespace LDtkLevelManager
 
             /// Exit the current level before loading new ones.
             DeactivatePreparedLevel();
-
 
             /// Unload all loaded levels and objects before loading new ones.
             await UnloadEverything();
