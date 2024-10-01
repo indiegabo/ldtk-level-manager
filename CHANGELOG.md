@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/indiegabo/ldtk-level-manager/compare/v1.7.0...v1.7.1) (2024-09-16)
+
+
+### Bug Fixes
+
+* IPortal regions ([bef8ed1](https://github.com/indiegabo/ldtk-level-manager/commit/bef8ed1a5921d1a78ffb29abde847e4d07950ded))
+
 # [1.7.0](https://github.com/indiegabo/ldtk-level-manager/compare/v1.6.2...v1.7.0) (2024-09-13)
 
 
