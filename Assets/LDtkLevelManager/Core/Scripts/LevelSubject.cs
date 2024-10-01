@@ -21,7 +21,7 @@ namespace LDtkLevelManager
         private UnityEvent<LevelBehaviour, ILevelFlowSubject, Vector2> _preparationStarted;
 
         [SerializeField]
-        private UnityEvent<LevelBehaviour, ILevelFlowSubject, LevelTrail> _prepared;
+        private UnityEvent<LevelBehaviour, ILevelFlowSubject, FlowSubjectTrail> _prepared;
 
         [SerializeField]
         private UnityEvent<LevelBehaviour> _entered;
@@ -65,7 +65,7 @@ namespace LDtkLevelManager
         /// Occurs when the level has finished preparation. Meaning the player is in the 
         /// correct spot in the level and the curtains are about to be opened.
         /// </summary>
-        public UnityEvent<LevelBehaviour, ILevelFlowSubject, LevelTrail> Prepared => _prepared;
+        public UnityEvent<LevelBehaviour, ILevelFlowSubject, FlowSubjectTrail> Prepared => _prepared;
 
         /// <summary>
         /// Occurs when the level has finished entering. Curtains are now open and the
@@ -112,7 +112,7 @@ namespace LDtkLevelManager
             _preparationStarted.Invoke(behaviour, subject, point);
         }
 
-        private void OnLevelPrepared(LevelBehaviour behaviour, ILevelFlowSubject subject, LevelTrail trail)
+        private void OnLevelPrepared(LevelBehaviour behaviour, ILevelFlowSubject subject, FlowSubjectTrail trail)
         {
             _prepared.Invoke(behaviour, subject, trail);
         }
@@ -131,9 +131,13 @@ namespace LDtkLevelManager
             if (behaviour == null) return;
 
             _levelBehaviour.Deactivated.AddListener(OnLevelExited);
-            _levelBehaviour.PreparationStarted.AddListener(OnLevelPreparationStarted);
-            _levelBehaviour.Prepared.AddListener(OnLevelPrepared);
             _levelBehaviour.Activated.AddListener(OnLevelEntered);
+
+            if (behaviour is ConnectedLevelBehaviour connectedLevelBehaviour)
+            {
+                connectedLevelBehaviour.PreparationStarted.AddListener(OnLevelPreparationStarted);
+                connectedLevelBehaviour.Prepared.AddListener(OnLevelPrepared);
+            }
         }
 
         private void UnregisterEvents(LevelBehaviour behaviour)
@@ -141,9 +145,12 @@ namespace LDtkLevelManager
             if (behaviour == null) return;
 
             _levelBehaviour.Deactivated.RemoveListener(OnLevelExited);
-            _levelBehaviour.PreparationStarted.RemoveListener(OnLevelPreparationStarted);
-            _levelBehaviour.Prepared.RemoveListener(OnLevelPrepared);
             _levelBehaviour.Activated.RemoveListener(OnLevelEntered);
+            if (behaviour is ConnectedLevelBehaviour connectedLevelBehaviour)
+            {
+                connectedLevelBehaviour.PreparationStarted.RemoveListener(OnLevelPreparationStarted);
+                connectedLevelBehaviour.Prepared.RemoveListener(OnLevelPrepared);
+            }
         }
 
         #endregion

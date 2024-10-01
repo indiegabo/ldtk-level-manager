@@ -122,6 +122,7 @@ namespace LDtkLevelManager
 
                     if (string.IsNullOrEmpty(levelIid)) continue;
 
+
                     presentLevels.Add(levelIid);
                 }
             }
@@ -531,7 +532,24 @@ namespace LDtkLevelManager
         {
             _navigationLayer = layerName;
             EditorUtility.SetDirty(this);
-            // AssetDatabase.SaveAssetIfDirty(this);
+        }
+
+        public void SetNeighbouringDepth(int depth)
+        {
+            _neighbouringDepth = depth;
+            EditorUtility.SetDirty(this);
+        }
+
+        public void SetOrtanization(LevelsOrganization organization)
+        {
+            _levelsOrganization = organization;
+            EditorUtility.SetDirty(this);
+        }
+
+        public void SetConnectedLoadingStrategy(ConnectedLoadingStrategy strategy)
+        {
+            _loadingStrategy = strategy;
+            EditorUtility.SetDirty(this);
         }
     }
 }
