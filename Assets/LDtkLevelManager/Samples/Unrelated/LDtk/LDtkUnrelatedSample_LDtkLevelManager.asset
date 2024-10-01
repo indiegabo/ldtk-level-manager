@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8098074239831995108
+--- !u!114 &-2709860714248043140
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -16,7 +16,7 @@ MonoBehaviour:
   _iid: 9ccf1ef0-73f0-11ef-9cea-dda9573db71f
   _displayName: 
   _worldIid: 9ccef7e1-73f0-11ef-9cea-816e8e396f4d
-  _worldName: World
+  _worldName: World_1
   _areaName: 
   _standAlone: 0
   _asset: {fileID: 8000468144035134150, guid: 9584613be8f692f45954f7e7867dca6c, type: 3}
@@ -27,7 +27,7 @@ MonoBehaviour:
     _assetGuid: 
     _addressableKey: 
   _leftBehind: 0
---- !u!114 &-7007297421393744973
+--- !u!114 &-429157165545603602
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,7 +43,7 @@ MonoBehaviour:
   _iid: 336a9cd0-73f0-11ef-9cea-193daf8e9632
   _displayName: 
   _worldIid: 9ccef7e1-73f0-11ef-9cea-816e8e396f4d
-  _worldName: World
+  _worldName: World_1
   _areaName: 
   _standAlone: 0
   _asset: {fileID: 4994227485657439157, guid: 1dbd7633e1bd6bc47a9d14d7409c99be, type: 3}
@@ -85,17 +85,17 @@ MonoBehaviour:
     - 9ccf1ef0-73f0-11ef-9cea-dda9573db71f
     - 336a9cd0-73f0-11ef-9cea-193daf8e9632
     _listValues:
-    - {fileID: -8098074239831995108}
-    - {fileID: -7007297421393744973}
+    - {fileID: -2709860714248043140}
+    - {fileID: -429157165545603602}
   _lostLevels:
     _listKeys: []
     _listValues: []
   _worldInfoRegistry:
     _listKeys:
-    - World
+    - World_1
     _listValues:
     - iid: 9ccef7e1-73f0-11ef-9cea-816e8e396f4d
-      name: World
+      name: World_1
       areas: []
   _levelsOrganization: 1
   _loadingStrategy: 0
