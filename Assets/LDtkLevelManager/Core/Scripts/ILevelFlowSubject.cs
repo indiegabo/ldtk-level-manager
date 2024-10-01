@@ -5,7 +5,7 @@ namespace LDtkLevelManager
 {
     /// <summary>
     /// Implement this interface on your character to receive notifications from the
-    /// <see cref="LevelBehaviour"/> about the level's state. This is needed to know when to
+    /// <see cref="ConnectedLevelBehaviour"/> about the level's state. This is needed to know when to
     /// enable or disable the character's controls, for example.
     /// </summary>
     public interface ILevelFlowSubject

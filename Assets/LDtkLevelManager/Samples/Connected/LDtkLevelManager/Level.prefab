@@ -49,8 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bef0ba6b5d99dc409ff891407c84a81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainCharacterProvider: {fileID: 11400000, guid: 970118869fc56f645ae8a447e4bb295d, type: 2}
-  _exitedEvent:
+  _project: {fileID: 11400000, guid: cce43c9b18b60c844b58ead0bc993bba, type: 2}
+  _deactivatedEvent:
     m_PersistentCalls:
       m_Calls: []
   _preparationStartedEvent:
@@ -59,7 +59,7 @@ MonoBehaviour:
   _preparedEvent:
     m_PersistentCalls:
       m_Calls: []
-  _enteredEvent:
+  _activatedEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &8506604551032736904
@@ -74,6 +74,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6f9a52086b65604eaffef7ff1d6e638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _project: {fileID: 11400000, guid: cce43c9b18b60c844b58ead0bc993bba, type: 2}
 --- !u!114 &6745599564459609190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,7 +101,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _virtualCamera: {fileID: 2235318305392016508}
-  _mainCharacterProvider: {fileID: 11400000, guid: 970118869fc56f645ae8a447e4bb295d, type: 2}
 --- !u!1 &5442452905376388299
 GameObject:
   m_ObjectHideFlags: 0

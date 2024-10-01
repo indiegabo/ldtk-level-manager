@@ -7,6 +7,7 @@ namespace LDtkLevelManager.Implementations.Basic
     {
         #region Inspector
 
+        [SerializeField] private Project _project;
         [SerializeField] private LevelInfo _initialLevel;
         [SerializeField] private Player _playerPrefab;
         [SerializeField] private LevelTransitioner _levelTransitioner;
@@ -15,7 +16,7 @@ namespace LDtkLevelManager.Implementations.Basic
 
         #region Fields
 
-        private LevelLoader _levelLoader;
+        private ConnectedLevelLoader _levelLoader;
         private Player _player;
 
         #endregion
@@ -24,7 +25,12 @@ namespace LDtkLevelManager.Implementations.Basic
 
         private void Awake()
         {
-            _levelLoader = LevelLoader.Instance;
+            _levelLoader = LevelLoader.For(_project).As<ConnectedLevelLoader>();
+
+            if (_levelLoader == null)
+            {
+                throw new System.ArgumentNullException("LevelLoader not found for project: " + _project.name);
+            }
         }
 
         /// <summary>
@@ -51,7 +57,7 @@ namespace LDtkLevelManager.Implementations.Basic
             // Load the level and its neighbours. At the end of this task
             // the level will be fully loaded and can rely on its neighbours
             // being loaded as well
-            await _levelLoader.LoadUniverseLevel(_initialLevel.Iid);
+            await _levelLoader.LoadLevel(_initialLevel.Iid);
 
             // Prepare the level. This sets the player in the loading spot. 
             // Notice that at this time the curtains are not yet open.

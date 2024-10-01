@@ -42,6 +42,6 @@ namespace LDtkLevelManager
         /// <summary>
         /// The trail that was used to prepare the level.
         /// </summary>
-        public LevelTrail trail;
+        public FlowSubjectTrail trail;
     }
 }

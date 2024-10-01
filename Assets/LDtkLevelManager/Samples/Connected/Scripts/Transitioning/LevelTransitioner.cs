@@ -18,6 +18,9 @@ namespace LDtkLevelManager.Implementations.Basic
         #region Inspector        
 
         [SerializeField]
+        private Project _project;
+
+        [SerializeField]
         private Canvas _curtainsCanvas;
 
         [SerializeField]
@@ -35,6 +38,7 @@ namespace LDtkLevelManager.Implementations.Basic
 
         private bool _transitioning = false;
         private Animator _curtainsAnimator;
+        private ConnectedLevelLoader _levelLoader;
 
         #endregion
 
@@ -63,6 +67,11 @@ namespace LDtkLevelManager.Implementations.Basic
         {
             _instance = this;
             _curtainsAnimator = Instantiate(_curtainsPrefab, _curtainsCanvas.transform);
+            _levelLoader = LevelLoader.For(_project).As<ConnectedLevelLoader>();
+            if (_levelLoader == null)
+            {
+                throw new ArgumentNullException("LevelLoader not found for project: " + _project.name);
+            }
         }
 
         private void OnDestroy()
@@ -117,7 +126,7 @@ namespace LDtkLevelManager.Implementations.Basic
         public async UniTask TransitionToLevelAsync(ILevelFlowSubject subject, string levelIid, string spotIid)
         {
             // Exit the current level
-            LevelLoader.Instance.DeactivatePreparedLevel();
+            _levelLoader.DeactivatePreparedLevel();
 
             // Run the task that should be run before the level is prepared
             await BeforePreparationTask();
@@ -126,7 +135,7 @@ namespace LDtkLevelManager.Implementations.Basic
             CinemachineVirtualCamera camera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera as CinemachineVirtualCamera;
 
             // Load the new level
-            await LevelLoader.Instance.LoadUniverseLevel(levelIid);
+            await _levelLoader.LoadLevel(levelIid);
 
             // If there was a camera, make it inactive
             if (camera != null)
@@ -136,7 +145,7 @@ namespace LDtkLevelManager.Implementations.Basic
             }
 
             // Prepare the new level for transition
-            LevelLoader.Instance.Prepare(subject, levelIid, spotIid);
+            _levelLoader.Prepare(subject, levelIid, spotIid);
 
             // Run the task that should be run after the level is prepared
             await AfterPreparationTask();
@@ -152,7 +161,7 @@ namespace LDtkLevelManager.Implementations.Basic
         public async UniTask TransitionToLevelAsync(ILevelFlowSubject subject, string levelIid, IConnection connection)
         {
             // Exit the current level
-            LevelLoader.Instance.DeactivatePreparedLevel();
+            _levelLoader.DeactivatePreparedLevel();
 
             // Run the task that should be run before the level is prepared
             await BeforePreparationTask();
@@ -161,7 +170,7 @@ namespace LDtkLevelManager.Implementations.Basic
             CinemachineVirtualCamera camera = CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera as CinemachineVirtualCamera;
 
             // Load the new level
-            await LevelLoader.Instance.LoadUniverseLevel(levelIid);
+            await _levelLoader.LoadLevel(levelIid);
 
             // If there was a camera, make it inactive
             if (camera != null)
@@ -171,7 +180,7 @@ namespace LDtkLevelManager.Implementations.Basic
             }
 
             // Prepare the new level for transition
-            LevelLoader.Instance.Prepare(subject, levelIid, connection);
+            _levelLoader.Prepare(subject, levelIid, connection);
 
             // Run the task that should be run after the level is prepared
             await AfterPreparationTask();
@@ -186,9 +195,9 @@ namespace LDtkLevelManager.Implementations.Basic
         /// <returns>A UniTask that completes when the transition is complete.</returns>
         public async UniTask TransitionToPortalAsync(ILevelFlowSubject subject, string levelIid, IPortal portal)
         {
-            if (!LevelLoader.Instance.TryGetLevel(levelIid, out LevelInfo level))
+            if (!_levelLoader.TryGetLevel(levelIid, out LevelInfo level))
             {
-                Logger.Error($"Level under LDtk Iid {levelIid} not present in project {LevelLoader.Instance.Project.name}", this);
+                Logger.Error($"Level under LDtk Iid {levelIid} not present in project {_levelLoader.Project.name}", this);
                 return;
             }
 
@@ -198,26 +207,26 @@ namespace LDtkLevelManager.Implementations.Basic
 
             // Exit the current level, close the curtains, prepare the new level,
             // then enter it.
-            LevelLoader.Instance.DeactivatePreparedLevel();
+            _levelLoader.DeactivatePreparedLevel();
             await CloseCurtains();
 
             // In this example we unload all stand alone levels upon using portals. But
             // you can choose to keep them loaded if you want.
-            await LevelLoader.Instance.UnloadAllStandaloneLevels();
+            await _levelLoader.UnloadAllStandaloneLevels();
 
             if (level.StandAlone)
             {
-                await LevelLoader.Instance.LoadStandaloneLevel(level);
+                await _levelLoader.LoadStandaloneLevel(level);
             }
             else
             {
-                await LevelLoader.Instance.LoadUniverseLevel(level);
+                await _levelLoader.LoadLevel(level);
             }
 
-            LevelLoader.Instance.Prepare(subject, levelIid, portal);
+            _levelLoader.Prepare(subject, levelIid, portal);
             await WaitOnCameraBlend();
             await OpenCurtains();
-            LevelLoader.Instance.ActivatePreparedLevel();
+            _levelLoader.ActivatePreparedLevel();
 
             // Notify the outside world that the transition has ended
             _transitioning = false;
@@ -236,7 +245,7 @@ namespace LDtkLevelManager.Implementations.Basic
 
             await PerformTransitions(LevelTransitionMoment.Close);
 
-            LevelLoader.Instance.DeactivatePreparedLevel();
+            _levelLoader.DeactivatePreparedLevel();
         }
 
         /// <summary>
@@ -250,7 +259,7 @@ namespace LDtkLevelManager.Implementations.Basic
             await WaitOnCameraBlend();
 
             // "Activating" level
-            LevelLoader.Instance.ActivatePreparedLevel();
+            _levelLoader.ActivatePreparedLevel();
 
             _transitioning = false;
             _transitionEnded.Invoke();

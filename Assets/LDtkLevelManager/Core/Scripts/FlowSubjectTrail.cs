@@ -3,23 +3,23 @@ using UnityEngine;
 namespace LDtkLevelManager
 {
     /// <summary>
-    /// Represents a mark on the player's navigation through the Universe.
+    /// Information about flow subject placement.
     /// </summary>
     [System.Serializable]
-    public struct LevelTrail
+    public struct FlowSubjectTrail
     {
         #region Static
 
         /// <summary>
-        /// Creates a <see cref="LevelTrail"/> from a level Iid, spawn position and optional facing sign.
+        /// Creates a <see cref="FlowSubjectTrail"/> from a level Iid, spawn position and optional facing sign.
         /// </summary>
         /// <param name="levelIid">The LDtk unique identifier of the level.</param>
         /// <param name="point">The spawn position of the player.</param>
         /// <param name="facingSign">The direction the player should face.</param>
-        /// <returns>A new <see cref="LevelTrail"/> instance.</returns>
-        public static LevelTrail FromPoint(string levelIid, Vector2 point, int facingSign = 1)
+        /// <returns>A new <see cref="FlowSubjectTrail"/> instance.</returns>
+        public static FlowSubjectTrail FromPoint(string levelIid, Vector2 point, int facingSign = 1)
         {
-            return new LevelTrail
+            return new FlowSubjectTrail
             {
                 _levelIid = levelIid,
                 _spawnPosition = point,
@@ -28,14 +28,14 @@ namespace LDtkLevelManager
         }
 
         /// <summary>
-        /// Creates a <see cref="LevelTrail"/> from a level Iid and a <see cref="IPlacementSpot"/>.
+        /// Creates a <see cref="FlowSubjectTrail"/> from a level Iid and a <see cref="IPlacementSpot"/>.
         /// </summary>
         /// <param name="levelIid">The LDtk unique identifier of the level.</param>
         /// <param name="spot">The placement spot of the player.</param>
-        /// <returns>A new <see cref="LevelTrail"/> instance.</returns>
-        public static LevelTrail FromSpot(string levelIid, IPlacementSpot spot)
+        /// <returns>A new <see cref="FlowSubjectTrail"/> instance.</returns>
+        public static FlowSubjectTrail FromSpot(string levelIid, IPlacementSpot spot)
         {
-            return new LevelTrail
+            return new FlowSubjectTrail
             {
                 _levelIid = levelIid,
                 _spawnPosition = spot.SpawnPoint,
@@ -44,14 +44,14 @@ namespace LDtkLevelManager
         }
 
         /// <summary>
-        /// Creates a <see cref="LevelTrail"/> from a level Iid and a <see cref="IConnection"/>.
+        /// Creates a <see cref="FlowSubjectTrail"/> from a level Iid and a <see cref="IConnection"/>.
         /// </summary>
         /// <param name="levelIid">The LDtk unique identifier of the level.</param>
         /// <param name="connection">The connection of the player.</param>
-        /// <returns>A new <see cref="LevelTrail"/> instance.</returns>
-        public static LevelTrail FromConnection(string levelIid, IConnection connection)
+        /// <returns>A new <see cref="FlowSubjectTrail"/> instance.</returns>
+        public static FlowSubjectTrail FromConnection(string levelIid, IConnection connection)
         {
-            return new LevelTrail
+            return new FlowSubjectTrail
             {
                 _levelIid = levelIid,
                 _spawnPosition = connection.Spot.SpawnPoint,
@@ -60,14 +60,14 @@ namespace LDtkLevelManager
         }
 
         /// <summary>
-        /// Creates a <see cref="LevelTrail"/> from a level Iid and a <see cref="IPortal"/>.
+        /// Creates a <see cref="FlowSubjectTrail"/> from a level Iid and a <see cref="IPortal"/>.
         /// </summary>
         /// <param name="levelIid">The LDtk unique identifier of the level.</param>
         /// <param name="portal">The portal of the player.</param>
-        /// <returns>A new <see cref="LevelTrail"/> instance.</returns>
-        public static LevelTrail FromPortal(string levelIid, IPortal portal)
+        /// <returns>A new <see cref="FlowSubjectTrail"/> instance.</returns>
+        public static FlowSubjectTrail FromPortal(string levelIid, IPortal portal)
         {
-            return new LevelTrail
+            return new FlowSubjectTrail
             {
                 _levelIid = levelIid,
                 _spawnPosition = portal.Spot.SpawnPoint,
@@ -76,9 +76,9 @@ namespace LDtkLevelManager
         }
 
         /// <summary>
-        /// An empty <see cref="LevelTrail"/>.
+        /// An empty <see cref="FlowSubjectTrail"/>.
         /// </summary>
-        public static LevelTrail Empty => new()
+        public static FlowSubjectTrail Empty => new()
         {
             _levelIid = string.Empty,
             _spawnPosition = Vector2.zero,
@@ -136,7 +136,7 @@ namespace LDtkLevelManager
         #region Getters
 
         /// <summary>
-        /// Checks if the trail (<see cref="LevelTrail"/>) is valid. <br />
+        /// Checks if the trail (<see cref="FlowSubjectTrail"/>) is valid. <br />
         /// A trail is valid if the level Iid is not empty.
         /// </summary>
         public readonly bool IsValid => string.IsNullOrEmpty(_levelIid);
