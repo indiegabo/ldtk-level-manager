@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LDtkLevelManager.Cartography;
 using LDtkUnity;
+using UnityEditor.AddressableAssets;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Profiling;
@@ -16,9 +17,19 @@ namespace LDtkLevelManager
         {
             Profiler.BeginSample("[LDtkLevelManager] Loading projects");
 
+            var settings = AddressableAssetSettingsDefaultObject.Settings;
+
+            if (settings == null) return;
+
+            string projectsLabel = settings.GetLabels().Find(
+                x => x == ProjectsService.ProjectAddressabelsLabel
+            );
+
+            if (string.IsNullOrEmpty(projectsLabel)) return;
+
             // Load all projects with the label "LM_Project"
             var handle = Addressables.LoadAssetsAsync<Project>(
-                ProjectsService.ProjectAddressabelsLabel,
+                projectsLabel,
                 null
             );
 
@@ -34,7 +45,7 @@ namespace LDtkLevelManager
             if (projects.Count == 0)
             {
                 Logger.Error(
-                    $"No projects labeled {ProjectsService.ProjectAddressabelsLabel} were found. "
+                    $"No projects labeled {projectsLabel} were found. "
                     + $"The {nameof(LDtkLevelManager)} services will not be initialized."
                 );
                 return;
