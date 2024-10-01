@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/indiegabo/ldtk-level-manager/compare/v1.8.0...v1.8.1) (2024-10-01)
+
+
+### Bug Fixes
+
+* project labels ([d15dd74](https://github.com/indiegabo/ldtk-level-manager/commit/d15dd745bb8a27699f35cc586826c7eb3af5a721))
+
 # [1.8.0](https://github.com/indiegabo/ldtk-level-manager/compare/v1.7.1...v1.8.0) (2024-10-01)
 
 
