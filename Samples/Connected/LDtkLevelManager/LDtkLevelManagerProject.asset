@@ -21,7 +21,7 @@ MonoBehaviour:
   _standAlone: 0
   _asset: {fileID: -8992898197193783287, guid: fdd889bfee5f70f48932e800b46b6569, type: 3}
   _levelFile: {fileID: -8655009601392300639, guid: fdd889bfee5f70f48932e800b46b6569, type: 3}
-  _assetPath: Assets/LDtkLevelManager/Samples/Basic/LDtk/LDtkSample/World_2_Level_0.ldtkl
+  _assetPath: Assets/LDtkLevelManager/Samples/Connected/LDtk/LDtkSample/World_2_Level_0.ldtkl
   _address: LM__b8abf8a0-ed50-11ed-a82b-5f61164d4b1d
   _scene:
     _assetGuid: 
@@ -48,7 +48,7 @@ MonoBehaviour:
   _standAlone: 1
   _asset: {fileID: 604604116515474520, guid: 003c12741c065c5429392ee894490993, type: 3}
   _levelFile: {fileID: -8655009601392300639, guid: 003c12741c065c5429392ee894490993, type: 3}
-  _assetPath: Assets/LDtkLevelManager/Samples/Basic/LDtk/LDtkSample/World_1_Level_8.ldtkl
+  _assetPath: Assets/LDtkLevelManager/Samples/Connected/LDtk/LDtkSample/World_1_Level_8.ldtkl
   _address: LM__6cefe730-4ce0-11ef-bf67-0f9513f77e9c
   _scene:
     _assetGuid: 
@@ -75,7 +75,7 @@ MonoBehaviour:
   _standAlone: 0
   _asset: {fileID: -3933652956049621494, guid: 007d247440d71004e9d7a7a9aaeb92be, type: 3}
   _levelFile: {fileID: -8655009601392300639, guid: 007d247440d71004e9d7a7a9aaeb92be, type: 3}
-  _assetPath: Assets/LDtkLevelManager/Samples/Basic/LDtk/LDtkSample/World_1_Level_2.ldtkl
+  _assetPath: Assets/LDtkLevelManager/Samples/Connected/LDtk/LDtkSample/World_1_Level_2.ldtkl
   _address: LM__5a000e40-7820-11ed-9426-6583193f320d
   _scene:
     _assetGuid: 
@@ -102,7 +102,7 @@ MonoBehaviour:
   _standAlone: 0
   _asset: {fileID: -5901427416510763554, guid: d72b9229f4a32bb47b6347868092eb84, type: 3}
   _levelFile: {fileID: -8655009601392300639, guid: d72b9229f4a32bb47b6347868092eb84, type: 3}
-  _assetPath: Assets/LDtkLevelManager/Samples/Basic/LDtk/LDtkSample/World_1_Level_0.ldtkl
+  _assetPath: Assets/LDtkLevelManager/Samples/Connected/LDtk/LDtkSample/World_1_Level_0.ldtkl
   _address: LM__f2fdcce0-fec0-11ee-bdc7-bf4f9736dab7
   _scene:
     _assetGuid: 
@@ -129,7 +129,7 @@ MonoBehaviour:
   _standAlone: 0
   _asset: {fileID: 2479482963998647176, guid: 569f095cc12507e45ac71f8dd0fffb46, type: 3}
   _levelFile: {fileID: -8655009601392300639, guid: 569f095cc12507e45ac71f8dd0fffb46, type: 3}
-  _assetPath: Assets/LDtkLevelManager/Samples/Basic/LDtk/LDtkSample/World_1_Level_7.ldtkl
+  _assetPath: Assets/LDtkLevelManager/Samples/Connected/LDtk/LDtkSample/World_1_Level_7.ldtkl
   _address: LM__c3003d70-fec0-11ee-bb1b-0bb462c76224
   _scene:
     _assetGuid: 
@@ -226,7 +226,7 @@ MonoBehaviour:
   _standAlone: 0
   _asset: {fileID: 8366027082681871348, guid: 5ee0c4d3cc1f25942b501870f51deafc, type: 3}
   _levelFile: {fileID: -8655009601392300639, guid: 5ee0c4d3cc1f25942b501870f51deafc, type: 3}
-  _assetPath: Assets/LDtkLevelManager/Samples/Basic/LDtk/LDtkSample/World_1_Level_5.ldtkl
+  _assetPath: Assets/LDtkLevelManager/Samples/Connected/LDtk/LDtkSample/World_1_Level_5.ldtkl
   _address: LM__53fb5a10-fec0-11ee-9039-81cd82f7857a
   _scene:
     _assetGuid: 
@@ -253,7 +253,7 @@ MonoBehaviour:
   _standAlone: 0
   _asset: {fileID: 2136695710166686648, guid: f6f83a3913cceb3489bb56a448b15653, type: 3}
   _levelFile: {fileID: -8655009601392300639, guid: f6f83a3913cceb3489bb56a448b15653, type: 3}
-  _assetPath: Assets/LDtkLevelManager/Samples/Basic/LDtk/LDtkSample/World_1_Level_4.ldtkl
+  _assetPath: Assets/LDtkLevelManager/Samples/Connected/LDtk/LDtkSample/World_1_Level_4.ldtkl
   _address: LM__49e346a0-fec0-11ee-9039-5b61900789be
   _scene:
     _assetGuid: f1e32554816ea154b8cd1fbd1e15fd98
@@ -280,7 +280,7 @@ MonoBehaviour:
   _standAlone: 0
   _asset: {fileID: 904013000666644499, guid: d7d9654114406314dbe8eecdb4bc72f0, type: 3}
   _levelFile: {fileID: -8655009601392300639, guid: d7d9654114406314dbe8eecdb4bc72f0, type: 3}
-  _assetPath: Assets/LDtkLevelManager/Samples/Basic/LDtk/LDtkSample/World_1_Level_1.ldtkl
+  _assetPath: Assets/LDtkLevelManager/Samples/Connected/LDtk/LDtkSample/World_1_Level_1.ldtkl
   _address: LM__363b42a0-7820-11ed-a571-2bca691f63e1
   _scene:
     _assetGuid: cc5fc3bca9c0e5d41b88c25b94905a67
@@ -307,7 +307,7 @@ MonoBehaviour:
   _standAlone: 0
   _asset: {fileID: -6529042288658725175, guid: ebb03114951a1884b8c0f54710d92a3e, type: 3}
   _levelFile: {fileID: -8655009601392300639, guid: ebb03114951a1884b8c0f54710d92a3e, type: 3}
-  _assetPath: Assets/LDtkLevelManager/Samples/Basic/LDtk/LDtkSample/World_1_Level_6.ldtkl
+  _assetPath: Assets/LDtkLevelManager/Samples/Connected/LDtk/LDtkSample/World_1_Level_6.ldtkl
   _address: LM__aaffd4b0-fec0-11ee-bb1b-a5e053972db7
   _scene:
     _assetGuid: 
@@ -334,7 +334,7 @@ MonoBehaviour:
   _standAlone: 0
   _asset: {fileID: -8326182012295835991, guid: 29c3b4538aa41954389f71f40f762a5d, type: 3}
   _levelFile: {fileID: -8655009601392300639, guid: 29c3b4538aa41954389f71f40f762a5d, type: 3}
-  _assetPath: Assets/LDtkLevelManager/Samples/Basic/LDtk/LDtkSample/World_1_Level_3.ldtkl
+  _assetPath: Assets/LDtkLevelManager/Samples/Connected/LDtk/LDtkSample/World_1_Level_3.ldtkl
   _address: LM__f277f910-fec0-11ee-9039-191aedcc41c6
   _scene:
     _assetGuid: 6f4dd6a8051fb4b44a921894d2ac6aba

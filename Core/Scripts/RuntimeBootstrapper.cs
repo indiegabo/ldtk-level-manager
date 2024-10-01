@@ -5,6 +5,7 @@ using LDtkUnity;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Profiling;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace LDtkLevelManager
 {
@@ -14,18 +15,17 @@ namespace LDtkLevelManager
         private static void MainBootstrap()
         {
             Profiler.BeginSample("[LDtkLevelManager] Loading projects");
+
             // Load all projects with the label "LM_Project"
-            var handle = Addressables.LoadAssetsAsync<Project>(ProjectsService.ProjectAddressabelsLabel, null);
+            var handle = Addressables.LoadAssetsAsync<Project>(
+                ProjectsService.ProjectAddressabelsLabel,
+                null
+            );
+
             handle.WaitForCompletion();
 
-            if (handle.Status != UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
+            if (handle.Status != AsyncOperationStatus.Succeeded)
             {
-                Logger.Error(
-                    $"Failed to load projects labeled {ProjectsService.ProjectAddressabelsLabel}. "
-                    + "The project sevice will not be initialized."
-                );
-
-                Logger.Exception(handle.OperationException);
                 return;
             }
 
@@ -39,6 +39,7 @@ namespace LDtkLevelManager
                 );
                 return;
             }
+
             Profiler.EndSample();
 
             Profiler.BeginSample("[LDtkLevelManager] Bootstrapping project service");
