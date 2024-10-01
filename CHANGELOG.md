@@ -1,3 +1,11 @@
+# [1.8.0](https://github.com/indiegabo/ldtk-level-manager/compare/v1.7.1...v1.8.0) (2024-10-01)
+
+
+### Features
+
+* EventBus ([2856286](https://github.com/indiegabo/ldtk-level-manager/commit/2856286c79fbe8f988944adf4e3b488184c72d45))
+* Multiple Loaders ([ff436cb](https://github.com/indiegabo/ldtk-level-manager/commit/ff436cbb3a5260054fc36fd99898faedf6ff0c74))
+
 ## [1.7.1](https://github.com/indiegabo/ldtk-level-manager/compare/v1.7.0...v1.7.1) (2024-09-16)
 
 
