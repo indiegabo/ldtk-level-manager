@@ -20,6 +20,9 @@ namespace LDtkLevelManager
         [SerializeField] private InfoDictionary _levels = new();
         [SerializeField] private InfoDictionary _lostLevels = new();
         [SerializeField] private WorldInfoDictionary _worldInfoRegistry = new();
+        [SerializeField] private LevelsOrganization _levelsOrganization;
+        [SerializeField] private ConnectedLoadingStrategy _loadingStrategy;
+        [SerializeField] private int _neighbouringDepth = 1;
 
         #endregion
 
@@ -83,6 +86,21 @@ namespace LDtkLevelManager
         /// A dictionary of world names and their world info.
         /// </summary>
         public WorldInfoDictionary WorldAreas => _worldInfoRegistry;
+
+        /// <summary>
+        /// The organization settings for this project.
+        /// </summary>
+        public LevelsOrganization Organization => _levelsOrganization;
+
+        /// <summary>
+        /// The loading strategy for this project.
+        /// </summary>
+        public ConnectedLoadingStrategy Strategy => _loadingStrategy;
+
+        /// <summary>
+        /// The neighbouring depth for this project.
+        /// </summary>
+        public int NeighbouringDepth => _neighbouringDepth;
 
         #endregion
 
@@ -233,6 +251,40 @@ namespace LDtkLevelManager
                 return false;
             }
             return _worldInfoRegistry.TryGetValue(level.WorldName, out worldInfo);
+        }
+
+        #endregion        
+
+        #region Metadata
+
+        public enum LevelsOrganization
+        {
+            [InspectorName("Connected")]
+            Connected,
+            [InspectorName("Unrelated")]
+            Unrelated,
+        }
+
+        /// <summary>
+        /// Represents the different strategies for loading levels.
+        /// </summary>
+        public enum ConnectedLoadingStrategy
+        {
+            /// <summary>
+            /// Load the level and its neighbours.
+            /// </summary>
+            [InspectorName("Neighboured")]
+            Neighbours,
+            /// <summary>
+            /// Load all the levels of the entire world.
+            /// </summary>
+            [InspectorName("Worlds")]
+            Worlds,
+            /// <summary>
+            /// Load all the levels of the same area.
+            /// </summary>
+            [InspectorName("Areas")]
+            Areas,
         }
 
         #endregion

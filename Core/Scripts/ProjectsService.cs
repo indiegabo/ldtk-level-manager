@@ -74,6 +74,7 @@ namespace LDtkLevelManager
         /// <returns><c>true</c> if the LDtkJson was found, otherwise <c>false</c>.</returns>
         public bool TryGetLdtkJson(Project project, out LdtkJson ldtkJson)
         {
+            if (project == null) throw new System.ArgumentNullException(nameof(project));
             return _ldtkJsons.TryGetValue(project.Iid, out ldtkJson);
         }
 

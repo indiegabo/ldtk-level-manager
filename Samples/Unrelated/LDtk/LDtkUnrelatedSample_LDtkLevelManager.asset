@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-2709860714248043140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76238ae897cf99441a858f74751e647c, type: 3}
+  m_Name: Level_0_Json
+  m_EditorClassIdentifier: 
+  _project: {fileID: 11400000}
+  _iid: 9ccf1ef0-73f0-11ef-9cea-dda9573db71f
+  _displayName: 
+  _worldIid: 9ccef7e1-73f0-11ef-9cea-816e8e396f4d
+  _worldName: World_1
+  _areaName: 
+  _standAlone: 0
+  _asset: {fileID: 8000468144035134150, guid: 9584613be8f692f45954f7e7867dca6c, type: 3}
+  _levelFile: {fileID: -8655009601392300639, guid: 9584613be8f692f45954f7e7867dca6c, type: 3}
+  _assetPath: Assets/LDtkLevelManager/Samples/Unrelated/LDtk/LDtkUnrelatedSample/Level_0.ldtkl
+  _address: LM__9ccf1ef0-73f0-11ef-9cea-dda9573db71f
+  _scene:
+    _assetGuid: 
+    _addressableKey: 
+  _leftBehind: 0
+--- !u!114 &-429157165545603602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76238ae897cf99441a858f74751e647c, type: 3}
+  m_Name: Level_1_Json
+  m_EditorClassIdentifier: 
+  _project: {fileID: 11400000}
+  _iid: 336a9cd0-73f0-11ef-9cea-193daf8e9632
+  _displayName: 
+  _worldIid: 9ccef7e1-73f0-11ef-9cea-816e8e396f4d
+  _worldName: World_1
+  _areaName: 
+  _standAlone: 0
+  _asset: {fileID: 4994227485657439157, guid: 1dbd7633e1bd6bc47a9d14d7409c99be, type: 3}
+  _levelFile: {fileID: -8655009601392300639, guid: 1dbd7633e1bd6bc47a9d14d7409c99be, type: 3}
+  _assetPath: Assets/LDtkLevelManager/Samples/Unrelated/LDtk/LDtkUnrelatedSample/Level_1.ldtkl
+  _address: LM__336a9cd0-73f0-11ef-9cea-193daf8e9632
+  _scene:
+    _assetGuid: 
+    _addressableKey: 
+  _leftBehind: 0
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 825ee4dd3ba3d76428e41c1af1444edd, type: 3}
+  m_Name: LDtkUnrelatedSample_LDtkLevelManager
+  m_EditorClassIdentifier: 
+  _iid: 9ccef7e0-73f0-11ef-9cea-573687ab58a5
+  _ldtkProjectFile: {fileID: -164016180542632921, guid: f5884fe0f24b756488ef4b98bc9aebf8, type: 3}
+  _syncLevelsAtCompile: 1
+  _navigationLayer: 
+  _cartography:
+    scaleFactor: 0
+  _lanesSettings:
+    _cameraNegativeOffset: 0
+    _universeLane:
+      _startingZ: 0
+      _depth: 0
+    _mapRenderingLane:
+      _startingZ: 0
+      _depth: 0
+  _levels:
+    _listKeys:
+    - 9ccf1ef0-73f0-11ef-9cea-dda9573db71f
+    - 336a9cd0-73f0-11ef-9cea-193daf8e9632
+    _listValues:
+    - {fileID: -2709860714248043140}
+    - {fileID: -429157165545603602}
+  _lostLevels:
+    _listKeys: []
+    _listValues: []
+  _worldInfoRegistry:
+    _listKeys:
+    - World_1
+    _listValues:
+    - iid: 9ccef7e1-73f0-11ef-9cea-816e8e396f4d
+      name: World_1
+      areas: []
+  _levelsOrganization: 1
+  _loadingStrategy: 0
+  _neighbouringDepth: 1
