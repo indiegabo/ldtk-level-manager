@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using LDtkLevelManager.EventBus;
 using LDtkUnity;
@@ -543,6 +544,16 @@ namespace LDtkLevelManager
         {
             // Attempt to get the level from the project.
             return _project.GetLevel(iid);
+        }
+
+        /// <summary>
+        /// Retrieves all the level behaviours that have been registered through the 
+        /// <see cref="RegisterAsBehaviour"/> method.
+        /// </summary>
+        /// <returns>An array of the registered level behaviours.</returns>
+        public virtual LevelBehaviour[] GetRegisteredBehaviours()
+        {
+            return _registeredBehaviours.Values.ToArray();
         }
 
         #endregion
