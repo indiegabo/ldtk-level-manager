@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/indiegabo/ldtk-level-manager/compare/v1.8.1...v1.9.0) (2024-11-06)
+
+
+### Features
+
+* Retrieve All registered behaviours ([0aa8953](https://github.com/indiegabo/ldtk-level-manager/commit/0aa8953be621d01fc58ecc377a3447fc83a06e75))
+
 ## [1.8.1](https://github.com/indiegabo/ldtk-level-manager/compare/v1.8.0...v1.8.1) (2024-10-01)
 
 
